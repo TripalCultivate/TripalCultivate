@@ -10,4 +10,5 @@ WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 RUN service postgresql restart \
   && drush trp-install-chado --schema-name=${chadoschema} \
   && drush trp-prep-chado --schema-name=${chadoschema} \
+  && drush en trpcultivate --yes \
   && drush cr

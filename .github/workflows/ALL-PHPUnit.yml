@@ -3,8 +3,8 @@ name: PHPUnit
 on: [push]
 
 env:
-  PKG_NAME: template
-  MODULES: "modulename"
+  PKG_NAME: Tripal Cultivate
+  MODULES: "trpcultivate"
 
 jobs:
   run-tests:
@@ -14,19 +14,22 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.0"
           - "8.1"
+          - "8.2"
+          - "8.3"
         pgsql-version:
           - "13"
         drupal-version:
-          - "9.3.x-dev"
-          - "9.4.x-dev"
-          - "9.5.x-dev"
-          # - "10.0.x-dev"
-#        exclude:
-#          - php-version: "8.0"
-#            pgsql-version: "13"
-#            drupal-version: "10.0.x-dev"
+          - "10.0.x-dev"
+          - "10.1.x-dev"
+          - "10.2.x-dev"
+        exclude:
+          - php-version: "8.3"
+            pgsql-version: "13"
+            drupal-version: "10.0.x-dev"
+          - php-version: "8.3"
+            pgsql-version: "13"
+            drupal-version: "10.1.x-dev"
 
     steps:
       # Check out the repo
@@ -41,4 +44,4 @@ jobs:
           php-version: ${{ matrix.php-version }}
           pgsql-version: ${{ matrix.pgsql-version }}
           drupal-version: ${{ matrix.drupal-version }}
-          
+
