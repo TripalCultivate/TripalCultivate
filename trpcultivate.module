@@ -10,15 +10,14 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function modulename_help($route_name, RouteMatchInterface $route_match) {
+function trpcultivate_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     // Provides the module overview in the help tab.
-    case 'help.page.modulename':
+    case 'help.page.trpcultivate':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
 
-      $output .= '<p>' . t('This is a template module which should never be
-      available on a production site') . '</p>';
+      $output .= '<p>' . t('This module provides basic functionality shared by the entire Tripal Cultivate package of modules.') . '</p>';
 
       return $output;
 
