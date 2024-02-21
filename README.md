@@ -45,9 +45,9 @@ The following compatibility is proven via automated testing workflows.
 | **PHP 8.2** | ![Grid2A-Badge] | ![Grid2B-Badge] | ![Grid2C-Badge] |
 | **PHP 8.3** |                 |                 | ![Grid3C-Badge] |
 
-[our CodeClimate project page]: https://github.com/TripalCultivate/TripalCultivate
-[MaintainabilityBadge]: https://api.codeclimate.com/v1/badges/03fa542e0d95dedb97e8/maintainability
-[TestCoverageBadge]: https://api.codeclimate.com/v1/badges/03fa542e0d95dedb97e8/test_coverage
+[our CodeClimate project page]: https://codeclimate.com/github/TripalCultivate/TripalCultivate
+[MaintainabilityBadge]: https://api.codeclimate.com/v1/badges/730d572b51ad41cbbd69/maintainability
+[TestCoverageBadge]: https://api.codeclimate.com/v1/badges/730d572b51ad41cbbd69/test_coverage
 
 [Grid1A-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid1A.yml/badge.svg
 [Grid1B-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid1B.yml/badge.svg
