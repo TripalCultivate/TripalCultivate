@@ -1,0 +1,32 @@
+{
+  "name": "tripalcultivate/base",
+  "type": "drupal-module",
+  "description": "Tripal Cultivate is a collection of Tripal extension packages focused on providing intuitive data management support for breeding and pre-breeding activities.",
+  "keywords": [
+    "tripal",
+    "drupal",
+    "biological-data",
+    "breedind",
+    "agriculture",
+    "visualization",
+    "data-import"
+  ],
+  "homepage": "https://github.com/TripalCultivate/TripalCultivate",
+  "support": {
+    "issues": "https://github.com/TripalCultivate/TripalCultivate/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Lacey-Anne Sanderson",
+      "homepage": "https://github.com/laceysanderson/",
+      "role": "Lead Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "drupal/core": "^10.0",
+    "tripal/tripal": "^4.0-alpha1"
+  }
+}
