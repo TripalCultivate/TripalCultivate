@@ -1,6 +1,6 @@
 
 name: PHPUnit
-on: [push]
+on: [push, workflow_dispatch]
 
 env:
   PKG_NAME: TripalCultivate
