@@ -1,0 +1,8 @@
+name: "Base API"
+type: module
+description: Provides basic functionality shared by the entire Tripal Cultivate package of modules.
+package: "Tripal Cultivate"
+core_version_requirement: ^10
+dependencies:
+  - tripal
+  - tripal_chado

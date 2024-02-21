@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\modulename\Functional;
+namespace Drupal\Tests\trpcultivate\Functional;
 
 use Drupal\Core\Url;
 use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
@@ -8,35 +8,61 @@ use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
 /**
  * Simple test to ensure that main page loads with module enabled.
  *
- * @group TripGeno Genetics
+ * @group TrpCultivate
  * @group Installation
  */
 class InstallTest extends ChadoTestBrowserBase {
 
-  protected $defaultTheme = 'stable';
+  protected $defaultTheme = 'stark';
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  protected static $modules = ['help', 'modulename'];
+  protected static $modules = ['help'];
 
   /**
    * The name of your module in the .info.yml
    */
-  protected static $module_name = 'Template Modulename';
+  protected static $module_name = 'Base API';
 
   /**
    * The machine name of this module.
    */
-  protected static $module_machinename = 'modulename';
+  protected static $module_machinename = 'trpcultivate';
 
   /**
    * A small excert from your help page.
    * Do not cross newlines.
    */
-  protected static $help_text_excerpt = 'This is a template module which should never be';
+  protected static $help_text_excerpt = 'basic functionality shared by the entire Tripal Cultivate package of modules';
+
+  /**
+   * Chado connection via Tripal DBX.
+   */
+  protected $connection;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() :void {
+
+    parent::setUp();
+
+    // Ensure we see all logging in tests.
+    \Drupal::state()->set('is_a_test_environment', TRUE);
+
+    // Open connection to Chado
+    $this->connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
+
+    $moduleHandler = $this->container->get('module_handler');
+    $moduleInstaller = $this->container->get('module_installer');
+    $this->assertFalse($moduleHandler->moduleExists('trpcultivate'),
+      "The module should not yet be installed.");
+    $this->assertTrue($moduleInstaller->install(['trpcultivate']),
+    "Attempting to install the module should be successful.");
+  }
 
   /**
    * Tests that a specific set of pages load with a 200 response.
@@ -45,10 +71,13 @@ class InstallTest extends ChadoTestBrowserBase {
     $session = $this->getSession();
 
     // Ensure we have an admin user.
-    $user = $this->drupalCreateUser(['access administration pages', 'administer modules']);
+    $permissions = ['access administration pages', 'administer modules'];
+    $user = $this->drupalCreateUser($permissions);
     $this->drupalLogin($user);
 
-    $context = '(modules installed: ' . implode(',', self::$modules) . ')';
+    $modules_installed = self::$modules;
+    $modules_installed[] = self::$module_machinename;
+    $context = '(modules installed: ' . implode(',', $modules_installed) . ')';
 
     // Front Page.
     $this->drupalGet(Url::fromRoute('<front>'));
@@ -72,7 +101,11 @@ class InstallTest extends ChadoTestBrowserBase {
     $some_extected_text = self::$help_text_excerpt;
 
     // Ensure we have an admin user.
-    $user = $this->drupalCreateUser(['access administration pages', 'administer modules']);
+    $permissions = ['access administration pages', 'administer modules'];
+    if (strncmp(\Drupal::VERSION, '10.2', 4) === 0) {
+      $permissions[] = 'access help pages';
+    }
+    $user = $this->drupalCreateUser($permissions);
     $this->drupalLogin($user);
 
     $context = '(modules installed: ' . implode(',', self::$modules) . ')';
