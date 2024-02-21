@@ -1,9 +1,10 @@
 name: PHPUnit
 on:
+  workflow_dispatch:
   push:
     branches:
       - 4.x
-      - customize-template
+
 jobs:
   run-tests:
     runs-on: ubuntu-latest

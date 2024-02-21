@@ -3,7 +3,7 @@ name: PHPUnit
 on: [push]
 
 env:
-  PKG_NAME: Tripal Cultivate
+  PKG_NAME: TripalCultivate
   MODULES: "trpcultivate"
 
 jobs:
