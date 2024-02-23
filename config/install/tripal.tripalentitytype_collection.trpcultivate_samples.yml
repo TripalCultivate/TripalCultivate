@@ -1,0 +1,68 @@
+id: 'trpcultivate_samples'
+label: 'Tripal Cultivate: Sample Types'
+description: 'Provide pages describing types of bioloical samples collected as part of an experiment.'
+content_types:
+
+    -   label: Plant Environmental Sample
+        term: 'NCBITaxon:171925'
+        help_text: Use for plant samples with mixed or unknown species composition collected via ecosystem survey.
+        category: Sample Types
+        id: plant_sample
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"
+
+    -   label: Insect Environmental Sample
+        term: 'NCBITaxon:2588572'
+        help_text: Use for insect samples with mixed or unknown species composition collected via ecosystem survey.
+        category: Sample Types
+        id: insect_sample
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"
+
+    -   label: Soil Microbiome Sample
+        term: 'NCBITaxon:410658'
+        help_text: Use for soil microbiome samples with mixed or uknown composition.
+        category: Sample Types
+        id: microbiome_sample
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"
+
+    -   label: Soil Sample
+        term: 'ENVO:00001998'
+        help_text: Use for soil samples which may or may not contain biological materials.
+        category: Sample Types
+        id: soil_sample
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"
+
+    -   label: Sample
+        term: 'SIO:001050'
+        help_text: Use for samples with mixed or unknown species composition which do not fall into the above categories.
+        category: Sample Types
+        id: general_sample
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"
+
+    -   label: Biological Sample
+        term: 'NCIT:C70699'
+        help_text: Use for samples with a single, known species that can consist of either the whole or part (e.g. tissue, seed, DNA) of one or more individuals.
+        category: Sample Types
+        id: biospecimen
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"
+
+    -   label: Ecosystem Sample Plot
+        term: 'OEPO:Plot'
+        help_text: Use to document the specific plot in your ecosystem site from which other samples will be collected.
+        category: Sample Types
+        id: ecosystem_plot
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"
+
+    -   label: Native Grassland Site
+        term: 'AGRO:00000360'
+        help_text: Use to document the native grassland site where you intend to take various samples for your experiment.
+        category: Sample Types
+        id: experimental_site
+        title_format: "[sample_name]"
+        url_format: "samples/[TripalEntity__entity_id]"

@@ -103,3 +103,14 @@ vocabularies:
             -   id: 'CRO:0000094'
                 name: 'primary collector role'
                 description: 'In botany, this is the collector listed first for a particular specimen. Each specimen has one primary collector. The primary collector assigns a number to that specimen from his/her own number series.'
+    -   name: 'AGRO'
+        label: 'Agronomy Ontology'
+        url: 'https://agroportal.lirmm.fr/ontologies/AGRO'
+        idSpaces:
+            -   name: 'AGRO'
+                description: 'Agronomy Ontology'
+                urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+        terms:
+            -   id: 'AGRO:00000360'
+                name: 'experimental site'
+                description: 'Location where the experiment is implemented.'

@@ -1,0 +1,45 @@
+id: 'trpcultivate_experiments'
+label: 'Tripal Cultivate: Experiment Types'
+description: 'Provide pages describing types of experiment (e.g. field, biochemical, survey). All data should be associated with a specific experiment and each experiment is expected to be part of a larger study.'
+content_types:
+
+    -   label: Field Experiment
+        term: 'PECO:0007256'
+        help_text: Use to describe experiments collecting phenomic data that are carried out in organized trials in field sites.
+        category: Experiment Types
+        id: field_experiment
+        title_format: "[experiment_name]"
+        url_format: "experiment/[TripalEntity__entity_id]"
+
+    -   label: Greenhouse Experiment
+        term: 'PECO:0007248'
+        help_text: Use to describe experiments collecting phenomic data that are carried out in the greenhouse.
+        category: Experiment Types
+        id: greenhouse_experiment
+        title_format: "[experiment_name]"
+        url_format: "experiment/[TripalEntity__entity_id]"
+
+    -   label: Growth Chamber Experiment
+        term: 'PECO:0007269'
+        help_text: Use to describe experiments collecting phenomic data that are carried out in highly controlled growth chambers.
+        category: Experiment Types
+        id: growthchamber_experiment
+        title_format: "[experiment_name]"
+        url_format: "experiment/[TripalEntity__entity_id]"
+
+    -   label: Biochemical Assay
+        term: 'SIO:001007'
+        help_text: Use to describe experiments collecting phenomic measuremets by assaying biological materials using various protocols and/or devices.
+        category: Experiment Types
+        id: biochem_experiment
+        title_format: "[experiment_name]"
+        url_format: "experiment/[TripalEntity__entity_id]"
+
+    -   label: Ecosystem Survey
+        term: 'BLH-ACTI:M0H846B9-S'
+        help_text: Use to describe experiments collecting phenomic measurements on samples obtained using ecosystem survey techniques.'
+        category: Experiment Types
+        id: ecosystem_survey
+        title_format: "[experiment_name]"
+        url_format: "experiment/[TripalEntity__entity_id]"
+
