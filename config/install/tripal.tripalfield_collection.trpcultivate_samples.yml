@@ -406,3 +406,1137 @@ fields:
             default:
               region: content
               weight: 10
+
+## Biological Sample ##
+## Chado Table: biomaterial
+## Optional Columns: name (varchar 255), description (text), dbxref_id (int), biosourceprovider_id (int), taxon_id (int)
+## Related: biomaterialprop, biomaterial_dbxref, biomaterial_relationship
+##          array_biomaterial, biomaterial_treatment
+
+    -   name: sample_name
+        content_type: biospecimen
+        label: Sample Name
+        type: chado_text_type_default
+        description: The name of the sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: name
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_dbxref_id
+        content_type: biospecimen
+        label: Sample Reference
+        type: chado_dbxref_type_default
+        description: The accession or unique identifier for this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: dbxref_id
+        settings:
+            termIdSpace: data
+            termAccession: "2091"
+        display:
+          view:
+            default:
+              region: hidden
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_coordinates
+        content_type: biospecimen
+        label: Sample Coordinates
+        type: chado_property_type_default
+        description: The geographical coordinates that the sample was collected from.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: data ## ChangeMe
+            termAccession: '2012'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: biosourceprovider_contact
+        content_type: biospecimen
+        label: Sample Collector
+        type: chado_contact_default
+        description: The technician or researcher who collected this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                linker_table: biomaterial
+                linker_fkey_column: biosourceprovider_id
+        settings:
+            termIdSpace: CRO
+            termAccession: 0000094
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_description
+        content_type: biospecimen
+        label: Comments
+        type: chado_text_type_default
+        description: Any comments that the data collector feels might be important when analyzing this sample.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_organism
+        content_type: biospecimen
+        label: Species
+        type: chado_organism_default
+        description: The species or species mixture if known.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: taxon_id
+        settings:
+            termIdSpace: OBI
+            termAccession: "0100026"
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_collection_date
+        content_type: biospecimen
+        label: Collection Date
+        type: chado_property_type_default
+        description: The date the sample was collected.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C25164'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+## Sample ##
+## Chado Table: biomaterial
+## Optional Columns: name (varchar 255), description (text), dbxref_id (int), biosourceprovider_id (int), taxon_id (int)
+## Related: biomaterialprop, biomaterial_dbxref, biomaterial_relationship
+##          array_biomaterial, biomaterial_treatment
+
+    -   name: sample_name
+        content_type: general_sample
+        label: Sample Name
+        type: chado_text_type_default
+        description: The name of the sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: name
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_dbxref_id
+        content_type: general_sample
+        label: Sample Reference
+        type: chado_dbxref_type_default
+        description: The accession or unique identifier for this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: dbxref_id
+        settings:
+            termIdSpace: data
+            termAccession: "2091"
+        display:
+          view:
+            default:
+              region: hidden
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_coordinates
+        content_type: general_sample
+        label: Sample Coordinates
+        type: chado_property_type_default
+        description: The geographical coordinates that the sample was collected from.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: data ## ChangeMe
+            termAccession: '2012'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: biosourceprovider_contact
+        content_type: general_sample
+        label: Sample Collector
+        type: chado_contact_default
+        description: The technician or researcher who collected this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                linker_table: biomaterial
+                linker_fkey_column: biosourceprovider_id
+        settings:
+            termIdSpace: CRO
+            termAccession: 0000094
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_description
+        content_type: general_sample
+        label: Comments
+        type: chado_text_type_default
+        description: Any comments that the data collector feels might be important when analyzing this sample.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_organism
+        content_type: general_sample
+        label: Species
+        type: chado_organism_default
+        description: The species or species mixture if known.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: taxon_id
+        settings:
+            termIdSpace: OBI
+            termAccession: "0100026"
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_collection_date
+        content_type: general_sample
+        label: Collection Date
+        type: chado_property_type_default
+        description: The date the sample was collected.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C25164'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+## Soil Sample ##
+## Chado Table: biomaterial
+## Optional Columns: name (varchar 255), description (text), dbxref_id (int), biosourceprovider_id (int), taxon_id (int)
+## Related: biomaterialprop, biomaterial_dbxref, biomaterial_relationship
+##          array_biomaterial, biomaterial_treatment
+
+    -   name: sample_name
+        content_type: soil_sample
+        label: Sample Name
+        type: chado_text_type_default
+        description: The name of the sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: name
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_dbxref_id
+        content_type: soil_sample
+        label: Sample Reference
+        type: chado_dbxref_type_default
+        description: The accession or unique identifier for this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: dbxref_id
+        settings:
+            termIdSpace: data
+            termAccession: "2091"
+        display:
+          view:
+            default:
+              region: hidden
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_coordinates
+        content_type: soil_sample
+        label: Sample Coordinates
+        type: chado_property_type_default
+        description: The geographical coordinates that the sample was collected from.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: data ## ChangeMe
+            termAccession: '2012'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: biosourceprovider_contact
+        content_type: soil_sample
+        label: Sample Collector
+        type: chado_contact_default
+        description: The technician or researcher who collected this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                linker_table: biomaterial
+                linker_fkey_column: biosourceprovider_id
+        settings:
+            termIdSpace: CRO
+            termAccession: 0000094
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_description
+        content_type: soil_sample
+        label: Comments
+        type: chado_text_type_default
+        description: Any comments that the data collector feels might be important when analyzing this sample.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_organism
+        content_type: soil_sample
+        label: Species
+        type: chado_organism_default
+        description: The species or species mixture if known.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: taxon_id
+        settings:
+            termIdSpace: OBI
+            termAccession: "0100026"
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_collection_date
+        content_type: soil_sample
+        label: Collection Date
+        type: chado_property_type_default
+        description: The date the sample was collected.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C25164'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+## Soil Microbiome Sample ##
+## Chado Table: biomaterial
+## Optional Columns: name (varchar 255), description (text), dbxref_id (int), biosourceprovider_id (int), taxon_id (int)
+## Related: biomaterialprop, biomaterial_dbxref, biomaterial_relationship
+##          array_biomaterial, biomaterial_treatment
+
+    -   name: sample_name
+        content_type: microbiome_sample
+        label: Sample Name
+        type: chado_text_type_default
+        description: The name of the sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: name
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_dbxref_id
+        content_type: microbiome_sample
+        label: Sample Reference
+        type: chado_dbxref_type_default
+        description: The accession or unique identifier for this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: dbxref_id
+        settings:
+            termIdSpace: data
+            termAccession: "2091"
+        display:
+          view:
+            default:
+              region: hidden
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_coordinates
+        content_type: microbiome_sample
+        label: Sample Coordinates
+        type: chado_property_type_default
+        description: The geographical coordinates that the sample was collected from.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: data ## ChangeMe
+            termAccession: '2012'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: biosourceprovider_contact
+        content_type: microbiome_sample
+        label: Sample Collector
+        type: chado_contact_default
+        description: The technician or researcher who collected this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                linker_table: biomaterial
+                linker_fkey_column: biosourceprovider_id
+        settings:
+            termIdSpace: CRO
+            termAccession: 0000094
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_description
+        content_type: microbiome_sample
+        label: Comments
+        type: chado_text_type_default
+        description: Any comments that the data collector feels might be important when analyzing this sample.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_organism
+        content_type: microbiome_sample
+        label: Species
+        type: chado_organism_default
+        description: The species or species mixture if known.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: taxon_id
+        settings:
+            termIdSpace: OBI
+            termAccession: "0100026"
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_collection_date
+        content_type: microbiome_sample
+        label: Collection Date
+        type: chado_property_type_default
+        description: The date the sample was collected.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C25164'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+## Insect Environmental Sample ##
+## Chado Table: biomaterial
+## Optional Columns: name (varchar 255), description (text), dbxref_id (int), biosourceprovider_id (int), taxon_id (int)
+## Related: biomaterialprop, biomaterial_dbxref, biomaterial_relationship
+##          array_biomaterial, biomaterial_treatment
+
+    -   name: sample_name
+        content_type: insect_sample
+        label: Sample Name
+        type: chado_text_type_default
+        description: The name of the sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: name
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_dbxref_id
+        content_type: insect_sample
+        label: Sample Reference
+        type: chado_dbxref_type_default
+        description: The accession or unique identifier for this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: dbxref_id
+        settings:
+            termIdSpace: data
+            termAccession: "2091"
+        display:
+          view:
+            default:
+              region: hidden
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_coordinates
+        content_type: insect_sample
+        label: Sample Coordinates
+        type: chado_property_type_default
+        description: The geographical coordinates that the sample was collected from.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: data ## ChangeMe
+            termAccession: '2012'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: biosourceprovider_contact
+        content_type: insect_sample
+        label: Sample Collector
+        type: chado_contact_default
+        description: The technician or researcher who collected this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                linker_table: biomaterial
+                linker_fkey_column: biosourceprovider_id
+        settings:
+            termIdSpace: CRO
+            termAccession: 0000094
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_description
+        content_type: insect_sample
+        label: Comments
+        type: chado_text_type_default
+        description: Any comments that the data collector feels might be important when analyzing this sample.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_organism
+        content_type: insect_sample
+        label: Species
+        type: chado_organism_default
+        description: The species or species mixture if known.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: taxon_id
+        settings:
+            termIdSpace: OBI
+            termAccession: "0100026"
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_collection_date
+        content_type: insect_sample
+        label: Collection Date
+        type: chado_property_type_default
+        description: The date the sample was collected.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C25164'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+## Plant Environmental Sample ##
+## Chado Table: biomaterial
+## Optional Columns: name (varchar 255), description (text), dbxref_id (int), biosourceprovider_id (int), taxon_id (int)
+## Related: biomaterialprop, biomaterial_dbxref, biomaterial_relationship
+##          array_biomaterial, biomaterial_treatment
+
+    -   name: sample_name
+        content_type: plant_sample
+        label: Sample Name
+        type: chado_text_type_default
+        description: The name of the sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: name
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_dbxref_id
+        content_type: plant_sample
+        label: Sample Reference
+        type: chado_dbxref_type_default
+        description: The accession or unique identifier for this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: dbxref_id
+        settings:
+            termIdSpace: data
+            termAccession: "2091"
+        display:
+          view:
+            default:
+              region: hidden
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_coordinates
+        content_type: plant_sample
+        label: Sample Coordinates
+        type: chado_property_type_default
+        description: The geographical coordinates that the sample was collected from.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: data ## ChangeMe
+            termAccession: '2012'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: biosourceprovider_contact
+        content_type: plant_sample
+        label: Sample Collector
+        type: chado_contact_default
+        description: The technician or researcher who collected this sample.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                linker_table: biomaterial
+                linker_fkey_column: biosourceprovider_id
+        settings:
+            termIdSpace: CRO
+            termAccession: 0000094
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_description
+        content_type: plant_sample
+        label: Comments
+        type: chado_text_type_default
+        description: Any comments that the data collector feels might be important when analyzing this sample.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+    -   name: sample_organism
+        content_type: plant_sample
+        label: Species
+        type: chado_organism_default
+        description: The species or species mixture if known.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                base_column: taxon_id
+        settings:
+            termIdSpace: OBI
+            termAccession: "0100026"
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: sample_collection_date
+        content_type: plant_sample
+        label: Collection Date
+        type: chado_property_type_default
+        description: The date the sample was collected.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: biomaterial
+                prop_table: biomaterialprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C25164'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
