@@ -1,0 +1,24 @@
+<?php declare(strict_types = 1);
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Base API module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function trpcultivate_install(): void {
+
+  // submit job to install terms needed by this module.
+  $current_user = \Drupal::currentUser();
+  \Drupal::service('tripal.job')->create([
+    'job_name' => t("Insert terms used by the Tripal Cultivate package"),
+    'modulename' => 'trpcultivate',
+    'callback' => 'trpcultivate_install_terms',
+    'arguments' => [],
+    'uid' => $current_user->id()
+  ]);
+}
+
+
