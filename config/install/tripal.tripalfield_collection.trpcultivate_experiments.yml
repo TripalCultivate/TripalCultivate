@@ -1,0 +1,304 @@
+id: 'trpcultivate_experiments'
+label: 'Tripal Cultivate: Experiment Types'
+description: 'Provide pages describing types of experiment (e.g. field, biochemical, survey). All data should be associated with a specific experiment and each experiment is expected to be part of a larger study.'
+fields:
+
+## Field Experiment ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: experiment_name
+        content_type: field_experiment
+        label: Name
+        type: chado_string_type_default
+        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: name
+            max_length: 255
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: experiment_description
+        content_type: field_experiment
+        label: Experiment Summary
+        type: chado_text_type_default
+        description: Describe the experimental design and purpose in great detail. Include all the information you would need to analyze data from this experiment.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+## Greenhouse Experiment ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: experiment_name
+        content_type: greenhouse_experiment
+        label: Name
+        type: chado_string_type_default
+        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: name
+            max_length: 255
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: experiment_description
+        content_type: greenhouse_experiment
+        label: Experiment Summary
+        type: chado_text_type_default
+        description: Describe the experimental design and purpose in great detail. Include all the information you would need to analyze data from this experiment.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+## Growth Chamber Experiment ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: experiment_name
+        content_type: growthchamber_experiment
+        label: Name
+        type: chado_string_type_default
+        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: name
+            max_length: 255
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: experiment_description
+        content_type: growthchamber_experiment
+        label: Experiment Summary
+        type: chado_text_type_default
+        description: Describe the experimental design and purpose in great detail. Include all the information you would need to analyze data from this experiment.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+## Biochemical Assay ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: experiment_name
+        content_type: biochem_experiment
+        label: Name
+        type: chado_string_type_default
+        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: name
+            max_length: 255
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: experiment_description
+        content_type: biochem_experiment
+        label: Experiment Summary
+        type: chado_text_type_default
+        description: Describe the experimental design and purpose in great detail. Include all the information you would need to analyze data from this experiment.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
+
+## Ecosystem Survey ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: experiment_name
+        content_type: ecosystem_survey
+        label: Name
+        type: chado_string_type_default
+        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: name
+            max_length: 255
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: experiment_description
+        content_type: ecosystem_survey
+        label: Experiment Summary
+        type: chado_text_type_default
+        description: Describe the experimental design and purpose in great detail. Include all the information you would need to analyze data from this experiment.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 15
+          form:
+            default:
+              region: content
+              weight: 15
