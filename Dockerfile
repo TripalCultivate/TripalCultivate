@@ -3,8 +3,6 @@ ARG phpversion='8.3'
 FROM tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql13-noChado
 
 ARG chadoschema='testchado'
-ARG sitename="Tripal Cultivate"
-
 WORKDIR /var/www/drupal/web/themes
 
 ## Download the Tripal Cultivate base theme
@@ -12,7 +10,9 @@ RUN git clone https://github.com/TripalCultivate/TripalCultivate-Theme.git trpcu
   && service postgresql restart \
   && drush theme:enable trpcultivatetheme --yes \
   && drush config-set system.theme default trpcultivatetheme \
-  && drush config:set system.site name "${sitename}" \
+  && export DRUPALVERSION=`drush core:status --field=drupal-version` \
+  && export PHPVERSION=`drush core:status --field=php-version` \
+  && drush config:set system.site name "Tripal Cultivate on D$DRUPALVERSION PHP$PHPVERSION" \
   && service postgresql stop
 
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
