@@ -12,7 +12,8 @@ RUN git clone https://github.com/TripalCultivate/TripalCultivate-Theme.git trpcu
   && drush config-set system.theme default trpcultivatetheme \
   && export DRUPALVERSION=`drush core:status --field=drupal-version` \
   && export PHPVERSION=`drush core:status --field=php-version` \
-  && drush config:set system.site name "Tripal Cultivate on D$DRUPALVERSION PHP$PHPVERSION" \
+  && drush config:set system.site name "Tripal Cultivate Docker" \
+  && drush config:set system.site slogan "Drupal $DRUPALVERSION PHP$PHPVERSION" \
   && service postgresql stop
 
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
