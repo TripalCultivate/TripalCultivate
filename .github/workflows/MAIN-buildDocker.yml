@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - 4.x
-      - G0.7-workflowBuildImages
+  workflow_dispatch:
 
 jobs:
   push_to_registry:
