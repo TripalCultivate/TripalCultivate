@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Check out code
-      - uses: mr-smithers-excellent/docker-build-push@v6
+      - uses: mr-smithers-excellent/docker-build-push@v6.3
         name: Build & push Full matrix of Docker images
         with:
           image: knowpulse/tripalcultivate
@@ -51,7 +51,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }}"
           labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}"'
-      - uses: mr-smithers-excellent/docker-build-push@v6
+      - uses: mr-smithers-excellent/docker-build-push@v6.3
         name: Build baseonly-latest using 10.2.x-dev, PHP 8.3, PgSQL 13
         if: ${{ matrix.drupal-version == '10.2.x-dev' && matrix.php-version == '8.3' && matrix.pgsql-version == '13' }}
         with:
