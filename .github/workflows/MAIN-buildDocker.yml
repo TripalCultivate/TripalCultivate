@@ -1,0 +1,56 @@
+name: Build and Publish Docker image
+on:
+  push:
+    branches:
+      - 4.x
+      - G0.7-workflowBuildImages
+
+jobs:
+  push_to_registry:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+        pgsql-version:
+          - "13"
+        drupal-version:
+          - "10.0.x-dev"
+          - "10.1.x-dev"
+          - "10.2.x-dev"
+        exclude:
+          - php-version: "8.3"
+            pgsql-version: "13"
+            drupal-version: "10.0.x-dev"
+          - php-version: "8.3"
+            pgsql-version: "13"
+            drupal-version: "10.1.x-dev"
+    name: Docker Build (drupal${{ matrix.drupal-version }})
+    steps:
+      - uses: actions/checkout@v3
+        name: Check out code
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Full matrix of Docker images
+        with:
+          image: knowpulse/tripalcultivate
+          tags: baseonly-drupal${{ matrix.drupal-version }}-php${{ matrix.php-version }}-pgsql${{ matrix.pgsql-version }}
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }}"
+          labels: 'drupal.version.label="${{ matrix.label }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}"'
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build latest using 10.2.x-dev, PHP 8.3, PgSQL 13
+        if: ${{ matrix.drupal-version == '10.2.x-dev' && matrix.php-version == '8.3' && matrix.pgsql-version == '13' }}
+        with:
+          image: knowpulse/tripalcultivate
+          tags: latest
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }}"
+          labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}"'
