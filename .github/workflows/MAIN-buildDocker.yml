@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - 4.x
-      - G0.7-workflowBuildImages
+      - noTheme
   # Allows us to manually trigger this workflow.
   # This is great if there is a change made to Tripal core that we want to test our modules on ASAP.
   workflow_dispatch:
@@ -37,7 +37,7 @@ jobs:
           - php-version: "8.3"
             pgsql-version: "13"
             drupal-version: "10.1.x-dev"
-    name: Docker Build (baseonly-drupal${{ matrix.drupal-version }}-php${{ matrix.php-version }})
+    name: Docker Build (${{ matrix.drupal-version }}, ${{ matrix.php-version }})
     steps:
       - uses: actions/checkout@v4
         name: Check out code
@@ -50,6 +50,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }}"
+          labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}"'
+      - uses: mr-smithers-excellent/docker-build-push@v6.3
+        name: Build & push Full matrix of Docker images WITHOUT THEME
+        with:
+          image: knowpulse/tripalcultivate
+          tags: base-notheme-drupal${{ matrix.drupal-version }}-php${{ matrix.php-version }}-pgsql${{ matrix.pgsql-version }}
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},installTheme=FALSE"
           labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}"'
       - uses: mr-smithers-excellent/docker-build-push@v6.3
         name: Build baseonly-latest using 10.2.x-dev, PHP 8.3, PgSQL 13
