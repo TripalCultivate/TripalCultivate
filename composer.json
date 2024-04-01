@@ -25,7 +25,7 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "drupal/core": "^10.0",
     "tripal/tripal": "^4.0-alpha1"
   }
