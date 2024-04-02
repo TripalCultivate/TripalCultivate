@@ -1,6 +1,7 @@
 ARG drupalversion='10.2.x-dev'
 ARG phpversion='8.3'
-FROM tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql13-noChado
+ARG postgresqlversion='16'
+FROM tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}-noChado
 
 ARG chadoschema='testchado'
 ARG installTheme=TRUE
@@ -10,6 +11,8 @@ WORKDIR /var/www/drupal/web/themes
 RUN service postgresql restart \
   && if [ "$installTheme" = "TRUE" ]; then \
   git clone https://github.com/TripalCultivate/TripalCultivate-Theme.git trpcultivatetheme \
+  && mv trpcultivatetheme/trpcultivatetheme_companion /var/www/drupal/web/modules/contrib/trpcultivatetheme_companion \
+  && drush pm:install trpcultivatetheme_companion --yes \
   && drush theme:enable trpcultivatetheme --yes \
   && drush config-set system.theme default trpcultivatetheme; fi \
   && export DRUPALVERSION=`drush core:status --field=drupal-version` \
