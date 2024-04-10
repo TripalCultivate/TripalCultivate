@@ -19,6 +19,16 @@ function trpcultivate_install(): void {
     'arguments' => [],
     'uid' => $current_user->id()
   ]);
+
+  // submit job to install content types and fields.
+  $current_user = \Drupal::currentUser();
+  \Drupal::service('tripal.job')->create([
+    'job_name' => t("Import content type collections used by the Tripal Cultivate package"),
+    'modulename' => 'trpcultivate',
+    'callback' => 'trpcultivate_import_contenttypes',
+    'arguments' => [],
+    'uid' => $current_user->id()
+  ]);
 }
 
 
