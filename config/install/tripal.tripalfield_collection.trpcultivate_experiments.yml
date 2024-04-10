@@ -63,6 +63,36 @@ fields:
               region: content
               weight: 15
 
+    -   name: experiment_corepeople
+        content_type: field_experiment
+        label: Core Researchers
+        type: chado_contact_type_default
+        description: The core researchers involved in this experiment. This should focus on those analyzing and generating the data.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: C47954
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+# Fields to ADD: Data Collector, Data Custodian, Curator, Authors, Citation, Publication, Funding Organizations, Research Organizations, Associated datasets, data files.
+# Specific to this type: locations, siteyears, germplasm collection, field layouts.
+
 ## Greenhouse Experiment ##
 ## Chado Table: project
 ## Required Columns: name (varchar 255)
