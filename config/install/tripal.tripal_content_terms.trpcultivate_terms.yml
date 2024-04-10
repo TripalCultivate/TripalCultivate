@@ -19,7 +19,6 @@ vocabularies:
             -   id: 'PECO:0007269'
                 name: 'growth chamber study'
                 description: 'The treatment involving study type in which plants were grown in growth chambers.'
-
     -   name: 'BLH'
         label: 'Biodiversity Thesaurus'
         url: 'https://skosmos.loterre.fr/BLH/en/'
@@ -92,6 +91,18 @@ vocabularies:
             -   id: 'NCIT:C70699'
                 name: 'Biospecimen'
                 description: 'Any material sample taken from a biological entity for testing, diagnostic, propagation, treatment or research purposes, including a sample obtained from a living organism or taken from the biological object after halting of all its life functions. Biospecimen can contain one or more components including but not limited to cellular molecules, cells, tissues, organs, body fluids, embryos, and body excretory products.'
+            -   id: 'NCIT:C165210'
+                name: "Data Custodian"
+                description: "The person responsible for a specific data set."
+            -   id: 'NCIT:C69141'
+                name: "Curator"
+                description: "The person in charge of the care and superintendence of something, especially a collection."
+            -   id: 'NCIT:C43611'
+                name: 'License'
+                description: 'Official or legal permission to do or own a specified thing.'
+            -   id: 'NCIT:C41196'
+                name: 'Citation'
+                description: 'An extract or quotation from or reference to an authoritative source, e.g. a book or author, used, for example, to support an idea, theory, or argument.'
     -   name: 'CRO'
         label: 'Contributor Role Ontology'
         url: 'https://github.com/data2health/contributor-role-ontology'
@@ -114,3 +125,17 @@ vocabularies:
             -   id: 'AGRO:00000360'
                 name: 'experimental site'
                 description: 'Location where the experiment is implemented.'
+            -   id: 'AGRO:00000379'
+                name: 'data collector'
+                description: 'A person that has a role of collecting data related to the experiment.'
+    -   name: 'EFO'
+        label: 'Experimental Factor Ontology'
+        url: 'https://www.ebi.ac.uk/efo/'
+        idSpaces:
+            -   name: 'EFO'
+                description: 'Experimental Factor Ontology'
+                urlPrefix: 'http://www.ebi.ac.uk/efo/{db}_{accession}'
+        terms:
+            -   id: 'EFO:0001736'
+                name: 'funder'
+                description: 'A person or organization that supports (sponsors) something through some kind of financial contribution.'
