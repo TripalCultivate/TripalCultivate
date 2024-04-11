@@ -63,7 +63,7 @@ vocabularies:
             -   id: 'OEPO:Plot'
                 name: 'Plot'
                 description: 'A community of plants located on a defined area of a field.'
-    -   name: 'NCBITaxon'
+    -   name: 'ncbitaxon'
         label: 'NCBI organismal classification'
         url: 'https://github.com/obophenotype/ncbitaxon'
         idSpaces:
@@ -131,7 +131,7 @@ vocabularies:
             -   id: 'AGRO:00000379'
                 name: 'data collector'
                 description: 'A person that has a role of collecting data related to the experiment.'
-    -   name: 'EFO'
+    -   name: 'efo'
         label: 'Experimental Factor Ontology'
         url: 'https://www.ebi.ac.uk/efo/'
         idSpaces:
