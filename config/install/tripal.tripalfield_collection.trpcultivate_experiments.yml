@@ -171,6 +171,32 @@ fields:
               region: content
               weight: 21
 
+    -   name: experiment_org
+        content_type: field_experiment
+        label: Research Organization
+        type: chado_property_type_default
+        description: The primary research organizations (e.g. universities) where the experiment was managed/funded.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C93448'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 22
+          form:
+            default:
+              region: content
+              weight: 22
+
     # @todo this should be a project relationship to a "grant" type project but we don't have good support for this yet.
     #       Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: experiment_funding
