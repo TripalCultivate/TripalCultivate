@@ -255,7 +255,7 @@ fields:
               weight: 23
 
     -   name: experiment_pub
-        content_type: project
+        content_type: field_experiment
         label: Publication(s)
         type: chado_pub_type_default
         description: Any publications produced as part of this experiment or as a result of this experiment.
@@ -561,7 +561,7 @@ fields:
               weight: 23
 
     -   name: experiment_pub
-        content_type: project
+        content_type: greenhouse_experiment
         label: Publication(s)
         type: chado_pub_type_default
         description: Any publications produced as part of this experiment or as a result of this experiment.
@@ -865,7 +865,7 @@ fields:
               weight: 23
 
     -   name: experiment_pub
-        content_type: project
+        content_type: growthchamber_experiment
         label: Publication(s)
         type: chado_pub_type_default
         description: Any publications produced as part of this experiment or as a result of this experiment.
@@ -1169,7 +1169,7 @@ fields:
               weight: 23
 
     -   name: experiment_pub
-        content_type: project
+        content_type: biochem_experiment
         label: Publication(s)
         type: chado_pub_type_default
         description: Any publications produced as part of this experiment or as a result of this experiment.
@@ -1474,7 +1474,7 @@ fields:
               weight: 23
 
     -   name: experiment_pub
-        content_type: project
+        content_type: ecosystem_survey
         label: Publication(s)
         type: chado_pub_type_default
         description: Any publications produced as part of this experiment or as a result of this experiment.
