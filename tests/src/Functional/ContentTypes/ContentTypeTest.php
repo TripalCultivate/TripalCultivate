@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\Tests\trpcultivate\Kernel\ContentTypes;
+namespace Drupal\Tests\trpcultivate\Functional\ContentTypes;
 
-use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
 
 /**
  * Tests that the content types and fields associated with them are created.
@@ -10,7 +10,7 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group ContentTypes
  * @group Fields
  */
-class ContentTypeTest extends ChadoTestKernelBase {
+class ContentTypeTest extends ChadoTestBrowserBase {
   protected $defaultTheme = 'stark';
 
   /**
@@ -18,7 +18,7 @@ class ContentTypeTest extends ChadoTestKernelBase {
    *
    * @var array
    */
-  protected static $modules = ['tripal','user','trpcultivate'];
+  protected static $modules = ['tripal','user','field','trpcultivate'];
 
   /**
    * Test Chado connection.
@@ -47,27 +47,7 @@ class ContentTypeTest extends ChadoTestKernelBase {
     parent::setUp();
 
     // Initialize the chado instance with all the records that would be present after running prepare.
-    $this->connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
-
-    $this->installConfig(['trpcultivate']);
-
-    // Make the TripalTerm database tables available.
-    $this->installSchema('tripal', 'tripal_terms');
-    $this->installSchema('tripal', 'tripal_terms_vocabs');
-    $this->installSchema('tripal', 'tripal_terms_idspaces');
-    $this->installSchema('tripal', 'tripal_vocabulary_collection');
-    $this->installSchema('tripal', 'tripal_id_space_collection');
-
-    // Make the User, Tripal Content and Tripal Content Type entities available.
-    $this->installEntitySchema('user');
-    $this->installEntitySchema('tripal_entity');
-    $this->installEntitySchema('tripal_entity_type');
-
-    // Make the collection entities available.
-    $this->installEntitySchema('tripal_content_terms');
-    $this->installEntitySchema('tripalentitytype_collection');
-    $this->installEntitySchema('tripalfield_collection');
-
+    $this->connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
   }
 
   /**
@@ -98,6 +78,5 @@ class ContentTypeTest extends ChadoTestKernelBase {
 
     // Then import the content types and their fields.
     \trpcultivate_import_contenttypes();
-
   }
 }
