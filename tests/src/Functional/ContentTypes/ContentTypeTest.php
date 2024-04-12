@@ -58,23 +58,9 @@ class ContentTypeTest extends ChadoTestBrowserBase {
 
     // First import the needed terms.
     \trpcultivate_install_terms();
-    // -- And create the idspace/vocab for terms we used that were added by core.
-    $idsmanager = \Drupal::service('tripal.collection_plugin_manager.idspace');
-    $vmanager = \Drupal::service('tripal.collection_plugin_manager.vocabulary');
-    $idsmanager->createCollection('schema', "chado_id_space");
-    $vmanager->createCollection('schema', "chado_vocabulary");
-    $idsmanager->createCollection('TPUB', "chado_id_space");
-    $vmanager->createCollection('tripal_pub', "chado_vocabulary");
-    $this->createTripalTerm([
-      'vocab_name' => 'sbo',
-      'id_space_name' => 'SBO',
-      'term' => [
-        'name' => 'reference annotation',
-        'definition' => 'Additional information that supplements existing data, usually in a document, by providing a link to more detailed information, which is held externally, or elsewhere.',
-        'accession' =>'0000552',
-      ]],
-      'chado_id_space', 'chado_vocabulary'
-    );
+    // -- And create the terms added by core.
+    $terms_setup = \Drupal::service('tripal_chado.terms_init');
+    $terms_setup->installTerms();
 
     // Then import the content types and their fields.
     \trpcultivate_import_contenttypes();
