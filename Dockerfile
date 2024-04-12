@@ -32,5 +32,6 @@ RUN service postgresql start \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=genomic_chado \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=genetic_chado \
   && drush en trpcultivate --yes \
+  && drush tripal:trp-run-jobs --username=drupaladmin \
   && drush cr \
   && service postgresql stop

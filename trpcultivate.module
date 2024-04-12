@@ -24,3 +24,34 @@ function trpcultivate_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+/**
+ * Insert terms needed by this module into the default chado instance.
+ * Expected but not required to be run by a Tripal Job.
+ */
+function trpcultivate_install_terms() {
+  $config_id = 'trpcultivate_terms';
+  $terms_setup = \Drupal::service('tripal_chado.terms_init');
+  $terms_setup->installTerms($config_id);
+}
+
+/**
+ * Import content type collections needed by this module.
+ * Expected but not required to be run by a Tripal Job.
+ */
+function trpcultivate_import_contenttypes() {
+
+  $collections = [
+    'trpcultivate_experiments',
+  ];
+
+  // Import the content types
+  $content_type_setup = \Drupal::service('tripal.tripalentitytype_collection');
+  $content_type_setup->install($collections);
+
+  // Import the fields.
+  $fields = \Drupal::service('tripal.tripalfield_collection');
+  $fields->install($collections);
+
+
+}
