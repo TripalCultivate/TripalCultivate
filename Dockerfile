@@ -11,9 +11,7 @@ WORKDIR /var/www/drupal/web/themes
 ## Ensure we are using the Contact By Role branch
 RUN cd /var/www/drupal/web/modules/contrib/ \
   && rm -r tripal \
-  && git clone https://github.com/tripal/tripal \
-  && cd tripal \
-  && git checkout tv4g1-1845-chadoContactByTypeField
+  && git clone https://github.com/tripal/tripal --branch tv4g1-1845-chadoContactByTypeField --single-branch
 
 ## Download the Tripal Cultivate base theme
 RUN service postgresql restart \
