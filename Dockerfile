@@ -13,6 +13,10 @@ RUN cd /var/www/drupal/web/modules/contrib/ \
   && rm -r tripal \
   && git clone https://github.com/tripal/tripal --branch tv4g1-1845-chadoContactByTypeField --single-branch
 
+## TEMPORARY!!!
+## Extend loading time to "fix" max execution time error.
+RUN echo "ini_set('max_execution_time', 0);" >> /var/www/drupal/web/sites/default/settings.php
+
 ## Download the Tripal Cultivate base theme
 RUN service postgresql restart \
   && if [ "$installTheme" = "TRUE" ]; then \
