@@ -96,7 +96,7 @@ fields:
     -   name: experiment_custodian
         content_type: field_experiment
         label: Data Custodian
-        type: chado_contact_type_default
+        type: chado_contact_by_role_type_default
         description: The core researcher responsible for data produced by this experiment. This is usually the principal investigator or long term researcher as this is the long term contact person for these data.
         cardinality: -1
         required: false
@@ -408,7 +408,7 @@ fields:
     -   name: experiment_custodian
         content_type: greenhouse_experiment
         label: Data Custodian
-        type: chado_contact_type_default
+        type: chado_contact_by_role_type_default
         description: The core researcher responsible for data produced by this experiment. This is usually the principal investigator or long term researcher as this is the long term contact person for these data.
         cardinality: -1
         required: false
@@ -718,7 +718,7 @@ fields:
     -   name: experiment_custodian
         content_type: growthchamber_experiment
         label: Data Custodian
-        type: chado_contact_type_default
+        type: chado_contact_by_role_type_default
         description: The core researcher responsible for data produced by this experiment. This is usually the principal investigator or long term researcher as this is the long term contact person for these data.
         cardinality: -1
         required: false
@@ -1028,7 +1028,7 @@ fields:
     -   name: experiment_custodian
         content_type: biochem_experiment
         label: Data Custodian
-        type: chado_contact_type_default
+        type: chado_contact_by_role_type_default
         description: The core researcher responsible for data produced by this experiment. This is usually the principal investigator or long term researcher as this is the long term contact person for these data.
         cardinality: -1
         required: false
@@ -1339,7 +1339,7 @@ fields:
     -   name: experiment_custodian
         content_type: ecosystem_survey
         label: Data Custodian
-        type: chado_contact_type_default
+        type: chado_contact_by_role_type_default
         description: The core researcher responsible for data produced by this experiment. This is usually the principal investigator or long term researcher as this is the long term contact person for these data.
         cardinality: -1
         required: false
