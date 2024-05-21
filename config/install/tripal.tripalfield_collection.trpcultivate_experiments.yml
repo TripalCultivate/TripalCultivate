@@ -216,7 +216,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: EFO
             termAccession: '0001736'
@@ -443,7 +444,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C69141
@@ -469,7 +471,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C43611
@@ -496,7 +499,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: 'C93448'
@@ -524,7 +528,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: EFO
             termAccession: '0001736'
@@ -551,7 +556,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C41196
@@ -692,7 +698,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: AGRO
             termAccession: 00000379
@@ -747,7 +754,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C69141
@@ -773,7 +781,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C43611
@@ -800,7 +809,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: 'C93448'
@@ -828,7 +838,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: EFO
             termAccession: '0001736'
@@ -855,7 +866,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C41196
@@ -996,7 +1008,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: AGRO
             termAccession: 00000379
@@ -1051,7 +1064,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C69141
@@ -1077,7 +1091,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C43611
@@ -1104,7 +1119,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: 'C93448'
@@ -1132,7 +1148,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: EFO
             termAccession: '0001736'
@@ -1159,7 +1176,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C41196
@@ -1301,7 +1319,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: AGRO
             termAccession: 00000379
@@ -1356,7 +1375,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C69141
@@ -1382,7 +1402,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C43611
@@ -1409,7 +1430,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: 'C93448'
@@ -1437,7 +1459,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: EFO
             termAccession: '0001736'
@@ -1464,7 +1487,8 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                prop_table: projectprop
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
             termAccession: C41196
