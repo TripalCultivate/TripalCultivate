@@ -12,7 +12,7 @@ fields:
 
     -   name: experiment_name
         content_type: field_experiment
-        label: Name
+        label: Good Name
         type: chado_string_type_default
         description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
         cardinality: 1
@@ -306,6 +306,33 @@ fields:
             default:
               region: content
               weight: 100
+
+    -   name: field_experiment_locations
+        content_type: field_experiment
+        label: 'Experiment Locations'
+        type: chado_property_type_default
+        description: 'Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: AGRO
+            termAccession: '00000360'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
 
 # Fields to ADD Specific to this type: locations, siteyears, germplasm collection, field layouts.
 
