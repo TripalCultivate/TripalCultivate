@@ -339,7 +339,135 @@ fields:
               region: content
               weight: 20
 
+-   name: field_experiment_locations
+        content_type: field_experiment
+        label: 'Experiment Years'
+        type: chado_property_type_default
+        description: 'The 4-digit year that data was collected for this experiment. Do not enter a range here, instead enter each year as it's own entry.'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
 
+-   name: field_experiment_locations
+        content_type: field_experiment
+        label: 'Experimental Design'
+        type: chado_property_type_default
+        description: 'Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: PROCO
+            termAccession: '0000276'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+-   name: field_experiment_locations
+        content_type: field_experiment
+        label: 'Germplasm Genus'
+        type: chado_property_type_default
+        description: 'The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+-   name: field_experiment_locations
+        content_type: field_experiment
+        label: 'Germplasm Species'
+        type: chado_property_type_default
+        description: 'The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '000000'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+-   name: field_experiment_locations
+        content_type: field_experiment
+        label: 'Germplasm Collection'
+        type: chado_property_type_default
+        description: 'The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
 # Fields to ADD Specific to this type: locations, siteyears, germplasm collection, field layouts.
 
 ## Greenhouse Experiment ##
