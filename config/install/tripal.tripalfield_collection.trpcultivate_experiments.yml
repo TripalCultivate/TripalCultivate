@@ -339,11 +339,11 @@ fields:
               region: content
               weight: 20
 
--   name: field_experiment_locations
+    -   name: field_experiment_locations
         content_type: field_experiment
         label: 'Experiment Years'
         type: chado_property_type_default
-        description: 'The 4-digit year that data was collected for this experiment. Do not enter a range here, instead enter each year as it's own entry.'
+        description: "The 4-digit year that data was collected for this experiment. Do not enter a range here, instead enter each year as it's own entry."
         cardinality: -1
         required: false
         storage_settings:
@@ -365,7 +365,7 @@ fields:
               region: content
               weight: 20
 
--   name: field_experiment_locations
+    -   name: field_experiment_locations
         content_type: field_experiment
         label: 'Experimental Design'
         type: chado_property_type_default
@@ -391,11 +391,11 @@ fields:
               region: content
               weight: 20
 
--   name: field_experiment_locations
+    -   name: field_experiment_locations
         content_type: field_experiment
         label: 'Germplasm Genus'
         type: chado_property_type_default
-        description: 'The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.'
+        description: "The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry."
         cardinality: -1
         required: false
         storage_settings:
@@ -417,11 +417,11 @@ fields:
               region: content
               weight: 20
 
--   name: field_experiment_locations
+    -   name: field_experiment_locations
         content_type: field_experiment
         label: 'Germplasm Species'
         type: chado_property_type_default
-        description: 'The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.'
+        description: "The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry."
         cardinality: -1
         required: false
         storage_settings:
@@ -443,7 +443,7 @@ fields:
               region: content
               weight: 20
 
--   name: field_experiment_locations
+    -   name: field_experiment_locations
         content_type: field_experiment
         label: 'Germplasm Collection'
         type: chado_property_type_default
