@@ -34,12 +34,3 @@ content_types:
         id: biochem_experiment
         title_format: "[experiment_name]"
         url_format: "experiment/[TripalEntity__entity_id]"
-
-    -   label: Ecosystem Survey
-        term: 'BLH-ACTI:M0H846B9-S'
-        help_text: Use to describe experiments collecting phenomic measurements on samples obtained using ecosystem survey techniques.'
-        category: Experiment Types
-        id: ecosystem_survey
-        title_format: "[experiment_name]"
-        url_format: "experiment/[TripalEntity__entity_id]"
-
