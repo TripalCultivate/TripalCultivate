@@ -89,3 +89,14 @@ vocabularies:
             -   id: 'EFO:0001736'
                 name: 'funder'
                 description: 'A person or organization that supports (sponsors) something through some kind of financial contribution.'
+    -   name: 'PROCO'
+        label: 'Process Chemical Ontology'
+        url: 'https://ontobee.org/ontology/PROCO'
+        idSpaces:
+            - name: 'PROCO'
+            description: 'Process Chemical Ontology'
+            urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+        terms:
+        - id: 'PROCO:0000276'
+          name: 'Experimental Design'
+          description: 'The design of an experiment intended to test a hypothesis, and describe or explain empirical data obtained under various experimental conditions'

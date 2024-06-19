@@ -339,7 +339,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_locations
+    -   name: field_experiment_years
         content_type: field_experiment
         label: 'Experiment Years'
         type: chado_property_type_default
@@ -365,7 +365,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_locations
+    -   name: field_experiment_design
         content_type: field_experiment
         label: 'Experimental Design'
         type: chado_property_type_default
@@ -391,7 +391,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_locations
+    -   name: field_experiment_germgenus
         content_type: field_experiment
         label: 'Germplasm Genus'
         type: chado_property_type_default
@@ -417,7 +417,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_locations
+    -   name: field_experiment_germspecies
         content_type: field_experiment
         label: 'Germplasm Species'
         type: chado_property_type_default
@@ -443,7 +443,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_locations
+    -   name: field_experiment_germcollection
         content_type: field_experiment
         label: 'Germplasm Collection'
         type: chado_property_type_default
