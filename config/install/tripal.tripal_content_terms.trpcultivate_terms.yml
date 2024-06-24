@@ -100,3 +100,14 @@ vocabularies:
         - id: 'PROCO:0000276'
           name: 'Experimental Design'
           description: 'The design of an experiment intended to test a hypothesis, and describe or explain empirical data obtained under various experimental conditions'
+-   name: 'CGO'
+        label: 'Common Greenhouse Ontology'
+        url: 'https://agroportal.lirmm.fr/ontologies/CGO'
+        idSpaces:
+            - name: 'CGO'
+            description: 'https://agroportal.lirmm.fr/ontologies/CGO'
+            urlPrefix: 'https://agroportal.lirmm.fr/ontologies/CGO/{db}_{accession}'
+        terms:
+        - id: ''
+          name: 'Feature of Interest'
+          description: 'The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.'
