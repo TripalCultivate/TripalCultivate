@@ -138,15 +138,3 @@ vocabularies:
         - id: 'SIO:000337'
           name: 'Objective'
           description: 'An objective is a proposition that indicates a planned or anticipated outcome.'
-
--   name: ''
-        label: '
-        url: ''
-        idSpaces:
-            - name: ''
-              description: ''
-              urlPrefix: ''
-        terms:
-        - id: ''
-          name: ''
-          description: ''

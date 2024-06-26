@@ -12,7 +12,7 @@ fields:
 
     -   name: experiment_name
         content_type: field_experiment
-        label: Good Name
+        label: Name
         type: chado_string_type_default
         description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
         cardinality: 1
