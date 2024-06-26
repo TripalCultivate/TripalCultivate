@@ -94,20 +94,59 @@ vocabularies:
         url: 'https://ontobee.org/ontology/PROCO'
         idSpaces:
             - name: 'PROCO'
-            description: 'Process Chemical Ontology'
-            urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+              description: 'Process Chemical Ontology'
+              urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
         terms:
         - id: 'PROCO:0000276'
           name: 'Experimental Design'
           description: 'The design of an experiment intended to test a hypothesis, and describe or explain empirical data obtained under various experimental conditions'
 -   name: 'CGO'
         label: 'Common Greenhouse Ontology'
-        url: 'https://agroportal.lirmm.fr/ontologies/CGO'
+        url: 'https://gitlab.com/ddings/common-greenhouse-ontology'
         idSpaces:
             - name: 'CGO'
-            description: 'https://agroportal.lirmm.fr/ontologies/CGO'
-            urlPrefix: 'https://agroportal.lirmm.fr/ontologies/CGO/{db}_{accession}'
+              description: 'Common Greenhouse Ontology'
+              urlPrefix: 'https://agroportal.lirmm.fr/ontologies/CGO/{db}_{accession}'
+            - name: 'SOSA'
+              description: 'Semantic Sensor Network Ontology'
+              urlPrefix: 'http://www.w3.org/ns/sosa/{accession}'
         terms:
-        - id: ''
+        - id: 'SOSA:FeatureOfInterest'
           name: 'Feature of Interest'
           description: 'The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.'
+
+-   name: 'ENVO'
+        label: 'Environment Ontology'
+        url: 'http://purl.obolibrary.org/obo/'
+        idSpaces:
+            - name: 'ENVO'
+              description: 'Environment Ontology'
+              urlPrefix: http://purl.obolibrary.org/obo/{db}_{accession}''
+        terms:
+        - id: 'ENVO:01001406'
+          name: 'Laboratory Facility'
+          description: 'A research facility in which systems of manufactured products control internal conditions and in which scientific or technological research, experiments, and measurement may be performed.'
+
+-   name: 'SIO'
+        label: 'Semanticscience Integrated Ontology'
+        url: 'https://github.com/MaastrichtU-IDS/semanticscience'
+        idSpaces:
+            - name: 'SIO'
+              description: 'Semanticscience Integrated Ontology'
+              urlPrefix: 'https://agroportal.lirmm.fr/ontologies/SIO/{db}_{accession}'
+        terms:
+        - id: 'SIO:000337'
+          name: 'Objective'
+          description: 'An objective is a proposition that indicates a planned or anticipated outcome.'
+
+-   name: ''
+        label: '
+        url: ''
+        idSpaces:
+            - name: ''
+              description: ''
+              urlPrefix: ''
+        terms:
+        - id: ''
+          name: ''
+          description: ''

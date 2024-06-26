@@ -50,7 +50,7 @@ fields:
                 linker_fkey_column: dbxref_id
         settings:
             termIdSpace: SBO
-            termAccession: "0000552"
+            termAccession: '0000552'
         display:
           view:
             default:
@@ -80,7 +80,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: AGRO
-            termAccession: 00000379
+            termAccession: '00000379'
         display:
           view:
             default:
@@ -108,7 +108,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C165210
+            termAccession: 'C165210'
         display:
           view:
             default:
@@ -136,7 +136,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C69141
+            termAccession: 'C69141'
         display:
           view:
             default:
@@ -163,7 +163,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C43611
+            termAccession: 'C43611'
         display:
           view:
             default:
@@ -248,7 +248,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C41196
+            termAccession: 'C41196'
         display:
           view:
             default:
@@ -275,7 +275,7 @@ fields:
                 linker_fkey_column: pub_id
         settings:
             termIdSpace: TPUB
-            termAccession: "0000002"
+            termAccession: '0000002'
         display:
           view:
             default:
@@ -315,9 +315,9 @@ fields:
 
     -   name: field_experiment_locations
         content_type: field_experiment
-        label: 'Experiment Locations'
+        label: Experiment Locations
         type: chado_property_type_default
-        description: 'Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").'
+        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").
         cardinality: -1
         required: false
         storage_settings:
@@ -341,9 +341,9 @@ fields:
 
     -   name: field_experiment_years
         content_type: field_experiment
-        label: 'Experiment Years'
+        label: Experiment Years
         type: chado_property_type_default
-        description: "The 4-digit year that data was collected for this experiment. Do not enter a range here, instead enter each year as it's own entry."
+        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead enter each year as it's own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -367,9 +367,9 @@ fields:
 
     -   name: field_experiment_design
         content_type: field_experiment
-        label: 'Experimental Design'
+        label: Experimental Design
         type: chado_property_type_default
-        description: 'Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".'
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -393,9 +393,9 @@ fields:
 
     -   name: field_experiment_germgenus
         content_type: field_experiment
-        label: 'Germplasm Genus'
+        label: Germplasm Genus
         type: chado_property_type_default
-        description: "The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry."
+        description: The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -419,9 +419,9 @@ fields:
 
     -   name: field_experiment_germspecies
         content_type: field_experiment
-        label: 'Germplasm Species'
+        label: Germplasm Species
         type: chado_property_type_default
-        description: "The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry."
+        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -445,9 +445,9 @@ fields:
 
     -   name: field_experiment_germcollection
         content_type: field_experiment
-        label: 'Germplasm Collection'
+        label: Germplasm Collection
         type: chado_property_type_default
-        description: 'The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).'
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
         cardinality: -1
         required: false
         storage_settings:
@@ -468,6 +468,59 @@ fields:
             default:
               region: content
               weight: 20
+
+      -   name: field_experiment_featureofinterest
+        content_type: field_experiment
+        label: Feature of Interest
+        type: chado_property_type_default
+        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SOSA
+            termAccession: FeatureOfInterest
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+      -   name: field_experiment_objectives
+        content_type: field_experiment
+        label: Objectives
+        type: chado_property_type_default
+        description: The objectives of this experiment. These should be the questions you are trying to answer with this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
 # Fields to ADD Specific to this type: locations, siteyears, germplasm collection, field layouts.
 
 ## Greenhouse Experiment ##
@@ -517,7 +570,7 @@ fields:
                 linker_fkey_column: dbxref_id
         settings:
             termIdSpace: SBO
-            termAccession: "0000552"
+            termAccession: '0000552'
         display:
           view:
             default:
@@ -547,7 +600,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: AGRO
-            termAccession: 00000379
+            termAccession: '00000379'
         display:
           view:
             default:
@@ -575,7 +628,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C165210
+            termAccession: 'C165210'
         display:
           view:
             default:
@@ -603,7 +656,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C69141
+            termAccession: 'C69141'
         display:
           view:
             default:
@@ -630,7 +683,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C43611
+            termAccession: 'C43611'
         display:
           view:
             default:
@@ -715,7 +768,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C41196
+            termAccession: 'C41196'
         display:
           view:
             default:
@@ -742,7 +795,7 @@ fields:
                 linker_fkey_column: pub_id
         settings:
             termIdSpace: TPUB
-            termAccession: "0000002"
+            termAccession: '0000002'
         display:
           view:
             default:
@@ -779,6 +832,214 @@ fields:
             default:
               region: content
               weight: 100
+
+    -   name: greenhouse_experiment_locations
+        content_type: greenhouse_experiment
+        label: Experiment Locations
+        type: chado_property_type_default
+        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: AGRO
+            termAccession: '00000360'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: greenhouse_experiment_years
+        content_type: greenhouse_experiment
+        label: Experiment Years
+        type: chado_property_type_default
+        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead enter each year as it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: greenhouse_experiment_design
+        content_type: greenhouse_experiment
+        label: Experimental Design
+        type: chado_property_type_default
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: PROCO
+            termAccession: '0000276'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: greenhouse_experiment_germgenus
+        content_type: greenhouse_experiment
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: greenhouse_experiment_germspecies
+        content_type: greenhouse_experiment
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '000000'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: greenhouse_experiment_germcollection
+        content_type: greenhouse_experiment
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+ -   name: greenhouse_experiment_featureofinterest
+        content_type: greenhouse_experiment
+        label: Feature of Interest
+        type: chado_property_type_default
+        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SOSA
+            termAccession: FeatureOfInterest
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+              
+      -   name: greenhouse_experiment_objectives
+        content_type: greenhouse_experiment
+        label: Objectives
+        type: chado_property_type_default
+        description: The objectives of this experiment. These should be the questions you are trying to answer with this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
 
 ## Growth Chamber Experiment ##
 ## Chado Table: project
@@ -827,7 +1088,7 @@ fields:
                 linker_fkey_column: dbxref_id
         settings:
             termIdSpace: SBO
-            termAccession: "0000552"
+            termAccession: '0000552'
         display:
           view:
             default:
@@ -857,7 +1118,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: AGRO
-            termAccession: 00000379
+            termAccession: '00000379'
         display:
           view:
             default:
@@ -885,7 +1146,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C165210
+            termAccession: 'C165210'
         display:
           view:
             default:
@@ -913,7 +1174,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C69141
+            termAccession:'C69141'
         display:
           view:
             default:
@@ -940,7 +1201,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C43611
+            termAccession:'C43611'
         display:
           view:
             default:
@@ -968,7 +1229,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: 'C93448'
+            termAccession:'C93448'
         display:
           view:
             default:
@@ -997,7 +1258,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: EFO
-            termAccession: '0001736'
+            termAccession:'0001736'
         display:
           view:
             default:
@@ -1025,7 +1286,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C41196
+            termAccession:'C41196'
         display:
           view:
             default:
@@ -1052,7 +1313,7 @@ fields:
                 linker_fkey_column: pub_id
         settings:
             termIdSpace: TPUB
-            termAccession: "0000002"
+            termAccession: '0000002'
         display:
           view:
             default:
@@ -1090,6 +1351,240 @@ fields:
               region: content
               weight: 100
 
+  -   name: growthchamber_experiment_locations
+        content_type: growthchamber_experiment
+        label: Experiment Locations
+        type: chado_property_type_default
+        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: AGRO
+            termAccession: '00000360'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: growthchamber_experiment_years
+        content_type: growthchamber_experiment
+        label: Experiment Years
+        type: chado_property_type_default
+        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead enter each year as it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: growthchamber_experiment_design
+        content_type: growthchamber_experiment
+        label: Experimental Design
+        type: chado_property_type_default
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: PROCO
+            termAccession: '0000276'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: growthchamber_experiment_germgenus
+        content_type: growthchamber_experiment
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: growthchamber_experiment_germspecies
+        content_type: growthchamber_experiment
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '000000'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: growthchamber_experiment_germcollection
+        content_type: growthchamber_experiment
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+ -   name: growthchamber_experiment_featureofinterest
+        content_type: growthchamber_experiment
+        label: Feature of Interest
+        type: chado_property_type_default
+        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SOSA
+            termAccession: FeatureOfInterest
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+              
+ -  name: growthchamber_experiment_objectives
+        content_type: growthchamber_experiment
+        label: Objectives
+        type: chado_property_type_default
+        description: The objectives of this experiment. These should be the questions you are trying to answer with this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+     -   name: growthchamber_experiment_growingmedia
+        content_type: growthchamber_experiment
+        label: Growing Media
+        type: chado_property_type_default
+        description: Use for the substrates used for growing plants in containers; for the artificial media or substrates used for growing organisms in vitro USE culture media. Materials offering adequate rooting and support conditions for maintaining plant cultivation; for cell or tissue culture use.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: rdfs
+            termAccession: type
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+               
 ## Biochemical Assay ##
 ## Chado Table: project
 ## Required Columns: name (varchar 255)
@@ -1137,7 +1632,7 @@ fields:
                 linker_fkey_column: dbxref_id
         settings:
             termIdSpace: SBO
-            termAccession: "0000552"
+            termAccession: '0000552'
         display:
           view:
             default:
@@ -1167,7 +1662,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: AGRO
-            termAccession: 00000379
+            termAccession: '00000379'
         display:
           view:
             default:
@@ -1195,7 +1690,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C165210
+            termAccession: 'C165210'
         display:
           view:
             default:
@@ -1223,7 +1718,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C69141
+            termAccession: 'C69141'
         display:
           view:
             default:
@@ -1250,7 +1745,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C43611
+            termAccession: 'C43611'
         display:
           view:
             default:
@@ -1335,7 +1830,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession: C41196
+            termAccession: 'C41196'
         display:
           view:
             default:
@@ -1362,7 +1857,7 @@ fields:
                 linker_fkey_column: pub_id
         settings:
             termIdSpace: TPUB
-            termAccession: "0000002"
+            termAccession: '0000002'
         display:
           view:
             default:
@@ -1399,3 +1894,211 @@ fields:
             default:
               region: content
               weight: 100
+
+ -   name: biochem_laboratroy_facility
+        content_type: biochem_experiment
+        label: Laboratory Facility
+        type: chado_property_type_default
+        description: A research facility in which systems of manufactured products control internal conditions and in which scientific or technological research, experiments, and measurement may be performed.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: ENVO
+            termAccession: '01001406'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: biochem_experiment_date
+        content_type: biochem_experiment
+        label: Experiment Date
+        type: chado_property_type_default
+        description: The date and time the experiment was performed (e.g. 2024Aug5 3:15pm)
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: biochem_experiment_design
+        content_type: biochem_experiment
+        label: Experimental Design
+        type: chado_property_type_default
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: PROCO
+            termAccession: '0000276'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: biochem_experiment_germgenus
+        content_type: biochem_experiment
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: biochem_experiment_germspecies
+        content_type: biochem_experiment
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '000000'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: biochem_experiment_germcollection
+        content_type: biochem_experiment
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+ -   name: biochem_experiment_featureofinterest
+        content_type: biochem_experiment
+        label: Feature of Interest
+        type: chado_property_type_default
+        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SOSA
+            termAccession: FeatureOfInterest
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+              
+      -   name: biochem_experiment_objectives
+        content_type: biochem_experiment
+        label: Objectives
+        type: chado_property_type_default
+        description: The objectives of this experiment. These should be the questions you are trying to answer with this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
