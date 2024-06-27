@@ -469,7 +469,7 @@ fields:
               region: content
               weight: 20
 
-      -   name: field_experiment_featureofinterest
+    -   name: field_experiment_featureofinterest
         content_type: field_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -495,7 +495,7 @@ fields:
               region: content
               weight: 20
 
-      -   name: field_experiment_objectives
+    -   name: field_experiment_objectives
         content_type: field_experiment
         label: Objectives
         type: chado_property_type_default
