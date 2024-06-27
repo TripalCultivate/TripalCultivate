@@ -989,7 +989,7 @@ fields:
               region: content
               weight: 20
 
- -   name: greenhouse_experiment_featureofinterest
+    -   name: greenhouse_experiment_featureofinterest
         content_type: greenhouse_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -1015,7 +1015,7 @@ fields:
               region: content
               weight: 20
               
-      -   name: greenhouse_experiment_objectives
+    -   name: greenhouse_experiment_objectives
         content_type: greenhouse_experiment
         label: Objectives
         type: chado_property_type_default
@@ -1174,7 +1174,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession:'C69141'
+            termAccession: 'C69141'
         display:
           view:
             default:
@@ -1201,7 +1201,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession:'C43611'
+            termAccession: 'C43611'
         display:
           view:
             default:
@@ -1229,7 +1229,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession:'C93448'
+            termAccession: 'C93448'
         display:
           view:
             default:
@@ -1258,7 +1258,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: EFO
-            termAccession:'0001736'
+            termAccession: '0001736'
         display:
           view:
             default:
@@ -1286,7 +1286,7 @@ fields:
                 linker_fkey_column: contact_id
         settings:
             termIdSpace: NCIT
-            termAccession:'C41196'
+            termAccession: 'C41196'
         display:
           view:
             default:
@@ -1351,7 +1351,7 @@ fields:
               region: content
               weight: 100
 
-  -   name: growthchamber_experiment_locations
+    -   name: growthchamber_experiment_locations
         content_type: growthchamber_experiment
         label: Experiment Locations
         type: chado_property_type_default
@@ -1507,7 +1507,7 @@ fields:
               region: content
               weight: 20
 
- -   name: growthchamber_experiment_featureofinterest
+    -   name: growthchamber_experiment_featureofinterest
         content_type: growthchamber_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -1533,7 +1533,7 @@ fields:
               region: content
               weight: 20
               
- -  name: growthchamber_experiment_objectives
+    -   name: growthchamber_experiment_objectives
         content_type: growthchamber_experiment
         label: Objectives
         type: chado_property_type_default
@@ -1559,7 +1559,7 @@ fields:
               region: content
               weight: 20
 
-     -   name: growthchamber_experiment_growingmedia
+    -   name: growthchamber_experiment_growingmedia
         content_type: growthchamber_experiment
         label: Growing Media
         type: chado_property_type_default
@@ -1895,7 +1895,7 @@ fields:
               region: content
               weight: 100
 
- -   name: biochem_laboratroy_facility
+    -   name: biochem_laboratroy_facility
         content_type: biochem_experiment
         label: Laboratory Facility
         type: chado_property_type_default
@@ -2051,7 +2051,7 @@ fields:
               region: content
               weight: 20
 
- -   name: biochem_experiment_featureofinterest
+    -   name: biochem_experiment_featureofinterest
         content_type: biochem_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -2077,7 +2077,7 @@ fields:
               region: content
               weight: 20
               
-      -   name: biochem_experiment_objectives
+    -   name: biochem_experiment_objectives
         content_type: biochem_experiment
         label: Objectives
         type: chado_property_type_default
