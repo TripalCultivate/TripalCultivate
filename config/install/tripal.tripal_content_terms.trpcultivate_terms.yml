@@ -107,6 +107,9 @@ vocabularies:
             -   name: 'CGO'
                 description: 'https://agroportal.lirmm.fr/ontologies/CGO'
                 urlPrefix: 'https://agroportal.lirmm.fr/ontologies/CGO/{db}_{accession}'
+            - name: 'SOSA'
+              description: 'Semantic Sensor Network Ontology'
+              urlPrefix: 'http://www.w3.org/ns/sosa/{accession}'
         terms:
             - id: 'SOSA:FeatureOfInterest'
               name: 'Feature of Interest'

@@ -352,7 +352,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCIT
+            termIdSpace: NCI Thesaurus OBO Edition
             termAccession: 'C29848'
         display:
           view:
@@ -431,7 +431,7 @@ fields:
                 prop_table: projectprop
         settings:
             termIdSpace: TAXRANK
-            termAccession: '000000'
+            termAccession: '0000006'
         display:
           view:
             default:
@@ -456,7 +456,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: local
+            termIdSpace: tripal
             termAccession: 'project_germcollection'
         display:
           view:
@@ -872,7 +872,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCIT
+            termIdSpace: NCI Thesaurus OBO Edition
             termAccession: 'C29848'
         display:
           view:
@@ -951,7 +951,7 @@ fields:
                 prop_table: projectprop
         settings:
             termIdSpace: TAXRANK
-            termAccession: '000000'
+            termAccession: '0000006'
         display:
           view:
             default:
@@ -976,7 +976,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: local
+            termIdSpace: tripal
             termAccession: 'project_germcollection'
         display:
           view:
@@ -1390,7 +1390,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCIT
+            termIdSpace: NCI Thesaurus OBO Edition
             termAccession: 'C29848'
         display:
           view:
@@ -1469,7 +1469,7 @@ fields:
                 prop_table: projectprop
         settings:
             termIdSpace: TAXRANK
-            termAccession: '000000'
+            termAccession: '0000006'
         display:
           view:
             default:
@@ -1494,7 +1494,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: local
+            termIdSpace: tripal
             termAccession: 'project_germcollection'
         display:
           view:
@@ -1934,7 +1934,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCIT
+            termIdSpace: NCI Thesaurus OBO Edition
             termAccession: 'C29848'
         display:
           view:
@@ -2013,7 +2013,7 @@ fields:
                 prop_table: projectprop
         settings:
             termIdSpace: TAXRANK
-            termAccession: '000000'
+            termAccession: '0000006'
         display:
           view:
             default:
@@ -2038,7 +2038,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: local
+            termIdSpace: tripal
             termAccession: 'project_germcollection'
         display:
           view:
