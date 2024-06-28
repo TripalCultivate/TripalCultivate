@@ -352,7 +352,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCI Thesaurus OBO Edition
+            termIdSpace: NCIT
             termAccession: 'C29848'
         display:
           view:
@@ -456,7 +456,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: tripal
+            termIdSpace: local
             termAccession: 'project_germcollection'
         display:
           view:
@@ -872,7 +872,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCI Thesaurus OBO Edition
+            termIdSpace: NCIT
             termAccession: 'C29848'
         display:
           view:
@@ -976,7 +976,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: tripal
+            termIdSpace: local
             termAccession: 'project_germcollection'
         display:
           view:
@@ -1014,7 +1014,7 @@ fields:
             default:
               region: content
               weight: 20
-              
+
     -   name: greenhouse_experiment_objectives
         content_type: greenhouse_experiment
         label: Objectives
@@ -1390,7 +1390,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCI Thesaurus OBO Edition
+            termIdSpace: NCIT
             termAccession: 'C29848'
         display:
           view:
@@ -1494,7 +1494,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: tripal
+            termIdSpace: local
             termAccession: 'project_germcollection'
         display:
           view:
@@ -1532,7 +1532,7 @@ fields:
             default:
               region: content
               weight: 20
-              
+
     -   name: growthchamber_experiment_objectives
         content_type: growthchamber_experiment
         label: Objectives
@@ -1584,7 +1584,7 @@ fields:
             default:
               region: content
               weight: 20
-               
+
 ## Biochemical Assay ##
 ## Chado Table: project
 ## Required Columns: name (varchar 255)
@@ -1934,7 +1934,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCI Thesaurus OBO Edition
+            termIdSpace: NCIT
             termAccession: 'C29848'
         display:
           view:
@@ -2038,7 +2038,7 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: tripal
+            termIdSpace: local
             termAccession: 'project_germcollection'
         display:
           view:
@@ -2076,7 +2076,7 @@ fields:
             default:
               region: content
               weight: 20
-              
+
     -   name: biochem_experiment_objectives
         content_type: biochem_experiment
         label: Objectives

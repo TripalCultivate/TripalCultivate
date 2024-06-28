@@ -38,21 +38,29 @@ vocabularies:
                 description: 'The NCIt is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. NCIt OBO Edition releases should be considered experimental.'
                 urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
         terms:
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C165210'
                 name: "Data Custodian"
                 description: "The person responsible for a specific data set."
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C69141'
                 name: "Curator"
                 description: "The person in charge of the care and superintendence of something, especially a collection."
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C43611'
                 name: 'License'
                 description: 'Official or legal permission to do or own a specified thing.'
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C41196'
                 name: 'Citation'
                 description: 'An extract or quotation from or reference to an authoritative source, e.g. a book or author, used, for example, to support an idea, theory, or argument.'
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C93448'
                 name: 'Research Organization'
                 description: 'An organization whose purpose is to support systemic, rigorous study and investigation into a particular field or fields.'
+            -   id: 'NCIT:C29848'
+                name: 'Year'
+                description: 'A period of time that it takes for Earth to make a complete revolution around the sun, approximately 365 days; a specific one year period.'
     -   name: 'CRO'
         label: 'Contributor Role Ontology'
         url: 'https://github.com/data2health/contributor-role-ontology'
@@ -72,20 +80,23 @@ vocabularies:
                 description: 'Agronomy Ontology'
                 urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
         terms:
+            # In tripal_chado so must match exactly.
             -   id: 'AGRO:00000360'
                 name: 'experimental site'
                 description: 'Location where the experiment is implemented.'
+            # In tripal_chado so must match exactly.
             -   id: 'AGRO:00000379'
                 name: 'data collector'
                 description: 'A person that has a role of collecting data related to the experiment.'
-    -   name: 'EFO'
+    -   name: 'efo'
         label: 'Experimental Factor Ontology'
-        url: 'https://www.ebi.ac.uk/efo/'
+        url: 'http://www.ebi.ac.uk/efo/efo.owl'
         idSpaces:
             -   name: 'EFO'
                 description: 'Experimental Factor Ontology'
                 urlPrefix: 'http://www.ebi.ac.uk/efo/{db}_{accession}'
         terms:
+            # In tripal_chado so must match exactly.
             -   id: 'EFO:0001736'
                 name: 'funder'
                 description: 'A person or organization that supports (sponsors) something through some kind of financial contribution.'
@@ -107,13 +118,13 @@ vocabularies:
             -   name: 'CGO'
                 description: 'https://agroportal.lirmm.fr/ontologies/CGO'
                 urlPrefix: 'https://agroportal.lirmm.fr/ontologies/CGO/{db}_{accession}'
-            - name: 'SOSA'
-              description: 'Semantic Sensor Network Ontology'
-              urlPrefix: 'http://www.w3.org/ns/sosa/{accession}'
+            -   name: 'SOSA'
+                description: 'Semantic Sensor Network Ontology'
+                urlPrefix: 'http://www.w3.org/ns/sosa/{accession}'
         terms:
             - id: 'SOSA:FeatureOfInterest'
               name: 'Feature of Interest'
-              description: 'The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.'             
+              description: 'The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.'
     -   name: 'ENVO'
         label: 'Environment Ontology'
         url: 'http://purl.obolibrary.org/obo/'
@@ -127,12 +138,23 @@ vocabularies:
               description: 'A research facility in which systems of manufactured products control internal conditions and in which scientific or technological research, experiments, and measurement may be performed.'
     -   name: 'SIO'
         label: 'Semanticscience Integrated Ontology'
-        url: 'https://github.com/MaastrichtU-IDS/semanticscience'
+        url: 'http://sio.semanticscience.org/'
         idSpaces:
             - name: 'SIO'
               description: 'Semanticscience Integrated Ontology'
-              urlPrefix: 'https://agroportal.lirmm.fr/ontologies/SIO/{db}_{accession}'
+              urlPrefix: 'http://semanticscience.org/resource/{db}_{accession}'
         terms:
             - id: 'SIO:000337'
               name: 'Objective'
               description: 'An objective is a proposition that indicates a planned or anticipated outcome.'
+    -   name: 'local'
+        label: 'Locally created terms'
+        url: 'cv/lookup/local'
+        idSpaces:
+            -   name: 'local'
+                description: 'Terms created for this site'
+                urlPrefix: 'cv/lookup/{db}/{accession}'
+        terms:
+            - id: 'local:project_germcollection'
+              name: 'Experiment Germplasm Collection'
+              description: 'The germplasm collection that the experiment was performed on.'
