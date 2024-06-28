@@ -1041,6 +1041,32 @@ fields:
               region: content
               weight: 20
 
+    -   name: ghouse_growingmedia
+        content_type: greenhouse_experiment
+        label: Growing Media
+        type: chado_property_type_default
+        description: Use for the substrates used for growing plants in containers; for the artificial media or substrates used for growing organisms in vitro USE culture media. Materials offering adequate rooting and support conditions for maintaining plant cultivation; for cell or tissue culture use.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: rdfs
+            termAccession: type
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+              
 ## Growth Chamber Experiment ##
 ## Chado Table: project
 ## Required Columns: name (varchar 255)
