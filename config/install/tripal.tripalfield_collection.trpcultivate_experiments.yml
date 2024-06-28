@@ -313,7 +313,7 @@ fields:
               region: content
               weight: 100
 
-    -   name: field_experiment_locations
+    -   name: field_locations
         content_type: field_experiment
         label: Experiment Locations
         type: chado_property_type_default
@@ -339,7 +339,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_years
+    -   name: field_years
         content_type: field_experiment
         label: Experiment Years
         type: chado_property_type_default
@@ -365,7 +365,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_design
+    -   name: field_design
         content_type: field_experiment
         label: Experimental Design
         type: chado_property_type_default
@@ -391,7 +391,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_germgenus
+    -   name: field_germgenus
         content_type: field_experiment
         label: Germplasm Genus
         type: chado_property_type_default
@@ -417,7 +417,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_germspecies
+    -   name: field_germspecies
         content_type: field_experiment
         label: Germplasm Species
         type: chado_property_type_default
@@ -443,7 +443,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_germcollection
+    -   name: field_germcollection
         content_type: field_experiment
         label: Germplasm Collection
         type: chado_property_type_default
@@ -469,7 +469,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_featureofinterest
+    -   name: field_featureofinterest
         content_type: field_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -495,7 +495,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: field_experiment_objectives
+    -   name: field_objectives
         content_type: field_experiment
         label: Objectives
         type: chado_property_type_default
@@ -833,7 +833,7 @@ fields:
               region: content
               weight: 100
 
-    -   name: greenhouse_experiment_locations
+    -   name: ghouse_locations
         content_type: greenhouse_experiment
         label: Experiment Locations
         type: chado_property_type_default
@@ -859,7 +859,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: greenhouse_experiment_years
+    -   name: ghouse_years
         content_type: greenhouse_experiment
         label: Experiment Years
         type: chado_property_type_default
@@ -885,7 +885,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: greenhouse_experiment_design
+    -   name: ghouse_design
         content_type: greenhouse_experiment
         label: Experimental Design
         type: chado_property_type_default
@@ -911,7 +911,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: greenhouse_experiment_germgenus
+    -   name: ghouse_germgenus
         content_type: greenhouse_experiment
         label: Germplasm Genus
         type: chado_property_type_default
@@ -937,7 +937,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: greenhouse_experiment_germspecies
+    -   name: ghouse_germspecies
         content_type: greenhouse_experiment
         label: Germplasm Species
         type: chado_property_type_default
@@ -963,7 +963,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: greenhouse_experiment_germcollection
+    -   name: ghouse_germcollection
         content_type: greenhouse_experiment
         label: Germplasm Collection
         type: chado_property_type_default
@@ -989,7 +989,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: greenhouse_experiment_featureofinterest
+    -   name: ghouse_featureofinterest
         content_type: greenhouse_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -1015,7 +1015,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: greenhouse_experiment_objectives
+    -   name: ghouse_objectives
         content_type: greenhouse_experiment
         label: Objectives
         type: chado_property_type_default
@@ -1351,7 +1351,7 @@ fields:
               region: content
               weight: 100
 
-    -   name: growthchamber_experiment_locations
+    -   name: gchamber_locations
         content_type: growthchamber_experiment
         label: Experiment Locations
         type: chado_property_type_default
@@ -1377,7 +1377,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_years
+    -   name: gchamber_years
         content_type: growthchamber_experiment
         label: Experiment Years
         type: chado_property_type_default
@@ -1403,7 +1403,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_design
+    -   name: gchamber_design
         content_type: growthchamber_experiment
         label: Experimental Design
         type: chado_property_type_default
@@ -1429,7 +1429,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_germgenus
+    -   name: gchamber_germgenus
         content_type: growthchamber_experiment
         label: Germplasm Genus
         type: chado_property_type_default
@@ -1455,7 +1455,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_germspecies
+    -   name: gchamber_germspecies
         content_type: growthchamber_experiment
         label: Germplasm Species
         type: chado_property_type_default
@@ -1481,7 +1481,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_germcollection
+    -   name: gchamber_germcollection
         content_type: growthchamber_experiment
         label: Germplasm Collection
         type: chado_property_type_default
@@ -1507,7 +1507,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_featureofinterest
+    -   name: gchamber_featureofinterest
         content_type: growthchamber_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -1533,7 +1533,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_objectives
+    -   name: gchamber_objectives
         content_type: growthchamber_experiment
         label: Objectives
         type: chado_property_type_default
@@ -1559,7 +1559,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: growthchamber_experiment_growingmedia
+    -   name: gchamber_growingmedia
         content_type: growthchamber_experiment
         label: Growing Media
         type: chado_property_type_default
@@ -1895,7 +1895,7 @@ fields:
               region: content
               weight: 100
 
-    -   name: biochem_laboratroy_facility
+    -   name: bchem_labfacility
         content_type: biochem_experiment
         label: Laboratory Facility
         type: chado_property_type_default
@@ -1921,7 +1921,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: biochem_experiment_date
+    -   name: bchem_date
         content_type: biochem_experiment
         label: Experiment Date
         type: chado_property_type_default
@@ -1947,7 +1947,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: biochem_experiment_design
+    -   name: bchem_design
         content_type: biochem_experiment
         label: Experimental Design
         type: chado_property_type_default
@@ -1973,7 +1973,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: biochem_experiment_germgenus
+    -   name: bchem_germgenus
         content_type: biochem_experiment
         label: Germplasm Genus
         type: chado_property_type_default
@@ -1999,7 +1999,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: biochem_experiment_germspecies
+    -   name: bchem_germspecies
         content_type: biochem_experiment
         label: Germplasm Species
         type: chado_property_type_default
@@ -2025,7 +2025,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: biochem_experiment_germcollection
+    -   name: bchem_germcollection
         content_type: biochem_experiment
         label: Germplasm Collection
         type: chado_property_type_default
@@ -2051,7 +2051,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: biochem_experiment_featureofinterest
+    -   name: bchem_featureofinterest
         content_type: biochem_experiment
         label: Feature of Interest
         type: chado_property_type_default
@@ -2077,7 +2077,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: biochem_experiment_objectives
+    -   name: bchem_objectives
         content_type: biochem_experiment
         label: Objectives
         type: chado_property_type_default
