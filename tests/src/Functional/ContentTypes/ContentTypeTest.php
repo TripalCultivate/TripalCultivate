@@ -34,10 +34,10 @@ class ContentTypeTest extends ChadoTestBrowserBase {
    */
   protected $expected_contenttypes = [
     'Experiment Types' => [
-      'field_experiment' => 10,
-      'greenhouse_experiment' => 10,
-      'growthchamber_experiment' => 10,
-      'biochem_experiment' => 10,
+      'field_experiment' => 19,
+      'greenhouse_experiment' => 20,
+      'growthchamber_experiment' => 20,
+      'biochem_experiment' => 19,
     ],
   ];
 
@@ -50,6 +50,12 @@ class ContentTypeTest extends ChadoTestBrowserBase {
 
     // Initialize the chado instance with all the records that would be present after running prepare.
     $this->connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
+    // Apply the chado update
+    // @todo remove when https://github.com/tripal/tripal/issues/1876 is closed.
+    $this->connection->executeSqlFile(
+      __DIR__ . '/../../../../config/sql/V1.3.3.013__add_type_id_2_all_linkers.sql',
+      ['chado' => $this->testSchemaName]
+    );
   }
 
   /**
@@ -84,7 +90,7 @@ class ContentTypeTest extends ChadoTestBrowserBase {
           ->getFieldDefinitions('tripal_entity', $expected_id);
         // This returns the 8 base fields too (i.e. id, type, uid, title, status, created, changed)
         // so we add them to the list.
-        $expected_count = $expected_field_count + 8;
+        $expected_count = $expected_field_count + 7;
         $this->assertCount($expected_count, $found_fields,
           "We did not see the expected number of fields attached to the $expected_id content type.");
       }
