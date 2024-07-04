@@ -4,11 +4,12 @@ description: 'Default terms used by the TripalCultivate Phenotype collection of 
 vocabularies:
     -   name: 'PECO'
         label: 'Plant Experimental Conditions Ontology'
-        url: 'https://agroportal.lirmm.fr/ontologies/PECO'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/peco'
         idSpaces:
             -   name: 'PECO'
-                description: 'Plant Experimental Conditions Ontology'
-                urlPrefix: 'http://purl.obolibrary.org/obo/PECO_{accession}'
+                description: 'Plant Experimental Conditions Ontology, see https://planteome.org/License.'
+                urlPrefix: 'http://www.ebi.ac.uk/peco/{db}_{accession}'
+                
         terms:
             -   id: 'PECO:0007256'
                 name: 'field study'
@@ -20,32 +21,32 @@ vocabularies:
                 name: 'growth chamber study'
                 description: 'The treatment involving study type in which plants were grown in growth chambers.'
     -   name: 'OEPO'
-        label: 'Ontology for Experimental Phenotypic Objects (OEPO)'
+        label: 'Ontology for Experimental Phenotypic Objects'
         url: https://agroportal.lirmm.fr/ontologies/OEPO
         idSpaces:
             -   name: 'OEPO'
-                description: "Ontology for Experimental Phenotypic Objects"
-                urlPrefix: "https://agroportal.lirmm.fr/search?q={accession}&lang=all&ontologies_list[]=OEPO"
+                description: 'Ontology for Experimental Phenotypic Objects'
+                urlPrefix: 'https://agroportal.lirmm.fr/search?q={accession}&lang=all&ontologies_list[]=OEPO'
         terms:
             -   id: 'OEPO:Plot'
                 name: 'Plot'
                 description: 'A community of plants located on a defined area of a field.'
     -   name: 'ncit'
         label: 'NCI Thesaurus OBO Edition'
-        url: 'http://purl.obolibrary.org/obo/ncit.owl'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/ncit'
         idSpaces:
             -   name: 'NCIT'
                 description: 'The NCIt is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. NCIt OBO Edition releases should be considered experimental.'
-                urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+                urlPrefix: 'http://www.ebi.ac.uk/ncit/{db}_{accession}'
         terms:
             # In tripal_chado so must match exactly.
             -   id: 'NCIT:C165210'
-                name: "Data Custodian"
-                description: "The person responsible for a specific data set."
+                name: 'Data Custodian'
+                description: 'The person responsible for a specific data set.'
             # In tripal_chado so must match exactly.
             -   id: 'NCIT:C69141'
-                name: "Curator"
-                description: "The person in charge of the care and superintendence of something, especially a collection."
+                name: 'Curator'
+                description: 'The person in charge of the care and superintendence of something, especially a collection.'
             # In tripal_chado so must match exactly.
             -   id: 'NCIT:C43611'
                 name: 'License'
@@ -74,11 +75,11 @@ vocabularies:
                 description: 'In botany, this is the collector listed first for a particular specimen. Each specimen has one primary collector. The primary collector assigns a number to that specimen from his/her own number series.'
     -   name: 'AGRO'
         label: 'Agronomy Ontology'
-        url: 'https://agroportal.lirmm.fr/ontologies/AGRO'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/agro'
         idSpaces:
             -   name: 'AGRO'
                 description: 'Agronomy Ontology'
-                urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+                urlPrefix: 'https://www.ebi.ac.uk/ols4/ontologies/agro/{db}_{accession}'
         terms:
             # In tripal_chado so must match exactly.
             -   id: 'AGRO:00000360'
@@ -90,11 +91,11 @@ vocabularies:
                 description: 'A person that has a role of collecting data related to the experiment.'
     -   name: 'efo'
         label: 'Experimental Factor Ontology'
-        url: 'http://www.ebi.ac.uk/efo/efo.owl'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/efo'
         idSpaces:
             -   name: 'EFO'
                 description: 'Experimental Factor Ontology'
-                urlPrefix: 'http://www.ebi.ac.uk/efo/{db}_{accession}'
+                urlPrefix: 'https://www.ebi.ac.uk/ols4/ontologies/efo/{db}_{accession}'
         terms:
             # In tripal_chado so must match exactly.
             -   id: 'EFO:0001736'
@@ -116,7 +117,7 @@ vocabularies:
         url: 'https://agroportal.lirmm.fr/ontologies/CGO'
         idSpaces:
             -   name: 'CGO'
-                description: 'https://agroportal.lirmm.fr/ontologies/CGO'
+                description: 'Common Greenhouse Ontology'
                 urlPrefix: 'https://agroportal.lirmm.fr/ontologies/CGO/{db}_{accession}'
             -   name: 'SOSA'
                 description: 'Semantic Sensor Network Ontology'
@@ -126,12 +127,12 @@ vocabularies:
               name: 'Feature of Interest'
               description: 'The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.'
     -   name: 'ENVO'
-        label: 'Environment Ontology'
-        url: 'http://purl.obolibrary.org/obo/'
+        label: 'The Environment Ontology'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/envo'
         idSpaces:
             - name: 'ENVO'
-              description: 'Environment Ontology'
-              urlPrefix: http://purl.obolibrary.org/obo/{db}_{accession}''
+              description: 'The Environment Ontology'
+              urlPrefix: 'https://www.ebi.ac.uk/ols4/ontologies/envo/{db}_{accession}'
         terms:
             - id: 'ENVO:01001406'
               name: 'Laboratory Facility'
