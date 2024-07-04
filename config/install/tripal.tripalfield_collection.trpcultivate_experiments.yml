@@ -421,7 +421,7 @@ fields:
         content_type: field_experiment
         label: Germplasm Species
         type: chado_property_type_default
-        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genus' then each should be it's own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -941,7 +941,7 @@ fields:
         content_type: greenhouse_experiment
         label: Germplasm Species
         type: chado_property_type_default
-        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genus' then each should be it's own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -1485,7 +1485,7 @@ fields:
         content_type: growthchamber_experiment
         label: Germplasm Species
         type: chado_property_type_default
-        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genus' then each should be it's own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -1925,8 +1925,7 @@ fields:
         content_type: biochem_experiment
         label: Laboratory Facility
         type: chado_property_type_default
-        description: A research facility in which systems of manufactured products control internal conditions and in which scientific or technological research, experiments, and measurement may be performed.
-        cardinality: -1
+        description: Include the name or code of the laboratory. Location of the laboratory needs to be included (e.g. City, Province)
         required: false
         storage_settings:
             storage_plugin_id: chado_storage
@@ -2029,7 +2028,7 @@ fields:
         content_type: biochem_experiment
         label: Germplasm Species
         type: chado_property_type_default
-        description: The species of the germplasm data was collected for. If data was collected for multiple genus' then each should be it's own entry.
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genus' then each should be it's own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -2079,9 +2078,9 @@ fields:
 
     -   name: bchem_featureofinterest
         content_type: biochem_experiment
-        label: Feature of Interest
+        label: Key Measurements
         type: chado_property_type_default
-        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        description: List the full names of the core measurements being taken in this experiment. If you are exploring protein concentration then examples can be "Alanine content (% on dry basis) in whole lentils".
         cardinality: -1
         required: false
         storage_settings:
