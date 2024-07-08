@@ -369,7 +369,7 @@ fields:
         content_type: field_experiment
         label: Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Experiment Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -473,7 +473,7 @@ fields:
         content_type: field_experiment
         label: Feature of Interest
         type: chado_property_type_default
-        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight" or "Shattering Scale".
         cardinality: -1
         required: false
         storage_settings:
@@ -993,7 +993,7 @@ fields:
         content_type: greenhouse_experiment
         label: Feature of Interest
         type: chado_property_type_default
-        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight" or "Shattering Scale".
         cardinality: -1
         required: false
         storage_settings:
@@ -1045,7 +1045,7 @@ fields:
         content_type: greenhouse_experiment
         label: Growing Media
         type: chado_property_type_default
-        description: Record the growing media being used in this controlled environment experiment (i.e. Vermiculite, Sand). Be specific with volume ratio (i.e. Peat, Perlite, Vermiculite 2:1:1)
+        description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
         cardinality: -1
         required: false
         storage_settings:
@@ -1078,7 +1078,7 @@ fields:
         content_type: growthchamber_experiment
         label: Name
         type: chado_string_type_default
-        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        description: The name of the field experiment. It is recommended that the name include important details such as siteyears, crop and germplasm collection.
         cardinality: 1
         required: true
         storage_settings:
@@ -1433,7 +1433,7 @@ fields:
         content_type: growthchamber_experiment
         label: Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Experiment Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -1537,7 +1537,7 @@ fields:
         content_type: growthchamber_experiment
         label: Feature of Interest
         type: chado_property_type_default
-        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight' or 'Shattering Scale".
+        description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight" or "Shattering Scale".
         cardinality: -1
         required: false
         storage_settings:
@@ -1589,7 +1589,7 @@ fields:
         content_type: growthchamber_experiment
         label: Growing Media
         type: chado_property_type_default
-        description: Use for the substrates used for growing plants in containers; for the artificial media or substrates used for growing organisms in vitro USE culture media. Materials offering adequate rooting and support conditions for maintaining plant cultivation; for cell or tissue culture use.
+        description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
         cardinality: -1
         required: false
         storage_settings:
@@ -1622,7 +1622,7 @@ fields:
         content_type: biochem_experiment
         label: Name
         type: chado_string_type_default
-        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        description: The name of the field experiment. It is recommended that the name include important details such as siteyears, crop and germplasm collection.
         cardinality: 1
         required: true
         storage_settings:
@@ -1925,7 +1925,7 @@ fields:
         content_type: biochem_experiment
         label: Laboratory Facility
         type: chado_property_type_default
-        description: Include the name or code of the laboratory. Location of the laboratory needs to be included (e.g. City, Province)
+        description: Provide the laboratory that this experiment took place in. Include the company name or university, room number and building name, and city and province (e.g. 1A23, Agriculture Building, USASK, Saskatoon, SK)
         required: false
         storage_settings:
             storage_plugin_id: chado_storage
@@ -1976,7 +1976,7 @@ fields:
         content_type: biochem_technique
         label: Biochemical Technique
         type: chado_property_type_default
-        description: The biochemical technique used to perform a particular measurement or solve a biological problem (i.e. Alanine is determined by Near Infrared Reflectance spectroscopy measurement calibrated against the regular acid hydrolysis official method).
+        description: The biochemical technique used to perform a particular measurement or solve a biological problem. If it is commonly referred to as an acronym, write out the full name followed by its acronym. For example, "Near Infrared Reflectance (NIR) spectroscopy", "Polymerase Chain Reaction (PCR)", "Optical Coherence Tomography (OCT)".
         cardinality: -1
         required: false
         storage_settings:
@@ -2001,7 +2001,7 @@ fields:
         content_type: biochem_experiment
         label: Assay Protocol
         type: chado_property_type_default
-        description: The methodology used to perform a particular bioassay (i.e. how to do sample preparation and Optical Coherence Tomography)
+        description: The methodology used to perform a particular bioassay. This should be detailed and list out the steps in the process, just as one would describe a protocol in a scientific paper (i.e. describe the sample preparation, steps of performing the assay, and of collecting the data from the assay).
         cardinality: -1
         required: false
         storage_settings:
@@ -2105,7 +2105,7 @@ fields:
         content_type: biochem_experiment
         label: Key Measurements
         type: chado_property_type_default
-        description: List the full names of the core measurements being taken in this experiment. If you are exploring protein concentration then examples can be "Alanine content (% on dry basis) in whole lentils".
+        description: List the full names of the core measurements being taken in this experiment. For example, if you are exploring protein concentration in lentils, then a core measurement could be 
         cardinality: -1
         required: false
         storage_settings:
