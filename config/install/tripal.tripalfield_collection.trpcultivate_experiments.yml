@@ -64,7 +64,6 @@ fields:
 
     ## ATTRIBUTION FIELDS
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_datacollector
         content_type: field_experiment
         label: Data Collector
@@ -92,7 +91,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_custodian
         content_type: field_experiment
         label: Data Custodian
@@ -120,7 +118,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_curator
         content_type: field_experiment
         label: Data Curator
@@ -174,7 +171,6 @@ fields:
               region: content
               weight: 21
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_org
         content_type: field_experiment
         label: Research Organization
@@ -202,7 +198,6 @@ fields:
               region: content
               weight: 22
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: experiment_funding
         content_type: field_experiment
@@ -582,7 +577,6 @@ fields:
 
     ## ATTRIBUTION FIELDS
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_datacollector
         content_type: greenhouse_experiment
         label: Data Collector
@@ -610,7 +604,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_custodian
         content_type: greenhouse_experiment
         label: Data Custodian
@@ -638,7 +631,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_curator
         content_type: greenhouse_experiment
         label: Data Curator
@@ -692,7 +684,6 @@ fields:
               region: content
               weight: 21
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_org
         content_type: greenhouse_experiment
         label: Research Organization
@@ -720,7 +711,6 @@ fields:
               region: content
               weight: 22
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: experiment_funding
         content_type: greenhouse_experiment
@@ -1124,7 +1114,6 @@ fields:
 
     ## ATTRIBUTION FIELDS
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_datacollector
         content_type: growthchamber_experiment
         label: Data Collector
@@ -1152,7 +1141,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_custodian
         content_type: growthchamber_experiment
         label: Data Custodian
@@ -1180,7 +1168,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_curator
         content_type: growthchamber_experiment
         label: Data Curator
@@ -1234,7 +1221,6 @@ fields:
               region: content
               weight: 21
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_org
         content_type: growthchamber_experiment
         label: Research Organization
@@ -1262,7 +1248,6 @@ fields:
               region: content
               weight: 22
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: experiment_funding
         content_type: growthchamber_experiment
@@ -1666,7 +1651,6 @@ fields:
 
     ## ATTRIBUTION FIELDS
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_datacollector
         content_type: biochem_experiment
         label: Data Collector
@@ -1694,7 +1678,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_custodian
         content_type: biochem_experiment
         label: Data Custodian
@@ -1722,7 +1705,6 @@ fields:
               region: content
               weight: 20
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_curator
         content_type: biochem_experiment
         label: Data Curator
@@ -1776,7 +1758,6 @@ fields:
               region: content
               weight: 21
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     -   name: experiment_org
         content_type: biochem_experiment
         label: Research Organization
@@ -1804,7 +1785,6 @@ fields:
               region: content
               weight: 22
 
-    # @todo update to chado_contact_type_default with type specified Tripal#1845
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: experiment_funding
         content_type: biochem_experiment
