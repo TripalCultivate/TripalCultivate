@@ -235,7 +235,7 @@ fields:
     -   name: experiment_citation
         content_type: field_experiment
         label: Data Citation
-        type: chado_contact_by_role_type_default
+        type: chado_property_type_default
         description: The citation which should be used to provide attribution for data produced in this experiment. How one should use this citation is dictated by the data license.
         cardinality: -1
         required: false
@@ -243,8 +243,7 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
+                prop_table: projectprop
         settings:
             termIdSpace: NCIT
             termAccession: 'C41196'
@@ -754,7 +753,7 @@ fields:
     -   name: experiment_citation
         content_type: greenhouse_experiment
         label: Data Citation
-        type: chado_contact_by_role_type_default
+        type: chado_property_type_default
         description: The citation which should be used to provide attribution for data produced in this experiment. How one should use this citation is dictated by the data license.
         cardinality: -1
         required: false
@@ -762,8 +761,7 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
+                prop_table: projectprop
         settings:
             termIdSpace: NCIT
             termAccession: 'C41196'
@@ -1297,7 +1295,7 @@ fields:
     -   name: experiment_citation
         content_type: growthchamber_experiment
         label: Data Citation
-        type: chado_contact_by_role_type_default
+        type: chado_property_type_default
         description: The citation which should be used to provide attribution for data produced in this experiment. How one should use this citation is dictated by the data license.
         cardinality: -1
         required: false
@@ -1305,8 +1303,7 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
+                prop_table: projectprop
         settings:
             termIdSpace: NCIT
             termAccession: 'C41196'
@@ -1840,7 +1837,7 @@ fields:
     -   name: experiment_citation
         content_type: biochem_experiment
         label: Data Citation
-        type: chado_contact_by_role_type_default
+        type: chado_property_type_default
         description: The citation which should be used to provide attribution for data produced in this experiment. How one should use this citation is dictated by the data license.
         cardinality: -1
         required: false
@@ -1848,8 +1845,7 @@ fields:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
+                prop_table: projectprop
         settings:
             termIdSpace: NCIT
             termAccession: 'C41196'
