@@ -4,11 +4,12 @@ description: 'Default terms used by the TripalCultivate Phenotype collection of 
 vocabularies:
     -   name: 'PECO'
         label: 'Plant Experimental Conditions Ontology'
-        url: 'https://agroportal.lirmm.fr/ontologies/PECO'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/peco'
         idSpaces:
             -   name: 'PECO'
-                description: 'Plant Experimental Conditions Ontology'
-                urlPrefix: 'http://purl.obolibrary.org/obo/PECO_{accession}'
+                description: 'Plant Experimental Conditions Ontology, see https://planteome.org/License.'
+                urlPrefix: 'http://www.ebi.ac.uk/peco/{db}_{accession}'
+                
         terms:
             -   id: 'PECO:0007256'
                 name: 'field study'
@@ -20,39 +21,50 @@ vocabularies:
                 name: 'growth chamber study'
                 description: 'The treatment involving study type in which plants were grown in growth chambers.'
     -   name: 'OEPO'
-        label: 'Ontology for Experimental Phenotypic Objects (OEPO)'
+        label: 'Ontology for Experimental Phenotypic Objects'
         url: https://agroportal.lirmm.fr/ontologies/OEPO
         idSpaces:
             -   name: 'OEPO'
-                description: "Ontology for Experimental Phenotypic Objects"
-                urlPrefix: "https://agroportal.lirmm.fr/search?q={accession}&lang=all&ontologies_list[]=OEPO"
+                description: 'Ontology for Experimental Phenotypic Objects'
+                urlPrefix: 'https://agroportal.lirmm.fr/search?q={accession}&lang=all&ontologies_list[]=OEPO'
         terms:
             -   id: 'OEPO:Plot'
                 name: 'Plot'
                 description: 'A community of plants located on a defined area of a field.'
     -   name: 'ncit'
         label: 'NCI Thesaurus OBO Edition'
-        url: 'http://purl.obolibrary.org/obo/ncit.owl'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/ncit'
         idSpaces:
             -   name: 'NCIT'
                 description: 'The NCIt is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. NCIt OBO Edition releases should be considered experimental.'
-                urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+                urlPrefix: 'http://www.ebi.ac.uk/ncit/{db}_{accession}'
         terms:
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C165210'
-                name: "Data Custodian"
-                description: "The person responsible for a specific data set."
+                name: 'Data Custodian'
+                description: 'The person responsible for a specific data set.'
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C69141'
-                name: "Curator"
-                description: "The person in charge of the care and superintendence of something, especially a collection."
+                name: 'Curator'
+                description: 'The person in charge of the care and superintendence of something, especially a collection.'
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C43611'
                 name: 'License'
                 description: 'Official or legal permission to do or own a specified thing.'
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C41196'
                 name: 'Citation'
                 description: 'An extract or quotation from or reference to an authoritative source, e.g. a book or author, used, for example, to support an idea, theory, or argument.'
+            # In tripal_chado so must match exactly.
             -   id: 'NCIT:C93448'
                 name: 'Research Organization'
                 description: 'An organization whose purpose is to support systemic, rigorous study and investigation into a particular field or fields.'
+            -   id: 'NCIT:C29848'
+                name: 'Year'
+                description: 'A period of time that it takes for Earth to make a complete revolution around the sun, approximately 365 days; a specific one year period.'
+            -   id: 'NCIT:C19236'
+                name: 'Physical Chemical Technique'
+                description: 'Techniques based on the principles of physical and chemical science, for the study of biological problems.'
     -   name: 'CRO'
         label: 'Contributor Role Ontology'
         url: 'https://github.com/data2health/contributor-role-ontology'
@@ -66,26 +78,98 @@ vocabularies:
                 description: 'In botany, this is the collector listed first for a particular specimen. Each specimen has one primary collector. The primary collector assigns a number to that specimen from his/her own number series.'
     -   name: 'AGRO'
         label: 'Agronomy Ontology'
-        url: 'https://agroportal.lirmm.fr/ontologies/AGRO'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/agro'
         idSpaces:
             -   name: 'AGRO'
                 description: 'Agronomy Ontology'
-                urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+                urlPrefix: 'https://www.ebi.ac.uk/ols4/ontologies/agro/{db}_{accession}'
         terms:
+            # In tripal_chado so must match exactly.
             -   id: 'AGRO:00000360'
                 name: 'experimental site'
                 description: 'Location where the experiment is implemented.'
+            # In tripal_chado so must match exactly.
             -   id: 'AGRO:00000379'
                 name: 'data collector'
                 description: 'A person that has a role of collecting data related to the experiment.'
     -   name: 'efo'
         label: 'Experimental Factor Ontology'
-        url: 'https://www.ebi.ac.uk/efo/'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/efo'
         idSpaces:
             -   name: 'EFO'
                 description: 'Experimental Factor Ontology'
-                urlPrefix: 'http://www.ebi.ac.uk/efo/{db}_{accession}'
+                urlPrefix: 'https://www.ebi.ac.uk/ols4/ontologies/efo/{db}_{accession}'
         terms:
+            # In tripal_chado so must match exactly.
             -   id: 'EFO:0001736'
                 name: 'funder'
                 description: 'A person or organization that supports (sponsors) something through some kind of financial contribution.'
+    -   name: 'PROCO'
+        label: 'Process Chemical Ontology'
+        url: 'https://ontobee.org/ontology/PROCO'
+        idSpaces:
+            -   name: 'PROCO'
+                description: 'Process Chemical Ontology'
+                urlPrefix: 'http://purl.obolibrary.org/obo/{db}_{accession}'
+        terms:
+            -   id: 'PROCO:0000276'
+                name: 'Experimental Design'
+                description: 'The design of an experiment intended to test a hypothesis, and describe or explain empirical data obtained under various experimental conditions'
+    -   name: 'CGO'
+        label: 'Common Greenhouse Ontology'
+        url: 'https://agroportal.lirmm.fr/ontologies/CGO'
+        idSpaces:
+            -   name: 'CGO'
+                description: 'Common Greenhouse Ontology'
+                urlPrefix: 'https://agroportal.lirmm.fr/ontologies/CGO/{db}_{accession}'
+            -   name: 'SOSA'
+                description: 'Semantic Sensor Network Ontology'
+                urlPrefix: 'http://www.w3.org/ns/sosa/{accession}'
+        terms:
+            - id: 'SOSA:FeatureOfInterest'
+              name: 'Feature of Interest'
+              description: 'The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.'
+    -   name: 'ENVO'
+        label: 'The Environment Ontology'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/envo'
+        idSpaces:
+            - name: 'ENVO'
+              description: 'The Environment Ontology'
+              urlPrefix: 'https://www.ebi.ac.uk/ols4/ontologies/envo/{db}_{accession}'
+        terms:
+            - id: 'ENVO:01001406'
+              name: 'Laboratory Facility'
+              description: 'A research facility in which systems of manufactured products control internal conditions and in which scientific or technological research, experiments, and measurement may be performed.'
+    -   name: 'SIO'
+        label: 'Semanticscience Integrated Ontology'
+        url: 'http://sio.semanticscience.org/'
+        idSpaces:
+            - name: 'SIO'
+              description: 'Semanticscience Integrated Ontology'
+              urlPrefix: 'http://semanticscience.org/resource/{db}_{accession}'
+        terms:
+            - id: 'SIO:000337'
+              name: 'Objective'
+              description: 'An objective is a proposition that indicates a planned or anticipated outcome.'
+    -   name: 'local'
+        label: 'Locally created terms'
+        url: 'cv/lookup/local'
+        idSpaces:
+            -   name: 'local'
+                description: 'Terms created for this site'
+                urlPrefix: 'cv/lookup/{db}/{accession}'
+        terms:
+            - id: 'local:project_germcollection'
+              name: 'Experiment Germplasm Collection'
+              description: 'The germplasm collection that the experiment was performed on.'
+    -   name: 'BAO'
+        label: 'BioAssay Ontology'
+        url: 'https://www.ebi.ac.uk/ols4/ontologies/bao'
+        idSpaces:
+            -   name: 'BAO'
+                description: 'BioAssay Ontology'
+                urlPrefix: 'https://www.ebi.ac.uk/ols4/ontologies/bao/{db}_{accession}'
+        terms:
+            - id: 'BAO:0000523'
+              name: 'Assay Protocol'
+              description: 'This includes the methodology used to perform a particular bioassay and is found on the PubChem website associated with each assay ID (AID). It includes the assay components and the order in which they were added, the incubation times, detection method and the kit used, etc.'

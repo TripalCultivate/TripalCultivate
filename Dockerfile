@@ -7,6 +7,10 @@ ARG chadoschema='testchado'
 ARG installTheme=TRUE
 WORKDIR /var/www/drupal/web/themes
 
+## TEMPORARY!!!
+## Extend loading time to "fix" max execution time error.
+RUN echo "ini_set('max_execution_time', 0);" >> /var/www/drupal/web/sites/default/settings.php
+
 ## Download the Tripal Cultivate base theme
 RUN service postgresql restart \
   && if [ "$installTheme" = "TRUE" ]; then \
@@ -26,6 +30,7 @@ WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 
 RUN service postgresql start \
   && drush trp-install-chado --schema-name=${chadoschema} \
+  && drush sql:query --file=/var/www/drupal/web/modules/contrib/TripalCultivate/config/sql/V1.3.3.013__add_type_id_2_all_linkers.sql \
   && drush trp-prep-chado --schema-name=${chadoschema} \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=general_chado \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=germplasm_chado \
