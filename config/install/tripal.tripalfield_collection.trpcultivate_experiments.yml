@@ -14,7 +14,7 @@ fields:
         content_type: field_experiment
         label: Name
         type: chado_string_type_default
-        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        description: 'The full name of the experiment. It is recommended that the name include important details such as the crop and germplasm collection being planted, the number of site-years the experiment is being performed over and the specific years. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 over four site-years from 2021-2023".'
         cardinality: 1
         required: true
         storage_settings:
@@ -464,7 +464,7 @@ fields:
 
     -   name: field_featureofinterest
         content_type: field_experiment
-        label: Feature of Interest
+        label: Key Measurements
         type: chado_property_type_default
         description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight" or "Shattering Scale".
         cardinality: -1
@@ -527,7 +527,7 @@ fields:
         content_type: greenhouse_experiment
         label: Name
         type: chado_string_type_default
-        description: The name of the field experiment. It is recommended the name include important details such as siteyears, crop and germplasm collection.
+        description: 'The full name of the experiment. It is recommended that the name include important details such as the crop and germplasm collection being planted, the name of the greenhouse and the years the experiment is being performed over. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 in the USASK Agriculture Greenhouse A from 2021-2023".'
         cardinality: 1
         required: true
         storage_settings:
@@ -977,7 +977,7 @@ fields:
 
     -   name: ghouse_featureofinterest
         content_type: greenhouse_experiment
-        label: Feature of Interest
+        label: Key Measurements
         type: chado_property_type_default
         description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight" or "Shattering Scale".
         cardinality: -1
@@ -1064,7 +1064,7 @@ fields:
         content_type: growthchamber_experiment
         label: Name
         type: chado_string_type_default
-        description: The name of the field experiment. It is recommended that the name include important details such as siteyears, crop and germplasm collection.
+        description: 'The full name of the experiment. It is recommended that the name include important details such as the crop and germplasm collection being planted, the name of the growth chamber facility and the years the experiment is being performed over. For example, you should follow the format: "Evaluate the Nitrogen fixing efficacy of inoculate-cultivar pairs: Lentil AGILE LDP in the USASK Phytotron from 2021-2023".'
         cardinality: 1
         required: true
         storage_settings:
@@ -1514,7 +1514,7 @@ fields:
 
     -   name: gchamber_featureofinterest
         content_type: growthchamber_experiment
-        label: Feature of Interest
+        label: Key Measurements
         type: chado_property_type_default
         description: List the names of the core phenotypic traits you are interested in. These are usually very focused on your experimental question. If you are exploring shattering then examples can be "Shattered Seed Weight" or "Shattering Scale".
         cardinality: -1
@@ -1601,7 +1601,7 @@ fields:
         content_type: biochem_experiment
         label: Name
         type: chado_string_type_default
-        description: The name of the field experiment. It is recommended that the name include important details such as siteyears, crop and germplasm collection.
+        description: 'The full name of the experiment. It is recommended that the name include important details such as the crop and germplasm collection being assayed, the biochemical technique and the year(s) it was performed in. For example, you should follow the format: "Evaluate the amino acid composition for specific cultivars: Lentil AGILE LDP subset using Near Infrared Spectroscopy (NIRS) performed in 2023".'
         cardinality: 1
         required: true
         storage_settings:
@@ -2077,7 +2077,7 @@ fields:
         content_type: biochem_experiment
         label: Key Measurements
         type: chado_property_type_default
-        description: List the full names of the core measurements being taken in this experiment. For example, if you are exploring protein concentration in lentils, then a core measurement could be
+        description: 'List the full names of the core measurements being taken in this experiment. For example, if you are exploring protein concentration in lentils, then a core measurement could be: "Alanine content (% on dry basis) in whole lentils".'
         cardinality: -1
         required: false
         storage_settings:
