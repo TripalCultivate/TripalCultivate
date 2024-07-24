@@ -2124,3 +2124,196 @@ fields:
             default:
               region: content
               weight: 20
+
+## Study ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: study_custodian
+        content_type: study
+        label: Data Custodian
+        type: chado_contact_by_role_type_default
+        description: The core researcher responsible for data produced by this study. This is usually the principal investigator or long term researcher, as they are typically the long term contact person for these data.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C165210'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: study_org
+        content_type: study
+        label: Research Organization
+        type: chado_contact_by_role_type_default
+        description: The primary research organizations (e.g. universities) where the study was managed/funded.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C93448'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 22
+          form:
+            default:
+              region: content
+              weight: 22
+
+    # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
+    -   name: study_funding
+        content_type: study
+        label: Funding
+        type: chado_contact_by_role_type_default
+        description: An acknowledgement of all funding put towards this study.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: EFO
+            termAccession: '0001736'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 22
+          form:
+            default:
+              region: content
+              weight: 22
+
+    -   name: study_funding_range
+        content_type: study
+        label: Funding Range
+        type: chado_property_type_default
+        description: The year range that this study is funded for.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: study_germgenus
+        content_type: study
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: study_germspecies
+        content_type: study
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000006'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
+    -   name: study_germcollection
+        content_type: study
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
