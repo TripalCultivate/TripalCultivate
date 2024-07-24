@@ -37,7 +37,7 @@ class ContentTypeTest extends ChadoTestBrowserBase {
       'field_experiment' => 19,
       'greenhouse_experiment' => 20,
       'growthchamber_experiment' => 20,
-      'biochem_experiment' => 19,
+      'biochem_experiment' => 20,
     ],
   ];
 
