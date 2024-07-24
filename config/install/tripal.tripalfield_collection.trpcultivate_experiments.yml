@@ -1945,7 +1945,7 @@ fields:
               weight: 20
 
     -   name: bchem_technique
-        content_type: biochem_technique
+        content_type: biochem_experiment
         label: Biochemical Technique
         type: chado_property_type_default
         description: The biochemical technique used to perform a particular measurement or solve a biological problem. If it is commonly referred to as an acronym, write out the full name followed by its acronym. For example, "Near Infrared Reflectance (NIR) spectroscopy", "Polymerase Chain Reaction (PCR)", "Optical Coherence Tomography (OCT)".
