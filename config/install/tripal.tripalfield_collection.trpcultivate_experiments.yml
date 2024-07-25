@@ -2175,7 +2175,7 @@ fields:
         settings:
             termIdSpace: SIO
             termAccession: "001066"
-            fixed_value: SIO:001066
+            fixed_value: "SIO:001066"
         display:
           view:
             default:
@@ -2212,33 +2212,6 @@ fields:
             default:
               region: content
               weight: 15
-
-    -   name: study_contact
-        content_type: study
-        label: Contact
-        type: chado_contact_type_default
-        description: An individual or organization that serves as a contact for this record.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
-        settings:
-            termIdSpace: NCIT
-            termAccession: C47954
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
 
     -   name: study_analysis
         content_type: study
@@ -2293,33 +2266,6 @@ fields:
             default:
               region: content
               weight: 30
-
-    -   name: study_dbxref
-        content_type: study
-        label: Database Reference Annotations
-        type: chado_dbxref_type_default
-        description: The IDs where this record may be available in other external online databases.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_dbxref
-                linker_fkey_column: dbxref_id
-        settings:
-            termIdSpace: SBO
-            termAccession: "0000552"
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 68
-          form:
-            default:
-              region: content
-              weight: 68
               
     -   name: study_custodian
         content_type: study
