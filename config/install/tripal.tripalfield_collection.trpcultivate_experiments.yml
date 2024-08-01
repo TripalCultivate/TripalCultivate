@@ -2132,7 +2132,7 @@ fields:
 ## Related: projectprop, project_pub, project_relationship
 ##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
 
-    -   name: study_name
+    -   name: researchstudy_name
         content_type: research_study
         label: Name
         type: chado_string_type_default
@@ -2159,7 +2159,7 @@ fields:
               region: content
               weight: 10
 
-    -   name: study_type
+    -   name: researchstudy_type
         content_type: research_study
         label: Type
         type: chado_additional_type_type_default
@@ -2187,7 +2187,7 @@ fields:
               region: content
               weight: 10
 
-    -   name: study_description
+    -   name: researchstudy_description
         content_type: research_study
         label: Description
         type: chado_text_type_default
@@ -2213,7 +2213,7 @@ fields:
               region: content
               weight: 15
 
-    -   name: study_analysis
+    -   name: researchstudy_analysis
         content_type: research_study
         label: Analysis
         type: chado_analysis_type_default
@@ -2240,7 +2240,7 @@ fields:
               region: content
               weight: 25
 
-    -   name: study_pub
+    -   name: researchstudy_pub
         content_type: research_study
         label: Publication
         type: chado_pub_type_default
@@ -2267,7 +2267,7 @@ fields:
               region: content
               weight: 30
 
-    -   name: study_custodian
+    -   name: researchstudy_custodian
         content_type: research_study
         label: Data Custodian
         type: chado_contact_by_role_type_default
@@ -2294,7 +2294,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: study_org
+    -   name: researchstudy_org
         content_type: research_study
         label: Research Organization
         type: chado_contact_by_role_type_default
@@ -2322,7 +2322,7 @@ fields:
               weight: 22
 
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
-    -   name: study_funding
+    -   name: researchstudy_funding
         content_type: research_study
         label: Funding
         type: chado_contact_by_role_type_default
@@ -2349,7 +2349,7 @@ fields:
               region: content
               weight: 22
 
-    -   name: study_funding_range
+    -   name: researchstudy_funding_range
         content_type: research_study
         label: Funding Range
         type: chado_property_type_default
@@ -2375,7 +2375,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: study_germgenus
+    -   name: researchstudy_germgenus
         content_type: research_study
         label: Germplasm Genus
         type: chado_property_type_default
@@ -2401,7 +2401,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: study_germspecies
+    -   name: researchstudy_germspecies
         content_type: research_study
         label: Germplasm Species
         type: chado_property_type_default
@@ -2427,7 +2427,7 @@ fields:
               region: content
               weight: 20
 
-    -   name: study_germcollection
+    -   name: researchstudy_germcollection
         content_type: research_study
         label: Germplasm Collection
         type: chado_property_type_default

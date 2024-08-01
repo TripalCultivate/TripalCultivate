@@ -24,7 +24,7 @@ content_types:
         help_text: 'Use to describe the core research question, hypotheses and, eventually the broad conclusions. Data generated and used to reach these conclusions should be attached to related experiments.'
         category: Research Management
         id: research_study
-        title_format: "[study_name]"
+        title_format: "[researchstudy_name]"
         url_format: "research-study/[TripalEntity__entity_id]"
 
     -   label: Field Experiment
