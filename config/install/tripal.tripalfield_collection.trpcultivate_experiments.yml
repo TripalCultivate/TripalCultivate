@@ -1203,6 +1203,32 @@ fields:
               region: content
               weight: 3
 
+    -   name: gchamber_objectives
+        content_type: growthchamber_experiment
+        label: Objectives
+        type: chado_property_type_default
+        description: The objectives of this experiment. These should be the questions you are trying to answer by conducting this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest."
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 4
+          form:
+            default:
+              region: content
+              weight: 4
+
     -   name: experiment_description
         content_type: growthchamber_experiment
         label: Experiment Summary
@@ -1389,6 +1415,32 @@ fields:
               region: content
               weight: 22
 
+    -   name: gchamber_growingmedia
+        content_type: growthchamber_experiment
+        label: Growing Media
+        type: chado_property_type_default
+        description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: rdfs
+            termAccession: type
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 23
+          form:
+            default:
+              region: content
+              weight: 23
+
     -   name: gchamber_design
         content_type: growthchamber_experiment
         label: Experimental Design
@@ -1409,11 +1461,11 @@ fields:
             default:
               region: content
               label: above
-              weight: 23
+              weight: 24
           form:
             default:
               region: content
-              weight: 23
+              weight: 24
 
   ## PEOPLE ------------------------------------------------------------------
 
@@ -1500,10 +1552,6 @@ fields:
 
   ## PERMISSIONS -------------------------------------------------------------
 
-  ## FUNDING -----------------------------------------------------------------
-
-    ## ATTRIBUTION FIELDS
-
     -   name: experiment_datalicenses
         content_type: growthchamber_experiment
         label: Data License(s)
@@ -1524,11 +1572,67 @@ fields:
             default:
               region: content
               label: above
-              weight: 21
+              weight: 40
           form:
             default:
               region: content
-              weight: 21
+              weight: 40
+
+    # @todo update to chado_pub_type_default with type specified Chado#140
+    -   name: experiment_citation
+        content_type: growthchamber_experiment
+        label: Data Citation
+        type: chado_property_type_default
+        description: The citation which should be used to provide attribution for data produced in this experiment. How one should use this citation is dictated by the data license.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C41196'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 41
+          form:
+            default:
+              region: content
+              weight: 41
+
+    -   name: experiment_pub
+        content_type: growthchamber_experiment
+        label: Publication(s)
+        type: chado_pub_type_default
+        description: Any publications produced as part of this experiment or as a result of this experiment.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_pub
+                linker_fkey_column: pub_id
+        settings:
+            termIdSpace: TPUB
+            termAccession: '0000002'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 42
+          form:
+            default:
+              region: content
+              weight: 42
+
+  ## FUNDING -----------------------------------------------------------------
 
     -   name: experiment_org
         content_type: growthchamber_experiment
@@ -1551,11 +1655,11 @@ fields:
             default:
               region: content
               label: above
-              weight: 22
+              weight: 50
           form:
             default:
               region: content
-              weight: 22
+              weight: 50
 
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: experiment_funding
@@ -1579,117 +1683,11 @@ fields:
             default:
               region: content
               label: above
-              weight: 22
+              weight: 51
           form:
             default:
               region: content
-              weight: 22
-
-    # @todo update to chado_pub_type_default with type specified Chado#140
-    -   name: experiment_citation
-        content_type: growthchamber_experiment
-        label: Data Citation
-        type: chado_property_type_default
-        description: The citation which should be used to provide attribution for data produced in this experiment. How one should use this citation is dictated by the data license.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: NCIT
-            termAccession: 'C41196'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 2
-          form:
-            default:
-              region: content
-              weight: 23
-
-    -   name: experiment_pub
-        content_type: growthchamber_experiment
-        label: Publication(s)
-        type: chado_pub_type_default
-        description: Any publications produced as part of this experiment or as a result of this experiment.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_pub
-                linker_fkey_column: pub_id
-        settings:
-            termIdSpace: TPUB
-            termAccession: '0000002'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 24
-          form:
-            default:
-              region: content
-              weight: 24
-
-    -   name: gchamber_objectives
-        content_type: growthchamber_experiment
-        label: Objectives
-        type: chado_property_type_default
-        description: The objectives of this experiment. These should be the questions you are trying to answer by conducting this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest."
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: SIO
-            termAccession: '000337'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: gchamber_growingmedia
-        content_type: growthchamber_experiment
-        label: Growing Media
-        type: chado_property_type_default
-        description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: rdfs
-            termAccession: type
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
+              weight: 51
 
 ################################################################################
 ## Biochemical Assay ##
