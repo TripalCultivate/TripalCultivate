@@ -75,9 +75,9 @@ fields:
                 type_table: project
                 type_column: type_id
         settings:
-            termIdSpace: SIO
-            termAccession: "001066"
-            fixed_value: "SIO:001066"
+            termIdSpace: rdfs
+            termAccession: type
+            fixed_value: "PECO:0007256"
         display:
           view:
             default:
@@ -619,9 +619,9 @@ fields:
                 type_table: project
                 type_column: type_id
         settings:
-            termIdSpace: SIO
-            termAccession: "001066"
-            fixed_value: "SIO:001066"
+            termIdSpace: rdfs
+            termAccession: type
+            fixed_value: "PECO:0007248"
         display:
           view:
             default:
@@ -1191,9 +1191,9 @@ fields:
                 type_table: project
                 type_column: type_id
         settings:
-            termIdSpace: SIO
-            termAccession: "001066"
-            fixed_value: "SIO:001066"
+            termIdSpace: rdfs
+            termAccession: type
+            fixed_value: "PECO:0007269"
         display:
           view:
             default:
@@ -1763,9 +1763,9 @@ fields:
                 type_table: project
                 type_column: type_id
         settings:
-            termIdSpace: SIO
-            termAccession: "001066"
-            fixed_value: "SIO:001066"
+            termIdSpace: rdfs
+            termAccession: type
+            fixed_value: "SIO:001007"
         display:
           view:
             default:
@@ -2336,8 +2336,8 @@ fields:
                 type_table: project
                 type_column: type_id
         settings:
-            termIdSpace: SIO
-            termAccession: "001066"
+            termIdSpace: rdfs
+            termAccession: type
             fixed_value: "SIO:001066"
         display:
           view:
