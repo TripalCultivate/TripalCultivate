@@ -54,7 +54,7 @@ class ContentTypeTest extends ChadoTestBrowserBase {
     // @todo remove when https://github.com/tripal/tripal/issues/1876 is closed.
     $this->connection->executeSqlFile(
       __DIR__ . '/../../../../config/sql/V1.3.3.013__add_type_id_2_all_linkers.sql',
-      ['chado' => $this->testSchemaName]
+      ['testchado' => $this->testSchemaName]
     );
   }
 
