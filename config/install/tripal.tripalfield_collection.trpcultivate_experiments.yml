@@ -1,6 +1,6 @@
 id: 'trpcultivate_experiments'
-label: 'Tripal Cultivate: Experiment Types'
-description: 'Provide pages describing types of experiment (e.g. field, biochemical, survey). All data should be associated with a specific experiment and each experiment is expected to be part of a larger study.'
+label: 'Tripal Cultivate: Research Management'
+description: 'Provide pages describing grants, research studies and types of experiment (e.g. field, biochemical, survey). All data should be associated with a specific experiment and each experiment is expected to be part of a larger study.'
 fields:
 
 ## Field Experiment ##
@@ -2125,7 +2125,7 @@ fields:
               region: content
               weight: 20
 
-## Study ##
+## Research Study ##
 ## Chado Table: project
 ## Required Columns: name (varchar 255)
 ## Optional columns: description (text)
@@ -2133,7 +2133,7 @@ fields:
 ##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
 
     -   name: study_name
-        content_type: study
+        content_type: research_study
         label: Name
         type: chado_string_type_default
         description: The name of the item.
@@ -2160,7 +2160,7 @@ fields:
               weight: 10
 
     -   name: study_type
-        content_type: study
+        content_type: research_study
         label: Type
         type: chado_additional_type_type_default
         description: An additional type for the item, typically used for adding more specific types from external vocabularies in microdata syntax. This is a relationship between something and a class that the thing is in.
@@ -2186,9 +2186,9 @@ fields:
             default:
               region: content
               weight: 10
-              
+
     -   name: study_description
-        content_type: study
+        content_type: research_study
         label: Description
         type: chado_text_type_default
         description: A description of the item.
@@ -2214,7 +2214,7 @@ fields:
               weight: 15
 
     -   name: study_analysis
-        content_type: study
+        content_type: research_study
         label: Analysis
         type: chado_analysis_type_default
         description: Application of analytical methods to existing data of a specific type
@@ -2241,7 +2241,7 @@ fields:
               weight: 25
 
     -   name: study_pub
-        content_type: study
+        content_type: research_study
         label: Publication
         type: chado_pub_type_default
         description: Associates a publication (e.g. journal article, conference proceedings, book chapter, etc.) with this record.
@@ -2266,9 +2266,9 @@ fields:
             default:
               region: content
               weight: 30
-              
+
     -   name: study_custodian
-        content_type: study
+        content_type: research_study
         label: Data Custodian
         type: chado_contact_by_role_type_default
         description: The core researcher responsible for data produced by this study. This is usually the principal investigator or long term researcher, as they are typically the long term contact person for these data.
@@ -2295,7 +2295,7 @@ fields:
               weight: 20
 
     -   name: study_org
-        content_type: study
+        content_type: research_study
         label: Research Organization
         type: chado_contact_by_role_type_default
         description: The primary research organizations (e.g. universities) where the study was managed/funded.
@@ -2323,7 +2323,7 @@ fields:
 
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: study_funding
-        content_type: study
+        content_type: research_study
         label: Funding
         type: chado_contact_by_role_type_default
         description: An acknowledgement of all funding put towards this study.
@@ -2350,7 +2350,7 @@ fields:
               weight: 22
 
     -   name: study_funding_range
-        content_type: study
+        content_type: research_study
         label: Funding Range
         type: chado_property_type_default
         description: The year range that this study is funded for.
@@ -2376,7 +2376,7 @@ fields:
               weight: 20
 
     -   name: study_germgenus
-        content_type: study
+        content_type: research_study
         label: Germplasm Genus
         type: chado_property_type_default
         description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
@@ -2402,7 +2402,7 @@ fields:
               weight: 20
 
     -   name: study_germspecies
-        content_type: study
+        content_type: research_study
         label: Germplasm Species
         type: chado_property_type_default
         description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
@@ -2428,7 +2428,7 @@ fields:
               weight: 20
 
     -   name: study_germcollection
-        content_type: study
+        content_type: research_study
         label: Germplasm Collection
         type: chado_property_type_default
         description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).

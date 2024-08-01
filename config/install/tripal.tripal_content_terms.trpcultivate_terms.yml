@@ -9,7 +9,7 @@ vocabularies:
             -   name: 'PECO'
                 description: 'Plant Experimental Conditions Ontology, see https://planteome.org/License.'
                 urlPrefix: 'http://www.ebi.ac.uk/peco/{db}_{accession}'
-                
+
         terms:
             -   id: 'PECO:0007256'
                 name: 'field study'
@@ -151,6 +151,20 @@ vocabularies:
             - id: 'SIO:000337'
               name: 'Objective'
               description: 'An objective is a proposition that indicates a planned or anticipated outcome.'
+            - id: 'SIO:000111'
+              name: 'Document Section'
+              description: 'A document section is a component of a document.'
+    -   name: 'SEPIO'
+        label: 'Ontology for Scientific Evidence and Provenance Information'
+        url: 'https://github.com/monarch-initiative/SEPIO-ontology/wiki'
+        idSpaces:
+            - name: 'SEPIO'
+              description: 'These terms support rich, computable representations of the evidence and provenance behind scientific assertions'
+              urlPrefix: 'http://purl.obolibrary.org/obo/SEPIO_{accession}'
+        terms:
+            - id: 'SEPIO:0000125'
+              name: 'research study'
+              description: 'A planned process that executes some study design or protocol to generate scientific data that is interpreted to test or generate a hypothesis. A research study is considered broadly to be any scientific activity aimed at answering a research question. Studies can be simple or complex, depending on the scope of the question being explored and the extent of resources deployed in doing so. They may include a full research investigation, a set of experiments, or a single experiment or assay. Regardless, that act of summarizing any results as a finding statement is considered part of the study.'
     -   name: 'local'
         label: 'Locally created terms'
         url: 'cv/lookup/local'
@@ -173,3 +187,14 @@ vocabularies:
             - id: 'BAO:0000523'
               name: 'Assay Protocol'
               description: 'This includes the methodology used to perform a particular bioassay and is found on the PubChem website associated with each assay ID (AID). It includes the assay components and the order in which they were added, the incubation times, detection method and the kit used, etc.'
+    -   name: 'obi'
+        label: 'Ontology for Biomedical Investigation. The Ontology for Biomedical Investigations (OBI) is build in a collaborative, international effort and will serve as a resource for annotating biomedical investigations, including the study design, protocols and instrumentation used, the data generated and the types of analysis performed on the data. This ontology arose from the Functional Genomics Investigation Ontology (FuGO) and will contain both terms that are common to all biomedical investigations, including functional genomics investigations and those that are more domain specific'
+        url: 'http://obi-ontology.org/page/Main_Page'
+        idSpaces:
+            -   name: 'OBI'
+                description: "The Ontology for Biomedical Investigation"
+                urlPrefix: "http://purl.obolibrary.org/obo/{db}_{accession}"
+        terms:
+            -   id: 'OBI:0001636'
+                name: 'grant'
+                description: 'A plan specification of organization A to give money to organization B so that B conducts investigations. Organization A has funder role and Organization B has research organization role.'

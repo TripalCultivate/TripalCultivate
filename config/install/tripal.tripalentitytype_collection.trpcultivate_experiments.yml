@@ -1,12 +1,36 @@
 id: 'trpcultivate_experiments'
-label: 'Tripal Cultivate: Experiment Types'
-description: 'Provide pages describing types of experiment (e.g. field, biochemical, survey). All data should be associated with a specific experiment and each experiment is expected to be part of a larger study.'
+label: 'Tripal Cultivate: Research Management'
+description: 'Provide pages describing grants, research studies and types of experiment (e.g. field, biochemical, survey). All data should be associated with a specific experiment and each experiment is expected to be part of a larger study.'
 content_types:
+
+    -   label: Research Grant
+        term: 'OBI:0001636'
+        help_text: 'Use to describe the grant funding specific research. This is meant to focus on metadata and executive summary as a grant reporting launchpad and to provide proper attribution to resulting studies and datasets.'
+        category: Research Management
+        id: research_grant
+        title_format: "[grant_name]"
+        url_format: "research-grant/[TripalEntity__entity_id]"
+
+    -   label: Research Grant Section
+        term: 'SIO:000111'
+        help_text: 'Use to describe specific sections of a research grant. This is meant to provide a high level overview and act as a grant reporting launchpad to show how deliverables have been fullfilled.'
+        category: Research Management
+        id: grant_section
+        title_format: "[section_name]"
+        url_format: "research-grant/[TripalEntity__entity_id]"
+
+    -   label: Research Study
+        term: 'SEPIO:0000125'
+        help_text: 'Use to describe the core research question, hypotheses and, eventually the broad conclusions. Data generated and used to reach these conclusions should be attached to related experiments.'
+        category: Research Management
+        id: research_study
+        title_format: "[study_name]"
+        url_format: "research-study/[TripalEntity__entity_id]"
 
     -   label: Field Experiment
         term: 'PECO:0007256'
         help_text: Use to describe experiments collecting phenomic data that are carried out in organized trials in field sites.
-        category: Experiment Types
+        category: Research Experiment
         id: field_experiment
         title_format: "[experiment_name]"
         url_format: "experiment/[TripalEntity__entity_id]"
@@ -14,7 +38,7 @@ content_types:
     -   label: Greenhouse Experiment
         term: 'PECO:0007248'
         help_text: Use to describe experiments collecting phenomic data that are carried out in the greenhouse.
-        category: Experiment Types
+        category: Research Experiment
         id: greenhouse_experiment
         title_format: "[experiment_name]"
         url_format: "experiment/[TripalEntity__entity_id]"
@@ -22,7 +46,7 @@ content_types:
     -   label: Growth Chamber Experiment
         term: 'PECO:0007269'
         help_text: Use to describe experiments collecting phenomic data that are carried out in highly controlled growth chambers.
-        category: Experiment Types
+        category: Research Experiment
         id: growthchamber_experiment
         title_format: "[experiment_name]"
         url_format: "experiment/[TripalEntity__entity_id]"
@@ -30,7 +54,7 @@ content_types:
     -   label: Biochemical Assay
         term: 'SIO:001007'
         help_text: Use to describe experiments collecting phenomic measuremets by assaying biological materials using various protocols and/or devices.
-        category: Experiment Types
+        category: Research Experiment
         id: biochem_experiment
         title_format: "[experiment_name]"
         url_format: "experiment/[TripalEntity__entity_id]"
