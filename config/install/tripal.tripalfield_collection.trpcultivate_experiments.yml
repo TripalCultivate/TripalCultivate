@@ -657,6 +657,95 @@ fields:
               region: content
               weight: 100
 
+    ## GERMPLASM ---------------------------------------------------------------
+
+    -   name: ghouse_germgenus
+        content_type: greenhouse_experiment
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: ghouse_germspecies
+        content_type: greenhouse_experiment
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000006'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 11
+          form:
+            default:
+              region: content
+              weight: 11
+
+    -   name: ghouse_germcollection
+        content_type: greenhouse_experiment
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 12
+          form:
+            default:
+              region: content
+              weight: 12
+
+  ## EXPERIMENT DESIGN -------------------------------------------------------
+
+  ## PEOPLE ------------------------------------------------------------------
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+  ## FUNDING -----------------------------------------------------------------
+
+
     ## ATTRIBUTION FIELDS
 
     -   name: experiment_datacollector
@@ -953,84 +1042,6 @@ fields:
               region: content
               weight: 20
 
-    -   name: ghouse_germgenus
-        content_type: greenhouse_experiment
-        label: Germplasm Genus
-        type: chado_property_type_default
-        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000005'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: ghouse_germspecies
-        content_type: greenhouse_experiment
-        label: Germplasm Species
-        type: chado_property_type_default
-        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000006'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: ghouse_germcollection
-        content_type: greenhouse_experiment
-        label: Germplasm Collection
-        type: chado_property_type_default
-        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: local
-            termAccession: 'project_germcollection'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
     -   name: ghouse_featureofinterest
         content_type: greenhouse_experiment
         label: Key Measurements
@@ -1220,6 +1231,94 @@ fields:
             default:
               region: content
               weight: 100
+
+  ## GERMPLASM ---------------------------------------------------------------
+
+    -   name: gchamber_germgenus
+        content_type: growthchamber_experiment
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: gchamber_germspecies
+        content_type: growthchamber_experiment
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000006'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 11
+          form:
+            default:
+              region: content
+              weight: 11
+
+    -   name: gchamber_germcollection
+        content_type: growthchamber_experiment
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 12
+          form:
+            default:
+              region: content
+              weight: 12
+
+  ## EXPERIMENT DESIGN -------------------------------------------------------
+
+  ## PEOPLE ------------------------------------------------------------------
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+  ## FUNDING -----------------------------------------------------------------
 
     ## ATTRIBUTION FIELDS
 
@@ -1517,84 +1616,6 @@ fields:
               region: content
               weight: 20
 
-    -   name: gchamber_germgenus
-        content_type: growthchamber_experiment
-        label: Germplasm Genus
-        type: chado_property_type_default
-        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000005'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: gchamber_germspecies
-        content_type: growthchamber_experiment
-        label: Germplasm Species
-        type: chado_property_type_default
-        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000006'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: gchamber_germcollection
-        content_type: growthchamber_experiment
-        label: Germplasm Collection
-        type: chado_property_type_default
-        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: local
-            termAccession: 'project_germcollection'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
     -   name: gchamber_featureofinterest
         content_type: growthchamber_experiment
         label: Key Measurements
@@ -1784,6 +1805,94 @@ fields:
             default:
               region: content
               weight: 100
+
+  ## GERMPLASM ---------------------------------------------------------------
+
+    -   name: bchem_germgenus
+        content_type: biochem_experiment
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: bchem_germspecies
+        content_type: biochem_experiment
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000006'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 11
+          form:
+            default:
+              region: content
+              weight: 11
+
+    -   name: bchem_germcollection
+        content_type: biochem_experiment
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 12
+          form:
+            default:
+              region: content
+              weight: 12
+
+  ## EXPERIMENT DESIGN -------------------------------------------------------
+
+  ## PEOPLE ------------------------------------------------------------------
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+  ## FUNDING -----------------------------------------------------------------
 
     ## ATTRIBUTION FIELDS
 
@@ -2105,84 +2214,6 @@ fields:
               region: content
               weight: 20
 
-    -   name: bchem_germgenus
-        content_type: biochem_experiment
-        label: Germplasm Genus
-        type: chado_property_type_default
-        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000005'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: bchem_germspecies
-        content_type: biochem_experiment
-        label: Germplasm Species
-        type: chado_property_type_default
-        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000006'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: bchem_germcollection
-        content_type: biochem_experiment
-        label: Germplasm Collection
-        type: chado_property_type_default
-        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: local
-            termAccession: 'project_germcollection'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
     -   name: bchem_featureofinterest
         content_type: biochem_experiment
         label: Key Measurements
@@ -2351,6 +2382,94 @@ fields:
               region: content
               weight: 15
 
+  ## GERMPLASM ---------------------------------------------------------------
+
+    -   name: researchstudy_germgenus
+        content_type: research_study
+        label: Germplasm Genus
+        type: chado_property_type_default
+        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000005'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 10
+          form:
+            default:
+              region: content
+              weight: 10
+
+    -   name: researchstudy_germspecies
+        content_type: research_study
+        label: Germplasm Species
+        type: chado_property_type_default
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: TAXRANK
+            termAccession: '0000006'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 11
+          form:
+            default:
+              region: content
+              weight: 11
+
+    -   name: researchstudy_germcollection
+        content_type: research_study
+        label: Germplasm Collection
+        type: chado_property_type_default
+        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 12
+          form:
+            default:
+              region: content
+              weight: 12
+
+  ## EXPERIMENT DESIGN -------------------------------------------------------
+
+  ## PEOPLE ------------------------------------------------------------------
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+  ## FUNDING -----------------------------------------------------------------
+
     -   name: researchstudy_analysis
         content_type: research_study
         label: Analysis
@@ -2502,84 +2621,6 @@ fields:
         settings:
             termIdSpace: NCIT
             termAccession: 'C29848'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: researchstudy_germgenus
-        content_type: research_study
-        label: Germplasm Genus
-        type: chado_property_type_default
-        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000005'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: researchstudy_germspecies
-        content_type: research_study
-        label: Germplasm Species
-        type: chado_property_type_default
-        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000006'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 20
-          form:
-            default:
-              region: content
-              weight: 20
-
-    -   name: researchstudy_germcollection
-        content_type: research_study
-        label: Germplasm Collection
-        type: chado_property_type_default
-        description: The official name of the collection of germplasm used in this experiment (e.g. LR-69; AGILE LDP).
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: local
-            termAccession: 'project_germcollection'
         display:
           view:
             default:
