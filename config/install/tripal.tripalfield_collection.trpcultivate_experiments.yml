@@ -741,13 +741,6 @@ fields:
 
   ## PEOPLE ------------------------------------------------------------------
 
-  ## PERMISSIONS -------------------------------------------------------------
-
-  ## FUNDING -----------------------------------------------------------------
-
-
-    ## ATTRIBUTION FIELDS
-
     -   name: experiment_datacollector
         content_type: greenhouse_experiment
         label: Data Collector
@@ -768,12 +761,12 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 30
           form:
             default:
               region: content
-              weight: 20
+              weight: 30
 
     -   name: experiment_custodian
         content_type: greenhouse_experiment
@@ -795,12 +788,12 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 31
           form:
             default:
               region: content
-              weight: 20
+              weight: 31
 
     -   name: experiment_curator
         content_type: greenhouse_experiment
@@ -822,12 +815,19 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 32
           form:
             default:
               region: content
-              weight: 20
+              weight: 32
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+  ## FUNDING -----------------------------------------------------------------
+
+
+    ## ATTRIBUTION FIELDS
 
     -   name: experiment_datalicenses
         content_type: greenhouse_experiment
@@ -1316,12 +1316,6 @@ fields:
 
   ## PEOPLE ------------------------------------------------------------------
 
-  ## PERMISSIONS -------------------------------------------------------------
-
-  ## FUNDING -----------------------------------------------------------------
-
-    ## ATTRIBUTION FIELDS
-
     -   name: experiment_datacollector
         content_type: growthchamber_experiment
         label: Data Collector
@@ -1342,12 +1336,12 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 30
           form:
             default:
               region: content
-              weight: 20
+              weight: 30
 
     -   name: experiment_custodian
         content_type: growthchamber_experiment
@@ -1369,12 +1363,12 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 31
           form:
             default:
               region: content
-              weight: 20
+              weight: 31
 
     -   name: experiment_curator
         content_type: growthchamber_experiment
@@ -1396,12 +1390,18 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 32
           form:
             default:
               region: content
-              weight: 20
+              weight: 32
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+  ## FUNDING -----------------------------------------------------------------
+
+    ## ATTRIBUTION FIELDS
 
     -   name: experiment_datalicenses
         content_type: growthchamber_experiment
@@ -1890,12 +1890,6 @@ fields:
 
   ## PEOPLE ------------------------------------------------------------------
 
-  ## PERMISSIONS -------------------------------------------------------------
-
-  ## FUNDING -----------------------------------------------------------------
-
-    ## ATTRIBUTION FIELDS
-
     -   name: experiment_datacollector
         content_type: biochem_experiment
         label: Data Collector
@@ -1916,12 +1910,12 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 30
           form:
             default:
               region: content
-              weight: 20
+              weight: 30
 
     -   name: experiment_custodian
         content_type: biochem_experiment
@@ -1943,12 +1937,12 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 31
           form:
             default:
               region: content
-              weight: 20
+              weight: 31
 
     -   name: experiment_curator
         content_type: biochem_experiment
@@ -1970,12 +1964,18 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 20
+              label: inline
+              weight: 32
           form:
             default:
               region: content
-              weight: 20
+              weight: 32
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+  ## FUNDING -----------------------------------------------------------------
+
+    ## ATTRIBUTION FIELDS
 
     -   name: experiment_datalicenses
         content_type: biochem_experiment
@@ -2465,6 +2465,60 @@ fields:
   ## EXPERIMENT DESIGN -------------------------------------------------------
 
   ## PEOPLE ------------------------------------------------------------------
+
+    -   name: researchstudy_custodian
+        content_type: research_study
+        label: Data Custodian
+        type: chado_contact_by_role_type_default
+        description: The core researcher responsible for data produced by this research study. This is usually the principal investigator or long term researcher, as they are typically the long term contact person for these data.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C165210'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 30
+          form:
+            default:
+              region: content
+              weight: 30
+
+    -   name: researchstudy_curator
+        content_type: research_study
+        label: Data Curator
+        type: chado_contact_by_role_type_default
+        description: The researcher(s) responsible for curatingthe metadata associated with this research study.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C69141'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 31
+          form:
+            default:
+              region: content
+              weight: 31
 
   ## PERMISSIONS -------------------------------------------------------------
 
