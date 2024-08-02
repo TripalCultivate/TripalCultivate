@@ -2783,6 +2783,174 @@ fields:
               region: content
               weight: 100
 
+  ## PEOPLE ------------------------------------------------------------------
+
+    -   name: grant_custodian
+        content_type: research_grant
+        label: Data Custodian
+        type: chado_contact_by_role_type_default
+        description: The core researcher responsible for data produced by this research study. This is usually the principal investigator or long term researcher, as they are typically the long term contact person for these data.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C165210'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 30
+          form:
+            default:
+              region: content
+              weight: 30
+
+    -   name: grant_curator
+        content_type: research_grant
+        label: Data Curator
+        type: chado_contact_by_role_type_default
+        description: The researcher(s) responsible for curatingthe metadata associated with this research study.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C69141'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 31
+          form:
+            default:
+              region: content
+              weight: 31
+
+  ## PERMISSIONS -------------------------------------------------------------
+
+    -   name: grant_org
+        content_type: research_grant
+        label: Research Organization
+        type: chado_contact_by_role_type_default
+        description: The primary research organizations (e.g. universities) where the study was managed/funded.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C93448'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 40
+          form:
+            default:
+              region: content
+              weight: 40
+
+    -   name: grant_pub
+        content_type: research_grant
+        label: Publication
+        type: chado_pub_type_default
+        description: Associates a publication (e.g. journal article, conference proceedings, book chapter, etc.) with this record.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_pub
+                linker_fkey_column: pub_id
+        settings:
+            termIdSpace: TPUB
+            termAccession: "0000002"
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 41
+          form:
+            default:
+              region: content
+              weight: 41
+
+  ## FUNDING -----------------------------------------------------------------
+
+    -   name: grant_funding_range
+        content_type: research_grant
+        label: Funding Range
+        type: chado_property_type_default
+        description: The year range that this study is funded for.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 50
+          form:
+            default:
+              region: content
+              weight: 50
+
+    # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
+    -   name: grant_funding
+        content_type: research_grant
+        label: Funding
+        type: chado_contact_by_role_type_default
+        description: An acknowledgement of all funding put towards this study.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: EFO
+            termAccession: '0001736'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 51
+          form:
+            default:
+              region: content
+              weight: 51
+
 ################################################################################
 ## Grant Section ##
 ## Chado Table: project
