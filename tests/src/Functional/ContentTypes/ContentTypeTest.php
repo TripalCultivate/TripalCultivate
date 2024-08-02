@@ -40,9 +40,9 @@ class ContentTypeTest extends ChadoTestBrowserBase {
       'biochem_experiment' => 21,
     ],
     'Research Management' => [
-      'research_grant' => 0,
-      'grant_section' => 0,
-      'research_study' => 14,
+      'research_grant' => 5,
+      'grant_section' => 6,
+      'research_study' => 13,
     ],
   ];
 

@@ -2287,13 +2287,11 @@ fields:
         display:
           view:
             default:
-              region: content
-              label: above
-              weight: 10
+              region: hidden
           form:
             default:
               region: content
-              weight: 10
+              weight: 1
 
     -   name: researchstudy_dbxref
         content_type: research_study
@@ -2314,13 +2312,11 @@ fields:
         display:
           view:
             default:
-              region: content
-              label: above
-              weight: 19
+              region: hidden
           form:
             default:
               region: content
-              weight: 19
+              weight: 2
 
     -   name: researchstudy_type
         content_type: research_study
@@ -2342,13 +2338,38 @@ fields:
         display:
           view:
             default:
-              region: content
-              label: above
-              weight: 10
+              region: hidden
+              weight: 3
           form:
             default:
               region: content
-              weight: 10
+              weight: 3
+
+    -   name: field_objectives
+        content_type: field_experiment
+        label: Objectives
+        type: chado_property_type_default
+        description: The objectives of this experiment. These should be the questions you are trying to answer by conducting this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest."
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 4
+          form:
+            default:
+              region: content
+              weight: 4
 
     -   name: researchstudy_description
         content_type: research_study
@@ -2369,12 +2390,12 @@ fields:
           view:
             default:
               region: content
-              label: above
-              weight: 15
+              label: hidden
+              weight: 100
           form:
             default:
               region: content
-              weight: 15
+              weight: 100
 
   ## GERMPLASM ---------------------------------------------------------------
 
@@ -2398,11 +2419,11 @@ fields:
             default:
               region: content
               label: inline
-              weight: 10
+              weight: 20
           form:
             default:
               region: content
-              weight: 10
+              weight: 20
 
     -   name: researchstudy_germspecies
         content_type: research_study
@@ -2424,11 +2445,11 @@ fields:
             default:
               region: content
               label: inline
-              weight: 11
+              weight: 21
           form:
             default:
               region: content
-              weight: 11
+              weight: 21
 
     -   name: researchstudy_germcollection
         content_type: research_study
@@ -2450,11 +2471,11 @@ fields:
             default:
               region: content
               label: inline
-              weight: 12
+              weight: 22
           form:
             default:
               region: content
-              weight: 12
+              weight: 22
 
   ## PEOPLE ------------------------------------------------------------------
 
@@ -2514,34 +2535,32 @@ fields:
 
   ## PERMISSIONS -------------------------------------------------------------
 
-  ## FUNDING -----------------------------------------------------------------
-
-    -   name: researchstudy_analysis
+    -   name: researchstudy_org
         content_type: research_study
-        label: Analysis
-        type: chado_analysis_type_default
-        description: Application of analytical methods to existing data of a specific type
+        label: Research Organization
+        type: chado_contact_by_role_type_default
+        description: The primary research organizations (e.g. universities) where the study was managed/funded.
         cardinality: -1
         required: false
         storage_settings:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                linker_table: project_analysis
-                linker_fkey_column: analysis_id
+                linker_table: project_contact
+                linker_fkey_column: contact_id
         settings:
-            termIdSpace: operation
-            termAccession: "2945"
+            termIdSpace: NCIT
+            termAccession: 'C93448'
         display:
           view:
             default:
               region: content
               label: above
-              weight: 25
+              weight: 40
           form:
             default:
               region: content
-              weight: 25
+              weight: 40
 
     -   name: researchstudy_pub
         content_type: research_study
@@ -2564,65 +2583,39 @@ fields:
             default:
               region: content
               label: above
-              weight: 30
+              weight: 41
           form:
             default:
               region: content
-              weight: 30
+              weight: 41
 
-    -   name: researchstudy_custodian
+  ## FUNDING -----------------------------------------------------------------
+
+    -   name: researchstudy_funding_range
         content_type: research_study
-        label: Data Custodian
-        type: chado_contact_by_role_type_default
-        description: The core researcher responsible for data produced by this study. This is usually the principal investigator or long term researcher, as they are typically the long term contact person for these data.
+        label: Funding Range
+        type: chado_property_type_default
+        description: The year range that this study is funded for.
         cardinality: -1
         required: false
         storage_settings:
             storage_plugin_id: chado_storage
             storage_plugin_settings:
                 base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
+                prop_table: projectprop
         settings:
             termIdSpace: NCIT
-            termAccession: 'C165210'
+            termAccession: 'C29848'
         display:
           view:
             default:
               region: content
               label: above
-              weight: 20
+              weight: 50
           form:
             default:
               region: content
-              weight: 20
-
-    -   name: researchstudy_org
-        content_type: research_study
-        label: Research Organization
-        type: chado_contact_by_role_type_default
-        description: The primary research organizations (e.g. universities) where the study was managed/funded.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
-        settings:
-            termIdSpace: NCIT
-            termAccession: 'C93448'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 22
-          form:
-            default:
-              region: content
-              weight: 22
+              weight: 50
 
     # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
     -   name: researchstudy_funding
@@ -2646,17 +2639,266 @@ fields:
             default:
               region: content
               label: above
-              weight: 22
+              weight: 51
           form:
             default:
               region: content
-              weight: 22
+              weight: 51
 
-    -   name: researchstudy_funding_range
-        content_type: research_study
-        label: Funding Range
+################################################################################
+## Grant ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: grant_name
+        content_type: research_grant
+        label: Name
+        type: chado_string_type_default
+        description: 'The full name of the research grant.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: name
+            max_length: 255
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: hidden
+          form:
+            default:
+              region: content
+              weight: 1
+
+    -   name: grant_dbxref
+        content_type: research_grant
+        label: Digital object identifiers (DOI)
+        type: chado_dbxref_type_default
+        description: Any persistant digital identifiers (i.e. DOIs) associated with this grant.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_dbxref
+                linker_fkey_column: dbxref_id
+        settings:
+            termIdSpace: SBO
+            termAccession: '0000552'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 19
+          form:
+            default:
+              region: content
+              weight: 19
+
+    -   name: grant_type
+        content_type: research_grant
+        label: Type
+        type: chado_additional_type_type_default
+        description: The type of grant. This is fixed for a single content type but is needed in the underlying data storage.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                type_table: project
+                type_column: type_id
+        settings:
+            termIdSpace: rdfs
+            termAccession: type
+            fixed_value: "OBI:0001636"
+        display:
+          view:
+            default:
+              region: hidden
+          form:
+            default:
+              region: content
+              weight: 3
+
+    -   name: grant_objectives
+        content_type: research_grant
+        label: Objectives
         type: chado_property_type_default
-        description: The year range that this study is funded for.
+        description: The broad objectives of this grant."
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 4
+          form:
+            default:
+              region: content
+              weight: 4
+
+    -   name: grant_description
+        content_type: research_grant
+        label: Executive Summary
+        type: chado_text_type_default
+        description: The high level executive summary of this grant.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 100
+          form:
+            default:
+              region: content
+              weight: 100
+
+################################################################################
+## Grant Section ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+    -   name: grant_name
+        content_type: grant_section
+        label: Name
+        type: chado_string_type_default
+        description: 'The full name of the research grant.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: name
+            max_length: 255
+        settings:
+            termIdSpace: schema
+            termAccession: name
+        display:
+          view:
+            default:
+              region: hidden
+          form:
+            default:
+              region: content
+              weight: 1
+
+    -   name: grant_dbxref
+        content_type: grant_section
+        label: Digital object identifiers (DOI)
+        type: chado_dbxref_type_default
+        description: Any persistant digital identifiers (i.e. DOIs) associated with this grant.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_dbxref
+                linker_fkey_column: dbxref_id
+        settings:
+            termIdSpace: SBO
+            termAccession: '0000552'
+        display:
+          view:
+            default:
+              region: hidden
+
+          form:
+            default:
+              region: content
+              weight: 2
+
+    -   name: grant_type
+        content_type: grant_section
+        label: Type
+        type: chado_additional_type_type_default
+        description: The type of grant. This is fixed for a single content type but is needed in the underlying data storage.
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                type_table: project
+                type_column: type_id
+        settings:
+            termIdSpace: rdfs
+            termAccession: type
+            fixed_value: "SIO:000111"
+        display:
+          view:
+            default:
+              region: hidden
+          form:
+            default:
+              region: content
+              weight: 3
+
+    -   name: grant_objectives
+        content_type: grant_section
+        label: Objectives
+        type: chado_property_type_default
+        description: The broad objectives of this grant activity/section."
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 4
+          form:
+            default:
+              region: content
+              weight: 4
+
+    -   name: grant_deliverables
+        content_type: grant_section
+        label: Deliverables
+        type: chado_property_type_default
+        description: The specific items this grant section claims it will be able to deliver."
         cardinality: -1
         required: false
         storage_settings:
@@ -2666,14 +2908,40 @@ fields:
                 prop_table: projectprop
         settings:
             termIdSpace: NCIT
-            termAccession: 'C29848'
+            termAccession: 'C203930'
         display:
           view:
             default:
               region: content
               label: above
-              weight: 20
+              weight: 5
           form:
             default:
               region: content
-              weight: 20
+              weight: 5
+
+    -   name: grant_description
+        content_type: grant_section
+        label: Description
+        type: chado_text_type_default
+        description: The contents of this grant section.
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                base_column: description
+        settings:
+            termIdSpace: schema
+            termAccession: description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 100
+          form:
+            default:
+              region: content
+              weight: 100
