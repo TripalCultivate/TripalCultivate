@@ -41,9 +41,9 @@ The following compatibility is proven via automated testing workflows.
 
 |  Drupal     |  10.2.x         |  10.3.x         |
 |-------------|-----------------|-----------------|
-| **PHP 8.1** | ![Grid1A-Badge] | ![Grid1B-Badge] |
-| **PHP 8.2** | ![Grid2A-Badge] | ![Grid2B-Badge] |
-| **PHP 8.3** | ![Grid3A-Badge] | ![Grid3B-Badge] |
+| **PHP 8.1** | ![Grid1A-Badge] | ![Grid2A-Badge] |
+| **PHP 8.2** | ![Grid1B-Badge] | ![Grid2B-Badge] |
+| **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] |
 
 [our CodeClimate project page]: https://codeclimate.com/github/TripalCultivate/TripalCultivate
 [MaintainabilityBadge]: https://api.codeclimate.com/v1/badges/730d572b51ad41cbbd69/maintainability
@@ -51,9 +51,8 @@ The following compatibility is proven via automated testing workflows.
 
 [Grid1A-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid1A.yml/badge.svg
 [Grid1B-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid1B.yml/badge.svg
+[Grid1C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid1C.yml/badge.svg
 
 [Grid2A-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid2A.yml/badge.svg
 [Grid2B-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid2B.yml/badge.svg
-
-[Grid3A-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid3A.yml/badge.svg
-[Grid3B-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid3B.yml/badge.svg
+[Grid2C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid2C.yml/badge.svg
