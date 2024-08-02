@@ -519,34 +519,6 @@ fields:
               region: content
               weight: 50
 
-    # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
-    -   name: experiment_funding
-        content_type: field_experiment
-        label: Funding
-        type: chado_contact_by_role_type_default
-        description: An acknowledgement of all funding put towards this experiment.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
-        settings:
-            termIdSpace: EFO
-            termAccession: '0001736'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 51
-          form:
-            default:
-              region: content
-              weight: 51
-
 ################################################################################
 ## Greenhouse Experiment ##
 ## Chado Table: project
@@ -1088,34 +1060,6 @@ fields:
             default:
               region: content
               weight: 50
-
-    # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
-    -   name: experiment_funding
-        content_type: greenhouse_experiment
-        label: Funding
-        type: chado_contact_by_role_type_default
-        description: An acknowledgement of all funding put towards this experiment.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
-        settings:
-            termIdSpace: EFO
-            termAccession: '0001736'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 51
-          form:
-            default:
-              region: content
-              weight: 51
 
 ################################################################################
 ## Growth Chamber Experiment ##
@@ -1661,34 +1605,6 @@ fields:
               region: content
               weight: 50
 
-    # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
-    -   name: experiment_funding
-        content_type: growthchamber_experiment
-        label: Funding
-        type: chado_contact_by_role_type_default
-        description: An acknowledgement of all funding put towards this experiment.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
-        settings:
-            termIdSpace: EFO
-            termAccession: '0001736'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 51
-          form:
-            default:
-              region: content
-              weight: 51
-
 ################################################################################
 ## Biochemical Assay ##
 ## Chado Table: project
@@ -2232,34 +2148,6 @@ fields:
               region: content
               weight: 50
 
-    # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
-    -   name: experiment_funding
-        content_type: biochem_experiment
-        label: Funding
-        type: chado_contact_by_role_type_default
-        description: An acknowledgement of all funding put towards this experiment.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
-        settings:
-            termIdSpace: EFO
-            termAccession: '0001736'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 51
-          form:
-            default:
-              region: content
-              weight: 51
-
 ################################################################################
 ## Research Study ##
 ## Chado Table: project
@@ -2616,34 +2504,6 @@ fields:
             default:
               region: content
               weight: 50
-
-    # Ideally this field would render as an embedded version of the grant project showing funding logos, etc.
-    -   name: researchstudy_funding
-        content_type: research_study
-        label: Funding
-        type: chado_contact_by_role_type_default
-        description: An acknowledgement of all funding put towards this study.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_contact
-                linker_fkey_column: contact_id
-        settings:
-            termIdSpace: EFO
-            termAccession: '0001736'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-              weight: 51
-          form:
-            default:
-              region: content
-              weight: 51
 
 ################################################################################
 ## Grant ##

@@ -34,15 +34,15 @@ class ContentTypeTest extends ChadoTestBrowserBase {
    */
   protected $expected_contenttypes = [
     'Research Experiment' => [
-      'field_experiment' => 20,
-      'greenhouse_experiment' => 21,
-      'growthchamber_experiment' => 21,
-      'biochem_experiment' => 21,
+      'field_experiment' => 19,
+      'greenhouse_experiment' => 20,
+      'growthchamber_experiment' => 20,
+      'biochem_experiment' => 20,
     ],
     'Research Management' => [
       'research_grant' => 11,
       'grant_section' => 6,
-      'research_study' => 13,
+      'research_study' => 12,
     ],
   ];
 
