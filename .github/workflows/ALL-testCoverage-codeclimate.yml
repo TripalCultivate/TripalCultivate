@@ -5,7 +5,7 @@ on: [push, workflow_dispatch]
 env:
   PKG_NAME: TripalCultivate
   MODULES: "trpcultivate"
-  DRUPALVER: "10.2.x-dev"
+  DRUPALVER: "10.3.x-dev"
   PHPVER: "8.3"
   SIMPLETEST_BASE_URL: "http://localhost"
   SIMPLETEST_DB: "pgsql://drupaladmin:drupaldevelopmentonlylocal@localhost/sitedb"
@@ -36,7 +36,6 @@ jobs:
       # Install the modules
       - name: Install our package in Docker
         run: |
-          docker exec tripaldocker service postgresql restart
           docker exec tripaldocker drush en $MODULES --yes
       # Ensure we have the variables we need.
       - name: Inject slug/short variables
@@ -58,7 +57,6 @@ jobs:
           SIMPLETEST_DB: "pgsql://drupaladmin:drupaldevelopmentonlylocal@localhost/sitedb"
           BROWSER_OUTPUT_DIRECTORY: "/var/www/drupal/web/sites/default/files/simpletest"
         run: |
-          docker exec tripaldocker service postgresql restart
           docker exec -e SIMPLETEST_BASE_URL=$SIMPLETEST_BASE_URL \
             -e SIMPLETEST_DB=$SIMPLETEST_DB \
             -e BROWSER_OUTPUT_DIRECTORY=$BROWSER_OUTPUT_DIRECTORY \
