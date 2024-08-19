@@ -24,6 +24,6 @@ jobs:
         with:
           directory-name: 'TripalCultivate'
           modules: 'trpcultivate'
-          php-version: '8.1'
+          php-version: '8.2'
           pgsql-version: '16'
-          drupal-version: '10.2.x-dev'
+          drupal-version: '10.4.x-dev'

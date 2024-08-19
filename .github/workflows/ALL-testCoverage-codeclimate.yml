@@ -5,7 +5,7 @@ on: [push, workflow_dispatch]
 env:
   PKG_NAME: TripalCultivate
   MODULES: "trpcultivate"
-  DRUPALVER: "10.2.x-dev"
+  DRUPALVER: "10.3.x-dev"
   PHPVER: "8.3"
   SIMPLETEST_BASE_URL: "http://localhost"
   SIMPLETEST_DB: "pgsql://drupaladmin:drupaldevelopmentonlylocal@localhost/sitedb"
