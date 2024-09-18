@@ -27,34 +27,10 @@ content_types:
         title_format: "[researchstudy_name]"
         url_format: "research-study/[TripalEntity__entity_id]"
 
-    -   label: Field Experiment
-        term: 'PECO:0007256'
-        help_text: Use to describe experiments collecting phenomic data that are carried out in organized trials in field sites.
-        category: Research Experiment
-        id: field_experiment
+    -   label: Research Experiment
+        term: 'SIO:000994'
+        help_text: Use to describe a single experimental design with the goal of collecting data and answering specific hypothesis. Usually multiple experiments will be grouped together under a research study in order to make more broad conclusions.
+        category: Research Management
+        id: research_experiment
         title_format: "[experiment_name]"
-        url_format: "experiment/[TripalEntity__entity_id]"
-
-    -   label: Greenhouse Experiment
-        term: 'PECO:0007248'
-        help_text: Use to describe experiments collecting phenomic data that are carried out in the greenhouse.
-        category: Research Experiment
-        id: greenhouse_experiment
-        title_format: "[experiment_name]"
-        url_format: "experiment/[TripalEntity__entity_id]"
-
-    -   label: Growth Chamber Experiment
-        term: 'PECO:0007269'
-        help_text: Use to describe experiments collecting phenomic data that are carried out in highly controlled growth chambers.
-        category: Research Experiment
-        id: growthchamber_experiment
-        title_format: "[experiment_name]"
-        url_format: "experiment/[TripalEntity__entity_id]"
-
-    -   label: Biochemical Assay
-        term: 'SIO:001007'
-        help_text: Use to describe experiments collecting phenomic measuremets by assaying biological materials using various protocols and/or devices.
-        category: Research Experiment
-        id: biochem_experiment
-        title_format: "[experiment_name]"
-        url_format: "experiment/[TripalEntity__entity_id]"
+        url_format: "experiment/[experiment_name]"
