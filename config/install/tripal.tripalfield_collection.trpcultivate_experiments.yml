@@ -15,7 +15,7 @@ fields:
 ## CORE
 ###
 
-    -   name: experiment_name
+    -   name: exp_name
         content_type: research_experiment
         label: Name
         type: chado_string_type_default
@@ -51,6 +51,61 @@ fields:
               region: content
               weight: 1
 
+    -   name: exp_dbxref
+        content_type: research_experiment
+        label: Digital object identifiers (DOI)
+        type: chado_dbxref_type_default
+        description: Any persistant digital identifiers (i.e. DOIs) associated with this experiment or datasets produced via this experiment. We suggest submitting final datasets to subject area community databases (e.g. NCBI) and/or registering them with a dataset repository (i.e. zenodo).
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_dbxref
+                linker_fkey_column: dbxref_id
+        settings:
+            termIdSpace: SBO
+            termAccession: '0000552'
+        display:
+          view:
+            default:
+              region: hidden
+          form:
+            default:
+              region: content
+              weight: 2
+
+### -------------------------------------------------------------------------
+## OVERVIEW
+###
+
+    -   name: exp_years
+        content_type: research_experiment
+        label: Experiment Years
+        type: chado_property_type_default
+        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead add a new entry for each year that data was collected for.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: inline
+              weight: 22
+          form:
+            default:
+              region: content
+              weight: 22
+
     -   name: exp_objectives
         content_type: research_experiment
         label: Objectives
@@ -77,7 +132,7 @@ fields:
               region: content
               weight: 4
 
-    -   name: experiment_description
+    -   name: exp_description
         content_type: research_experiment
         label: Experiment Summary
         type: chado_text_type_default
@@ -107,33 +162,8 @@ fields:
 ## ATTRIBUTION
 ###
 
-    -   name: experiment_dbxref
-        content_type: research_experiment
-        label: Digital object identifiers (DOI)
-        type: chado_dbxref_type_default
-        description: Any persistant digital identifiers (i.e. DOIs) associated with this experiment or datasets produced via this experiment. We suggest submitting final datasets to subject area community databases (e.g. NCBI) and/or registering them with a dataset repository (i.e. zenodo).
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                linker_table: project_dbxref
-                linker_fkey_column: dbxref_id
-        settings:
-            termIdSpace: SBO
-            termAccession: '0000552'
-        display:
-          view:
-            default:
-              region: hidden
-          form:
-            default:
-              region: content
-              weight: 2
-
     # @todo update to chado_pub_type_default with type specified Chado#140
-    -   name: experiment_citation
+    -   name: exp_citation
         content_type: research_experiment
         label: Data Citation
         type: chado_property_type_default
@@ -159,7 +189,7 @@ fields:
               region: content
               weight: 40
 
-    -   name: experiment_datalicenses
+    -   name: exp_datalicenses
         content_type: research_experiment
         label: Data License(s)
         type: chado_property_type_default
@@ -185,7 +215,7 @@ fields:
               region: content
               weight: 41
 
-    -   name: experiment_pub
+    -   name: exp_pub
         content_type: research_experiment
         label: Publication(s)
         type: chado_pub_type_default
@@ -328,7 +358,7 @@ fields:
 ## PEOPLE
 ###
 
-    -   name: experiment_datacollector
+    -   name: exp_datacollector
         content_type: research_experiment
         label: Data Collector
         type: chado_contact_by_role_type_default
@@ -355,7 +385,7 @@ fields:
               region: content
               weight: 30
 
-    -   name: experiment_custodian
+    -   name: exp_custodian
         content_type: research_experiment
         label: Data Custodian
         type: chado_contact_by_role_type_default
@@ -382,7 +412,7 @@ fields:
               region: content
               weight: 31
 
-    -   name: experiment_curator
+    -   name: exp_curator
         content_type: research_experiment
         label: Data Curator
         type: chado_contact_by_role_type_default
@@ -413,7 +443,7 @@ fields:
 ## FUNDING
 ###
 
-    -   name: experiment_org
+    -   name: exp_org
         content_type: research_experiment
         label: Research Organization
         type: chado_contact_by_role_type_default
@@ -474,9 +504,9 @@ fields:
 ## FIELD EXPERIMENT DESIGN
 ###
 
-    -   name: field_locations
+    -   name: exp_field_locations
         content_type: research_experiment
-        label: Experiment Locations
+        label: Field Locations
         type: chado_property_type_default
         description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").
         cardinality: -1
@@ -500,37 +530,11 @@ fields:
               region: content
               weight: 21
 
-    -   name: field_years
+    -   name: exp_field_design
         content_type: research_experiment
-        label: Experiment Years
+        label: Field Experimental Design
         type: chado_property_type_default
-        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead add a new entry for each year that data was collected for.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: NCIT
-            termAccession: 'C29848'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
-              weight: 22
-          form:
-            default:
-              region: content
-              weight: 22
-
-    -   name: field_design
-        content_type: research_experiment
-        label: Experimental Design
-        type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Experiment Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Field Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -556,11 +560,11 @@ fields:
 ## GREENHOUSE EXPERIMENT DESIGN
 ###
 
-    -   name: ghouse_locations
-        content_type: greenhouse_experiment
-        label: Experiment Locations
+    -   name: exp_ghouse_locations
+        content_type: research_experiment
+        label: Greenhouse Locations
         type: chado_property_type_default
-        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").
+        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each greenhouse (e.g. "Sutherland, SK, Canada").
         cardinality: -1
         required: false
         storage_settings:
@@ -582,34 +586,8 @@ fields:
               region: content
               weight: 21
 
-    -   name: ghouse_years
-        content_type: greenhouse_experiment
-        label: Experiment Years
-        type: chado_property_type_default
-        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead add a new entry for each year that data was collected for.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: NCIT
-            termAccession: 'C29848'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
-              weight: 22
-          form:
-            default:
-              region: content
-              weight: 22
-
-    -   name: ghouse_growingmedia
-        content_type: greenhouse_experiment
+    -   name: exp_ghouse_growingmedia
+        content_type: research_experiment
         label: Growing Media
         type: chado_property_type_default
         description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
@@ -634,11 +612,11 @@ fields:
               region: content
               weight: 23
 
-    -   name: ghouse_design
-        content_type: greenhouse_experiment
+    -   name: exp_ghouse_design
+        content_type: research_experiment
         label: Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Experiment Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Greenhouse Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -664,11 +642,11 @@ fields:
 ## GROWTH CHAMBER EXPERIMENT DESIGN
 ###
 
-    -   name: gchamber_locations
-        content_type: growthchamber_experiment
-        label: Experiment Locations
+    -   name: exp_gchamber_locations
+        content_type: research_experiment
+        label: Grownth Chamber Locations
         type: chado_property_type_default
-        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").
+        description: Include the unique identifier, name of the facility, province, country and optionally the geographical coordinates of each growth chamber (e.g. "A5, USASK Phytotron, SK, Canada").
         cardinality: -1
         required: false
         storage_settings:
@@ -690,34 +668,8 @@ fields:
               region: content
               weight: 21
 
-    -   name: gchamber_years
-        content_type: growthchamber_experiment
-        label: Experiment Years
-        type: chado_property_type_default
-        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead add a new entry for each year that data was collected for.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: NCIT
-            termAccession: 'C29848'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
-              weight: 22
-          form:
-            default:
-              region: content
-              weight: 22
-
-    -   name: gchamber_growingmedia
-        content_type: growthchamber_experiment
+    -   name: exp_gchamber_growingmedia
+        content_type: research_experiment
         label: Growing Media
         type: chado_property_type_default
         description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
@@ -742,11 +694,11 @@ fields:
               region: content
               weight: 23
 
-    -   name: gchamber_design
-        content_type: growthchamber_experiment
+    -   name: exp_gchamber_design
+        content_type: research_experiment
         label: Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Experiment Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Growth Chamber Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -772,8 +724,8 @@ fields:
 ## BIOCHEMICAL ASSAY DESIGN
 ###
 
-    -   name: bchem_technique
-        content_type: biochem_experiment
+    -   name: exp_bchem_technique
+        content_type: research_experiment
         label: Biochemical Technique
         type: chado_property_type_default
         description: The biochemical technique used to perform a particular measurement or solve a biological problem. If it is commonly referred to as an acronym, write out the full name followed by its acronym. For example, "Near Infrared Reflectance (NIR) spectroscopy", "Polymerase Chain Reaction (PCR)", "Optical Coherence Tomography (OCT)".
@@ -798,8 +750,8 @@ fields:
               region: content
               weight: 21
 
-    -   name: bchem_assayprotocal
-        content_type: biochem_experiment
+    -   name: exp_bchem_assayprotocal
+        content_type: research_experiment
         label: Assay Protocol
         type: chado_property_type_default
         description: The methodology used to perform a particular bioassay. This should be detailed and list out the steps in the process, just as one would describe a protocol in a scientific paper (i.e. describe the sample preparation, steps of performing the assay, and of collecting the data from the assay).
@@ -824,8 +776,8 @@ fields:
               region: content
               weight: 22
 
-    -   name: bchem_labfacility
-        content_type: biochem_experiment
+    -   name: exp_bchem_labfacility
+        content_type: research_experiment
         label: Laboratory Facility
         type: chado_property_type_default
         description: Provide the laboratory that this experiment took place in. Include the company name or university, room number and building name, and city and province (e.g. 1A23, Agriculture Building, USASK, Saskatoon, SK)
@@ -849,8 +801,8 @@ fields:
               region: content
               weight: 23
 
-    -   name: bchem_date
-        content_type: biochem_experiment
+    -   name: exp_bchem_date
+        content_type: research_experiment
         label: Experiment Date
         type: chado_property_type_default
         description: The date and time the experiment was performed (e.g. 2024Aug5 3:15pm)
@@ -960,11 +912,11 @@ fields:
               region: content
               weight: 3
 
-    -   name: field_objectives
-        content_type: research_experiment
+    -   name: researchstudy_objectives
+        content_type: research_study
         label: Objectives
         type: chado_property_type_default
-        description: The objectives of this experiment. These should be the questions you are trying to answer by conducting this experiment. For example, "Determine the magnitude of effect environment has on my trait of interest."
+        description: The objectives of this research study. These should be the questions you are trying to answer by conducting this study. For example, "Determine the magnitude of effect environment has on my trait of interest."
         cardinality: -1
         required: false
         storage_settings:
