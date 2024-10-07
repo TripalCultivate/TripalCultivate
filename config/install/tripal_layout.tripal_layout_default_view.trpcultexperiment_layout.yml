@@ -10,102 +10,112 @@ layouts:
       - exp_dbxref
       - experiment_type
     field_groups:
-      details:
-        experiment_overview:
-          label: "Overview"
-          weight: 1
-          show_empty: false
-          open: true
-          children:
-            - "exp_years"
-            - "exp_objectives"
-            - "exp_description"
-        experiment_germplasm:
-          label: "Germplasm"
-          weight: 2
-          show_empty: false
-          open: true
-          children:
-            - "exp_germgenus"
-            - "exp_germspecies"
-            - "exp_germcollection"
-        experiment_phenomics:
-          label: "Phenomics"
-          weight: 3
-          show_empty: false
-          open: true
-          children:
-            - "exp_featureofinterest"
-        expdesign_field:
-          label: "Field"
-          weight: 1
-          show_empty: false
-          open: true
-          children:
-            - "exp_field_locations"
-            - "exp_field_design"
-        expdesign_ghouse:
-          label: "Greenhouse"
-          weight: 2
-          show_empty: false
-          open: true
-          children:
-            - "exp_ghouse_locations"
-            - "exp_ghouse_growingmedia"
-            - "exp_ghouse_design"
-        expdesign_gchamber:
-          label: "Growth Chamber"
-          weight: 3
-          show_empty: false
-          open: true
-          children:
-            - "exp_gchamber_locations"
-            - "exp_gchamber_growingmedia"
-            - "exp_gchamber_design"
-        expdesign_bchem:
-          label: "Biochemical Assay"
-          weight: 4
-          show_empty: false
-          open: true
-          children:
-            - "exp_bchem_technique"
-            - "exp_bchem_assayprotocal"
-            - "exp_bchem_labfacility"
-            - "exp_bchem_date"
-        experiment_design:
-          label: "Experimental Design"
-          weight: 4
-          show_empty: false
-          open: true
-          children:
-            - "expdesign_field"
-            - "expdesign_ghouse"
-            - "expdesign_gchamber"
-            - "expdesign_bchem"
-        experiment_people:
-          label: "Researchers"
-          weight: 5
-          show_empty: false
-          open: true
-          children:
-            - "exp_datacollector"
-            - "exp_custodian"
-            - "exp_curator"
-        experiment_funding:
-          label: "Funding"
-          weight: 7
-          show_empty: false
-          open: true
-          children:
-            - "exp_org"
-        experiment_attribution:
-          label: "Attribution"
-          weight: 6
-          show_empty: false
-          open: true
-          children:
-            - "experiment_people"
-            - "exp_citation"
-            - "exp_datalicenses"
-            - "exp_pub"
-            - "experiment_funding"
+      - id: experiment_overview
+        type: details
+        label: "Overview"
+        weight: 1
+        show_empty: false
+        open: true
+        children:
+          - "exp_years"
+          - "exp_objectives"
+          - "exp_description"
+      - id: experiment_germplasm
+        type: details
+        label: "Germplasm"
+        weight: 2
+        show_empty: false
+        open: true
+        children:
+          - "exp_germgenus"
+          - "exp_germspecies"
+          - "exp_germcollection"
+      - id: experiment_phenomics
+        type: details
+        label: "Phenomics"
+        weight: 3
+        show_empty: false
+        open: true
+        children:
+          - "exp_featureofinterest"
+      - id: expdesign_field
+        type: details
+        label: "Field"
+        weight: 1
+        show_empty: false
+        open: true
+        children:
+          - "exp_field_locations"
+          - "exp_field_design"
+      - id: expdesign_ghouse
+        type: details
+        label: "Greenhouse"
+        weight: 2
+        show_empty: false
+        open: true
+        children:
+          - "exp_ghouse_locations"
+          - "exp_ghouse_growingmedia"
+          - "exp_ghouse_design"
+      - id: expdesign_gchamber
+        type: details
+        label: "Growth Chamber"
+        weight: 3
+        show_empty: false
+        open: true
+        children:
+          - "exp_gchamber_locations"
+          - "exp_gchamber_growingmedia"
+          - "exp_gchamber_design"
+      - id: expdesign_bchem
+        type: details
+        label: "Biochemical Assay"
+        weight: 4
+        show_empty: false
+        open: true
+        children:
+          - "exp_bchem_technique"
+          - "exp_bchem_assayprotocal"
+          - "exp_bchem_labfacility"
+          - "exp_bchem_date"
+      - id: experiment_design
+        type: details
+        label: "Experimental Design"
+        weight: 4
+        show_empty: false
+        open: true
+        children:
+          - "expdesign_field"
+          - "expdesign_ghouse"
+          - "expdesign_gchamber"
+          - "expdesign_bchem"
+      - id: experiment_people
+        type: details
+        label: "Researchers"
+        weight: 5
+        show_empty: false
+        open: true
+        children:
+          - "exp_datacollector"
+          - "exp_custodian"
+          - "exp_curator"
+      - id: experiment_funding
+        type: details
+        label: "Funding"
+        weight: 7
+        show_empty: false
+        open: true
+        children:
+          - "exp_org"
+      - id: experiment_attribution
+        type: details
+        label: "Attribution"
+        weight: 6
+        show_empty: false
+        open: true
+        children:
+          - "experiment_people"
+          - "exp_citation"
+          - "exp_datalicenses"
+          - "exp_pub"
+          - "experiment_funding"
