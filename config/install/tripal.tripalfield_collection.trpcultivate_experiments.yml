@@ -19,18 +19,7 @@ fields:
         content_type: research_experiment
         label: Name
         type: chado_string_type_default
-        description: 'The full name of the experiment. It is recommended that the name include important details such as the crop and germplasm collection being studied, the years the experiment is being conducted over and key details of the experimental design.
-        <h3>Guidelines by Experiment Type</h3>
-        <dl>
-          <dt>Field</dt>
-          <dd> Include the number of site-years the experiment is being performed over. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 over four site-years from 2021-2023".</dd>
-          <dt>Greenhouse</dt>
-          <dd>Include the name of the greenhouse. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 in the USASK Agriculture Greenhouse A from 2021-2023".</dd>
-          <dt>Growth Chamber</dt>
-          <dd>Include the name of the growth chamber facility. For example, you should follow the format: "Evaluate the Nitrogen fixing efficacy of inoculate-cultivar pairs: Lentil AGILE LDP in the USASK Phytotron from 2021-2023".</dd>
-          <dt>Biochemical Assay</dt>
-          <dd>Include the biochemical technique. For example, you should follow the format: "Evaluate the amino acid composition for specific cultivars: Lentil AGILE LDP subset using Near Infrared Spectroscopy (NIRS) performed in 2023".</dd>
-        </dl>'
+        description: 'The full name of the experiment. Please see the recommendations above and be as conscise as possible while maintaining uniqueness.'
         cardinality: 1
         required: true
         storage_settings:
