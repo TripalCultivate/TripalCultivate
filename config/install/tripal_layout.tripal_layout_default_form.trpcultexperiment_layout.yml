@@ -8,7 +8,7 @@ layouts:
         type: details
         label: "Name"
         description: '<p>It is recommended that the name include important details such as the crop and germplasm collection being studied, the years the experiment is being conducted over and key details of the experimental design.</p>
-        <h6>Guidelines by Experiment Type</h6>
+        <p><strong><h6>Guidelines by Experiment Type</strong></p>
         <dl>
           <dt>Field</dt>
           <dd> Include the number of site-years the experiment is being performed over. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 over four site-years from 2021-2023".</dd>
@@ -58,7 +58,7 @@ layouts:
         label: "Field"
         weight: 1
         show_empty: false
-        open: true
+        open: false
         children:
           - "exp_field_locations"
           - "exp_field_design"
@@ -67,7 +67,7 @@ layouts:
         label: "Greenhouse"
         weight: 2
         show_empty: false
-        open: true
+        open: false
         children:
           - "exp_ghouse_locations"
           - "exp_ghouse_growingmedia"
@@ -77,7 +77,7 @@ layouts:
         label: "Growth Chamber"
         weight: 3
         show_empty: false
-        open: true
+        open: false
         children:
           - "exp_gchamber_locations"
           - "exp_gchamber_growingmedia"
@@ -87,7 +87,7 @@ layouts:
         label: "Biochemical Assay"
         weight: 4
         show_empty: false
-        open: true
+        open: false
         children:
           - "exp_bchem_technique"
           - "exp_bchem_assayprotocal"
@@ -96,6 +96,7 @@ layouts:
       - id: experiment_design
         type: details
         label: "Experimental Design"
+        description: "Experimental design metadata is often specific to the type of experiment being done. <strong>Please expand the sections specific to your experiment and fill out the metadata within.</strong> For example, if you are using a field experiment to collect your samples but also doing a biochemical assay to evaluate these samples, then you will fill out the metadata in both the 'Field' and 'Biochemical Assay' sections below."
         weight: 4
         show_empty: false
         open: true
