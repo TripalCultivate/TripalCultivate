@@ -10,8 +10,8 @@ layouts:
       - id: experiment_name
         type: details
         label: "Name"
-        description: 'It is recommended that the name include important details such as the crop and germplasm collection being studied, the years the experiment is being conducted over and key details of the experimental design.
-        <h3>Guidelines by Experiment Type</h3>
+        description: '<p>It is recommended that the name include important details such as the crop and germplasm collection being studied, the years the experiment is being conducted over and key details of the experimental design.</p>
+        <h6>Guidelines by Experiment Type</h6>
         <dl>
           <dt>Field</dt>
           <dd> Include the number of site-years the experiment is being performed over. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 over four site-years from 2021-2023".</dd>
