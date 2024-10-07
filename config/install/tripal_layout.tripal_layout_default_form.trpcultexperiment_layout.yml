@@ -3,9 +3,6 @@ label: 'Research Experiment'
 description: 'Display for the research experiment content type.'
 layouts:
   - tripal_entity_type: "research_experiment"
-    hidden:
-      - uid
-      - title
     field_groups:
       - id: experiment_name
         type: details
@@ -144,4 +141,6 @@ layouts:
         show_empty: false
         open: false
         children:
+          - title
+          - uid
           - "experiment_type"
