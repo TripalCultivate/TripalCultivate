@@ -8,7 +8,7 @@ layouts:
         type: details
         label: "Name"
         description: '<p>It is recommended that the name include important details such as the crop and germplasm collection being studied, the years the experiment is being conducted over and key details of the experimental design.</p>
-        <p><strong><h6>Guidelines by Experiment Type</strong></p>
+        <p><strong>Guidelines by Experiment Type</strong></p>
         <dl>
           <dt>Field</dt>
           <dd> Include the number of site-years the experiment is being performed over. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 over four site-years from 2021-2023".</dd>
@@ -28,6 +28,7 @@ layouts:
       - id: experiment_overview
         type: details
         label: "Overview"
+        description: "The following information applies to your experiment as a whole. Think about why you are doing the experiment, and describe the experiment like you would to a graduate degree committee or when applying for a grant."
         weight: 1
         show_empty: false
         open: true
@@ -38,6 +39,7 @@ layouts:
       - id: experiment_germplasm
         type: details
         label: "Germplasm"
+        description: "These fields describe the germplasm you are collecting the data on. Make sure to be specific in regards to the collection."
         weight: 2
         show_empty: false
         open: true
@@ -48,6 +50,7 @@ layouts:
       - id: experiment_phenomics
         type: details
         label: "Phenomics"
+        description: "Often in agriculture we are measuring or observing traits in the germplasm we are studying. This can include more typical phenotypic traits such as the plant height or days from sowing to flowering, and also more derived traits such as protein content, microbiome species composition, or measurements derived from high throughput phenotyping platforms (e.g. drone, BELT)."
         weight: 3
         show_empty: false
         open: true
@@ -108,6 +111,7 @@ layouts:
       - id: experiment_people
         type: details
         label: "Researchers"
+        description: "The fields are used to ensure everyone involved in the experiment recieves credit for the work they did."
         weight: 5
         show_empty: false
         open: true
@@ -118,6 +122,7 @@ layouts:
       - id: experiment_funding
         type: details
         label: "Funding"
+        description: "The fields ensure that all funding organizations behind this research recieve credit for funding this work. You may need to talk your PI for these details."
         weight: 7
         show_empty: false
         open: true
@@ -126,6 +131,7 @@ layouts:
       - id: experiment_attribution
         type: details
         label: "Attribution"
+        description: "The fields are used to ensure everyone involved in the experiment recieves credit for the work they did."
         weight: 6
         show_empty: false
         open: true
