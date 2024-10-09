@@ -29,7 +29,7 @@ content_types:
 
     -   label: Research Experiment
         term: 'SIO:000994'
-        help_text: Use to describe a single experimental design with the goal of collecting data and answering specific hypothesis. Usually multiple experiments will be grouped together under a research study in order to make more broad conclusions.
+        help_text: Use to describe a single experimental design with the goal of collecting data and answering a specific hypothesis. Usually multiple experiments will be grouped together under a research study in order to make more broad conclusions.
         category: Research Management
         id: research_experiment
         title_format: "[experiment_name]"
