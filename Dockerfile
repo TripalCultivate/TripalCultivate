@@ -32,7 +32,7 @@ WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 RUN service postgresql start \
   && drush trp-install-chado --schema-name=${chadoschema} \
   && echo "SET search_path TO testchado"  > /var/www/drupal/migration.sql \
-  && cat /var/www/drupal/web/modules/contrib/TripalCultivate/config/sql/V1.3__to__V1.3.3.013__updates.sql>> /var/www/drupal/migration.sql \
+  && cat /var/www/drupal/web/modules/contrib/TripalCultivate/config/sql/V1.3__to__V1.3.3.013__updates.sql >> /var/www/drupal/migration.sql \
   && drush sql:query --file=/var/www/drupal/migration.sql \
   && cp /var/www/drupal/web/modules/contrib/TripalCultivate/config/sql/chado_schema-1.3.3.013.yml /var/www/drupal/web/modules/contrib/tripal/tripal_chado/chado_schema/chado_schema-1.3.yml \
   && service postgresql stop
