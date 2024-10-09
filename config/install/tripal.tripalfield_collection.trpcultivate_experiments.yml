@@ -489,6 +489,32 @@ fields:
               region: content
               weight: 20
 
+    -   name: exp_pheno_method
+        content_type: research_experiment
+        label: methodology
+        type: chado_property_type_default
+        description: For each phenotypic trait you will be measuring, add an entry to this field describing exactly how you will be measuring it. For example, if your trait is "Canopy Height" then an entry in this field may be "Canopy height will be measured in centimeters using a measuring stick. Without touching the plants, the measuring stick will be placed in 3 random spots in the plot, the researcher will kneel down to reduce perspective bias and will read the height on the measuring stick of the highest point of the plant."
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: C86572
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 20
+          form:
+            default:
+              region: content
+              weight: 20
+
 ### -------------------------------------------------------------------------
 ## FIELD EXPERIMENT DESIGN
 ###
