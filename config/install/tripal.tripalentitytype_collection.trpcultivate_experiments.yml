@@ -32,5 +32,5 @@ content_types:
         help_text: Use to describe a single experimental design with the goal of collecting data and answering a specific hypothesis. Usually multiple experiments will be grouped together under a research study in order to make more broad conclusions.
         category: Research Management
         id: research_experiment
-        title_format: "[experiment_name]"
-        url_format: "experiment/[experiment_name]"
+        title_format: "[exp_name]"
+        url_format: "experiment/[exp_name]"
