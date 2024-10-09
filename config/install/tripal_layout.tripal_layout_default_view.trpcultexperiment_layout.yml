@@ -38,6 +38,7 @@ layouts:
         open: true
         children:
           - "exp_featureofinterest"
+          - "exp_pheno_method"
       - id: expdesign_field
         type: details
         label: "Field"
