@@ -293,9 +293,9 @@ fields:
 
     -   name: exp_germspecies
         content_type: research_experiment
-        label: Germplasm Species
+        label: Germplasm Scientific Name
         type: chado_property_type_default
-        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
+        description: The scientific name of the germplasm species (e.g. Lens culinaris) that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -983,9 +983,9 @@ fields:
 
     -   name: researchstudy_germspecies
         content_type: research_study
-        label: Germplasm Species
+        label: Germplasm Scientific Name
         type: chado_property_type_default
-        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
+        description: The scientific name of the germplasm species (e.g. Lens culinaris) that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
         cardinality: -1
         required: false
         storage_settings:
