@@ -131,7 +131,7 @@ layouts:
       - id: experiment_attribution
         type: details
         label: "Attribution"
-        description: "The fields are used to ensure everyone involved in the experiment receives credit for the work they did."
+        description: "These fields are focused on giving credit to all researchers, organizations and funding related to this experiment. Additionally it provides information to people using the data from this experiment on the appropriate citation to use and any restrictions that apply."
         weight: 6
         show_empty: false
         open: true
