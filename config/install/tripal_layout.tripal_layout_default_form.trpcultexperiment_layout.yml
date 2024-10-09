@@ -111,7 +111,7 @@ layouts:
       - id: experiment_people
         type: details
         label: "Researchers"
-        description: "The fields are used to ensure everyone involved in the experiment receives credit for the work they did."
+        description: "These fields are used to ensure everyone involved in the experiment receives credit for the work they did."
         weight: 5
         show_empty: false
         open: true
@@ -122,7 +122,7 @@ layouts:
       - id: experiment_funding
         type: details
         label: "Funding"
-        description: "The fields ensure that all funding organizations behind this research receive credit for funding this work. You may need to talk your PI for these details."
+        description: "These fields ensure that all funding organizations behind this research receive credit for funding this work. You may need to talk your PI for these details."
         weight: 7
         show_empty: false
         open: true

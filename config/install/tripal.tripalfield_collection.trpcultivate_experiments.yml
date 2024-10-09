@@ -523,7 +523,7 @@ fields:
         content_type: research_experiment
         label: Field Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Field Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in, which should be consistent with "Field Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -605,7 +605,7 @@ fields:
         content_type: research_experiment
         label: Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specifieid in "Greenhouse Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in, which should be consistent with "Greenhouse Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
@@ -633,7 +633,7 @@ fields:
 
     -   name: exp_gchamber_locations
         content_type: research_experiment
-        label: Grownth Chamber Locations
+        label: Growth Chamber Locations
         type: chado_property_type_default
         description: Include the unique identifier, name of the facility, province, country and optionally the geographical coordinates of each growth chamber (e.g. "A5, USASK Phytotron, SK, Canada").
         cardinality: -1
@@ -687,7 +687,7 @@ fields:
         content_type: research_experiment
         label: Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in. Make sure these match those specified in "Growth Chamber Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in, which should be consistent with "Growth Chamber Locations" and "Experiment Years".
         cardinality: -1
         required: false
         storage_settings:
