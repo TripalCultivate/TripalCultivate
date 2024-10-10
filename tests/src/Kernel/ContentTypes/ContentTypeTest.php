@@ -66,7 +66,7 @@ class ContentTypeTest extends ChadoTestKernelBase {
     $this->installConfig('trpcultivate');
 
     // Initialize the chado instance with all the records that would be present after running prepare.
-    $this->connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
+    $this->connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
     // Apply the chado update
     // @todo remove when https://github.com/tripal/tripal/issues/1876 is closed.
     $this->connection->executeSqlFile(
