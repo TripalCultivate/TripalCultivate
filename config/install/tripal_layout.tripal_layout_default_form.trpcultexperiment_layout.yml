@@ -1,0 +1,154 @@
+id: 'trpcultexperiment_layout'
+label: 'Research Experiment'
+description: 'Display for the research experiment content type.'
+layouts:
+  - tripal_entity_type: "research_experiment"
+    field_groups:
+      - id: experiment_name
+        type: details
+        label: "Name"
+        description: '<p>It is recommended that the name include important details such as the crop and germplasm collection being studied, the years the experiment is being conducted over and key details of the experimental design.</p>
+        <p><strong>Guidelines by Experiment Type</strong></p>
+        <dl>
+          <dt>Field</dt>
+          <dd> Include the number of site-years the experiment is being performed over. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 over four site-years from 2021-2023".</dd>
+          <dt>Greenhouse</dt>
+          <dd>Include the name of the greenhouse. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 in the USASK Agriculture Greenhouse A from 2021-2023".</dd>
+          <dt>Growth Chamber</dt>
+          <dd>Include the name of the growth chamber facility. For example, you should follow the format: "Evaluate the Nitrogen fixing efficacy of inoculate-cultivar pairs: Lentil AGILE LDP in the USASK Phytotron from 2021-2023".</dd>
+          <dt>Biochemical Assay</dt>
+          <dd>Include the biochemical technique. For example, you should follow the format: "Evaluate the amino acid composition for specific cultivars: Lentil AGILE LDP subset using Near Infrared Spectroscopy (NIRS) performed in 2023".</dd>
+        </dl>'
+        weight: 0
+        show_empty: false
+        open: true
+        children:
+          - "exp_name"
+          - "exp_dbxref"
+      - id: experiment_overview
+        type: details
+        label: "Overview"
+        description: "The following information applies to your experiment as a whole. Think about why you are doing the experiment, and describe the experiment like you would to a graduate degree committee or when applying for a grant."
+        weight: 1
+        show_empty: false
+        open: true
+        children:
+          - "exp_years"
+          - "exp_objectives"
+          - "exp_description"
+      - id: experiment_germplasm
+        type: details
+        label: "Germplasm"
+        description: "These fields describe the germplasm you are collecting the data on. Make sure to be specific in regards to the collection."
+        weight: 2
+        show_empty: false
+        open: true
+        children:
+          - "exp_germgenus"
+          - "exp_germspecies"
+          - "exp_germcollection"
+      - id: experiment_phenomics
+        type: details
+        label: "Phenomics"
+        description: "Often in agriculture we are measuring or observing traits in the germplasm we are studying. This can include more typical phenotypic traits such as the plant height or days from sowing to flowering, and also more derived traits such as protein content, microbiome species composition, or measurements derived from high throughput phenotyping platforms (e.g. drone, BELT)."
+        weight: 3
+        show_empty: false
+        open: true
+        children:
+          - "exp_featureofinterest"
+          - "exp_pheno_method"
+      - id: expdesign_field
+        type: details
+        label: "Field"
+        weight: 1
+        show_empty: false
+        open: false
+        children:
+          - "exp_field_locations"
+          - "exp_field_design"
+      - id: expdesign_ghouse
+        type: details
+        label: "Greenhouse"
+        weight: 2
+        show_empty: false
+        open: false
+        children:
+          - "exp_ghouse_locations"
+          - "exp_ghouse_growingmedia"
+          - "exp_ghouse_design"
+      - id: expdesign_gchamber
+        type: details
+        label: "Growth Chamber"
+        weight: 3
+        show_empty: false
+        open: false
+        children:
+          - "exp_gchamber_locations"
+          - "exp_gchamber_growingmedia"
+          - "exp_gchamber_design"
+      - id: expdesign_bchem
+        type: details
+        label: "Biochemical Assay"
+        weight: 4
+        show_empty: false
+        open: false
+        children:
+          - "exp_bchem_technique"
+          - "exp_bchem_assayprotocal"
+          - "exp_bchem_labfacility"
+          - "exp_bchem_date"
+      - id: experiment_design
+        type: details
+        label: "Experimental Design"
+        description: "Experimental design metadata is often specific to the type of experiment being done. <strong>Please expand the sections specific to your experiment and fill out the metadata within.</strong> For example, if you are using a field experiment to collect your samples but also doing a biochemical assay to evaluate these samples, then you will fill out the metadata in both the 'Field' and 'Biochemical Assay' sections below."
+        weight: 4
+        show_empty: false
+        open: true
+        children:
+          - "expdesign_field"
+          - "expdesign_ghouse"
+          - "expdesign_gchamber"
+          - "expdesign_bchem"
+      - id: experiment_people
+        type: details
+        label: "Researchers"
+        description: "These fields are used to ensure everyone involved in the experiment receives credit for the work they did."
+        weight: 5
+        show_empty: false
+        open: true
+        children:
+          - "exp_datacollector"
+          - "exp_custodian"
+          - "exp_curator"
+      - id: experiment_funding
+        type: details
+        label: "Funding"
+        description: "These fields ensure that all funding organizations behind this research receive credit for funding this work. You may need to talk your PI for these details."
+        weight: 7
+        show_empty: false
+        open: true
+        children:
+          - "exp_org"
+      - id: experiment_attribution
+        type: details
+        label: "Attribution"
+        description: "These fields are focused on giving credit to all researchers, organizations and funding related to this experiment. Additionally it provides information to people using the data from this experiment on the appropriate citation to use and any restrictions that apply."
+        weight: 6
+        show_empty: false
+        open: true
+        children:
+          - "experiment_people"
+          - "exp_citation"
+          - "exp_datalicenses"
+          - "exp_pub"
+          - "experiment_funding"
+      - id: experiment_static
+        type: details
+        label: "Static Metadata"
+        weight: 100
+        show_empty: false
+        open: false
+        children:
+          - title
+          - uid
+          - "experiment_type"
