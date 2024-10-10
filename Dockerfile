@@ -1,4 +1,4 @@
-ARG drupalversion=10.3.x-dev
+ARG drupalversion=10.4.x-dev
 ARG phpversion=8.3
 ARG pgsqlversion=16
 FROM tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql${pgsqlversion}-noChado
