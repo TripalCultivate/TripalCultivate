@@ -67,12 +67,6 @@ class ContentTypeTest extends ChadoTestKernelBase {
 
     // Initialize the chado instance with all the records that would be present after running prepare.
     $this->connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
-    // Apply the chado update
-    // @todo remove when https://github.com/tripal/tripal/issues/1876 is closed.
-    $this->connection->executeSqlFile(
-      __DIR__ . '/../../../../config/sql/V1.3__to__V1.3.3.013__updates.sql',
-      ['testchado' => $this->testSchemaName]
-    );
   }
 
   /**
