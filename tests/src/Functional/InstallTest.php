@@ -5,6 +5,7 @@ namespace Drupal\Tests\trpcultivate\Functional;
 use Drupal\Core\Routing\RouteMatch;
 use Drupal\Core\Url;
 use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
+use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Simple test to ensure that main page loads with module enabled.
