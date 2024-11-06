@@ -17,7 +17,7 @@ class ContentTypeTest extends ChadoTestBrowserBase {
    *
    * @var string
    */
-  protected string $defaultTheme = 'stark';
+  protected $defaultTheme = 'stark';
 
   /**
    * Modules to enable.

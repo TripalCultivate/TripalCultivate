@@ -19,14 +19,14 @@ class InstallTest extends ChadoTestBrowserBase {
    *
    * @var string
    */
-  protected string $defaultTheme = 'stark';
+  protected $defaultTheme = 'stark';
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  protected static array $modules = ['help'];
+  protected static $modules = ['help'];
 
   /**
    * The name of your module in the .info.yml.
