@@ -55,7 +55,7 @@ class InstallTest extends ChadoTestBrowserBase {
   /**
    * A Database query interface for querying Chado using Tripal DBX.
    *
-   * @var ChadoConnection
+   * @var Drupal\tripal_chado\Database\ChadoConnection
    */
   protected ChadoConnection $chado_connection;
 
