@@ -26,6 +26,22 @@ function trpcultivate_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
+ * Implements hook_preprocess_page().
+ */
+function trpcultivate_preprocess_page(&$variables) {
+
+  // Get the route for the current page.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  // If this is a page related to listing of TripalEntityTypes then we want
+  // to add the following CSS library.
+  $tripal_entity_type_routes = ['entity.tripal_entity.add_page', 'entity.tripal_entity_type.collection'];
+  if (in_array($route_name, $tripal_entity_type_routes)) {
+    $variables['#attached']['library'][] = 'trpcultivate/tripal_entity_type';
+  }
+}
+
+/**
  * Insert terms needed by this module into the default chado instance.
  *
  * Expected but not required to be run by a Tripal Job.
