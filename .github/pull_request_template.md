@@ -5,7 +5,7 @@
 <!-- This can usually be copied from the issue. Please do not just say, go see issue but instead copy the relevant details here. -->
 
 ## What does this PR do?
-*Please describe each things this PR does. For example, a PR may 1) solve a specific bug, 2) create an auomated test to ensure it doesn't return.*
+*Please describe each things this PR does. For example, a PR may 1) solve a specific bug, 2) create an automated test to ensure it doesn't return.*
 
 1.
 2.

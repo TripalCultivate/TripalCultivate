@@ -102,8 +102,8 @@ class ContentTypeTest extends ChadoTestBrowserBase {
         // Now check that this content type has fields.
         $found_fields = \Drupal::service('entity_field.manager')
           ->getFieldDefinitions('tripal_entity', $expected_id);
-        // This returns the 8 base fields too, so we add them to the list.
-        // Specifically, id, type, uid, title, status, created, changed, path).
+        // This returns the 9 base fields too, so we add them to the list.
+        // Specifically, id, type, uid, title, status, created, changed, path.
         $expected_count = $expected_field_count + 8;
         $this->assertCount($expected_count, $found_fields,
           "We did not see the expected number of fields attached to the $expected_id content type.");

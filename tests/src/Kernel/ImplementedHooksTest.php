@@ -27,11 +27,11 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
   protected static $modules = ['tripal', 'user', 'field', 'trpcultivate'];
 
   /**
-   * Test Chado connection.
+   * A Database query interface for querying Chado using Tripal DBX.
    *
-   * @var ChadoConnection
+   * @var Drupal\tripal_chado\Database\ChadoConnection
    */
-  protected $connection;
+  protected ChadoConnection $chado_connection;
 
   /**
    * {@inheritdoc}
@@ -41,7 +41,7 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
 
     // Initialize the chado instance with all the records that would be present
     // after running prepare.
-    $this->connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
+    $this->chado_connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
   }
 
   /**
