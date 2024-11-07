@@ -2,8 +2,10 @@
 
 namespace Drupal\Tests\trpcultivate\Functional;
 
+use Drupal\Core\Routing\RouteMatch;
 use Drupal\Core\Url;
 use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
+use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Simple test to ensure that main page loads with module enabled.
@@ -13,6 +15,11 @@ use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
  */
 class InstallTest extends ChadoTestBrowserBase {
 
+  /**
+   * Theme used in the test environment.
+   *
+   * @var string
+   */
   protected $defaultTheme = 'stark';
 
   /**
@@ -23,25 +30,34 @@ class InstallTest extends ChadoTestBrowserBase {
   protected static $modules = ['help', 'tripal', 'tripal_layout'];
 
   /**
-   * The name of your module in the .info.yml
+   * The name of your module in the .info.yml.
+   *
+   * @var string
    */
-  protected static $module_name = 'Base API';
+  protected static string $module_name = 'Base API';
 
   /**
    * The machine name of this module.
+   *
+   * @var string
    */
-  protected static $module_machinename = 'trpcultivate';
+  protected static string $module_machinename = 'trpcultivate';
 
   /**
    * A small excert from your help page.
+   *
    * Do not cross newlines.
+   *
+   * @var string
    */
-  protected static $help_text_excerpt = 'basic functionality shared by the entire Tripal Cultivate package of modules';
+  protected static string $help_text_excerpt = 'basic functionality shared by the entire Tripal Cultivate package of modules';
 
   /**
-   * Chado connection via Tripal DBX.
+   * A Database query interface for querying Chado using Tripal DBX.
+   *
+   * @var Drupal\tripal_chado\Database\ChadoConnection
    */
-  protected $connection;
+  protected ChadoConnection $chado_connection;
 
   /**
    * {@inheritdoc}
@@ -53,8 +69,8 @@ class InstallTest extends ChadoTestBrowserBase {
     // Ensure we see all logging in tests.
     \Drupal::state()->set('is_a_test_environment', TRUE);
 
-    // Open connection to Chado
-    $this->connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
+    // Open connection to Chado.
+    $this->chado_connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
 
     $moduleHandler = $this->container->get('module_handler');
     $moduleInstaller = $this->container->get('module_installer');
@@ -88,7 +104,7 @@ class InstallTest extends ChadoTestBrowserBase {
     $this->drupalGet('admin/modules');
     $status_code = $session->getStatusCode();
     $this->assertEquals(200, $status_code, "The module install page should be able to load $context.");
-    $this->assertSession()->pageTextContains( self::$module_name );
+    $this->assertSession()->pageTextContains(self::$module_name);
 
   }
 
@@ -112,7 +128,7 @@ class InstallTest extends ChadoTestBrowserBase {
 
     // Call the hook to ensure it is returning text.
     $name = 'help.page.' . $this::$module_machinename;
-    $match = $this->createStub(\Drupal\Core\Routing\RouteMatch::class);
+    $match = $this->createStub(RouteMatch::class);
     $hook_name = self::$module_machinename . '_help';
     $output = $hook_name($name, $match);
     $this->assertNotEmpty($output, "The help hook should return output $context.");

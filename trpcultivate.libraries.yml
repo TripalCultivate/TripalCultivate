@@ -1,0 +1,4 @@
+tripal_entity_type:
+  css:
+    theme:
+      css/tripal_entity_type.css: {}

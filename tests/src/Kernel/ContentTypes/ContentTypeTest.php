@@ -3,6 +3,7 @@
 namespace Drupal\Tests\trpcultivate\Kernel\ContentTypes;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Tests that the content types and fields associated with them are created.
@@ -11,6 +12,12 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group Fields
  */
 class ContentTypeTest extends ChadoTestKernelBase {
+
+  /**
+   * Theme used in the test environment.
+   *
+   * @var string
+   */
   protected $defaultTheme = 'stark';
 
   /**
@@ -21,11 +28,11 @@ class ContentTypeTest extends ChadoTestKernelBase {
   protected static $modules = ['system', 'user', 'views', 'field', 'tripal', 'tripal_chado', 'tripal_layout','trpcultivate'];
 
   /**
-   * Test Chado connection.
+   * A Database query interface for querying Chado using Tripal DBX.
    *
-   * @var ChadoConnection
+   * @var Drupal\tripal_chado\Database\ChadoConnection
    */
-  protected $connection;
+  protected ChadoConnection $chado_connection;
 
   /**
    * The expected content types imported by this module.
@@ -40,7 +47,6 @@ class ContentTypeTest extends ChadoTestKernelBase {
       'research_experiment' => 30,
     ],
   ];
-
 
   /**
    * {@inheritdoc}
@@ -70,8 +76,10 @@ class ContentTypeTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Run the callback that imports our content type collections
-   * and confirm all types and fields are added.
+   * Tests importing content type collections.
+   *
+   * More specifically, run the callback that imports our content type
+   * collections and confirm all types and fields are added.
    */
   public function testImportContentTypeCallback() {
 
@@ -84,12 +92,13 @@ class ContentTypeTest extends ChadoTestKernelBase {
     // Then import the content types and their fields.
     \trpcultivate_import_contenttypes();
 
-    // Now select all content types by category and see if they match expectations.
+    // Now select all content types by category
+    // and see if they match expectations.
     foreach ($this->expected_contenttypes as $category => $expected_types) {
       $found_types = \Drupal::entityTypeManager()
         ->getStorage('tripal_entity_type')
         ->loadByProperties(['category' => $category]);
-      $expected_count = sizeof($expected_types);
+      $expected_count = count($expected_types);
       $this->assertCount($expected_count, $found_types,
         "We did not get the expected number of types in the $category category.");
       foreach ($expected_types as $expected_id => $expected_field_count) {
@@ -99,12 +108,13 @@ class ContentTypeTest extends ChadoTestKernelBase {
         // Now check that this content type has fields.
         $found_fields = \Drupal::service('entity_field.manager')
           ->getFieldDefinitions('tripal_entity', $expected_id);
-        // This returns the 8 base fields too (i.e. id, type, uid, title, status, created, changed)
-        // so we add them to the list.
-        $expected_count = $expected_field_count + 7;
+        // This returns the 9 base fields too, so we add them to the list.
+        // Specifically, id, type, uid, title, status, created, changed, path.
+        $expected_count = $expected_field_count + 8;
         $this->assertCount($expected_count, $found_fields,
           "We did not see the expected number of fields attached to the $expected_id content type.");
       }
     }
   }
+
 }
