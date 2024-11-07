@@ -3,6 +3,7 @@
 namespace Drupal\Tests\trpcultivate\Functional\ContentTypes;
 
 use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
+use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Tests that the content types and fields associated with them are created.
@@ -27,11 +28,11 @@ class ContentTypeTest extends ChadoTestBrowserBase {
   protected static $modules = ['tripal', 'user', 'field', 'trpcultivate'];
 
   /**
-   * Test Chado connection.
+   * A Database query interface for querying Chado using Tripal DBX.
    *
-   * @var ChadoConnection
+   * @var Drupal\tripal_chado\Database\ChadoConnection
    */
-  protected $connection;
+  protected ChadoConnection $chado_connection;
 
   /**
    * The expected content types imported by this module.
@@ -60,10 +61,10 @@ class ContentTypeTest extends ChadoTestBrowserBase {
 
     // Initialize the chado instance with all the records that would be present
     // after running prepare.
-    $this->connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
+    $this->chado_connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
     // Apply the chado update.
     // @todo remove when https://github.com/tripal/tripal/issues/1876 is closed.
-    $this->connection->executeSqlFile(
+    $this->chado_connection->executeSqlFile(
       __DIR__ . '/../../../../config/sql/V1.3__to__V1.3.3.013__updates.sql',
       ['testchado' => $this->testSchemaName]
     );
