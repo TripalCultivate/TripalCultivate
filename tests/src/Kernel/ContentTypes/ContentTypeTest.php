@@ -25,7 +25,18 @@ class ContentTypeTest extends ChadoTestKernelBase {
    *
    * @var array
    */
-  protected static $modules = ['system', 'user', 'views', 'field', 'tripal', 'tripal_chado', 'tripal_layout','trpcultivate'];
+  protected static $modules = [
+    'system',
+    'user',
+    'path',
+    'path_alias',
+    'views',
+    'field',
+    'tripal',
+    'tripal_chado',
+    'tripal_layout',
+    'trpcultivate',
+  ];
 
   /**
    * A Database query interface for querying Chado using Tripal DBX.
@@ -57,12 +68,8 @@ class ContentTypeTest extends ChadoTestKernelBase {
     // Ensure we see all logging in tests.
     \Drupal::state()->set('is_a_test_environment', TRUE);
 
-    $this->installConfig('system');
-    // ... we need entity types to publish them.
-    $this->installEntitySchema('tripal_entity_type');
-    $this->installEntitySchema('tripal_entity');
-    // ... we need the tripal term tables
-    $this->installSchema('tripal', ['tripal_id_space_collection', 'tripal_terms_idspaces', 'tripal_vocabulary_collection', 'tripal_terms_vocabs', 'tripal_terms']);
+    // Firs prepare our test environment.
+    $this->prepareEnvironment(['TripalTerm', 'TripalEntity']);
     // ... we need the term yamls for chado.
     $this->installConfig('tripal_chado');
     // ... we need the layout entities for our content types.
@@ -71,7 +78,8 @@ class ContentTypeTest extends ChadoTestKernelBase {
     // ... we need our own modules config.
     $this->installConfig('trpcultivate');
 
-    // Initialize the chado instance with all the records that would be present after running prepare.
+    // Initialize the chado instance with all the records
+    // that would be present after running prepare.
     $this->connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
   }
 
