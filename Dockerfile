@@ -25,6 +25,13 @@ RUN service postgresql restart \
   && drush config:set system.site slogan "Drupal $DRUPALVERSION PHP$PHPVERSION" \
   && service postgresql stop
 
+COPY docker/* /var/www/drupal
+WORKDIR /var/www/drupal/
+RUN composer config --no-plugins allow-plugins.cweagans/composer-patches true \
+  && composer require 'drupal/markup:^2.0' 'cweagans/composer-patches' \
+  && composer config extra.patches-file composer.patches.json \
+  && composer install
+
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
 WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 
@@ -43,7 +50,7 @@ RUN service postgresql start \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=germplasm_chado \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=genomic_chado \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=genetic_chado \
-  && drush en trpcultivate --yes \
+  && drush en trpcultivate markup --yes \
   && drush tripal:trp-run-jobs --username=drupaladmin \
   && drush cr \
   && service postgresql stop

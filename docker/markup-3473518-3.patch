@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/Field/FieldType/MarkupItem.php b/src/Plugin/Field/FieldType/MarkupItem.php
+index d87b37e..6249ba1 100644
+--- a/src/Plugin/Field/FieldType/MarkupItem.php
++++ b/src/Plugin/Field/FieldType/MarkupItem.php
+@@ -67,7 +67,7 @@ class MarkupItem extends FieldItemBase {
+     $element['markup'] = [
+       '#type'          => 'text_format',
+       '#title'         => $this->t('Markup'),
+-      '#default_value' => isset($settings['markup']['value']) ?? '',
++      '#default_value' => $settings['markup']['value'] ?? '',
+       '#format'        => !empty($settings['markup']['format']) ? $settings['markup']['format'] : filter_default_format(),
+       '#required'      => TRUE,
+       '#rows'          => 15,
