@@ -10,6 +10,10 @@ content_types:
         id: research_grant
         title_format: "[grant_name]"
         url_format: "research-grant/[TripalEntity__entity_id]"
+        settings:
+            chado_base_table: project
+            bundle_type_table: project
+            bundle_type_column: type_id
 
     -   label: Research Grant Section
         term: 'SIO:000111'
@@ -18,6 +22,10 @@ content_types:
         id: grant_section
         title_format: "[section_name]"
         url_format: "research-grant/[TripalEntity__entity_id]"
+        settings:
+            chado_base_table: project
+            bundle_type_table: project
+            bundle_type_column: type_id
 
     -   label: Research Study
         term: 'SEPIO:0000125'
@@ -26,6 +34,10 @@ content_types:
         id: research_study
         title_format: "[researchstudy_name]"
         url_format: "research-study/[TripalEntity__entity_id]"
+        settings:
+            chado_base_table: project
+            bundle_type_table: project
+            bundle_type_column: type_id
 
     -   label: Research Experiment
         term: 'SIO:000994'
@@ -34,3 +46,7 @@ content_types:
         id: research_experiment
         title_format: "[exp_name]"
         url_format: "experiment/[exp_name]"
+        settings:
+            chado_base_table: project
+            bundle_type_table: project
+            bundle_type_column: type_id
