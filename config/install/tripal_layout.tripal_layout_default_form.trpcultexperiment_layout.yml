@@ -2,147 +2,139 @@ id: 'trpcultexperiment_layout'
 label: 'Research Experiment'
 description: 'Display for the research experiment content type.'
 layouts:
-  - tripal_entity_type: "research_experiment"
+  - tripal_entity_type: research_experiment
     field_groups:
+
+## -- Vertical Tabs
       - id: stages
         type: vertical_tabs
         label: "Stages"
         children:
-          - experiment_objectives
-          - experiment_funding
-          - experiment_design
-          - experiment_units
-          - experiment_methods
-          - experiment_people
-          - experiment_outputs
-      - id: experiment_objectives
+          - exp-tab-objectives
+          - exp-tab-attribution
+          - exp-tab-design
+          - exp-tab-methods
+          - exp-tab-references
+          - exp-tab-outputs
+      - id: exp-tab-objectives
         type: tab
         label: "Objectives"
-        description: "The following information applies to your experiment as a whole. Think about why you are doing the experiment, and describe the experiment like you would to a graduate degree committee or when applying for a grant."
         weight: 1
         show_empty: false
         open: true
         children:
-          - "exp_name"
-          # - "exp_question"
-          - "exp_objectives"
-          # - "exp_hypothesis"
-          # - "exp_study"
-          - "exp_description"
-      - id: experiment_funding
+          - exp-section-name
+          - exp-section-why
+          - exp-section-summary
+      - id: exp-tab-attribution
         type: tab
-        label: "Funding"
-        description: "These fields ensure that all funding organizations behind this research receive credit for funding this work. You may need to talk your PI for these details."
+        label: "Attribution"
         weight: 2
         show_empty: false
         open: false
         children:
-          - "exp_org"
-          # - "exp_grant"
-      - id: experiment_design
+          - exp_org
+          # - exp_grant
+          - exp_datacollector
+          - exp_custodian
+          - exp_curator
+          - exp_citation
+      - id: exp-tab-design
         type: tab
         label: "Design"
-        description: ""
         weight: 3
         show_empty: false
         open: false
         children:
-          # - "exp_design" currently multiple fields (e.g. exp_field_design)
-          - "exp_featureofinterest"
-          - "exp_germgenus"
-          - "exp_germspecies"
-          - "exp_years"
-      - id: experiment_methods
+          # - exp_design currently multiple fields (e.g. exp_field_design)
+          - exp_featureofinterest
+          - exp_germgenus
+          - exp_germspecies
+          - exp_years
+          - exp-section-units
+      - id: exp-tab-methods
         type: tab
         label: "Methodology"
-        description: "Often in agriculture we are measuring or observing traits in the germplasm we are studying. This can include more typical phenotypic traits such as the plant height or days from sowing to flowering, and also more derived traits such as protein content, microbiome species composition, or measurements derived from high throughput phenotyping platforms (e.g. drone, BELT)."
         weight: 5
         show_empty: false
-        open: true
+        open: false
         children:
-          - "exp_pheno_method"
-      # - id: expdesign_field
-      #   type: details
-      #   label: "Field"
-      #   weight: 1
-      #   show_empty: false
-      #   open: false
-      #   children:
-      #     - "exp_field_locations"
-      #     - "exp_field_design"
-      # - id: expdesign_ghouse
-      #   type: details
-      #   label: "Greenhouse"
-      #   weight: 2
-      #   show_empty: false
-      #   open: false
-      #   children:
-      #     - "exp_ghouse_locations"
-      #     - "exp_ghouse_growingmedia"
-      #     - "exp_ghouse_design"
-      # - id: expdesign_gchamber
-      #   type: details
-      #   label: "Growth Chamber"
-      #   weight: 3
-      #   show_empty: false
-      #   open: false
-      #   children:
-      #     - "exp_gchamber_locations"
-      #     - "exp_gchamber_growingmedia"
-      #     - "exp_gchamber_design"
-      # - id: expdesign_bchem
-      #   type: details
-      #   label: "Biochemical Assay"
-      #   weight: 4
-      #   show_empty: false
-      #   open: false
-      #   children:
-      #     - "exp_bchem_technique"
-      #     - "exp_bchem_assayprotocal"
-      #     - "exp_bchem_labfacility"
-      #     - "exp_bchem_date"
-      # - id: experiment_design
-      #   type: tab
-      #   label: "Experimental Design"
-      #   description: "Experimental design metadata is often specific to the type of experiment being done. <strong>Please expand the sections specific to your experiment and fill out the metadata within.</strong> For example, if you are using a field experiment to collect your samples but also doing a biochemical assay to evaluate these samples, then you will fill out the metadata in both the 'Field' and 'Biochemical Assay' sections below."
-      #   weight: 4
-      #   show_empty: false
-      #   open: true
-      #   children:
-      #     - "expdesign_field"
-      #     - "expdesign_ghouse"
-      #     - "expdesign_gchamber"
-      #     - "expdesign_bchem"
-      - id: experiment_people
+          - exp_pheno_method
+          # - exp_protocols
+          # - exp_analysis_method
+      - id: exp-tab-references
         type: tab
-        label: "Researchers"
-        description: "These fields are used to ensure everyone involved in the experiment receives credit for the work they did."
+        label: "References"
         weight: 5
         show_empty: false
+        open: false
+        children:
+          - exp_pub ## Focus on support types
+      - id: exp-tab-outputs
+        type: tab
+        label: "Research Outputs"
+        weight: 5
+        show_empty: false
+        open: false
+        children:
+          - exp_datalicenses
+          # - exp_pub ## Focus on result types
+## -- Sections
+      - id: exp-section-name
+        label: "Name Guidelines"
+        type: details
         open: true
         children:
-          - "exp_datacollector"
-          - "exp_custodian"
-          - "exp_curator"
-      # - id: experiment_attribution
-      #   type: tab
-      #   label: "Attribution"
-      #   description: "These fields are focused on giving credit to all researchers, organizations and funding related to this experiment. Additionally it provides information to people using the data from this experiment on the appropriate citation to use and any restrictions that apply."
-      #   weight: 6
-      #   show_empty: false
-      #   open: true
-      #   children:
-      #     - "experiment_people"
-      #     - "exp_citation"
-      #     - "exp_datalicenses"
-      #     - "exp_pub"
-      #     - "experiment_funding"
+          - field_instruct_exp_name
+          - exp_name
+      - id: exp-section-why
+        label: "Why is this Experiment being done?"
+        type: details
+        open: true
+        children:
+          - field_instruct_exp_why
+          - exp_objectives
+          - exp_hypothesis
+      - id: exp-section-summary
+        label: "High Level Overview"
+        type: details
+        open: true
+        children:
+          - field_instruct_exp_overview
+          - field_study
+          - exp_description
+      - id: exp-section-units
+        type: details
+        label: "Experimental Unit"
+        weight: 5
+        show_empty: false
+        open: false
+        children:
+          - exp_germcollection
+          - exp_field_locations
+          - exp_field_design
+          - exp_ghouse_locations
+          - exp_ghouse_growingmedia
+          - exp_ghouse_design
+          - exp_gchamber_locations
+          - exp_gchamber_growingmedia
+          - exp_gchamber_design
+          - exp_bchem_technique
+          - exp_bchem_assayprotocal
+          - exp_bchem_labfacility
+          - exp_bchem_date
+          - expdesign_field
+          - expdesign_ghouse
+          - expdesign_gchamber
+          - expdesign_bchem
+## -- Advanced Sidebar
       - id: author
         type: details_sidebar
         label: "Authoring Information"
         children:
           - uid
           - created
+          - exp_dbxref
       - id: url_paths
         type: details_sidebar
         label: "URL Paths"
@@ -154,4 +146,3 @@ layouts:
         weight: -10
         children:
           - experiment_type
-          - exp_dbxref

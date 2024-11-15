@@ -121,11 +121,37 @@ fields:
               region: content
               weight: 4
 
+    -   name: exp_hypothesis
+        content_type: research_experiment
+        label: Hypotheses
+        type: chado_property_type_default
+        description: The hypotheses of this experiment. These should be well founded predictions of the possible outcome of your objectives.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: SIO
+            termAccession: '000284'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 4
+          form:
+            default:
+              region: content
+              weight: 4
+
     -   name: exp_description
         content_type: research_experiment
         label: Experiment Summary
         type: chado_text_type_default
-        description: Describe the experimental design and purpose in great detail. Include all the information you would need to analyze data from this experiment.
+        description: A high level summary of the experiment, similar to the abstract of a article.
         cardinality: 1
         required: false
         storage_settings:
