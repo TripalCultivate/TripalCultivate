@@ -5,6 +5,8 @@
     <rule ref="Drupal">
         <!-- We want to allow underscores in class property names. -->
         <exclude name="Drupal.NamingConventions.ValidVariableName.LowerCamelName"/>
+        <!-- We want to allow docblocks in more places, namely above "use" -->
+        <exclude name="Drupal.Commenting.InlineComment.DocBlock"/>
     </rule>
 
     <rule ref="DrupalPractice">
