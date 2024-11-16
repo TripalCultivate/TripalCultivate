@@ -85,14 +85,14 @@ layouts:
         type: details
         open: true
         children:
-          - field_instruct_exp_name
+          - instruct_exp_name
           - exp_name
       - id: exp-section-why
         label: "Why is this Experiment being done?"
         type: details
         open: true
         children:
-          - field_instruct_exp_why
+          - instruct_exp_why
           - exp_objectives
           - exp_hypothesis
       - id: exp-section-summary
@@ -100,7 +100,7 @@ layouts:
         type: details
         open: true
         children:
-          - field_instruct_exp_overview
+          - instruct_exp_overview
           - field_study
           - exp_description
       - id: exp-section-units

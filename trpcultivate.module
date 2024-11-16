@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Implements hook_help().
@@ -69,4 +71,74 @@ function trpcultivate_import_contenttypes() {
   // Import the fields.
   $fields = \Drupal::service('tripal.tripalfield_collection');
   $fields->install($collections);
+
+  // Create Markup fields based on the twig files in /templates/markup_field.
+  trpcultivate_create_markup_fields();
+}
+
+/**
+ * Create Markup fields based on the twig files in /templates/markup_field.
+ */
+function trpcultivate_create_markup_fields() {
+
+  $field_id_prefix = 'instruct_exp_';
+
+  // Get a list of all the files in /templates/markup_field.
+  $directory = \Drupal::service('extension.list.module')->getPath('trpcultivate') . '/templates/markup_field';
+  if (is_dir($directory)) {
+    $files = \Drupal::service('file_system')->scanDirectory($directory, '/.*.twig/');
+    foreach ($files as $f) {
+      [$content_type, $field_id] = explode('.', $f->name);
+      if (!empty($field_id)) {
+        $field_id = $field_id_prefix . $field_id;
+
+        // @todo SET THIS BASED ON THE FILE!
+        $markup_value = [
+          'value' => 'Replace this with the twig contents',
+          'format' => 'full_html',
+        ];
+        $field_storage = FieldStorageConfig::loadByName('tripal_entity', $field_id);
+        if (empty($field_storage)) {
+          $field_storage = FieldStorageConfig::create([
+            'field_name' => $field_id,
+            'entity_type' => 'tripal_entity',
+            'type' => 'markup',
+            'cardinality' => 1,
+            'revisionable' => FALSE,
+            'provider' => 'trpcultivate',
+            'settings' => [],
+          ]);
+          $field_storage->save();
+        }
+
+        $field = FieldConfig::loadByName('tripal_entity', $content_type, $field_id);
+        if (empty($field)) {
+          $field = FieldConfig::create([
+            'field_storage' => $field_storage,
+            'bundle' => $content_type,
+            'label' => $field_id,
+            'settings' => [
+              'markup' => $markup_value,
+            ],
+          ]);
+        }
+        else {
+          $field->setSetting('markup', $markup_value);
+        }
+
+        // Set the cvterm.
+        $field->setThirdPartySetting('tripal', 'termIdSpace', 'NCIT');
+        $field->setThirdPartySetting('tripal', 'termAccession', 'C63615');
+        $field->save();
+
+        // Assign widget settings for the default form mode.
+        $display_repository = \Drupal::service('entity_display.repository');
+        $display_repository->getFormDisplay('tripal_entity', $content_type)
+          ->setComponent($field_id, [
+            'type' => 'markup',
+          ])
+          ->save();
+      }
+    }
+  }
 }
