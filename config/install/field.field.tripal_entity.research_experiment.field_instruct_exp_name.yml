@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tripal_entity.field_instruct_exp_name
+    - tripal.content_type.research_experiment
+  module:
+    - markup
+    - tripal
+third_party_settings:
+  tripal:
+    termIdSpace: NCIT
+    termAccession: C63615
+id: tripal_entity.research_experiment.field_instruct_exp_name
+field_name: field_instruct_exp_name
+entity_type: tripal_entity
+bundle: research_experiment
+label: instruct_exp_name
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  markup:
+    value: '<div class="instructions name"><h3>Name Guidelines by Experiment Type</h3><p>It is recommended that the name include important details such as the crop and germplasm collection being studied, the years the experiment is being conducted over and key details of the experimental design.</p><dl><dt><p>Field</p></dt><dd><p>Include the number of site-years the experiment is being performed over. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 over four site-years from 2021-2023".</p></dd><dt><p>Greenhouse</p></dt><dd><p>Include the name of the greenhouse. For example, you should follow the format: "Evaluate shattering in interspecifics: Lentil LR-68 in the USASK Agriculture Greenhouse A from 2021-2023".</p></dd><dt><p>Growth Chamber</p></dt><dd><p>Include the name of the growth chamber facility. For example, you should follow the format: "Evaluate the Nitrogen fixing efficacy of inoculate-cultivar pairs: Lentil AGILE LDP in the USASK Phytotron from 2021-2023".</p></dd><dt><p>Biochemical Assay</p></dt><dd><p>Include the biochemical technique. For example, you should follow the format: "Evaluate the amino acid composition for specific cultivars: Lentil AGILE LDP subset using Near Infrared Spectroscopy (NIRS) performed in 2023".</p></dd></dl></div>'
+    format: full_html
+field_type: markup

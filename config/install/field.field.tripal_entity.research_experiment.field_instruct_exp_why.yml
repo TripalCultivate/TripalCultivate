@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tripal_entity.field_instruct_exp_why
+    - tripal.content_type.research_experiment
+  module:
+    - markup
+    - tripal
+third_party_settings:
+  tripal:
+    termIdSpace: NCIT
+    termAccession: C63615
+id: tripal_entity.research_experiment.field_instruct_exp_why
+field_name: field_instruct_exp_why
+entity_type: tripal_entity
+bundle: research_experiment
+label: instruct_exp_why
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  markup:
+    value: '<div class="instructions why"><p>This is where you will break down why you are doing this experiment! Remember to be specific and to not assume any prior knowledge by those reading this page.</p></div>'
+    format: full_html
+field_type: markup
