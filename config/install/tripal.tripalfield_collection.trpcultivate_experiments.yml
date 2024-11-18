@@ -38,7 +38,6 @@ fields:
           form:
             default:
               region: content
-              weight: 1
 
     -   name: exp_dbxref
         content_type: research_experiment
@@ -63,7 +62,6 @@ fields:
           form:
             default:
               region: content
-              weight: 2
 
 ### -------------------------------------------------------------------------
 ## OVERVIEW
@@ -89,11 +87,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 22
           form:
             default:
               region: content
-              weight: 22
 
     -   name: exp_objectives
         content_type: research_experiment
@@ -115,11 +111,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 4
           form:
             default:
               region: content
-              weight: 4
 
     -   name: exp_hypothesis
         content_type: research_experiment
@@ -141,11 +135,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 4
           form:
             default:
               region: content
-              weight: 4
 
     -   name: exp_description
         content_type: research_experiment
@@ -167,11 +159,9 @@ fields:
             default:
               region: content
               label: hidden
-              weight: 100
           form:
             default:
               region: content
-              weight: 100
 
 ### -------------------------------------------------------------------------
 ## ATTRIBUTION
@@ -198,11 +188,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 40
           form:
             default:
               region: content
-              weight: 40
 
     -   name: exp_datalicenses
         content_type: research_experiment
@@ -224,11 +212,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 41
           form:
             default:
               region: content
-              weight: 41
 
     -   name: exp_pub
         content_type: research_experiment
@@ -251,11 +237,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 42
           form:
             default:
               region: content
-              weight: 42
 
 ### -------------------------------------------------------------------------
 ## STATIC
@@ -311,11 +295,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 10
           form:
             default:
               region: content
-              weight: 10
 
     -   name: exp_germspecies
         content_type: research_experiment
@@ -337,11 +319,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 11
           form:
             default:
               region: content
-              weight: 11
 
     -   name: exp_germcollection
         content_type: research_experiment
@@ -363,11 +343,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 12
           form:
             default:
               region: content
-              weight: 12
 
 ### -------------------------------------------------------------------------
 ## PEOPLE
@@ -394,11 +372,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 30
           form:
             default:
               region: content
-              weight: 30
 
     -   name: exp_custodian
         content_type: research_experiment
@@ -421,11 +397,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 31
           form:
             default:
               region: content
-              weight: 31
 
     -   name: exp_curator
         content_type: research_experiment
@@ -448,11 +422,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 32
           form:
             default:
               region: content
-              weight: 32
 
 ### -------------------------------------------------------------------------
 ## FUNDING
@@ -479,11 +451,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 50
           form:
             default:
               region: content
-              weight: 50
 
 ### -------------------------------------------------------------------------
 ## PHENOMICS
@@ -509,11 +479,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 20
           form:
             default:
               region: content
-              weight: 20
 
     -   name: exp_pheno_method
         content_type: research_experiment
@@ -535,11 +503,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 20
           form:
             default:
               region: content
-              weight: 20
 
 ### -------------------------------------------------------------------------
 ## FIELD EXPERIMENT DESIGN
@@ -565,11 +531,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 21
           form:
             default:
               region: content
-              weight: 21
 
     -   name: exp_field_design
         content_type: research_experiment
@@ -591,11 +555,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 23
           form:
             default:
               region: content
-              weight: 23
 
 ### -------------------------------------------------------------------------
 ## GREENHOUSE EXPERIMENT DESIGN
@@ -621,11 +583,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 21
           form:
             default:
               region: content
-              weight: 21
 
     -   name: exp_ghouse_growingmedia
         content_type: research_experiment
@@ -647,11 +607,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 23
           form:
             default:
               region: content
-              weight: 23
 
     -   name: exp_ghouse_design
         content_type: research_experiment
@@ -673,11 +631,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 24
           form:
             default:
               region: content
-              weight: 24
 
 ### -------------------------------------------------------------------------
 ## GROWTH CHAMBER EXPERIMENT DESIGN
@@ -703,11 +659,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 21
           form:
             default:
               region: content
-              weight: 21
 
     -   name: exp_gchamber_growingmedia
         content_type: research_experiment
@@ -729,11 +683,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 23
           form:
             default:
               region: content
-              weight: 23
 
     -   name: exp_gchamber_design
         content_type: research_experiment
@@ -755,11 +707,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 24
           form:
             default:
               region: content
-              weight: 24
 
 ### -------------------------------------------------------------------------
 ## BIOCHEMICAL ASSAY DESIGN
@@ -785,11 +735,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 21
           form:
             default:
               region: content
-              weight: 21
 
     -   name: exp_bchem_assayprotocal
         content_type: research_experiment
@@ -811,11 +759,9 @@ fields:
             default:
               region: content
               label: above
-              weight: 22
           form:
             default:
               region: content
-              weight: 22
 
     -   name: exp_bchem_labfacility
         content_type: research_experiment
@@ -836,11 +782,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 23
           form:
             default:
               region: content
-              weight: 23
 
     -   name: exp_bchem_date
         content_type: research_experiment
@@ -862,11 +806,9 @@ fields:
             default:
               region: content
               label: inline
-              weight: 24
           form:
             default:
               region: content
-              weight: 24
 
 ################################################################################
 ## Research Study ##
