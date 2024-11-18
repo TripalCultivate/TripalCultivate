@@ -91,10 +91,12 @@ function trpcultivate_create_markup_fields() {
       [$content_type, $field_id] = explode('.', $f->name);
       if (!empty($field_id)) {
         $field_id = $field_id_prefix . $field_id;
+        $full_file_path = DRUPAL_ROOT . '/' . $f->uri;
 
-        // @todo SET THIS BASED ON THE FILE!
+        // Set the markup value to render full HTML on the contents of the file.
+        // This render array will be rendered by the Markup field.
         $markup_value = [
-          'value' => 'Replace this with the twig contents',
+          'value' => file_get_contents($full_file_path),
           'format' => 'full_html',
         ];
         $field_storage = FieldStorageConfig::loadByName('tripal_entity', $field_id);
