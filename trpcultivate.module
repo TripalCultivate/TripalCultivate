@@ -74,6 +74,9 @@ function trpcultivate_import_contenttypes() {
 
   // Create Markup fields based on the twig files in /templates/markup_field.
   trpcultivate_create_markup_fields();
+
+  // Create Drupal Reference (i.e. relationship) fields.
+  trpcultivate_create_relationship_fields();
 }
 
 /**
@@ -143,4 +146,95 @@ function trpcultivate_create_markup_fields() {
       }
     }
   }
+}
+
+/**
+ * Create Drupal Reference (i.e. relationship) fields.
+ *
+ * @todo replace with Chado Relationships once widget/field is available.
+ */
+function trpcultivate_create_relationship_fields() {
+
+  /**
+   * @var array
+   * An array describing the relationship fields we need to create.
+   * The first level of the array has the key being the content type to create
+   * the fields on and an array of fields to create.
+   *
+   * The array of fields to create has the key being the id of the field
+   * and the value is an array describing the field to create:
+   * - target: an array of existing content types that are the target of this
+   *   field or more specifically, whose content will populate the drop down.
+   * - label: the title of the field.
+   * - description: the field description/help text.
+   */
+  $relationships_needed = [
+    'research_experiment' => [
+      'field_grant' => [
+        'target' => [
+          'research_grant' => 'research_grant',
+        ],
+        'label' => 'Funding Grant',
+        'description' => 'Indicate all grants which provide funding for this experiment. You may need to confirm this information with your PI.',
+        'termIdSpace' => 'OBI',
+        'termAccession' => '0001636',
+      ],
+      'field_study' => [
+        'target' => [
+          'research_study' => 'research_study',
+        ],
+        'label' => 'Parent Research Study',
+        'description' => 'Research studies are meant to answer broader questions and will often use multiple experiments in order to do that. You should indicate the research studies that this experiment was designed to be used for.',
+        'termIdSpace' => 'SIO',
+        'termAccession' => '001066',
+      ],
+    ],
+  ];
+  foreach ($relationships_needed as $base_content_type => $fields2create) {
+    foreach ($fields2create as $field_id => $field_details) {
+
+      $field_storage = FieldStorageConfig::loadByName('tripal_entity', $field_id);
+      if (!$field_storage) {
+        FieldStorageConfig::create([
+          'field_name' => $field_id,
+          'entity_type' => 'tripal_entity',
+          'type' => 'entity_reference',
+          'cardinality' => -1,
+          'settings' => [
+            'target_type' => 'tripal_entity',
+          ],
+        ])->save();
+      }
+
+      // @todo not setting the bundle correctly.
+      $field = FieldConfig::loadByName('tripal_entity', $base_content_type, $field_id);
+      if (!$field) {
+        $field = FieldConfig::create([
+          'field_name' => $field_id,
+          'entity_type' => 'tripal_entity',
+          'bundle' => $base_content_type,
+          'label' => $field_details['label'],
+          'description' => $field_details['description'],
+          'cardinality' => -1,
+          'settings' => [
+            'handler' => 'default:tripal_entity',
+            'handler_settings' => [
+              'target_bundles' => $field_details['target'],
+              'sort' => [
+                'field' => 'title',
+                'direction' => 'ASC',
+              ],
+              'auto_create' => FALSE,
+            ],
+          ],
+        ]);
+      }
+
+      // Set the cvterm.
+      $field->setThirdPartySetting('tripal', 'termIdSpace', $field_details['termIdSpace']);
+      $field->setThirdPartySetting('tripal', 'termAccession', $field_details['termAccession']);
+      $field->save();
+    }
+  }
+
 }
