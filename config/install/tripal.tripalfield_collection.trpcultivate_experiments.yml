@@ -535,11 +535,11 @@ fields:
             default:
               region: content
 
-    -   name: exp_field_design
+    -   name: exp_design
         content_type: research_experiment
-        label: Field Experimental Design
+        label: Experimental Design
         type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in, which should be consistent with "Field Locations" and "Experiment Years".
+        description: Describe the design of your experiment in detail following the guidelines provided.
         cardinality: -1
         required: false
         storage_settings:
@@ -611,30 +611,6 @@ fields:
             default:
               region: content
 
-    -   name: exp_ghouse_design
-        content_type: research_experiment
-        label: Experimental Design
-        type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in, which should be consistent with "Greenhouse Locations" and "Experiment Years".
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: PROCO
-            termAccession: '0000276'
-        display:
-          view:
-            default:
-              region: content
-              label: above
-          form:
-            default:
-              region: content
-
 ### -------------------------------------------------------------------------
 ## GROWTH CHAMBER EXPERIMENT DESIGN
 ###
@@ -678,30 +654,6 @@ fields:
         settings:
             termIdSpace: rdfs
             termAccession: type
-        display:
-          view:
-            default:
-              region: content
-              label: above
-          form:
-            default:
-              region: content
-
-    -   name: exp_gchamber_design
-        content_type: research_experiment
-        label: Experimental Design
-        type: chado_property_type_default
-        description: Describe the design of your experiment in detail. More specifically, include information on replication, randomization and blocking. Also include the location-year combinations you intend to collect data in, which should be consistent with "Growth Chamber Locations" and "Experiment Years".
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: PROCO
-            termAccession: '0000276'
         display:
           view:
             default:

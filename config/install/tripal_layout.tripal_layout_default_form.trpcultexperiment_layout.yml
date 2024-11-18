@@ -42,10 +42,9 @@ layouts:
         show_empty: false
         open: false
         children:
-          # - exp_design currently multiple fields (e.g. exp_field_design)
+          - exp-section-design
+          - exp-section-germplasm
           - exp_featureofinterest
-          - exp_germgenus
-          - exp_germspecies
           - exp_years
           - exp-section-units
       - id: exp-tab-methods
@@ -66,15 +65,15 @@ layouts:
         open: false
         children:
           - exp_pub ## Focus on support types
-      - id: exp-tab-outputs
-        type: tab
-        label: "Research Outputs"
-        weight: 5
-        show_empty: false
-        open: false
-        children:
-          - exp_datalicenses
-          # - exp_pub ## Focus on result types
+      # - id: exp-tab-outputs
+      #   type: tab
+      #   label: "Research Outputs"
+      #   weight: 5
+      #   show_empty: false
+      #   open: false
+      #   children:
+      #     - exp_datalicenses
+      #     - exp_pub ## Focus on result types
 ## -- Sections
       - id: exp-section-name
         label: "Name Guidelines"
@@ -114,6 +113,24 @@ layouts:
           - exp_datacollector
           - exp_custodian
           - exp_curator
+      - id: exp-section-design
+        type: details
+        label: "Design Guidelines"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_expdesign
+          - exp_design
+      - id: exp-section-germplasm
+        type: details
+        label: "Germplasm"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_germplasm
+          - exp_germgenus
+          - exp_germspecies
+          - exp_germcollection
       - id: exp-section-units
         type: details
         label: "Experimental Unit"
@@ -121,23 +138,15 @@ layouts:
         show_empty: false
         open: false
         children:
-          - exp_germcollection
           - exp_field_locations
-          - exp_field_design
           - exp_ghouse_locations
           - exp_ghouse_growingmedia
-          - exp_ghouse_design
           - exp_gchamber_locations
           - exp_gchamber_growingmedia
-          - exp_gchamber_design
           - exp_bchem_technique
           - exp_bchem_assayprotocal
           - exp_bchem_labfacility
           - exp_bchem_date
-          - expdesign_field
-          - expdesign_ghouse
-          - expdesign_gchamber
-          - expdesign_bchem
 ## -- Advanced Sidebar
       - id: author
         type: details_sidebar
