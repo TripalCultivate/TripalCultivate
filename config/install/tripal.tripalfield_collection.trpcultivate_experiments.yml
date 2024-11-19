@@ -511,11 +511,11 @@ fields:
 ## FIELD EXPERIMENT DESIGN
 ###
 
-    -   name: exp_field_locations
+    -   name: exp_site_locations
         content_type: research_experiment
-        label: Field Locations
+        label: Experimental Site Locations
         type: chado_property_type_default
-        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each site (e.g. "Sutherland, SK, Canada").
+        description: Each location where the experiment was conducted. Reference the guidelines for more information.
         cardinality: -1
         required: false
         storage_settings:
@@ -560,88 +560,12 @@ fields:
               region: content
 
 ### -------------------------------------------------------------------------
-## GREENHOUSE EXPERIMENT DESIGN
-###
-
-    -   name: exp_ghouse_locations
-        content_type: research_experiment
-        label: Greenhouse Locations
-        type: chado_property_type_default
-        description: Include the name of the closest town/landmark, province, country and optionally the geographical coordinates of each greenhouse (e.g. "Sutherland, SK, Canada").
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: AGRO
-            termAccession: '00000360'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
-          form:
-            default:
-              region: content
-
-    -   name: exp_ghouse_growingmedia
-        content_type: research_experiment
-        label: Growing Media
-        type: chado_property_type_default
-        description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: rdfs
-            termAccession: type
-        display:
-          view:
-            default:
-              region: content
-              label: inline
-          form:
-            default:
-              region: content
-
-### -------------------------------------------------------------------------
 ## GROWTH CHAMBER EXPERIMENT DESIGN
 ###
 
-    -   name: exp_gchamber_locations
+    -   name: exp_pot_growingmedia
         content_type: research_experiment
-        label: Growth Chamber Locations
-        type: chado_property_type_default
-        description: Include the unique identifier, name of the facility, province, country and optionally the geographical coordinates of each growth chamber (e.g. "A5, USASK Phytotron, SK, Canada").
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: AGRO
-            termAccession: '00000360'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
-          form:
-            default:
-              region: content
-
-    -   name: exp_gchamber_growingmedia
-        content_type: research_experiment
-        label: Growing Media
+        label: Pot Growing Media
         type: chado_property_type_default
         description: Record the growing media being used in this controlled environment experiment (e.g. Vermiculite, Sand). Be specific with volume ratio (e.g. Peat, Perlite, Vermiculite at a ratio of 2:1:1)
         cardinality: -1
@@ -711,29 +635,6 @@ fields:
             default:
               region: content
               label: above
-          form:
-            default:
-              region: content
-
-    -   name: exp_bchem_labfacility
-        content_type: research_experiment
-        label: Laboratory Facility
-        type: chado_property_type_default
-        description: Provide the laboratory that this experiment took place in. Include the company name or university, room number and building name, and city and province (e.g. 1A23, Agriculture Building, USASK, Saskatoon, SK)
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: ENVO
-            termAccession: '01001406'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
           form:
             default:
               region: content

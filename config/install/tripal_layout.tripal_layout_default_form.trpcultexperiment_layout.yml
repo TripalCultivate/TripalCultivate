@@ -55,6 +55,7 @@ layouts:
         open: false
         children:
           - exp_pheno_method
+          - exp_bchem_assayprotocal
           # - exp_protocols
           # - exp_analysis_method
       - id: exp-tab-references
@@ -133,19 +134,16 @@ layouts:
           - exp_germcollection
       - id: exp-section-units
         type: details
-        label: "Experimental Unit"
+        label: "Design Metadata"
         weight: 5
         show_empty: false
         open: false
         children:
-          - exp_field_locations
-          - exp_ghouse_locations
-          - exp_ghouse_growingmedia
-          - exp_gchamber_locations
-          - exp_gchamber_growingmedia
+          - instruct_exp_sitelocations
+          - exp_site_locations
+          - instruct_exp_site
+          - exp_pot_growingmedia
           - exp_bchem_technique
-          - exp_bchem_assayprotocal
-          - exp_bchem_labfacility
           - exp_bchem_date
 ## -- Advanced Sidebar
       - id: author
