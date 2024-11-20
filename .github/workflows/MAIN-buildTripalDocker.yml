@@ -1,9 +1,5 @@
 name: Build and Publish Tripal Docker image
 on:
-  push:
-    branches:
-      - 4.x
-      - g5.33-supportD11
   # Allows us to manually trigger this workflow.
   # This is great if there is a change made to Tripal core that we want to test our modules on ASAP.
   workflow_dispatch:
