@@ -27,6 +27,15 @@ If you use this module in your Tripal site, please use this citation to referenc
 - PHP
 - Apache2
 
+### Docker
+
+We automatically build images for this module using Github Workflows. Specifically, [knowpulse/tripalcultivate-base](https://hub.docker.com/repository/docker/knowpulse/tripalcultivate-base/general) contains a full Tripal site with this module installed. Note this image builds off the [knowpulse/tripalcultivate-tripal](https://hub.docker.com/repository/docker/knowpulse/tripalcultivate-tripal/general) image which extends [tripalproject/tripaldocker](https://hub.docker.com/r/tripalproject/tripaldocker) with our theme and other requirements.
+
+```
+docker pull knowpulse/tripalcultivate-base:latest
+docker run --publish=80:80 -tid --name=trpcultivate-basee knowpulse/tripalcultivate-base:latest
+```
+
 ### Automated Testing
 
 This package is dedicated to a high standard of automated testing. We use
