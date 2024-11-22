@@ -67,30 +67,6 @@ fields:
 ## OVERVIEW
 ###
 
-    -   name: exp_years
-        content_type: research_experiment
-        label: Experiment Years
-        type: chado_property_type_default
-        description: The 4-digit year that data was collected for this experiment. Do not enter a range here, instead add a new entry for each year that data was collected for.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: NCIT
-            termAccession: 'C29848'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
-          form:
-            default:
-              region: content
-
     -   name: exp_objectives
         content_type: research_experiment
         label: Objectives
@@ -639,11 +615,11 @@ fields:
             default:
               region: content
 
-    -   name: exp_bchem_date
+    -   name: exp_timepoints
         content_type: research_experiment
-        label: Experiment Date
+        label: Timepoints
         type: chado_property_type_default
-        description: The date and time the experiment was performed (e.g. 2024Aug5 3:15pm)
+        description: The timepoints that data was collected at. See the instructions above for guidelines directed at specific types of experiments.
         cardinality: -1
         required: false
         storage_settings:
@@ -652,8 +628,8 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCIT
-            termAccession: 'C29848'
+            termIdSpace: EFO
+            termAccession: '0000724'
         display:
           view:
             default:

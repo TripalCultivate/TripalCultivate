@@ -44,9 +44,9 @@ layouts:
         children:
           - exp-section-design
           - exp-section-germplasm
-          - exp_featureofinterest
-          - exp_years
-          - exp-section-units
+          - exp-section-timepoints
+          - exp-section-locations
+          - exp-section-designmeta
       - id: exp-tab-methods
         type: tab
         label: "Methodology"
@@ -69,7 +69,7 @@ layouts:
       # - id: exp-tab-outputs
       #   type: tab
       #   label: "Research Outputs"
-      #   weight: 5
+      #   weight: 6
       #   show_empty: false
       #   open: false
       #   children:
@@ -99,6 +99,7 @@ layouts:
         children:
           - instruct_exp_overview
           - exp_description
+          - exp_featureofinterest
       - id: exp-section-funding
         label: "Funding"
         type: details
@@ -116,7 +117,7 @@ layouts:
           - exp_curator
       - id: exp-section-design
         type: details
-        label: "Design Guidelines"
+        label: "Experiment Design"
         show_empty: false
         open: true
         children:
@@ -132,19 +133,30 @@ layouts:
           - exp_germgenus
           - exp_germspecies
           - exp_germcollection
-      - id: exp-section-units
+      - id: exp-section-locations
         type: details
-        label: "Design Metadata"
-        weight: 5
+        label: "Locations"
         show_empty: false
-        open: false
+        open: true
         children:
           - instruct_exp_sitelocations
           - exp_site_locations
-          - instruct_exp_site
+      - id: exp-section-timepoints
+        type: details
+        label: "Timepoints"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_timepoints
+          - exp_timepoints
+      - id: exp-section-designmeta
+        type: details
+        label: "Additional Metadata"
+        show_empty: false
+        open: true
+        children:
           - exp_pot_growingmedia
           - exp_bchem_technique
-          - exp_bchem_date
 ## -- Advanced Sidebar
       - id: author
         type: details_sidebar
