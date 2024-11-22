@@ -27,6 +27,15 @@ If you use this module in your Tripal site, please use this citation to referenc
 - PHP
 - Apache2
 
+### Docker
+
+We automatically build images for this module using Github Workflows. Specifically, [knowpulse/tripalcultivate-base](https://hub.docker.com/repository/docker/knowpulse/tripalcultivate-base/general) contains a full Tripal site with this module installed. Note this image builds off the [knowpulse/tripalcultivate-tripal](https://hub.docker.com/repository/docker/knowpulse/tripalcultivate-tripal/general) image which extends [tripalproject/tripaldocker](https://hub.docker.com/r/tripalproject/tripaldocker) with our theme and other requirements.
+
+```
+docker pull knowpulse/tripalcultivate-base:latest
+docker run --publish=80:80 -tid --name=trpcultivate-basee knowpulse/tripalcultivate-base:latest
+```
+
 ### Automated Testing
 
 This package is dedicated to a high standard of automated testing. We use
@@ -39,11 +48,12 @@ maintainability issues and test coverage.
 
 The following compatibility is proven via automated testing workflows.
 
-|  Drupal     |  10.2.x         |  10.3.x         |  10.4.x         |
-|-------------|-----------------|-----------------|-----------------|
-| **PHP 8.1** | ![Grid1A-Badge] | ![Grid2A-Badge] | ![Grid3A-Badge] |
-| **PHP 8.2** | ![Grid1B-Badge] | ![Grid2B-Badge] | ![Grid3B-Badge] |
-| **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] |
+|  Drupal     |  10.3.x         |  10.4.x         |  10.5.x         | 11.0.x          | 11.1.x          |
+|-------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| **PHP 8.1** | ![Grid1A-Badge] | ![Grid2A-Badge] | ![Grid3A-Badge] |                 |                 |
+| **PHP 8.2** | ![Grid1B-Badge] | ![Grid2B-Badge] | ![Grid3B-Badge] |                 |                 |
+| **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] | ![Grid4C-Badge] | ![Grid5C-Badge] |
+
 
 [our CodeClimate project page]: https://codeclimate.com/github/TripalCultivate/TripalCultivate
 [MaintainabilityBadge]: https://api.codeclimate.com/v1/badges/730d572b51ad41cbbd69/maintainability
@@ -60,3 +70,7 @@ The following compatibility is proven via automated testing workflows.
 [Grid3A-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid3A.yml/badge.svg
 [Grid3B-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid3B.yml/badge.svg
 [Grid3C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid3C.yml/badge.svg
+
+[Grid4C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid4C.yml/badge.svg
+
+[Grid5C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid5C.yml/badge.svg

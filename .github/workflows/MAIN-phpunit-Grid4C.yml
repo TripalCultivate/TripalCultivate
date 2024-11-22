@@ -22,19 +22,19 @@ on:
 ## | **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] | ![Grid4C-Badge] | ![Grid5C-Badge] |
 
 jobs:
-  grid-1B:
-    name: "Drupal 10.3.x-dev - PHP 8.2 - PostgreSQL 16"
+  grid-3C:
+    name: "Drupal 11.0.x-dev - PHP 8.3 - PostgreSQL 16"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Run Automated testing
-        uses: tripal/test-tripal-action@v1.6
+        uses: tripal/test-tripal-action@v1.5
         with:
           directory-name: 'TripalCultivate'
           modules: 'trpcultivate'
           build-image: TRUE
           dockerfile: 'Dockerfile'
-          php-version: '8.2'
+          php-version: '8.3'
           pgsql-version: '16'
-          drupal-version: '10.3.x-dev'
+          drupal-version: '11.0.x-dev'
