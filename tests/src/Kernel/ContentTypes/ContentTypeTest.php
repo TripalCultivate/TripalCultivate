@@ -32,6 +32,7 @@ class ContentTypeTest extends ChadoTestKernelBase {
     'path_alias',
     'views',
     'field',
+    'markup',
     'tripal',
     'tripal_chado',
     'tripal_layout',

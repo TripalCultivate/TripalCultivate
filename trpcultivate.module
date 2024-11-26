@@ -8,6 +8,7 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\tripal_layout\Controller\TripalEntityUILayoutController;
 
 /**
  * Implements hook_help().
@@ -77,6 +78,9 @@ function trpcultivate_import_contenttypes() {
 
   // Create Drupal Reference (i.e. relationship) fields.
   trpcultivate_create_relationship_fields();
+
+  // Apply Layout and tweak as needed.
+  trpcultivate_apply_layout();
 }
 
 /**
@@ -206,7 +210,6 @@ function trpcultivate_create_relationship_fields() {
         ])->save();
       }
 
-      // @todo not setting the bundle correctly.
       $field = FieldConfig::loadByName('tripal_entity', $base_content_type, $field_id);
       if (!$field) {
         $field = FieldConfig::create([
@@ -236,5 +239,17 @@ function trpcultivate_create_relationship_fields() {
       $field->save();
     }
   }
+
+}
+
+/**
+ * Automatically apply the Tripal Layouts and tweak as needed.
+ */
+function trpcultivate_apply_layout() {
+
+  $research_experiment = \Drupal::entityTypeManager()->getStorage('tripal_entity_type')->load('research_experiment');
+  $controller = new TripalEntityUILayoutController();
+  $controller->applyViewLayout($research_experiment);
+  $controller->applyFormLayout($research_experiment);
 
 }
