@@ -9,6 +9,13 @@ layouts:
       - exp_name
       - exp_dbxref
       - experiment_type
+      - instruct_exp_name
+      - instruct_exp_why
+      - instruct_exp_overview
+      - instruct_exp_expdesign
+      - instruct_exp_germplasm
+      - instruct_exp_sitelocations
+      - instruct_exp_timepoints
     field_groups:
       - id: experiment_overview
         type: details
@@ -17,8 +24,9 @@ layouts:
         show_empty: false
         open: true
         children:
-          - "exp_years"
           - "exp_objectives"
+          - "exp_hypothesis"
+          - "field_study"
           - "exp_description"
       - id: experiment_germplasm
         type: details
@@ -39,46 +47,7 @@ layouts:
         children:
           - "exp_featureofinterest"
           - "exp_pheno_method"
-      - id: expdesign_field
-        type: details
-        label: "Field"
-        weight: 1
-        show_empty: false
-        open: true
-        children:
-          - "exp_field_locations"
-          - "exp_field_design"
-      - id: expdesign_ghouse
-        type: details
-        label: "Greenhouse"
-        weight: 2
-        show_empty: false
-        open: true
-        children:
-          - "exp_ghouse_locations"
-          - "exp_ghouse_growingmedia"
-          - "exp_ghouse_design"
-      - id: expdesign_gchamber
-        type: details
-        label: "Growth Chamber"
-        weight: 3
-        show_empty: false
-        open: true
-        children:
-          - "exp_gchamber_locations"
-          - "exp_gchamber_growingmedia"
-          - "exp_gchamber_design"
-      - id: expdesign_bchem
-        type: details
-        label: "Biochemical Assay"
-        weight: 4
-        show_empty: false
-        open: true
-        children:
-          - "exp_bchem_technique"
           - "exp_bchem_assayprotocal"
-          - "exp_bchem_labfacility"
-          - "exp_bchem_date"
       - id: experiment_design
         type: details
         label: "Experimental Design"
@@ -86,10 +55,11 @@ layouts:
         show_empty: false
         open: true
         children:
-          - "expdesign_field"
-          - "expdesign_ghouse"
-          - "expdesign_gchamber"
-          - "expdesign_bchem"
+          - "exp_site_locations"
+          - "exp_timepoints"
+          - "exp_pot_growingmedia"
+          - "exp_bchem_technique"
+          - "exp_design"
       - id: experiment_people
         type: details
         label: "Researchers"
@@ -108,6 +78,7 @@ layouts:
         open: true
         children:
           - "exp_org"
+          - "field_grant"
       - id: experiment_attribution
         type: details
         label: "Attribution"
@@ -116,7 +87,5 @@ layouts:
         open: true
         children:
           - "experiment_people"
-          - "exp_citation"
-          - "exp_datalicenses"
           - "exp_pub"
           - "experiment_funding"
