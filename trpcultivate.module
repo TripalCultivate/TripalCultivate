@@ -246,10 +246,55 @@ function trpcultivate_create_relationship_fields() {
  * Automatically apply the Tripal Layouts and tweak as needed.
  */
 function trpcultivate_apply_layout() {
+  $entity_type_manager = \Drupal::service('entity_type.manager');
 
-  $research_experiment = \Drupal::entityTypeManager()->getStorage('tripal_entity_type')->load('research_experiment');
+  $bundle = 'research_experiment';
+  $research_experiment = $entity_type_manager->getStorage('tripal_entity_type')->load($bundle);
+
+  // Automatically apply both layouts.
   $controller = new TripalEntityUILayoutController();
   $controller->applyViewLayout($research_experiment);
   $controller->applyFormLayout($research_experiment);
 
+  // Now modify the form display.
+  $config_entity_storage = $entity_type_manager->getStorage('entity_form_display');
+  $display = $config_entity_storage->load('tripal_entity.' . $bundle . '.default');
+
+  // -- Ensure only the objectives vertical tab is open by default.
+  $field_groups = $display->getThirdPartySettings('field_group');
+  foreach ($field_groups as $id => $group) {
+    if ($group['format_type'] === 'tab' && $id !== 'exp-tab-objectives') {
+      $group['format_settings']['formatter'] = 'closed';
+      $display->setThirdPartySetting('field_group', $id, $group);
+    }
+  }
+
+  // -- Set a number of properties to use the "Short Text" widget.
+  $property_fields = ['exp_featureofinterest', 'exp_germgenus', 'exp_germspecies', 'exp_germcollection', 'exp_site_locations', 'exp_timepoints', 'exp_pot_growingmedia', 'exp_bchem_technique'];
+  foreach ($property_fields as $component_name) {
+    $options = $display->getComponent($component_name);
+    $options['type'] = 'chado_property_string_widget_default';
+    $options['settings'] = [];
+    $display->setComponent($component_name, $options);
+  }
+
+  // -- Set a number of properties to be smaller with no format toolbar.
+  $property_fields = ['exp_objectives', 'exp_hypothesis'];
+  foreach ($property_fields as $component_name) {
+    $options = $display->getComponent($component_name);
+    $options['settings']['filter_format'] = 'plain_text';
+    $options['settings']['num_rows'] = 2;
+    $display->setComponent($component_name, $options);
+  }
+
+  // -- Expand rows for a few longer description fields.
+  $fields = ['exp_design', 'exp_pheno_method', 'exp_bchem_assayprotocal'];
+  foreach ($fields as $component_name) {
+    $options = $display->getComponent($component_name);
+    $options['settings']['num_rows'] = 6;
+    $display->setComponent($component_name, $options);
+  }
+
+  // -- Finally save it.
+  $display->save();
 }
