@@ -54,6 +54,7 @@ layouts:
         show_empty: false
         open: false
         children:
+          - instruct_exp_methods
           - exp_pheno_method
           - exp_bchem_assayprotocal
           # - exp_protocols
@@ -65,6 +66,7 @@ layouts:
         show_empty: false
         open: false
         children:
+          - instruct_exp_references
           - exp_pub ## Focus on support types
       # - id: exp-tab-outputs
       #   type: tab
@@ -105,6 +107,7 @@ layouts:
         type: details
         open: true
         children:
+          - instruct_exp_funding
           - exp_org
           - field_grant
       - id: exp-section-people
@@ -112,6 +115,7 @@ layouts:
         type: details
         open: true
         children:
+          - instruct_exp_people
           - exp_datacollector
           - exp_custodian
           - exp_curator
@@ -155,6 +159,7 @@ layouts:
         show_empty: false
         open: true
         children:
+          - instruct_exp_addtmetadata
           - exp_pot_growingmedia
           - exp_bchem_technique
 ## -- Advanced Sidebar

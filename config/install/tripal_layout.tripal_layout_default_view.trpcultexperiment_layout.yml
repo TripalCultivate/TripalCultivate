@@ -16,6 +16,11 @@ layouts:
       - instruct_exp_germplasm
       - instruct_exp_sitelocations
       - instruct_exp_timepoints
+      - instruct_exp_funding
+      - instruct_exp_people
+      - instruct_exp_addtmetadata
+      - instruct_exp_methods
+      - instruct_exp_references
     field_groups:
       - id: experiment_overview
         type: details
