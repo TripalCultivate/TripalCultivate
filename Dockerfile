@@ -1,14 +1,21 @@
-ARG drupalversion=10.3.x-dev
+ARG drupalversion=10.4.x-dev
 ARG phpversion=8.3
 ARG pgsqlversion=16
 ARG installTheme
 FROM knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${pgsqlversion}
 
+COPY docker/* /var/www/drupal
+WORKDIR /var/www/drupal/
+RUN composer config --no-plugins allow-plugins.cweagans/composer-patches true \
+  && composer require 'drupal/markup:^2.0' 'cweagans/composer-patches' \
+  && composer config extra.patches-file composer.patches.json \
+  && composer install
+
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
 WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 
 RUN service postgresql start \
-  && drush en trpcultivate --yes \
+  && drush en trpcultivate markup --yes \
   && drush tripal:trp-run-jobs --username=drupaladmin \
   && drush cr \
   && service postgresql stop

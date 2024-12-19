@@ -90,9 +90,9 @@
         /* PHP Linting */
         "php.validate.enable": true,
         "php.validate.executablePath": "/usr/local/bin/php",
-        "php.validate.run": "onType",
+        "php.validate.run": "onSave",
         "[php]": {
-          "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+          "editor.defaultFormatter": "valeryanm.vscode-phpsab"
         },
         /* PHP DocBlocker */
         "php-docblocker.gap": true,
@@ -124,7 +124,7 @@
         "phpsab.fixerEnable": true,
         "phpsab.executablePathCBF": "/var/www/drupal/vendor/bin/phpcbf",
         "phpsab.standard": "/var/www/drupal/web/modules/contrib/TripalCultivate/.codingstandards.xml",
-        "phpsab.snifferMode": "onType",
+        "phpsab.snifferMode": "onSave",
         "phpsab.debug": false,
         "phpsab.fixerArguments": [
           "--extensions=inc,theme,install,module,profile,php,phtml"

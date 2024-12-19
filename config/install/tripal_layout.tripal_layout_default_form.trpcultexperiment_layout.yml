@@ -1,0 +1,183 @@
+id: 'trpcultexperiment_layout'
+label: 'Research Experiment'
+description: 'Display for the research experiment content type.'
+layouts:
+  - tripal_entity_type: research_experiment
+    field_groups:
+
+## -- Vertical Tabs
+      - id: stages
+        type: vertical_tabs
+        label: "Stages"
+        children:
+          - exp-tab-objectives
+          - exp-tab-attribution
+          - exp-tab-design
+          - exp-tab-methods
+          - exp-tab-references
+          - exp-tab-outputs
+      - id: exp-tab-objectives
+        type: tab
+        label: "Objectives"
+        weight: 1
+        show_empty: false
+        open: true
+        children:
+          - exp-section-name
+          - exp-section-why
+          - exp-section-summary
+      - id: exp-tab-attribution
+        type: tab
+        label: "Attribution"
+        weight: 2
+        show_empty: false
+        open: false
+        children:
+          - exp-section-people
+          - exp-section-funding
+      - id: exp-tab-design
+        type: tab
+        label: "Design"
+        weight: 3
+        show_empty: false
+        open: false
+        children:
+          - exp-section-design
+          - exp-section-germplasm
+          - exp-section-timepoints
+          - exp-section-locations
+          - exp-section-designmeta
+      - id: exp-tab-methods
+        type: tab
+        label: "Methodology"
+        weight: 5
+        show_empty: false
+        open: false
+        children:
+          - instruct_exp_methods
+          - exp_pheno_method
+          - exp_bchem_assayprotocal
+          # - exp_protocols
+          # - exp_analysis_method
+      - id: exp-tab-references
+        type: tab
+        label: "References"
+        weight: 5
+        show_empty: false
+        open: false
+        children:
+          - instruct_exp_references
+          - exp_pub ## Focus on support types
+      # - id: exp-tab-outputs
+      #   type: tab
+      #   label: "Research Outputs"
+      #   weight: 6
+      #   show_empty: false
+      #   open: false
+      #   children:
+      #     - exp_datalicenses
+      #     - exp_pub ## Focus on result types
+## -- Sections
+      - id: exp-section-name
+        label: "Name Guidelines"
+        type: details
+        open: true
+        children:
+          - instruct_exp_name
+          - exp_name
+      - id: exp-section-why
+        label: "Why is this Experiment being done?"
+        type: details
+        open: true
+        children:
+          - instruct_exp_why
+          - exp_objectives
+          - exp_hypothesis
+          - field_study
+      - id: exp-section-summary
+        label: "High Level Overview"
+        type: details
+        open: true
+        children:
+          - instruct_exp_overview
+          - exp_description
+          - exp_featureofinterest
+      - id: exp-section-funding
+        label: "Funding"
+        type: details
+        open: true
+        children:
+          - instruct_exp_funding
+          - exp_org
+          - field_grant
+      - id: exp-section-people
+        label: "People"
+        type: details
+        open: true
+        children:
+          - instruct_exp_people
+          - exp_datacollector
+          - exp_custodian
+          - exp_curator
+      - id: exp-section-design
+        type: details
+        label: "Experiment Design"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_expdesign
+          - exp_design
+      - id: exp-section-germplasm
+        type: details
+        label: "Germplasm"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_germplasm
+          - exp_germgenus
+          - exp_germspecies
+          - exp_germcollection
+      - id: exp-section-locations
+        type: details
+        label: "Locations"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_sitelocations
+          - exp_site_locations
+      - id: exp-section-timepoints
+        type: details
+        label: "Timepoints"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_timepoints
+          - exp_timepoints
+      - id: exp-section-designmeta
+        type: details
+        label: "Additional Metadata"
+        show_empty: false
+        open: true
+        children:
+          - instruct_exp_addtmetadata
+          - exp_pot_growingmedia
+          - exp_bchem_technique
+## -- Advanced Sidebar
+      - id: author
+        type: details_sidebar
+        label: "Authoring Information"
+        children:
+          - uid
+          - created
+          - exp_dbxref
+      - id: url_paths
+        type: details_sidebar
+        label: "URL Paths"
+        children:
+          - path
+      - id: meta
+        type: details_sidebar
+        label: "Status"
+        weight: -10
+        children:
+          - experiment_type

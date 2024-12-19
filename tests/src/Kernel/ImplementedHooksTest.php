@@ -25,7 +25,21 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
    *
    * @var array
    */
-  protected static $modules = ['tripal', 'user', 'field', 'trpcultivate'];
+  protected static $modules = [
+    'system',
+    'user',
+    'path',
+    'path_alias',
+    'views',
+    'field',
+    'field_ui',
+    'markup',
+    'field_group',
+    'tripal',
+    'tripal_chado',
+    'tripal_layout',
+    'trpcultivate',
+  ];
 
   /**
    * A Database query interface for querying Chado using Tripal DBX.

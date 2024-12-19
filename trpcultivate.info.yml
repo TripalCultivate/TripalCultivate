@@ -6,3 +6,4 @@ core_version_requirement: ^10 | ^11
 dependencies:
   - "tripal:tripal"
   - "tripal:tripal_chado"
+  - "tripal:tripal_layout"

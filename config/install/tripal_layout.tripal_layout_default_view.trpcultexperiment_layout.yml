@@ -1,0 +1,96 @@
+id: 'trpcultexperiment_layout'
+label: 'Research Experiment'
+description: 'Display for the research experiment content type.'
+layouts:
+  - tripal_entity_type: "research_experiment"
+    hidden:
+      - uid
+      - title
+      - exp_name
+      - exp_dbxref
+      - experiment_type
+      - instruct_exp_name
+      - instruct_exp_why
+      - instruct_exp_overview
+      - instruct_exp_expdesign
+      - instruct_exp_germplasm
+      - instruct_exp_sitelocations
+      - instruct_exp_timepoints
+      - instruct_exp_funding
+      - instruct_exp_people
+      - instruct_exp_addtmetadata
+      - instruct_exp_methods
+      - instruct_exp_references
+    field_groups:
+      - id: experiment_overview
+        type: details
+        label: "Overview"
+        weight: 1
+        show_empty: false
+        open: true
+        children:
+          - "exp_objectives"
+          - "exp_hypothesis"
+          - "field_study"
+          - "exp_description"
+      - id: experiment_germplasm
+        type: details
+        label: "Germplasm"
+        weight: 2
+        show_empty: false
+        open: true
+        children:
+          - "exp_germgenus"
+          - "exp_germspecies"
+          - "exp_germcollection"
+      - id: experiment_phenomics
+        type: details
+        label: "Phenomics"
+        weight: 3
+        show_empty: false
+        open: true
+        children:
+          - "exp_featureofinterest"
+          - "exp_pheno_method"
+          - "exp_bchem_assayprotocal"
+      - id: experiment_design
+        type: details
+        label: "Experimental Design"
+        weight: 4
+        show_empty: false
+        open: true
+        children:
+          - "exp_site_locations"
+          - "exp_timepoints"
+          - "exp_pot_growingmedia"
+          - "exp_bchem_technique"
+          - "exp_design"
+      - id: experiment_people
+        type: details
+        label: "Researchers"
+        weight: 5
+        show_empty: false
+        open: true
+        children:
+          - "exp_datacollector"
+          - "exp_custodian"
+          - "exp_curator"
+      - id: experiment_funding
+        type: details
+        label: "Funding"
+        weight: 7
+        show_empty: false
+        open: true
+        children:
+          - "exp_org"
+          - "field_grant"
+      - id: experiment_attribution
+        type: details
+        label: "Attribution"
+        weight: 6
+        show_empty: false
+        open: true
+        children:
+          - "experiment_people"
+          - "exp_pub"
+          - "experiment_funding"

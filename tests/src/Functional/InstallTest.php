@@ -27,7 +27,7 @@ class InstallTest extends ChadoTestBrowserBase {
    *
    * @var array
    */
-  protected static $modules = ['help'];
+  protected static $modules = ['help', 'markup', 'tripal', 'tripal_layout'];
 
   /**
    * The name of your module in the .info.yml.

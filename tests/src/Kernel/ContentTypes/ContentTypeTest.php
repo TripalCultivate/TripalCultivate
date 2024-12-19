@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\Tests\trpcultivate\Functional\ContentTypes;
+namespace Drupal\Tests\trpcultivate\Kernel\ContentTypes;
 
-use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
+use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
@@ -11,7 +11,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  * @group ContentTypes
  * @group Fields
  */
-class ContentTypeTest extends ChadoTestBrowserBase {
+class ContentTypeTest extends ChadoTestKernelBase {
 
   /**
    * Theme used in the test environment.
@@ -25,7 +25,21 @@ class ContentTypeTest extends ChadoTestBrowserBase {
    *
    * @var array
    */
-  protected static $modules = ['tripal', 'user', 'field', 'trpcultivate'];
+  protected static $modules = [
+    'system',
+    'user',
+    'path',
+    'path_alias',
+    'views',
+    'field',
+    'field_ui',
+    'markup',
+    'field_group',
+    'tripal',
+    'tripal_chado',
+    'tripal_layout',
+    'trpcultivate',
+  ];
 
   /**
    * A Database query interface for querying Chado using Tripal DBX.
@@ -40,16 +54,11 @@ class ContentTypeTest extends ChadoTestBrowserBase {
    * @var array
    */
   protected $expected_contenttypes = [
-    'Research Experiment' => [
-      'field_experiment' => 19,
-      'greenhouse_experiment' => 20,
-      'growthchamber_experiment' => 20,
-      'biochem_experiment' => 20,
-    ],
     'Research Management' => [
       'research_grant' => 11,
       'grant_section' => 6,
-      'research_study' => 12,
+      'research_study' => 13,
+      'research_experiment' => 36,
     ],
   ];
 
@@ -59,15 +68,22 @@ class ContentTypeTest extends ChadoTestBrowserBase {
   protected function setUp() :void {
     parent::setUp();
 
-    // Initialize the chado instance with all the records that would be present
-    // after running prepare.
-    $this->chado_connection = $this->getTestSchema(ChadoTestBrowserBase::PREPARE_TEST_CHADO);
-    // Apply the chado update.
-    // @todo remove when https://github.com/tripal/tripal/issues/1876 is closed.
-    $this->chado_connection->executeSqlFile(
-      __DIR__ . '/../../../../config/sql/V1.3__to__V1.3.3.013__updates.sql',
-      ['testchado' => $this->testSchemaName]
-    );
+    // Ensure we see all logging in tests.
+    \Drupal::state()->set('is_a_test_environment', TRUE);
+
+    // Firs prepare our test environment.
+    $this->prepareEnvironment(['TripalTerm', 'TripalEntity']);
+    // ... we need the term yamls for chado.
+    $this->installConfig('tripal_chado');
+    // ... we need the layout entities for our content types.
+    $this->installEntitySchema('tripal_layout_default_form');
+    $this->installEntitySchema('tripal_layout_default_view');
+    // ... we need our own modules config.
+    $this->installConfig('trpcultivate');
+
+    // Initialize the chado instance with all the records
+    // that would be present after running prepare.
+    $this->connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
   }
 
   /**
