@@ -56,18 +56,33 @@ function trpcultivate_config_schema_info_alter(&$definitions) {
   // If you see the following error in tests, then add 'markup' to the $modules
   // array for your test:
   // 'Warning: Undefined array key "field.field_settings.markup"'.
-  foreach ($definitions['field.field_settings.markup']['mapping'] as $setting_key => $settings) {
-    $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+  if (array_key_exists('field.field_settings.markup', $definitions)) {
+    foreach ($definitions['field.field_settings.markup']['mapping'] as $setting_key => $settings) {
+      $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+    }
+  }
+  else {
+    \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Markup module for it's content types but it seems to be missing as the 'field.field_settings.markup' schema definition is unavailable.");
   }
 
   // Support for the Entity Reference Field being used on a TripalEntity.
   // -- field settings.
-  foreach ($definitions['field.field_settings.entity_reference']['mapping'] as $setting_key => $settings) {
-    $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+  if (array_key_exists('field.field_settings.entity_reference', $definitions)) {
+    foreach ($definitions['field.field_settings.entity_reference']['mapping'] as $setting_key => $settings) {
+      $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+    }
+  }
+  else {
+    \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.field_settings.entity_reference' schema definition is unavailable.");
   }
   // -- field storage settings.
-  foreach ($definitions['field.storage_settings.entity_reference']['mapping'] as $setting_key => $settings) {
-    $definitions['field.storage.tripal_entity.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+  if (array_key_exists('field.storage_settings.entity_reference', $definitions)) {
+    foreach ($definitions['field.storage_settings.entity_reference']['mapping'] as $setting_key => $settings) {
+      $definitions['field.storage.tripal_entity.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+    }
+  }
+  else {
+    \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.storage_settings.entity_reference' schema definition is unavailable.");
   }
 
   // Support for Third Party Tripal field settings being used on TripalEntity.
