@@ -4,6 +4,7 @@ description: Provides basic functionality shared by the entire Tripal Cultivate 
 package: "Tripal Cultivate"
 core_version_requirement: ^10 | ^11
 dependencies:
+  - "markup:markup"
   - "tripal:tripal"
   - "tripal:tripal_chado"
   - "tripal:tripal_layout"
