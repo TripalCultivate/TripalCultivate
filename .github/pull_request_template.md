@@ -30,10 +30,11 @@
      Make sure to include whether they need to build a docker from scratch,
      create any records, configure anything, etc. -->
 
-1. Start a fresh docker image/container on this branch
+1. Start a fresh docker image/container on this branch. **You can use the devcontainer approach OR the following commands:**
   ```
   cd ~/Dockers
   git clone https://github.com/TripalCultivate/TripalCultivate trpcultBase-PRNUM
+  git checkout BRANCHNAME
   cd trpcultBase-PRNUM
   docker build --tag=trpcultivate-base:reviewPRNUM ./
   docker run --publish=80:80 -tid --name=basePRNUM --volume=`pwd`:/var/www/drupal/web/modules/contrib/TripalCultivate trpcultivate-base:reviewPRNUM
