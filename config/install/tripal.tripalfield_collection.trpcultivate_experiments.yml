@@ -552,8 +552,8 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: rdfs
-            termAccession: type
+            termIdSpace: CGO
+            termAccession: GrowingMedium
         display:
           view:
             default:
