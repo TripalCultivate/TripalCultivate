@@ -1,0 +1,7 @@
+# Tripal Cultivate Configuration/Settings.
+
+langcode: 'en'
+
+tripalcultivate:
+  directory:
+    template_file: 'public://TripalCultivate/phenotypes/template_file/'
