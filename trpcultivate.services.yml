@@ -1,0 +1,5 @@
+# TripalCultivate Services.
+services:
+  tripalcultivate.template_generator:
+    class: 'Drupal\tripalcultivate\Service\TripalCultivateFileTemplateService'
+    arguments: ['@config.factory', '@current_user']
