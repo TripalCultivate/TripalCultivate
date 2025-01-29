@@ -11,7 +11,7 @@ use Drupal\tripalcultivate\TripalCultivateValidator\TripalCultivateValidatorBase
 /**
  * Generate data collection template file used in the importer.
  */
-class TripalCultivatePhenotypesFileTemplateService {
+class TripalCultivateFileTemplateService {
 
   /**
    * Validator Traits required by this validator.
@@ -80,7 +80,7 @@ class TripalCultivatePhenotypesFileTemplateService {
     // Fetch the configuration relating to directory for housing data collection
     // template file. This directory had been setup during install and had / at
     // the end as defined. @see config install and schema.
-    $dir_template_file = $this->config->get('trpcultivate.directory.template_file');
+    $dir_template_file = $this->config->get('directory.template_file');
 
     // About the template file:
     // File extension.
