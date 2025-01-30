@@ -3,12 +3,12 @@
 langcode: 'en'
 
 
-# tripalcultivate.directory:
+# trpcultivate.directory:
 # File directory to store file managed by this module.
 directory:
   template_file: 'public://tripalcultivate/template_file/'
 
-# tripalcultivate.ontology.allownew
+# trpcultivate.ontology.allownew
 # This value will indicate if importer will allow creation of traits during file upload (true)
 # or if all traits must be uploaded prior through the trait importer (false).
 ontology:

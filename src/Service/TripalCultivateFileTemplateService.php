@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\tripalcultivate\Service;
+namespace Drupal\trpcultivate\Service;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
-use Drupal\tripalcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
-use Drupal\tripalcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
+use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
+use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 
 /**
  * Generate data collection template file used in the importer.
@@ -48,7 +48,7 @@ class TripalCultivateFileTemplateService {
    */
   public function __construct(ConfigFactoryInterface $config, AccountInterface $user) {
     // Set the configuration.
-    $this->config = $config->get('tripalcultivate.settings');
+    $this->config = $config->get('trpcultivate.settings');
 
     // Set the current user.
     $this->user = $user;
@@ -72,7 +72,7 @@ class TripalCultivateFileTemplateService {
    * @return string
    *   The relative path to the generated template file.
    *
-   * @see src/TripalCultivateValidator/TripalCultivatePhenotypesValidatorBase.php
+   * @see src/TripalCultivateValidator/TripalCultivateValidatorBase.php
    * @see src/TripalCultivateValidator/ValidatorTraits/FileTypes.php
    */
   public function generateFile($importer_id, $column_headers, $file_extensions) {

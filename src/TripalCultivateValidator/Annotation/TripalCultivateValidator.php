@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\tripalcultivate\TripalCultivateValidator\Annotation;
+namespace Drupal\trpcultivate\TripalCultivateValidator\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
 
 /**
  * Defines a data validator annotation object.
  *
- * @see Drupal\tripalcultivate\TripalCultivateValidatorManager
- * @see Drupal\tripalcultivate\TripalCultivateValidator\TripalCultivateValidatorInterface
+ * @see Drupal\trpcultivate\TripalCultivateValidatorManager
+ * @see Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorInterface
  *
  * @Annotation
  */

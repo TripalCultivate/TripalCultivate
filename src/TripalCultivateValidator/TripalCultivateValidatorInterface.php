@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\tripalcultivate\TripalCultivateValidator;
+namespace Drupal\trpcultivate\TripalCultivateValidator;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\tripal\Services\TripalLogger;

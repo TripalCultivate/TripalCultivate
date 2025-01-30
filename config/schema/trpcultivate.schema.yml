@@ -1,6 +1,6 @@
 # Tripal Cultivate Configuration/Settings Schema.
 
-tripalcultivate.settings:
+trpcultivate.settings:
   type: config_object
   mapping:
     directory:

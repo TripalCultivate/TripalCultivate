@@ -20,11 +20,19 @@ class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
    */
   protected static $modules = [
     'file',
-    'user',
     'system',
+    'user',
+    'path',
+    'path_alias',
+    'views',
+    'field',
+    'field_ui',
+    'markup',
+    'field_group',
     'tripal',
     'tripal_chado',
-    'tripalcultivate',
+    'tripal_layout',
+    'trpcultivate',
   ];
 
   /**
@@ -65,13 +73,13 @@ class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
     \Drupal::state()->set('is_a_test_environment', TRUE);
 
     // Setup file configuration and schema.
-    $this->installConfig(['file', 'tripalcultivate']);
+    $this->installConfig(['file', 'trpcultivate']);
     $this->installEntitySchema('file');
     $this->installEntitySchema('user');
 
     $this->file_system = \Drupal::service('file_system');
     $this->config = \Drupal::service('config.factory');
-    $this->service_FileTemplate = \Drupal::service('tripalcultivate.template_generator');
+    $this->service_FileTemplate = \Drupal::service('trpcultivate.template_generator');
 
     // Create a user.
     $this->user = User::create([
@@ -183,8 +191,8 @@ class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
 
     // Assert that a file has been created in the configured directory
     // for template files.
-    $dir_templates = $this->config->get('trpcultivate_phenotypes.settings')
-      ->get('trpcultivate.phenotypes.directory.template_file');
+    $dir_templates = $this->config->get('trpcultivate.settings')
+      ->get('directory.template_file');
 
     $file_system = $this->file_system->realpath($dir_templates);
     $files_in_dir = array_diff(scandir($file_system), ['..', '.']);
