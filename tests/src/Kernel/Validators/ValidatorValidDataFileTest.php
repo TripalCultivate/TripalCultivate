@@ -6,7 +6,7 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
 
 /**
- * Tests Tripal Cultivate Phenotypes Data File Validator Plugins.
+ * Tests Tripal Cultivate Data File Validator Plugins.
  *
  * @group trpcultivate
  * @group validators

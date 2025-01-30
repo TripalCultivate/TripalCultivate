@@ -79,7 +79,7 @@ class ValidatorBaseTest extends ChadoTestKernelBase {
     $this->container->set('tripal_chado.database', $this->chado_connection);
 
     // Set plugin manager service.
-    $this->plugin_manager = \Drupal::service('plugin.manager.trpcultivate');
+    $this->plugin_manager = \Drupal::service('plugin.manager.trpcultivate_validator');
   }
 
   /**
