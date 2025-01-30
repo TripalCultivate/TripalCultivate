@@ -147,7 +147,7 @@ abstract class TripalCultivateValidatorBase extends PluginBase implements Tripal
    * {@inheritdoc}
    */
   public function getConfigAllowNew() {
-    $allownew = \Drupal::config('tripalpcultivate.settings')
+    $allownew = \Drupal::config('trpcultivate.settings')
       ->get('ontology.allownew');
 
     return $allownew;

@@ -482,7 +482,7 @@ class ValidatorBaseTest extends ChadoTestKernelBase {
     // Test that the sanitized line is the same as the split values.
     $delimiter = $expected_delimiter;
     $str_line = implode($delimiter, $raw_line);
-    $values = TripalCultivatePhenotypesValidatorBase::splitRowIntoColumns($str_line, $expected_mime_type);
+    $values = TripalCultivateValidatorBase::splitRowIntoColumns($str_line, $expected_mime_type);
     $this->assertEquals($good_line, $values, 'Line values does not match expected split values.');
   }
 
