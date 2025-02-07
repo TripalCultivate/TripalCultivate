@@ -10,10 +10,3 @@ trpcultivate.settings:
         template_file:
           type: path
           label: 'Directory: data collection template file'
-    ontology:
-      type: mapping
-      label: 'Settings related to traits'
-      mapping:
-        allownew:
-          type: boolean
-          label: 'Allow new traits during phenotypes import'

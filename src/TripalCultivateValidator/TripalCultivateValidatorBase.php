@@ -146,16 +146,6 @@ abstract class TripalCultivateValidatorBase extends PluginBase implements Tripal
   /**
    * {@inheritdoc}
    */
-  public function getConfigAllowNew() {
-    $allownew = \Drupal::config('trpcultivate.settings')
-      ->get('ontology.allownew');
-
-    return $allownew;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function splitRowIntoColumns(string $row, string $mime_type) {
 
     $mime_to_delimiter_mapping = self::$mime_to_delimiter_mapping;

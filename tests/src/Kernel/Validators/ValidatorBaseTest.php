@@ -186,14 +186,6 @@ class ValidatorBaseTest extends ChadoTestKernelBase {
     $returned_name = $instance->getValidatorName();
     $this->assertEquals($expected_name, $returned_name,
       "We did not recieve the name we expected when using getValidatorName() for $validator_id validator.");
-
-    // Check that we are able to get the configuration for allowing new traits.
-    // NOTE: this is set by the admin in the ontology config form and doesn't
-    // change between importers.
-    $expected_allownew = TRUE;
-    $returned_allownew = $instance->getConfigAllowNew();
-    $this->assertEquals($expected_allownew, $returned_allownew,
-      "We did not get the status for Allowing New configuration that we expected through the $validator_id validator.");
   }
 
   /**

@@ -165,18 +165,6 @@ interface TripalCultivateValidatorInterface extends PluginInspectionInterface {
   public function checkIndices($row_values, $indices);
 
   /**
-   * This method will fetch the value set for 'allownew' configuration.
-   *
-   * Traits, method and unit may be created/inserted through
-   * the phenotypic data importer using the configuration setting 'allownew'.
-   *
-   * @return bool
-   *   True if this module is set to allow creation of trait, method and unit.
-   *   Otherwise, returns false and will not permit creation of terms.
-   */
-  public function getConfigAllowNew();
-
-  /**
    * Split a data file line/row values into an array using a delimiter.
    *
    * More specifically, the file is split based on the appropriate delimiter

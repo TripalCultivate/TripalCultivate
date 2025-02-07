@@ -14,8 +14,6 @@ class TripalCultivateValidatorManager extends DefaultPluginManager {
   /**
    * Constructs Validator Plugin Manager.
    *
-   * (@todo update the following paths when validators get moved to
-   * TripalCultivate Base)
    * NOTES:
    *   Instance of validator in Drupal/trpcultivate/Plugin/Validator.
    *   Each instance is an implementation of Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorInterface.
