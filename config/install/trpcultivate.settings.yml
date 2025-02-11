@@ -1,0 +1,8 @@
+# Tripal Cultivate Configuration/Settings.
+
+langcode: 'en'
+
+# trpcultivate.directory:
+# File directory to store file managed by this module.
+directory:
+  template_file: 'public://tripalcultivate/template_file/'

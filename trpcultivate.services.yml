@@ -1,0 +1,11 @@
+# TripalCultivate Services.
+
+services:
+  trpcultivate.template_generator:
+    class: 'Drupal\trpcultivate\Service\TripalCultivateFileTemplateService'
+    arguments: ['@config.factory', '@current_user']
+
+  plugin.manager.trpcultivate_validator:
+    class: 'Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager'
+    parent: default_plugin_manager
+    arguments: ['@tripal_chado.database']
