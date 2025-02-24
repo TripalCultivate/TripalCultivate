@@ -369,3 +369,31 @@ function trpcultivate_apply_layout() {
   // -- Finally save it.
   $display->save();
 }
+
+/**
+ * Implements hook_theme().
+ *
+ * @see /templates/importer
+ */
+function trpcultivate_theme($existing, $type, $theme, $path) {
+  return [
+    // Theme importer describe header window.
+    'describe_header_window' => [
+      'variables' => [
+        'data' => [
+          'headers' => [],
+          'template_file' => '#',
+        ],
+      ],
+      'template' => 'importer/describe-header-window',
+    ],
+
+    // Theme importer validation result window.
+    'validation_result_window' => [
+      'variables' => [
+        'data' => [],
+      ],
+      'template' => 'importer/validation-result-window',
+    ],
+  ];
+}
