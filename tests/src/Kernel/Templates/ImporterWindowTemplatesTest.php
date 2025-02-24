@@ -92,7 +92,7 @@ class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
       'validation_result' => [
         'Genus Exists' => [
           'status' => 'pass',
-          'failedItem' => [],
+          'failedItems' => [],
         ],
       ],
     ];
