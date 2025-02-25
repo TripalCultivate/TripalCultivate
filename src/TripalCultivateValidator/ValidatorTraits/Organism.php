@@ -51,7 +51,7 @@ trait Organism {
    * NOTE: This setter is helpful for validators that only perform a lookup for
    * existing data types related to an organism (such as germplasm).
    *
-   * @param string
+   * @param string $genus
    *   The genus name.
    */
   public function setGenus(string $genus) {

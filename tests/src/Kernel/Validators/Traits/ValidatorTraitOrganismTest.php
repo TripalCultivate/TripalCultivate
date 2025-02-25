@@ -54,6 +54,12 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     // Install module configuration.
     $this->installConfig(['trpcultivate']);
 
+    // Test Chado database.
+    // Create a test chado instance and then set it in the container for use by
+    // our service.
+    $this->chado_connection = $this->createTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
+    $this->container->set('tripal_chado.database', $this->chado_connection);
+
     // Create a fake plugin instance for testing.
     $configuration = [];
     $validator_id = 'validator_requiring_organism';
@@ -62,7 +68,7 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
       'validator_name' => 'Validator Using Organism Trait',
       'input_types' => ['header-row', 'data-row'],
     ];
-    $instance = new ValidatorColumnIndices(
+    $instance = new ValidatorOrganism(
       $configuration,
       $validator_id,
       $plugin_definition
@@ -73,6 +79,31 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     );
 
     $this->instance = $instance;
+
+    // Insert an organism into chado.
+    $genus = 'Tripalus';
+    $species = 'databasica';
+    $organism_id = $this->chado_connection->insert('1:organism')
+      ->fields([
+        'genus' => $genus,
+        'species' => $species,
+      ])
+      ->execute();
+
+    $this->assertIsNumeric($organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
+  }
+
+  /**
+   * Tests the Organism setters and getter.
+   *
+   * Specifically,
+   *   - setOrganismID()
+   *   - setGenus()
+   *   - getOrganismIDs()
+   */
+  public function testOrganismSetterGetter() {
+    //$this->instance->setOrganismID(1);
+
   }
 
 }
