@@ -71,7 +71,8 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     $instance = new ValidatorOrganism(
       $configuration,
       $validator_id,
-      $plugin_definition
+      $plugin_definition,
+      $this->chado_connection,
     );
     $this->assertIsObject(
       $instance,
@@ -102,7 +103,10 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
    *   - getOrganismIDs()
    */
   public function testOrganismSetterGetter() {
-    //$this->instance->setOrganismID(1);
+
+    // Try setting the organism with a random (nonexisting) organism ID.
+    $organism_id = 5;
+    $this->instance->setOrganismID($organism_id);
 
   }
 
