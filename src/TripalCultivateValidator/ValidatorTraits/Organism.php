@@ -26,7 +26,9 @@ trait Organism {
    *   A single organism id from the chado.organism table.
    */
   public function setOrganismID(int $organism_id) {
-
+    if (!isset($this->chado_connection)) {
+      throw new \Exception('The Organism Trait needs an instance of ChadoConnection (tripal_chado.database) injected via the create() and set to $this->chado_connection.');
+    }
     // Query the organism ID in chado.
     $query = $this->chado_connection->select('1:organism', 'o')
       ->fields('o', ['organism_id'])
@@ -39,8 +41,7 @@ trait Organism {
       // Since this is a user-provided value, the error is going to be logged
       // instead of thrown as an exception and then checked by a validator so
       // that the error can be passed to the user in a friendly way.
-      // Log the ID to watchdog (the admin UI).
-      // Log to the user a generic message that the organism doesn't exist.
+      $this->logger->error("The organism ID $organism_id was not found in chado.organism.");
     }
 
   }
@@ -55,7 +56,9 @@ trait Organism {
    *   The genus name.
    */
   public function setGenus(string $genus) {
-
+    if (!isset($this->chado_connection)) {
+      throw new \Exception('The Organism Trait needs an instance of ChadoConnection (tripal_chado.database) injected via the create() and set to $this->chado_connection.');
+    }
     // Query the genus in chado.
     $query = $this->chado_connection->select('1:organism', 'o')
       ->fields('o', ['organism_ids'])
