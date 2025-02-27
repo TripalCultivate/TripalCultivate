@@ -71,7 +71,7 @@ trait Organism {
       ->condition('o.genus', $genus);
     $record = $query->execute()->fetchCol();
     // If we have 1+ organisms with the genus, return as an array.
-    if (sizeof($record) > 0) {
+    if (count($record) > 0) {
       $this->context['organism_ids'] = $record;
     }
     else {
