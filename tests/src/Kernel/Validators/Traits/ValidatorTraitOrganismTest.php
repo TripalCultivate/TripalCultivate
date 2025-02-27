@@ -116,7 +116,7 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     // Try setting the organism with a random (nonexisting) organism ID.
     $organism_id = 5;
     $printed_output = '';
-    $expected_message = "The organism ID $organism_id was not found in chado.organism.";
+    $expected_message = "The organism ID '$organism_id' was not found in chado.organism.";
     ob_start();
     $this->instance->setOrganismID($organism_id);
     $printed_output = ob_get_clean();
@@ -150,16 +150,16 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     // Insert an organism into chado, then try setting it using setOrganismID().
     $genus = 'Tripalus';
     $species = 'databasica';
-    $inserted_organism_id = $this->chado_connection->insert('1:organism')
+    $first_organism_id = $this->chado_connection->insert('1:organism')
       ->fields([
         'genus' => $genus,
         'species' => $species,
       ])
       ->execute();
-    $this->assertIsNumeric($inserted_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
+    $this->assertIsNumeric($first_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
     // Cast our ID to an int since querying Chado gives us a string.
-    $inserted_organism_id = (int) $inserted_organism_id;
-    $this->instance->setOrganismID($inserted_organism_id);
+    $first_organism_id = (int) $first_organism_id;
+    $this->instance->setOrganismID($first_organism_id);
 
     // Now use our getter to grab our organism ID.
     $exception_caught = FALSE;
@@ -183,9 +183,62 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     // Check that we were returned an array with a single ID.
     $this->assertCount(1, $grabbed_organism_id, "We expected getOrganismIDs to return an array with only 1 ID, but it contained a different amount.");
     $this->assertContains(
-      $inserted_organism_id,
+      $first_organism_id,
       $grabbed_organism_id,
       "The organism ID retrieved using getOrganismIDs() is not the same as the ID given to setOrganismID()."
+    );
+
+    // Insert another organism with the same genus.
+    $species = 'chadoii';
+    $second_organism_id = $this->chado_connection->insert('1:organism')
+      ->fields([
+        'genus' => $genus,
+        'species' => $species,
+      ])
+      ->execute();
+    $this->assertIsNumeric($second_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
+
+    // Set the genus to 'Tripalus'.
+    $this->instance->setGenus($genus);
+
+    // Use the getter to grab both organism IDs for this genus.
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      $grabbed_organism_ids = $this->instance->getOrganismIDs();
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+    $this->assertFalse(
+      $exception_caught,
+      "Calling getOrganismIDs() when valid ones were set should not have thrown an exception but threw '$exception_message'."
+    );
+    // Check that we were returned an array of IDs.
+    $this->assertIsArray(
+      $grabbed_organism_ids,
+      "We expected getOrganismIDs() to return an array, but it did not."
+    );
+    // Check that we were returned an array with 2 separate IDs.
+    $this->assertCount(2, $grabbed_organism_ids, "We expected getOrganismIDs to return an array with 2 IDs, but it contained a different amount.");
+    $this->assertContains(
+      $second_organism_id,
+      $grabbed_organism_ids,
+      "The organism ID retrieved using getOrganismIDs() is not the same as the ID given to setOrganismID()."
+    );
+
+    // Lastly, try to set a genus that does not exist in the database.
+    $genus = 'INVALID_GENUS';
+    $printed_output = '';
+    $expected_message = "Unable to find any organisms for the genus '$genus' in chado.organism.";
+    ob_start();
+    $this->instance->setGenus($genus);
+    $printed_output = ob_get_clean();
+    $this->assertStringContainsString(
+      $expected_message,
+      $printed_output,
+      "The logged error message does not have the message we expected for a genus that doesn't even exist in chado."
     );
   }
 

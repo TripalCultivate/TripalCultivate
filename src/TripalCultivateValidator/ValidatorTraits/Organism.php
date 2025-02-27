@@ -44,7 +44,7 @@ trait Organism {
       // Since this is a user-provided value, the error is going to be logged
       // instead of thrown as an exception and then checked by a validator so
       // that the error can be passed to the user in a friendly way.
-      $this->logger->error("The organism ID $organism_id was not found in chado.organism.");
+      $this->logger->error("The organism ID '$organism_id' was not found in chado.organism.");
     }
 
   }
@@ -67,9 +67,19 @@ trait Organism {
     }
     // Query the genus in chado.
     $query = $this->chado_connection->select('1:organism', 'o')
-      ->fields('o', ['organism_ids'])
+      ->fields('o', ['organism_id'])
       ->condition('o.genus', $genus);
-    $record = $query->execute()->fetchAll();
+    $record = $query->execute()->fetchCol();
+    // If we have 1+ organisms with the genus, return as an array.
+    if (sizeof($record) > 0) {
+      $this->context['organism_ids'] = $record;
+    }
+    else {
+      // Since this is a user-provided value, the error is going to be logged
+      // instead of thrown as an exception and then checked by a validator so
+      // that the error can be passed to the user in a friendly way.
+      $this->logger->error("Unable to find any organisms for the genus '$genus' in chado.organism.");
+    }
 
   }
 
@@ -83,7 +93,6 @@ trait Organism {
    *   - If an organism ID was not set by setOrganismID() or setGenus().
    */
   public function getOrganismIDs() {
-
     if (array_key_exists('organism_ids', $this->context)) {
       return $this->context['organism_ids'];
     }
