@@ -51,20 +51,43 @@ class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
 
   /**
    * Test importer describe header window.
+   *
+   * The test headers render array provided below is a copy of the render array
+   * defined by phenotypes traits importer.
    */
   public function testDescribeHeaderWindow() {
     $theme_name = 'describe_header_window';
     $theme_data = [
       'headers' => [
         [
-          'name' => 'Header 1',
-          'description' => 'The header 1',
+          'name' => 'Trait Name',
+          'description' => 'The name of the trait, as you would like it to appear to the user (e.g. Days to Flower)',
           'type' => 'required',
         ],
         [
-          'name' => 'Header 2',
-          'description' => 'The header 2',
-          'type' => 'optional',
+          'name' => 'Trait Description',
+          'description' => 'A full description of the trait. This is recommended to be at least one paragraph.',
+          'type' => 'required',
+        ],
+        [
+          'name' => 'Method Short Name',
+          'description' => 'A full, unique title for the method (e.g. Days till 10% of plants/plot have flowers)',
+          'type' => 'required',
+        ],
+        [
+          'name' => 'Collection Method',
+          'description' => 'A full description of how the trait was collected. This is also recommended to be at least one paragraph.',
+          'type' => 'required',
+        ],
+        [
+          'name' => 'Unit',
+          'description' => 'The full name of the unit used (e.g. days, centimeters)',
+          'type' => 'required',
+        ],
+        [
+          'name' => 'Type',
+          'description' => 'One of "Qualitative" or "Quantitative".',
+          'type' => 'required',
         ],
       ],
       'file_extensions' => 'txt, tsv, xlsx',
@@ -85,14 +108,63 @@ class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
 
   /**
    * Test importer validation result window.
+   *
+   * The test validation result render array below is a render array that a
+   * trait importer would create if data file is empty.
    */
   public function testValidationResultWindow() {
     $theme_name = 'validation_result_window';
     $theme_data = [
       'validation_result' => [
-        'Genus Exists' => [
+        'genus_exists' => [
+          'title' => 'The genus is valid',
           'status' => 'pass',
-          'failedItems' => [],
+          'details' => [],
+        ],
+        'valid_data_file' => [
+          'title' => 'File is valid and not empty',
+          'status' => 'pass',
+          'details' => [
+            '#type' => 'item',
+            '#title' => 'The file provided has no contents in it to import. Please ensure your file has the expected header row and at least one row of data.',
+            '#wrapper_attributes' => [
+              'class' => [
+                'tcp-valid-data-file-failures',
+              ],
+            ],
+            'items' => [
+              '#theme' => 'item_list',
+              '#type' => 'ul',
+              '#items' => [
+                'Filename: my-template-file.tsv',
+              ],
+            ],
+          ],
+        ],
+        'valid_delimited_file' => [
+          'title' => 'Lines are properly delimited',
+          'status' => 'todo',
+          'details' => '',
+        ],
+        'valid_header' => [
+          'title' => 'File has all of the column headers expected',
+          'status' => 'todo',
+          'details' => '',
+        ],
+        'empty_cell' => [
+          'title' => 'Required cells contain a value',
+          'status' => 'todo',
+          'details' => '',
+        ],
+        'valid_data_type' => [
+          'title' => 'Values in required cells are valid',
+          'status' => 'todo',
+          'details' => '',
+        ],
+        'duplicate_traits' => [
+          'title' => 'All trait-method-unit combinations are unique',
+          'status' => 'todo',
+          'details' => '',
         ],
       ],
     ];
