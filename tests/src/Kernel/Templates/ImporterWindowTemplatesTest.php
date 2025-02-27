@@ -123,7 +123,7 @@ class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
         ],
         'valid_data_file' => [
           'title' => 'File is valid and not empty',
-          'status' => 'pass',
+          'status' => 'fail',
           'details' => [
             '#type' => 'item',
             '#title' => 'The file provided has no contents in it to import. Please ensure your file has the expected header row and at least one row of data.',
