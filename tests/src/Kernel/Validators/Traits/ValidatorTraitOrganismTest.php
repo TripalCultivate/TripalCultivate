@@ -157,7 +157,7 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
       ])
       ->execute();
     $this->assertIsNumeric($inserted_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
-    // Cast our ID to an int since Chado gives us a string.
+    // Cast our ID to an int since querying Chado gives us a string.
     $inserted_organism_id = (int) $inserted_organism_id;
     $this->instance->setOrganismID($inserted_organism_id);
 

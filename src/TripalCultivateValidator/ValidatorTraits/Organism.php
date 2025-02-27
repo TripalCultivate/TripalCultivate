@@ -24,10 +24,13 @@ trait Organism {
    *
    * @param int $organism_id
    *   A single organism id from the chado.organism table.
+   *
+   * @throws \Exception
+   *   - If an instance of ChadoConnection is not accessible.
    */
   public function setOrganismID(int $organism_id) {
     if (!isset($this->chado_connection)) {
-      throw new \Exception('The Organism Trait needs an instance of ChadoConnection (tripal_chado.database) injected via the create() and set to $this->chado_connection.');
+      throw new \Exception('Using setOrganismID() by the Organism Trait needs an instance of ChadoConnection (tripal_chado.database) injected via the create() and set to $this->chado_connection.');
     }
     // Query the organism ID in chado.
     $query = $this->chado_connection->select('1:organism', 'o')
@@ -54,10 +57,13 @@ trait Organism {
    *
    * @param string $genus
    *   The genus name.
+   *
+   * @throws \Exception
+   *   - If an instance of ChadoConnection is not accessible.
    */
   public function setGenus(string $genus) {
     if (!isset($this->chado_connection)) {
-      throw new \Exception('The Organism Trait needs an instance of ChadoConnection (tripal_chado.database) injected via the create() and set to $this->chado_connection.');
+      throw new \Exception('Using setGenus() by the Organism Trait needs an instance of ChadoConnection (tripal_chado.database) injected via the create() and set to $this->chado_connection.');
     }
     // Query the genus in chado.
     $query = $this->chado_connection->select('1:organism', 'o')
