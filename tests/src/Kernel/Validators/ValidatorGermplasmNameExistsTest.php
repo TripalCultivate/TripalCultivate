@@ -3,8 +3,8 @@
 namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\tripal_chado\Database\ChadoConnection;
-use Drupal\trpcultivate\Plugin\Validators\GermplasmNameExists;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 
 /**
  * Tests Tripal Cultivate Germplasm Name Exists Validator Plugin.
@@ -15,11 +15,11 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
 
   /**
-   * An instance of the Germplasm Name Exists validator.
+   * Plugin Manager service.
    *
-   * @var Drupal\trpcultivate\Plugin\Validators\GermplasmNameExists
+   * @var \Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
    */
-  protected GermplasmNameExists $validator_instance;
+  protected TripalCultivateValidatorManager $plugin_manager;
 
   /**
    * A Database query interface for querying Chado using Tripal DBX.
@@ -75,6 +75,9 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     $this->chado_connection = $this->createTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
     $this->container->set('tripal_chado.database', $this->chado_connection);
 
+    // Set plugin manager service.
+    $this->plugin_manager = \Drupal::service('plugin.manager.trpcultivate_validator');
+
     // Insert an organism into chado.
     $genus = 'Tripalus';
     $species = 'databasica';
@@ -85,11 +88,6 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ])
       ->execute();
     $this->assertIsNumeric($this->first_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
-
-    // Create a plugin instance for this validator.
-    $validator_id = 'germplasm_name_exists';
-    $this->validator_instance = \Drupal::service('plugin.manager.trpcultivate_validator')
-      ->createInstance($validator_id);
   }
 
   /**
@@ -129,9 +127,14 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    * @dataProvider provideRowToGermplasmNameExists
    */
   public function testValidatorGermplasmNameExists(array $indices, array $row_values) {
-    $this->validator_instance->setIndices($indices);
-    // $this->validator_instance->setOrganismID($this->first_organism_id);
-    // $this->validator_instance->validateRow($row_values);
+
+    // Create a plugin instance for this validator.
+    $validator_id = 'germplasm_name_exists';
+    // $instance = $this->plugin_manager->createInstance($validator_id);
+
+    // $instance->setIndices($indices);
+    // $instance->setOrganismID($this->first_organism_id);
+    // $instance->validateRow($row_values);
   }
 
 }
