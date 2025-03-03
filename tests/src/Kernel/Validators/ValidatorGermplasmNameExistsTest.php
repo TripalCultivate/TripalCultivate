@@ -11,6 +11,7 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
  *
  * @group trpcultivate
  * @group validators
+ * @group row_validators
  */
 class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
 
@@ -130,11 +131,11 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
 
     // Create a plugin instance for this validator.
     $validator_id = 'germplasm_name_exists';
-    // $instance = $this->plugin_manager->createInstance($validator_id);
+    $instance = $this->plugin_manager->createInstance($validator_id);
 
-    // $instance->setIndices($indices);
-    // $instance->setOrganismID($this->first_organism_id);
-    // $instance->validateRow($row_values);
+    $instance->setIndices($indices);
+    $instance->setOrganismID($this->first_organism_id);
+    $instance->validateRow($row_values);
   }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Drupal\trpcultivate\Plugin\Validators;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   input_types = {"data-row"},
  * )
  */
-class GermplasmNameExists extends TripalCultivateValidatorBase {
+class GermplasmNameExists extends TripalCultivateValidatorBase implements ContainerFactoryPluginInterface {
   /**
    * Validator Traits required by this validator.
    *
@@ -97,6 +98,10 @@ class GermplasmNameExists extends TripalCultivateValidatorBase {
     // Grab our list of organism IDs.
     $organism_ids = $this->getOrganismIDs();
 
+    // Initialize our variables for keeping track of validation status.
+    $valid = TRUE;
+    $failedItems = [];
+
     // Iterate through our array of row values.
     foreach ($row_values as $index => $cell) {
       // Only validate the values in which their index is also within our
@@ -105,18 +110,31 @@ class GermplasmNameExists extends TripalCultivateValidatorBase {
         // Check if our cell value is in the chado.stock table.
         $query = $this->chado_connection->select('1:stock', 's')
           ->fields('s', ['stock_id', 'name', 'uniquename', 'type_id'])
-          ->condition('s.organism_id', $organism_ids, '=');
+          ->condition('s.organism_id', $organism_ids, 'IN');
         $record = $query->execute()->fetchAll();
-        print_r($record);
+        if (empty($record)) {
+          $valid = FALSE;
+          $failedItems['failed_cells'][$index] = $cell;
+        }
       }
     }
 
-    // Return the case when germplasm name has been found.
-    return [
-      'case' => 'Germplasm name exists in the database.',
-      'valid' => TRUE,
-      'failedItems' => [],
-    ];
+    if (!$valid) {
+      $failedItems['organism_ids'] = $organism_ids;
+      return [
+        'case' => 'Unable to find germplasm name in the database',
+        'valid' => FALSE,
+        'failedItems' => $failedItems,
+      ];
+    }
+    else {
+      // Return the case when germplasm name has been found.
+      return [
+        'case' => 'Germplasm name exists in the database',
+        'valid' => TRUE,
+        'failedItems' => [],
+      ];
+    }
   }
 
 }
