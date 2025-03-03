@@ -96,6 +96,17 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *
    * @return array
    *   Each test scenario is an array with the following values:
+   *   - An array where each value is the key of the column in $row_values that
+   *     the validator instance should act on.
+   *   - An array of values from a single row/line in the file where each key
+   *     maps to a column index and each value is the content of that column.
+   *   - An array of the expected contents of the returned validation result:
+   *     - 'expected_valid': The expected validation status (TRUE if pass, FALSE
+   *       fail)
+   *     - 'expected_case': The expected case message.
+   *     - 'expected_failedItems': The expected contents of the 'failedItems'
+   *       array. This should be an empty array if validation is expected to
+   *       pass.
    */
   public function provideRowToGermplasmNameExists() {
 
@@ -108,6 +119,14 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
         1 => 'Germplasm1',
         2 => 'Column2',
         3 => 'Column3',
+      ],
+      [
+        'expected_valid' => FALSE,
+        'expected_case' => 'Unable to find germplasm name in the database',
+        'expected_failedItems' => [
+          'organism_ids' => [$this->first_organism_id],
+          'failed_cells' => [1 => 'Germplasm1'],
+        ],
       ],
     ];
 
@@ -124,10 +143,17 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *   An array of values from a single row/line in the file where each key maps
    *   to a column index (see @param $indices above) and each value is the
    *   content of that column.
+   * @param array $expectations
+   *   An array of the expected contents of the returned validation result:
+   *   - 'expected_valid': The expected validation status (TRUE if pass, FALSE
+   *     fail)
+   *   - 'expected_case': The expected case message.
+   *   - 'expected_failedItems': The expected contents of the failedItems array.
+   *     This should be an empty array if validation is expected to pass.
    *
    * @dataProvider provideRowToGermplasmNameExists
    */
-  public function testValidatorGermplasmNameExists(array $indices, array $row_values) {
+  public function testValidatorGermplasmNameExists(array $indices, array $row_values, array $expectations) {
 
     // Create a plugin instance for this validator.
     $validator_id = 'germplasm_name_exists';
@@ -135,7 +161,18 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
 
     $instance->setIndices($indices);
     $instance->setOrganismID($this->first_organism_id);
-    $instance->validateRow($row_values);
+    $validation_status = $instance->validateRow($row_values);
+
+    $this->assertSame(
+      $expectations['expected_valid'],
+      $validation_status['valid'],
+      'Germplasm Name Exists validation did not return the expected status for this scenario.',
+    );
+    $this->assertEquals(
+      $expectations['expected_case'],
+      $validation_status['case'],
+      'Germplasm Name Exists validation did not return the expected case message for this scenario.',
+    );
   }
 
 }
