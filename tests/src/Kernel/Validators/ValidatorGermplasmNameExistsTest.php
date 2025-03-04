@@ -109,10 +109,9 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *       pass.
    */
   public function provideRowToGermplasmNameExists() {
-
     $scenarios = [];
 
-    // #0: A simple row where index 1 is a germplasm name that exists.
+    // #0: A simple row where index 1 is a germplasm name that doesn't exist.
     $scenarios[] = [
       [1],
       [
@@ -124,7 +123,6 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
         'expected_valid' => FALSE,
         'expected_case' => 'Unable to find germplasm name in the database',
         'expected_failedItems' => [
-          'organism_ids' => [$this->first_organism_id],
           'failed_cells' => [1 => 'Germplasm1'],
         ],
       ],
@@ -138,7 +136,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *
    * @param array $indices
    *   An array where each value is the key of the column the validator instance
-   *   should act on. It must be either an integer or string.
+   *   should act on. Each key must be either an integer or string.
    * @param array $row_values
    *   An array of values from a single row/line in the file where each key maps
    *   to a column index (see @param $indices above) and each value is the
@@ -172,6 +170,11 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       $expectations['expected_case'],
       $validation_status['case'],
       'Germplasm Name Exists validation did not return the expected case message for this scenario.',
+    );
+    $this->assertContains(
+      $expectations['expected_failedItems']['failed_cells'],
+      $validation_status['failedItems'],
+      'Germplasm Name Exists validation did not return the expected failed cells for this scenario.'
     );
   }
 
