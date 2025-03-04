@@ -110,6 +110,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         // Check if our cell value is in the chado.stock table.
         $query = $this->chado_connection->select('1:stock', 's')
           ->fields('s', ['stock_id', 'name', 'uniquename', 'type_id'])
+          // @todo Add additional condition for stock name
           ->condition('s.organism_id', $organism_ids, 'IN');
         $record = $query->execute()->fetchAll();
         if (empty($record)) {

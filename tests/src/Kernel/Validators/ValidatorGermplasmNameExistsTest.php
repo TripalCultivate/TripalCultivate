@@ -30,11 +30,18 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
   protected ChadoConnection $chado_connection;
 
   /**
-   * The organism ID of the first organism inserted into Chado for this test.
+   * The organism ID of the organism inserted into Chado for this test.
    *
    * @var int
    */
-  protected int $first_organism_id;
+  protected int $organism_id;
+
+  /**
+   * The germplasm name of a germplasm inserted into Chado for this test.
+   *
+   * @var string
+   */
+  protected string $inserted_germplasm_name = 'stock1';
 
   /**
    * Modules to enable.
@@ -79,16 +86,27 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     // Set plugin manager service.
     $this->plugin_manager = \Drupal::service('plugin.manager.trpcultivate_validator');
 
-    // Insert an organism into chado.
+    // Insert an organism into chado.organism.
     $genus = 'Tripalus';
     $species = 'databasica';
-    $this->first_organism_id = $this->chado_connection->insert('1:organism')
+    $this->organism_id = $this->chado_connection->insert('1:organism')
       ->fields([
         'genus' => $genus,
         'species' => $species,
       ])
       ->execute();
-    $this->assertIsNumeric($this->first_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
+    $this->assertIsNumeric($this->organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
+
+    // Insert a germplasm into chado.stock.
+    $values = [
+      'organism_id' => $this->organism_id,
+      'name' => $this->inserted_germplasm_name,
+      'uniquename' => 'TEST:1',
+      'type_id' => 9,
+    ];
+    $stock_id = $this->chado_connection->insert('1:stock')
+      ->fields($values)->execute();
+    $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . $this->inserted_germplasm_name . ' in Chado for testing.');
   }
 
   /**
@@ -111,7 +129,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
   public function provideRowToGermplasmNameExists() {
     $scenarios = [];
 
-    // #0: A simple row where index 1 is a germplasm name that doesn't exist.
+    // #0: A simple row where column 1 is a germplasm name that doesn't exist.
     $scenarios[] = [
       [1],
       [
@@ -125,6 +143,21 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
         'expected_failedItems' => [
           'failed_cells' => [1 => 'Germplasm1'],
         ],
+      ],
+    ];
+
+    // #1: A simple row where column 1 is a germplasm name that exists.
+    $scenarios[] = [
+      [1],
+      [
+        1 => $inserted_germplasm_name,
+        2 => 'Column2',
+        3 => 'Column3',
+      ],
+      [
+        'expected_valid' => TRUE,
+        'expected_case' => 'Germplasm name exists in the database',
+        'expected_failedItems' => [],
       ],
     ];
 
@@ -144,7 +177,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    * @param array $expectations
    *   An array of the expected contents of the returned validation result:
    *   - 'expected_valid': The expected validation status (TRUE if pass, FALSE
-   *     fail)
+   *     if fail)
    *   - 'expected_case': The expected case message.
    *   - 'expected_failedItems': The expected contents of the failedItems array.
    *     This should be an empty array if validation is expected to pass.
@@ -158,7 +191,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     $instance = $this->plugin_manager->createInstance($validator_id);
 
     $instance->setIndices($indices);
-    $instance->setOrganismID($this->first_organism_id);
+    $instance->setOrganismID($this->organism_id);
     $validation_status = $instance->validateRow($row_values);
 
     $this->assertSame(
@@ -171,11 +204,20 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       $validation_status['case'],
       'Germplasm Name Exists validation did not return the expected case message for this scenario.',
     );
-    $this->assertContains(
-      $expectations['expected_failedItems']['failed_cells'],
-      $validation_status['failedItems'],
-      'Germplasm Name Exists validation did not return the expected failed cells for this scenario.'
-    );
+    if (array_key_exists('failed_cells', $expectations['expected_failedItems'])) {
+      $this->assertContains(
+        $expectations['expected_failedItems']['failed_cells'],
+        $validation_status['failedItems'],
+        'Germplasm Name Exists validation did not return the expected failed cells for this scenario.',
+      );
+    }
+    else {
+      $this->assertSameSize(
+        $expectations['expected_failedItems'],
+        $validation_status['failedItems'],
+        'Germplasm Name Exists validation did not contain an empty array for failedItems despite validation passing.',
+      );
+    }
   }
 
 }
