@@ -150,7 +150,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     $scenarios[] = [
       [1],
       [
-        1 => $inserted_germplasm_name,
+        1 => $this->inserted_germplasm_name,
         2 => 'Column2',
         3 => 'Column3',
       ],
@@ -158,6 +158,28 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
         'expected_valid' => TRUE,
         'expected_case' => 'Germplasm name exists in the database',
         'expected_failedItems' => [],
+      ],
+    ];
+
+    // #2: A row with 3 germplasm in separate columns, only 1 exists.
+    $scenarios[] = [
+      [1, 3, 5],
+      [
+        1 => 'Germplasm1',
+        2 => 'Column2',
+        3 => $this->inserted_germplasm_name,
+        4 => 'Column4',
+        5 => 'Germplasm3',
+      ],
+      [
+        'expected_valid' => FALSE,
+        'expected_case' => 'Unable to find germplasm name in the database',
+        'expected_failedItems' => [
+          'failed_cells' => [
+            1 => 'Germplasm1',
+            5 => 'Germplasm3',
+          ],
+        ],
       ],
     ];
 

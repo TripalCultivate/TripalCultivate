@@ -108,9 +108,10 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       // context array of indices.
       if (in_array($index, $indices)) {
         // Check if our cell value is in the chado.stock table.
+        // Note that $organism_ids is an array, hence the use of 'IN' here.
         $query = $this->chado_connection->select('1:stock', 's')
-          ->fields('s', ['stock_id', 'name', 'uniquename', 'type_id'])
-          // @todo Add additional condition for stock name
+          ->fields('s', ['name', 'uniquename', 'organism_id'])
+          ->condition('s.name', $cell, '=')
           ->condition('s.organism_id', $organism_ids, 'IN');
         $record = $query->execute()->fetchAll();
         if (empty($record)) {
@@ -121,6 +122,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     }
 
     if (!$valid) {
+      // Add our array of organism IDs to failedItems.
       $failedItems['organism_ids'] = $organism_ids;
       return [
         'case' => 'Unable to find germplasm name in the database',
