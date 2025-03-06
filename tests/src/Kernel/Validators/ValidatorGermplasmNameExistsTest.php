@@ -139,9 +139,13 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ],
       [
         'expected_valid' => FALSE,
-        'expected_case' => 'Unable to find germplasm name in the database',
+        'expected_case' => 'Missing germplasm name(s) in the database',
         'expected_failedItems' => [
-          'failed_cells' => [1 => 'Germplasm1'],
+          'missing_cells' => [
+            1 => [
+              'germplasm_name' => 'Germplasm1',
+            ],
+          ],
         ],
       ],
     ];
@@ -156,7 +160,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ],
       [
         'expected_valid' => TRUE,
-        'expected_case' => 'Germplasm name exists in the database',
+        'expected_case' => 'Germplasm name(s) exist(s) in the database',
         'expected_failedItems' => [],
       ],
     ];
@@ -173,11 +177,15 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ],
       [
         'expected_valid' => FALSE,
-        'expected_case' => 'Unable to find germplasm name in the database',
+        'expected_case' => 'Missing germplasm name(s) in the database',
         'expected_failedItems' => [
-          'failed_cells' => [
-            1 => 'Germplasm1',
-            5 => 'Germplasm3',
+          'missing_cells' => [
+            1 => [
+              'germplasm_name' => 'Germplasm1',
+            ],
+            5 => [
+              'germplasm_name' => 'Germplasm3',
+            ],
           ],
         ],
       ],
@@ -226,18 +234,11 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       $validation_status['case'],
       'Germplasm Name Exists validation did not return the expected case message for this scenario.',
     );
-    if (array_key_exists('failed_cells', $expectations['expected_failedItems'])) {
+    if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {
       $this->assertContains(
-        $expectations['expected_failedItems']['failed_cells'],
+        $expectations['expected_failedItems']['missing_cells'],
         $validation_status['failedItems'],
-        'Germplasm Name Exists validation did not return the expected failed cells for this scenario.',
-      );
-    }
-    else {
-      $this->assertSameSize(
-        $expectations['expected_failedItems'],
-        $validation_status['failedItems'],
-        'Germplasm Name Exists validation did not contain an empty array for failedItems despite validation passing.',
+        'Germplasm Name Exists validation did not return the expected missing cells for this scenario.',
       );
     }
   }

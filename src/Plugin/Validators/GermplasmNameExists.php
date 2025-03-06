@@ -98,8 +98,9 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // Grab our list of organism IDs.
     $organism_ids = $this->getOrganismIDs();
 
-    // Initialize our variables for keeping track of validation status.
-    $valid = TRUE;
+    // Initialize our flags for keeping track of validation status.
+    $missing = FALSE;
+    $duplicate = FALSE;
     $failedItems = [];
 
     // Iterate through our array of row values.
@@ -110,34 +111,50 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         // Check if our cell value is in the chado.stock table.
         // Note that $organism_ids is an array, hence the use of 'IN' here.
         $query = $this->chado_connection->select('1:stock', 's')
-          ->fields('s', ['name', 'uniquename', 'organism_id'])
+          ->fields('s', ['stock_id', 'organism_id', 'name', 'uniquename', 'type_id'])
           ->condition('s.name', $cell, '=')
           ->condition('s.organism_id', $organism_ids, 'IN');
-        $record = $query->execute()->fetchAll();
-        if (empty($record)) {
-          $valid = FALSE;
-          $failedItems['failed_cells'][$index] = $cell;
+        $records = $query->execute()->fetchAll();
+        if (count($records) >= 2) {
+          $duplicate = TRUE;
+          $failedItems['duplicate_cells'][$index] = [
+            'germplasm_name' => $cell,
+            'duplicates' => $records,
+          ];
+        }
+        if (empty($records)) {
+          $missing = TRUE;
+          $failedItems['missing_cells'][$index]['germplasm_name'] = $cell;
         }
       }
     }
 
-    if (!$valid) {
-      // Add our array of organism IDs to failedItems.
-      $failedItems['organism_ids'] = $organism_ids;
-      return [
-        'case' => 'Unable to find germplasm name in the database',
-        'valid' => FALSE,
-        'failedItems' => $failedItems,
-      ];
+    if ($duplicate) {
+      if ($missing) {
+        $case_message = 'Missing germplasm name(s) and found duplicate(s) in the database';
+      }
+      else {
+        $case_message = 'Duplicate(s) found in the database for germplasm name(s)';
+      }
+    }
+    elseif ($missing) {
+      $case_message = 'Missing germplasm name(s) in the database';
     }
     else {
-      // Return the case when germplasm name has been found.
+      // Return the case when a single germplasm name has been found.
       return [
-        'case' => 'Germplasm name exists in the database',
+        'case' => 'Germplasm name(s) exist(s) in the database',
         'valid' => TRUE,
         'failedItems' => [],
       ];
     }
+    // Add our array of organism IDs to failedItems for our failed cases.
+    $failedItems['organism_ids'] = $organism_ids;
+    return [
+      'case' => $case_message,
+      'valid' => FALSE,
+      'failedItems' => $failedItems,
+    ];
   }
 
 }
