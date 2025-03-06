@@ -37,11 +37,18 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
   protected int $organism_id;
 
   /**
-   * The germplasm name of a germplasm inserted into Chado for this test.
+   * The name of a germplasm inserted into Chado for this test.
    *
    * @var string
    */
   protected string $inserted_germplasm_name = 'stock1';
+
+  /**
+   * The name of a germplasm inserted in Chado that has been duplicated.
+   *
+   * @var string
+   */
+  protected string $duplicated_germplasm_name = 'duplicate1';
 
   /**
    * Modules to enable.
@@ -107,6 +114,23 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     $stock_id = $this->chado_connection->insert('1:stock')
       ->fields($values)->execute();
     $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . $this->inserted_germplasm_name . ' in Chado for testing.');
+
+    // Insert a germplasm into chado.stock as a duplicate. To do this, insert
+    // the same germplasm name twice with different uniqename.
+    $dup_values = [
+      'organism_id' => $this->organism_id,
+      'name' => $this->duplicated_germplasm_name,
+      'uniquename' => 'TEST_DUP:1',
+      'type_id' => 9,
+    ];
+    $stock_id = $this->chado_connection->insert('1:stock')
+      ->fields($dup_values)->execute();
+    $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . $this->duplicated_germplasm_name . ' in Chado for testing.');
+
+    $dup_values['uniquename'] = 'TEST_DUP:2';
+    $stock_id = $this->chado_connection->insert('1:stock')
+      ->fields($dup_values)->execute();
+    $this->assertIsNumeric($stock_id, 'We were not able to create a duplicate stock ' . $this->duplicated_germplasm_name . ' with a different uniquename in Chado for testing.');
   }
 
   /**
@@ -191,6 +215,27 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #3: A row with a germplasm name that is duplicated at the database level.
+    $scenarios[] = [
+      [2],
+      [
+        1 => 'Column1',
+        2 => $this->duplicated_germplasm_name,
+        3 => 'Column3',
+      ],
+      [
+        'expected_valid' => FALSE,
+        'expected_case' => 'Duplicate(s) found in the database for germplasm name(s)',
+        'expected_failedItems' => [
+          'duplicate_cells' => [
+            2 => [
+              'germplasm_name' => $this->duplicated_germplasm_name,
+            ],
+          ],
+        ],
+      ],
+    ];
+
     return $scenarios;
   }
 
@@ -241,6 +286,15 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
         'Germplasm Name Exists validation did not return the expected missing cells for this scenario.',
       );
     }
+    /*
+    if (array_key_exists('duplicate_cells', $expectations['expected_failedItems'])) {
+      $this->assertContains(
+        $expectations['expected_failedItems']['duplicate_cells'],
+        $validation_status['failedItems'],
+        'Germplasm Name Exists validation did not return the expected duplicate cells for this scenario.',
+      );
+    }
+    */
   }
 
 }
