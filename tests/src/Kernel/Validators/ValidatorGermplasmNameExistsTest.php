@@ -44,11 +44,24 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
   protected string $inserted_germplasm_name = 'stock1';
 
   /**
-   * The name of a germplasm inserted in Chado that has been duplicated.
+   * Insert values for inserting the same germplasm name twice into Chado.
    *
-   * @var string
+   * @var array
    */
-  protected string $duplicated_germplasm_name = 'duplicate1';
+  protected array $duplicate_insert_values = [
+    0 => [
+      'organism_id' => 1,
+      'name' => 'duplicate1',
+      'uniquename' => 'TEST_DUP:1',
+      'type_id' => 9,
+    ],
+    1 => [
+      'organism_id' => 1,
+      'name' => 'duplicate1',
+      'uniquename' => 'TEST_DUP:2',
+      'type_id' => 9,
+    ],
+  ];
 
   /**
    * Modules to enable.
@@ -116,21 +129,18 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . $this->inserted_germplasm_name . ' in Chado for testing.');
 
     // Insert a germplasm into chado.stock as a duplicate. To do this, insert
-    // the same germplasm name twice with different uniqename.
-    $dup_values = [
-      'organism_id' => $this->organism_id,
-      'name' => $this->duplicated_germplasm_name,
-      'uniquename' => 'TEST_DUP:1',
-      'type_id' => 9,
-    ];
-    $stock_id = $this->chado_connection->insert('1:stock')
-      ->fields($dup_values)->execute();
-    $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . $this->duplicated_germplasm_name . ' in Chado for testing.');
+    // the same germplasm name twice with different uniquename.
+    $dup_stock_id1 = $this->chado_connection->insert('1:stock')
+      ->fields($this->duplicate_insert_values[0])->execute();
+    $this->assertIsNumeric($dup_stock_id1, 'We were not able to create the stock ' . $this->duplicate_insert_values[0]['name'] . ' in Chado for testing.');
+    // Update our array with the stock_id.
+    $this->duplicate_insert_values[0]['stock_id'] = $dup_stock_id1;
 
-    $dup_values['uniquename'] = 'TEST_DUP:2';
-    $stock_id = $this->chado_connection->insert('1:stock')
-      ->fields($dup_values)->execute();
-    $this->assertIsNumeric($stock_id, 'We were not able to create a duplicate stock ' . $this->duplicated_germplasm_name . ' with a different uniquename in Chado for testing.');
+    $dup_stock_id2 = $this->chado_connection->insert('1:stock')
+      ->fields($this->duplicate_insert_values[1])->execute();
+    $this->assertIsNumeric($dup_stock_id2, 'We were not able to create a duplicate stock ' . $this->duplicate_insert_values[1]['name'] . ' with a different uniquename in Chado for testing.');
+    // Update our array with the stock_id.
+    $this->duplicate_insert_values[1]['stock_id'] = $dup_stock_id2;
   }
 
   /**
@@ -216,11 +226,12 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     ];
 
     // #3: A row with a germplasm name that is duplicated at the database level.
+    $germplasm_name = 'duplicate1';
     $scenarios[] = [
       [2],
       [
         1 => 'Column1',
-        2 => $this->duplicated_germplasm_name,
+        2 => $germplasm_name,
         3 => 'Column3',
       ],
       [
@@ -229,7 +240,8 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
         'expected_failedItems' => [
           'duplicate_cells' => [
             2 => [
-              'germplasm_name' => $this->duplicated_germplasm_name,
+              'germplasm_name' => $germplasm_name,
+              'duplicates' => [0, 1],
             ],
           ],
         ],
@@ -286,15 +298,41 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
         'Germplasm Name Exists validation did not return the expected missing cells for this scenario.',
       );
     }
-    /*
     if (array_key_exists('duplicate_cells', $expectations['expected_failedItems'])) {
-      $this->assertContains(
-        $expectations['expected_failedItems']['duplicate_cells'],
-        $validation_status['failedItems'],
-        'Germplasm Name Exists validation did not return the expected duplicate cells for this scenario.',
-      );
+      foreach ($indices as $index) {
+        $expected_germplasm_name = $expectations['expected_failedItems']['duplicate_cells'][$index]['germplasm_name'];
+        $this->assertEquals(
+          $expected_germplasm_name,
+          $validation_status['failedItems']['duplicate_cells'][$index]['germplasm_name'],
+          'Germplasm Name Exists validation did not return the expected duplicated germplasm name for this scenario.',
+        );
+        // Pull out expected duplicates based on the scenario.
+        $expected_duplicates = [];
+        foreach ($expectations['expected_failedItems']['duplicate_cells'][$index]['duplicates'] as $property_index) {
+          $current_stock = $this->duplicate_insert_values[$property_index];
+          $expected_duplicates[$current_stock['stock_id']] = $current_stock;
+        }
+        // Loop through failedItems duplicate records and compare with the
+        // expected duplicates above.
+        foreach ($validation_status['failedItems']['duplicate_cells'][$index]['duplicates'] as $duplicate_record) {
+          $this->assertArrayHasKey(
+            $duplicate_record->stock_id,
+            $expected_duplicates,
+            'The current failedItem does not exist in our expected duplicates according to stock_id.'
+          );
+          // Now loop through our remaining keys in our duplicated insert values
+          // for this stock_id.
+          foreach ($expected_duplicates[$duplicate_record->stock_id] as $key => $value) {
+            $this->assertEquals(
+              $value,
+              $duplicate_record->$key,
+              'Germplasm Name Exists validation did not contain the expected value for ' . $key . ' for duplicated germplasm ' . $expected_germplasm_name . ' or that key does not exist.',
+            );
+          }
+
+        }
+      }
     }
-    */
   }
 
 }
