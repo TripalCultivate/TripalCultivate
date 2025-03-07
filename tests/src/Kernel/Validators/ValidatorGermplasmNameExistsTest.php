@@ -284,6 +284,40 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #5: A row with 3 germplasm in separate columns:
+    // - 1 exists
+    // - 1 is missing
+    // - 1 is a duplicate
+    $missing_germplasm = 'missing1';
+    $dup_germplasm_name = 'duplicate2';
+    $scenarios[] = [
+      [2, 3, 5],
+      [
+        1 => 'Column1',
+        2 => $missing_germplasm,
+        3 => $this->inserted_germplasm_name,
+        4 => 'Column4',
+        5 => $dup_germplasm_name,
+      ],
+      [
+        'expected_valid' => FALSE,
+        'expected_case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+        'expected_failedItems' => [
+          'missing_cells' => [
+            2 => [
+              'germplasm_name' => $missing_germplasm,
+            ],
+          ],
+          'duplicate_cells' => [
+            5 => [
+              'germplasm_name' => $dup_germplasm_name,
+              'duplicates' => ['dup2-1', 'dup2-2'],
+            ],
+          ],
+        ],
+      ],
+    ];
+
     return $scenarios;
   }
 
