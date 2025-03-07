@@ -49,16 +49,28 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    * @var array
    */
   protected array $duplicate_insert_values = [
-    0 => [
+    'dup1-1' => [
       'organism_id' => 1,
       'name' => 'duplicate1',
       'uniquename' => 'TEST_DUP:1',
       'type_id' => 9,
     ],
-    1 => [
+    'dup1-2' => [
       'organism_id' => 1,
       'name' => 'duplicate1',
       'uniquename' => 'TEST_DUP:2',
+      'type_id' => 9,
+    ],
+    'dup2-1' => [
+      'organism_id' => 1,
+      'name' => 'duplicate2',
+      'uniquename' => 'TEST_DUP:3',
+      'type_id' => 9,
+    ],
+    'dup2-2' => [
+      'organism_id' => 1,
+      'name' => 'duplicate2',
+      'uniquename' => 'TEST_DUP:4',
       'type_id' => 9,
     ],
   ];
@@ -128,19 +140,14 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ->fields($values)->execute();
     $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . $this->inserted_germplasm_name . ' in Chado for testing.');
 
-    // Insert a germplasm into chado.stock as a duplicate. To do this, insert
-    // the same germplasm name twice with different uniquename.
-    $dup_stock_id1 = $this->chado_connection->insert('1:stock')
-      ->fields($this->duplicate_insert_values[0])->execute();
-    $this->assertIsNumeric($dup_stock_id1, 'We were not able to create the stock ' . $this->duplicate_insert_values[0]['name'] . ' in Chado for testing.');
-    // Update our array with the stock_id.
-    $this->duplicate_insert_values[0]['stock_id'] = $dup_stock_id1;
-
-    $dup_stock_id2 = $this->chado_connection->insert('1:stock')
-      ->fields($this->duplicate_insert_values[1])->execute();
-    $this->assertIsNumeric($dup_stock_id2, 'We were not able to create a duplicate stock ' . $this->duplicate_insert_values[1]['name'] . ' with a different uniquename in Chado for testing.');
-    // Update our array with the stock_id.
-    $this->duplicate_insert_values[1]['stock_id'] = $dup_stock_id2;
+    // Insert our set of duplicate germplasm names into chado.stock.
+    foreach ($this->duplicate_insert_values as $key => $duplicate) {
+      $stock_id = $this->chado_connection->insert('1:stock')
+        ->fields($duplicate)->execute();
+      $this->assertIsNumeric($stock_id, 'We were not able to create the stock with uniquename ' . $duplicate['uniquename'] . ' in Chado for testing.');
+      // Update our array with the stock_id.
+      $this->duplicate_insert_values[$key]['stock_id'] = $stock_id;
+    }
   }
 
   /**
@@ -241,7 +248,36 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
           'duplicate_cells' => [
             2 => [
               'germplasm_name' => $germplasm_name,
-              'duplicates' => [0, 1],
+              'duplicates' => ['dup1-1', 'dup1-2'],
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    // #4: A row with 3 germplasm in separate columns, 1 exists and 2 are
+    // separate duplicates.
+    $dup_germplasm_name_1 = 'duplicate1';
+    $dup_germplasm_name_2 = 'duplicate2';
+    $scenarios[] = [
+      [1, 2, 3],
+      [
+        1 => $dup_germplasm_name_1,
+        2 => $this->inserted_germplasm_name,
+        3 => $dup_germplasm_name_2,
+      ],
+      [
+        'expected_valid' => FALSE,
+        'expected_case' => 'Duplicate(s) found in the database for germplasm name(s)',
+        'expected_failedItems' => [
+          'duplicate_cells' => [
+            1 => [
+              'germplasm_name' => $dup_germplasm_name_1,
+              'duplicates' => ['dup1-1', 'dup1-2'],
+            ],
+            3 => [
+              'germplasm_name' => $dup_germplasm_name_2,
+              'duplicates' => ['dup2-1', 'dup2-2'],
             ],
           ],
         ],
@@ -329,7 +365,6 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
               'Germplasm Name Exists validation did not contain the expected value for ' . $key . ' for duplicated germplasm ' . $expected_germplasm_name . ' or that key does not exist.',
             );
           }
-
         }
       }
     }
