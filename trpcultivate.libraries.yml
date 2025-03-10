@@ -2,3 +2,22 @@ tripal_entity_type:
   css:
     theme:
       css/tripal_entity_type.css: {}
+
+# Importer describe header section (notes, header definitions).
+describe-header-window:
+  version: v1.x
+  css:
+    theme:
+      css/style-describe-header-window.css: {}
+
+# Importer validation result window.
+validation-result-window:
+  version: v1.x
+  css:
+    theme:
+      css/style-validation-result-window.css: {}
+  js:
+    js/script-validation-result-window.js: {}
+  dependencies:
+    - core/jquery
+    - core/once
