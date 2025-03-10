@@ -361,43 +361,50 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       $validation_status['case'],
       'Germplasm Name Exists validation did not return the expected case message for this scenario.',
     );
-    if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {
-      $this->assertContains(
-        $expectations['expected_failedItems']['missing_cells'],
-        $validation_status['failedItems'],
-        'Germplasm Name Exists validation did not return the expected missing cells for this scenario.',
-      );
-    }
-    if (array_key_exists('duplicate_cells', $expectations['expected_failedItems'])) {
-      foreach ($indices as $index) {
-        $expected_germplasm_name = $expectations['expected_failedItems']['duplicate_cells'][$index]['germplasm_name'];
-        $this->assertEquals(
-          $expected_germplasm_name,
-          $validation_status['failedItems']['duplicate_cells'][$index]['germplasm_name'],
-          'Germplasm Name Exists validation did not return the expected duplicated germplasm name for this scenario.',
-        );
-        // Pull out expected duplicates based on the scenario.
-        $expected_duplicates = [];
-        foreach ($expectations['expected_failedItems']['duplicate_cells'][$index]['duplicates'] as $property_index) {
-          $current_stock = $this->duplicate_insert_values[$property_index];
-          $expected_duplicates[$current_stock['stock_id']] = $current_stock;
-        }
-        // Loop through failedItems duplicate records and compare with the
-        // expected duplicates above.
-        foreach ($validation_status['failedItems']['duplicate_cells'][$index]['duplicates'] as $duplicate_record) {
-          $this->assertArrayHasKey(
-            $duplicate_record->stock_id,
-            $expected_duplicates,
-            'The current failedItem does not exist in our expected duplicates according to stock_id.'
+    foreach ($indices as $index) {
+      // Check for expected missing columns.
+      if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {
+        if (array_key_exists($index, $expectations['expected_failedItems']['missing_cells'])) {
+          $expected_germplasm_name = $expectations['expected_failedItems']['missing_cells'][$index]['germplasm_name'];
+          $this->assertEquals(
+            $expected_germplasm_name,
+            $validation_status['failedItems']['missing_cells'][$index]['germplasm_name'],
+            'Germplasm Name Exists validation did not return the expected missing cells for this scenario.',
           );
-          // Now loop through our remaining keys in our duplicated insert values
-          // for this stock_id.
-          foreach ($expected_duplicates[$duplicate_record->stock_id] as $key => $value) {
-            $this->assertEquals(
-              $value,
-              $duplicate_record->$key,
-              'Germplasm Name Exists validation did not contain the expected value for ' . $key . ' for duplicated germplasm ' . $expected_germplasm_name . ' or that key does not exist.',
+        }
+      }
+      if (array_key_exists('duplicate_cells', $expectations['expected_failedItems'])) {
+        // Check for expected duplicated columns.
+        if (array_key_exists($index, $expectations['expected_failedItems']['duplicate_cells'])) {
+          $expected_germplasm_name = $expectations['expected_failedItems']['duplicate_cells'][$index]['germplasm_name'];
+          $this->assertEquals(
+            $expected_germplasm_name,
+            $validation_status['failedItems']['duplicate_cells'][$index]['germplasm_name'],
+            'Germplasm Name Exists validation did not return the expected duplicated germplasm name for this scenario.',
+          );
+          // Pull out expected duplicates based on the scenario.
+          $expected_duplicates = [];
+          foreach ($expectations['expected_failedItems']['duplicate_cells'][$index]['duplicates'] as $property_index) {
+            $current_stock = $this->duplicate_insert_values[$property_index];
+            $expected_duplicates[$current_stock['stock_id']] = $current_stock;
+          }
+          // Loop through failedItems duplicate records and compare with the
+          // expected duplicates above.
+          foreach ($validation_status['failedItems']['duplicate_cells'][$index]['duplicates'] as $duplicate_record) {
+            $this->assertArrayHasKey(
+              $duplicate_record->stock_id,
+              $expected_duplicates,
+              'The current failedItem does not exist in our expected duplicates according to stock_id.'
             );
+            // Now loop through our remaining keys in our duplicated insert
+            // values for this stock_id.
+            foreach ($expected_duplicates[$duplicate_record->stock_id] as $key => $value) {
+              $this->assertEquals(
+                $value,
+                $duplicate_record->$key,
+                'Germplasm Name Exists validation did not contain the expected value for ' . $key . ' for duplicated germplasm ' . $expected_germplasm_name . ' or that key does not exist.',
+              );
+            }
           }
         }
       }
