@@ -5,6 +5,7 @@
  * Contains all hook implementations for this module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -396,4 +397,15 @@ function trpcultivate_theme($existing, $type, $theme, $path) {
       'template' => 'importer/validation-result-window',
     ],
   ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function trpcultivate_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  if ($form['#id'] == 'views-exposed-form-research-experiment-listing-research-experiment-search'
+    || $form['#id'] == 'views-exposed-form-research-study-listing-research-study-search') {
+    $form['actions']['submit']['#value'] = 'Search';
+  }
 }
