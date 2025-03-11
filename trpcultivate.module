@@ -398,14 +398,3 @@ function trpcultivate_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
-
-/**
- * Implements hook_form_alter().
- */
-function trpcultivate_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
-  if ($form['#id'] == 'views-exposed-form-research-experiment-listing-research-experiment-search'
-    || $form['#id'] == 'views-exposed-form-research-study-listing-research-study-search') {
-    $form['actions']['submit']['#value'] = 'Search';
-  }
-}
