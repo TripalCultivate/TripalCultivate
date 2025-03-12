@@ -108,6 +108,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       // Only validate the values in which their index is also within our
       // context array of indices.
       if (in_array($index, $indices)) {
+        // Trim the contents of our cell in case we have flanking whitespace.
+        $cell = trim($cell);
         // Check if our cell value is in the chado.stock table.
         // Note that $organism_ids is an array, hence the use of 'IN' here.
         $query = $this->chado_connection->select('1:stock', 's')
@@ -115,6 +117,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
           ->condition('s.name', $cell, '=')
           ->condition('s.organism_id', $organism_ids, 'IN');
         $records = $query->execute()->fetchAll();
+        // Save the records we fetched if there's 2 or more matches.
         if (count($records) >= 2) {
           $duplicate = TRUE;
           $failedItems['duplicate_cells'][$index] = [
@@ -122,6 +125,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
             'duplicates' => $records,
           ];
         }
+        // Report when a germplasm is missing from the database.
         if (empty($records)) {
           $missing = TRUE;
           $failedItems['missing_cells'][$index]['germplasm_name'] = $cell;
@@ -141,7 +145,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       $case_message = 'Missing germplasm name(s) in the database';
     }
     else {
-      // Return the case when a single germplasm name has been found.
+      // Return the case when a single germplasm name has been found (ie.
+      // validation has passed.)
       return [
         'case' => 'Germplasm name(s) exist(s) in the database',
         'valid' => TRUE,

@@ -129,7 +129,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ->execute();
     $this->assertIsNumeric($this->organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
 
-    // Insert a germplasm into chado.stock.
+    // Insert a single germplasm into chado.stock.
     $values = [
       'organism_id' => $this->organism_id,
       'name' => $this->inserted_germplasm_name,
@@ -151,7 +151,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Data Provider for providing different scenarios of row values.
+   * Data Provider: Provide different row values with germplasm names.
    *
    * @return array
    *   Each test scenario is an array with the following values:
@@ -164,8 +164,22 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *       fail)
    *     - 'expected_case': The expected case message.
    *     - 'expected_failedItems': The expected contents of the 'failedItems'
-   *       array. This should be an empty array if validation is expected to
-   *       pass.
+   *       array with the following keys. This should be an empty array if
+   *       validation is expected to pass.
+   *       - 'missing_cells' (OPTIONAL): Present if a germplasm name is missing
+   *         from the database.
+   *         - 1+ arrays keyed by the column number (first column = 1) in the
+   *          input row that contains a missing germplasm name, further keyed
+   *          by:
+   *          - 'germplasm_name': The name of the missing germplasm.
+   *       - 'duplicate_cells' (OPTIONAL): Present if a germplasm name is
+   *         duplicated in the database.
+   *         - 1+ arrays keyed by the column number (first column = 1) in the
+   *          input row that contains a duplicate germplasm name, further keyed
+   *          by:
+   *          - 'germplasm_name': The name of the duplicate germplasm.
+   *          - 'duplicates': A list of indices in $duplicate_insert_values
+   *            which correspond to records that are expected to be duplicated.
    */
   public function provideRowToGermplasmNameExists() {
     $scenarios = [];
@@ -338,6 +352,19 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *   - 'expected_case': The expected case message.
    *   - 'expected_failedItems': The expected contents of the failedItems array.
    *     This should be an empty array if validation is expected to pass.
+   *     - 'missing_cells' (OPTIONAL): Present if a germplasm name is missing
+   *       from the database.
+   *       - 1+ arrays keyed by the column number (first column = 1) in the
+   *        input row that contains a missing germplasm name, further keyed by:
+   *        - 'germplasm_name': The name of the missing germplasm.
+   *     - 'duplicate_cells' (OPTIONAL): Present if a germplasm name is
+   *       duplicated in the database.
+   *       - 1+ arrays keyed by the column number (first column = 1) in the
+   *        input row that contains a duplicate germplasm name, further keyed
+   *        by:
+   *        - 'germplasm_name': The name of the duplicate germplasm.
+   *        - 'duplicates': A list of indices in $duplicate_insert_values
+   *          which correspond to records that are expected to be duplicated.
    *
    * @dataProvider provideRowToGermplasmNameExists
    */
