@@ -261,7 +261,19 @@ function trpcultivate_create_relationship_fields() {
         'termAccession' => '001066',
       ],
     ],
+    'research_study' => [
+      'field_grant' => [
+        'target' => [
+          'research_grant' => 'research_grant',
+        ],
+        'label' => 'Funding Grant',
+        'description' => 'Indicate all grants which provide funding for this experiment. You may need to confirm this information with your PI.',
+        'termIdSpace' => 'OBI',
+        'termAccession' => '0001636',
+      ],
+    ],
   ];
+
   foreach ($relationships_needed as $base_content_type => $fields2create) {
     foreach ($fields2create as $field_id => $field_details) {
 
@@ -368,6 +380,13 @@ function trpcultivate_apply_layout() {
 
   // -- Finally save it.
   $display->save();
+
+  // Setup field funder in research study content type.
+  $bundle = 'research_study';
+  $research_study = $entity_type_manager->getStorage('tripal_entity_type')->load($bundle);
+
+  // Automatically apply to form layout.
+  $controller->applyFormLayout($research_study);
 }
 
 /**
