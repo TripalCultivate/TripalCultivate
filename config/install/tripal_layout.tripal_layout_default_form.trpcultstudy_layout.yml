@@ -1,0 +1,30 @@
+id: 'trpcultstudy_layout'
+label: 'Reseach Study Field Group'
+description: 'Fields setup for Tripal Content type - research study'
+layouts:
+  - tripal_entity_type: "research_study"
+    field_groups:
+    - id: exp-section-core
+      label: "Core Metadata"
+      type: details
+      open: true
+      children:
+        - researchstudy_name
+        - researchstudy_description
+        - researchstudy_objectives
+        - researchstudy_type
+        - researchstudy_org
+        - researchstudy_pub
+        - researchstudy_germgenus
+        - researchstudy_germspecies
+        - researchstudy_germcollection
+        - researchstudy_curator
+        - researchstudy_custodian
+        - researchstudy_dbxref
+    - id: exp-section-funding
+      label: "Funding"
+      type: details
+      open: true
+      children:
+        - researchstudy_funding_range6
+        - field_grant
