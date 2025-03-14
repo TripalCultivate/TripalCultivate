@@ -388,9 +388,17 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       $validation_status['case'],
       'Germplasm Name Exists validation did not return the expected case message for this scenario.',
     );
+    // Check that a failed validation status also returns our organism_id.
+    if (!$expectations['expected_valid']) {
+      $this->assertContains(
+        $this->organism_id,
+        $validation_status['failedItems']['organism_ids'],
+        'Germplasm Name Exists failed validation for this scenario did not return our expected organism_id of ' . $this->organism_id . '.',
+      );
+    }
     foreach ($indices as $index) {
-      // Check for expected missing columns.
       if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {
+        // Check for expected missing columns.
         if (array_key_exists($index, $expectations['expected_failedItems']['missing_cells'])) {
           $expected_germplasm_name = $expectations['expected_failedItems']['missing_cells'][$index]['germplasm_name'];
           $this->assertEquals(
