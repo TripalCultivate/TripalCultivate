@@ -180,6 +180,10 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *          - 'germplasm_name': The name of the duplicate germplasm.
    *          - 'duplicates': A list of indices in $duplicate_insert_values
    *            which correspond to records that are expected to be duplicated.
+   *       - 'empty_cells' (OPTIONAL): Present if a cell index is empty and thus
+   *         cannot be looked up in the database.
+   *         - A list containing the indices of the empty cells (This can only
+   *           be a subset of $indices).
    */
   public function provideRowToGermplasmNameExists() {
     $scenarios = [];
@@ -332,6 +336,27 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #6: A row with two empty cells where germplasm names should be.
+    // All other cases are also present, but we expect to only be told about the
+    // empty cells.
+    $scenarios[] = [
+      [1, 2, 3, 4, 5],
+      [
+        1 => $this->inserted_germplasm_name,
+        2 => $dup_germplasm_name,
+        3 => '',
+        4 => $missing_germplasm,
+        5 => ' ',
+      ],
+      [
+        'expected_valid' => FALSE,
+        'expected_case' => 'Unable to lookup germplasm with empty values',
+        'expected_failedItems' => [
+          'empty_cells' => [3, 5],
+        ],
+      ],
+    ];
+
     return $scenarios;
   }
 
@@ -365,6 +390,10 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *        - 'germplasm_name': The name of the duplicate germplasm.
    *        - 'duplicates': A list of indices in $duplicate_insert_values
    *          which correspond to records that are expected to be duplicated.
+   *     - 'empty_cells' (OPTIONAL): Present if a cell index is empty and thus
+   *       cannot be looked up in the database.
+   *        - A list containing the indices of the empty cells (This can only
+   *          be a subset of $indices).
    *
    * @dataProvider provideRowToGermplasmNameExists
    */

@@ -99,9 +99,12 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     $organism_ids = $this->getOrganismIDs();
 
     // Initialize our flags for keeping track of validation status.
+    $empty = FALSE;
     $missing = FALSE;
     $duplicate = FALSE;
     $failedItems = [];
+    // Add our array of organism IDs to failedItems for our failed cases.
+    $failedItems['organism_ids'] = $organism_ids;
 
     // Iterate through our array of row values.
     foreach ($row_values as $index => $cell) {
@@ -110,29 +113,45 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       if (in_array($index, $indices)) {
         // Trim the contents of our cell in case we have flanking whitespace.
         $cell = trim($cell);
-        // Check if our cell value is in the chado.stock table.
-        // Note that $organism_ids is an array, hence the use of 'IN' here.
-        $query = $this->chado_connection->select('1:stock', 's')
-          ->fields('s', ['stock_id', 'organism_id', 'name', 'uniquename', 'type_id'])
-          ->condition('s.name', $cell, '=')
-          ->condition('s.organism_id', $organism_ids, 'IN');
-        $records = $query->execute()->fetchAll();
-        // Save the records we fetched if there's 2 or more matches.
-        if (count($records) >= 2) {
-          $duplicate = TRUE;
-          $failedItems['duplicate_cells'][$index] = [
-            'germplasm_name' => $cell,
-            'duplicates' => $records,
-          ];
+        // Check if our cell is empty and save the index if it is.
+        if (!isset($cell) || empty($cell)) {
+          $empty = TRUE;
+          $failedItems['empty_cells'][] = $index;
         }
-        // Report when a germplasm is missing from the database.
-        if (empty($records)) {
-          $missing = TRUE;
-          $failedItems['missing_cells'][$index]['germplasm_name'] = $cell;
+        else {
+          // Check if our cell value is in the chado.stock table.
+          // Note that $organism_ids is an array, hence the use of 'IN' here.
+          $query = $this->chado_connection->select('1:stock', 's')
+            ->fields('s', ['stock_id', 'organism_id', 'name', 'uniquename', 'type_id'])
+            ->condition('s.name', $cell, '=')
+            ->condition('s.organism_id', $organism_ids, 'IN');
+          $records = $query->execute()->fetchAll();
+          // Save the records we fetched if there's 2 or more matches.
+          if (count($records) >= 2) {
+            $duplicate = TRUE;
+            $failedItems['duplicate_cells'][$index] = [
+              'germplasm_name' => $cell,
+              'duplicates' => $records,
+            ];
+          }
+          // Report when a germplasm is missing from the database.
+          if (empty($records)) {
+            $missing = TRUE;
+            $failedItems['missing_cells'][$index]['germplasm_name'] = $cell;
+          }
         }
       }
     }
 
+    // If any germplasm name columns were empty for this row, return only this
+    // case in the message, but failedItems will have all failed cells.
+    if ($empty) {
+      return [
+        'case' => 'Unable to lookup germplasm with empty values',
+        'valid' => FALSE,
+        'failedItems' => $failedItems,
+      ];
+    }
     if ($duplicate) {
       if ($missing) {
         $case_message = 'Missing germplasm name(s) and found duplicate(s) in the database';
@@ -153,8 +172,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         'failedItems' => [],
       ];
     }
-    // Add our array of organism IDs to failedItems for our failed cases.
-    $failedItems['organism_ids'] = $organism_ids;
+
     return [
       'case' => $case_message,
       'valid' => FALSE,
