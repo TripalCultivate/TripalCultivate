@@ -426,6 +426,14 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       );
     }
     foreach ($indices as $index) {
+      if (array_key_exists('empty_cells', $expectations['expected_failedItems'])) {
+        // Check for expected empty columns.
+        $this->assertEquals(
+          $expectations['expected_failedItems']['empty_cells'],
+          $validation_status['failedItems']['empty_cells'],
+          'Germplasm Name Exists failed validation did not return the expected list of empty cells for this scenario.',
+        );
+      }
       if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {
         // Check for expected missing columns.
         if (array_key_exists($index, $expectations['expected_failedItems']['missing_cells'])) {
