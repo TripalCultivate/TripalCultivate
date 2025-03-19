@@ -85,6 +85,27 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   - 'valid': TRUE if the germplasm exists in the database, FALSE otherwise.
    *   - 'failedItems': an array of items that failed with the following keys.
    *     This is an empty array if the data row input was valid.
+   *     - 'organism_ids': The list of organism IDs that were configured using
+   *       the Organism trait (setOrganismID() or setGenus()).
+   *     - 'missing_cells': Present if 1+ germplasm name(s) are missing from the
+   *       database.
+   *       - 1+ arrays keyed by the column index (matches a value configured
+   *         using the ColumnIndices trait prior to validation) in the input row
+   *         that contains a missing germplasm name, further keyed by:
+   *         - 'germplasm_name': The name of the missing germplasm.
+   *     - 'duplicate_cells': Present if 1+ germplasm name(s) are duplicated in
+   *       the database.
+   *       - 1+ arrays keyed by the column index (matches a value configured
+   *         using the ColumnIndices trait prior to validation) in the input row
+   *         that contains a duplicate germplasm name, further keyed by:
+   *         - 'germplasm_name': The name of the duplicate germplasm.
+   *         - 'duplicates': A list of 2+ records that were returned by the
+   *           query for the germplasm name in the database.
+   *     - 'empty_cells': Present if 1+ germplasm name(s) are empty and thus
+   *       cannot be looked up in the database.
+   *       - A list containing the indices of the empty cells (This can only
+   *         be a subset of the values configured by the ColumnIndices trait
+   *         prior to validation).
    */
   public function validateRow($row_values) {
 
