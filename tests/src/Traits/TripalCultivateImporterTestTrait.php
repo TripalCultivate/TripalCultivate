@@ -24,7 +24,10 @@ trait TripalCultivateImporterTestTrait {
    *         file in the temporary or public files directory.
    *     - content[string]: the content to copy into the file as a string
    *     - content[file]: an existing file in the fixtures directory to copy
-   *         the contents from
+   *         the contents from.
+   *     - content[fixturepath]: the absolute path to Fixtures directory
+   *         containing the test file. This should end with a '/'.
+   *         Default to Fixtures directory of this module.
    *     - permissions: permissions to apply to the file using chmod.
    *         Either 'none' for unreadable or the octet (see chmod)
    *         0600: read + write for owner, nothing for everyone else
@@ -62,7 +65,10 @@ trait TripalCultivateImporterTestTrait {
     // If a test file fixture was provided, create a copy and set this file copy
     // as the file uri value in the file object for this test file.
     if (array_key_exists('file', $details['content']) && !empty($details['content']['file'])) {
-      $path_to_file_fixture = __DIR__ . '/../Fixtures/' . $details['content']['file'];
+      $path_to_fixtures = isset($details['content']['fixturepath']) && $details['content']['fixturepath']
+        ? $details['content']['fixturepath'] : __DIR__ . '/../Fixtures/';
+
+      $path_to_file_fixture = $path_to_fixtures . $details['content']['file'];
 
       $this->assertFileIsReadable(
         $path_to_file_fixture,
