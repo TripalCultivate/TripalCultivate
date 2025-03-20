@@ -159,7 +159,15 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     $this->assertIsNumeric($first_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
     // Cast our ID to an int since querying Chado gives us a string.
     $first_organism_id = (int) $first_organism_id;
+    // Ensure that setting this existing organism ID doesn't log a message.
+    $printed_output = '';
+    ob_start();
     $this->instance->setOrganismID($first_organism_id);
+    $printed_output = ob_get_clean();
+    $this->assertEmpty(
+      $printed_output,
+      "We received a logged error for setting a valid organism ID with setOrganismID(), but one was not expected: $printed_output",
+    );
 
     // Now use our getter to grab our organism ID.
     $exception_caught = FALSE;
@@ -199,7 +207,15 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     $this->assertIsNumeric($second_organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
 
     // Set the genus to 'Tripalus'.
+    // Ensure that setting this existing genus doesn't log a message.
+    $printed_output = '';
+    ob_start();
     $this->instance->setGenus($genus);
+    $printed_output = ob_get_clean();
+    $this->assertEmpty(
+      $printed_output,
+      "We received a logged error for setting a valid genus with setGenus(), but one was not expected: $printed_output",
+    );
 
     // Use the getter to grab both organism IDs for this genus.
     $exception_caught = FALSE;
@@ -222,10 +238,12 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     );
     // Check that we were returned an array with 2 separate IDs.
     $this->assertCount(2, $grabbed_organism_ids, "We expected getOrganismIDs to return an array with 2 IDs, but it contained a different amount.");
-    $this->assertContains(
-      $second_organism_id,
+    // Check that both created organisms were grabbed by the getter, regardless
+    // of their order.
+    $this->assertEqualsCanonicalizing(
+      [$first_organism_id, $second_organism_id],
       $grabbed_organism_ids,
-      "The organism ID retrieved using getOrganismIDs() is not the same as the ID given to setOrganismID()."
+      "We expected getOrganismIDs to return both organism IDs that were inserted into the database and set using setGenus(), but it did not.",
     );
 
     // Lastly, try to set a genus that does not exist in the database.
