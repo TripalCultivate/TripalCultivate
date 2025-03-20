@@ -104,7 +104,7 @@ class ValidatorTraitOrganismMissingConnectionTest extends ChadoTestKernelBase {
       $exception_caught,
       "Calling setOrganismID() when missing an instance of ChadoConnection should throw an exception, but it did not."
     );
-    $this->assertStringContainsString(
+    $this->assertEquals(
       $expected_message,
       $exception_message,
       "The exception thrown does not have the message we expected when calling setOrganismID() and missing an instance of ChadoConnection."
@@ -125,7 +125,7 @@ class ValidatorTraitOrganismMissingConnectionTest extends ChadoTestKernelBase {
       $exception_caught,
       "Calling setGenus() when missing an instance of ChadoConnection should throw an exception, but it did not."
     );
-    $this->assertStringContainsString(
+    $this->assertEquals(
       $expected_message,
       $exception_message,
       "The exception thrown does not have the message we expected when calling setGenus() and missing an instance of ChadoConnection."

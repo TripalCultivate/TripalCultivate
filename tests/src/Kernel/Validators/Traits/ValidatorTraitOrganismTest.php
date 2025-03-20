@@ -120,7 +120,7 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     ob_start();
     $this->instance->setOrganismID($organism_id);
     $printed_output = ob_get_clean();
-    $this->assertStringContainsString(
+    $this->assertEquals(
       $expected_message,
       $printed_output,
       "The logged error message does not have the message we expected for an organism that doesn't even exist in chado."
@@ -141,7 +141,7 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
       $exception_caught,
       "Calling getOrganismIDs() when an organism ID/genus has not been succesfully set yet should have thrown an exception but didn't."
     );
-    $this->assertStringContainsString(
+    $this->assertEquals(
       $expected_message,
       $exception_message,
       "The exception thrown does not have the message we expected when trying to get an array of organism IDs but one hasn't been set yet."
@@ -235,7 +235,7 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     ob_start();
     $this->instance->setGenus($genus);
     $printed_output = ob_get_clean();
-    $this->assertStringContainsString(
+    $this->assertEquals(
       $expected_message,
       $printed_output,
       "The logged error message does not have the message we expected for a genus that doesn't even exist in chado."
