@@ -35,7 +35,7 @@ trait Organism {
     // Query the organism ID in chado.
     $query = $this->chado_connection->select('1:organism', 'o')
       ->fields('o', ['organism_id'])
-      ->condition('o.organism_id', $organism_id);
+      ->condition('o.organism_id', $organism_id, '=');
     $record = $query->execute()->fetchObject();
     if (is_object($record)) {
       $this->context['organism_ids'] = [$organism_id];
