@@ -25,8 +25,9 @@ trait TripalCultivateImporterTestTrait {
    *     - content[string]: the content to copy into the file as a string
    *     - content[file]: an existing file in the fixtures directory to copy
    *         the contents from.
-   *     - content[fixturepath]: the path to Fixtures relative to the module the
-   *         method was called. Default to Fixtures directory of this module.
+   *     - content[fixturepath]: the absolute path to Fixtures directory
+   *         containing the test file. This should end with a '/'.
+   *         Default to Fixtures directory of this module.
    *     - permissions: permissions to apply to the file using chmod.
    *         Either 'none' for unreadable or the octet (see chmod)
    *         0600: read + write for owner, nothing for everyone else
