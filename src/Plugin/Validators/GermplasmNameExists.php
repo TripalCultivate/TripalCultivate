@@ -201,4 +201,54 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     ];
   }
 
+  /**
+   * Process failed validation from GermplasmNameExists into a render array.
+   *
+   * @param array $failure
+   *   An associative array that was returned by the GermplasmNameExists
+   *   validator in the event of failed validation. It contains the following
+   *   keys:
+   *   - 'case': a developer-focused string describing the case checked.
+   *   - 'valid': FALSE to indicate that validation failed.
+   *   - 'failedItems': an array of items that failed depending on the case that
+   *     was triggered.
+   *     @see GermplasmNameExists::validateRow()
+   * @param array $tokens
+   *   [OPTIONAL] An array of values to use for token replacement.
+   *   @see GermplasmNameExists::$default_tokens
+   *   The following tokens can be specfied as keys, with value as the
+   *   replacement value for the token. These apply to all failure cases.
+   *   @todo update these tokens for GermplasmNameExists
+   *   - 'project': the word to use when referring to the project.
+   *   - 'contact-admin': the phrase to use when the user needs a privileged
+   *     administrator to fix the problem.
+   *   The following token keys will substitute the entire existing case message
+   *   to the user with the value of that token.
+   *   - 'case-message-1': the message when a project does not exist.
+   *   - 'case-message-2': the message when a project has no genus set to it.
+   *   - 'case-message-3': the message when the genus selected by the user is
+   *     not configured to the selected project.
+   *
+   * @return array
+   *   A render array of type "item" used to display feedback to the user about
+   *   the validation failure, where:
+   *   - The 'title' is a sentence describing the case triggered
+   *   - The 'items' include a table for each potential case in the $failures
+   *     array:
+   *     - If a germplasm name is empty
+   *       - Headers include 'Row Number'
+   *     - A duplicate germplasm name seen in the database
+   *       - Headers include 'Row Number', 'Germplasm Name', 'Duplicate records'
+   *     - A missing germplasm name from the database
+   *       - Headers include 'Row Number', 'Germplasm Name'
+   *
+   * @throws \Exception
+   *   - If the failure parameter was not formatted properly.
+   *   - If the case string returned by the validator implied validation passed.
+   *   - If the case string returned by the validator is not recognized.
+   */
+  public static function processSimpleList(array $failure, array $tokens = []) {
+
+  }
+
 }
