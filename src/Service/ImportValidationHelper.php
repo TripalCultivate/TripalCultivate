@@ -43,4 +43,39 @@ class ImportValidationHelper {
     'txt' => ['text/plain'],
   ];
 
+  /**
+   * Gets the list of delimiters supported by the input file's mime-type.
+   *
+   * NOTE: This method is static to allow for it to also be used by the static
+   * method splitRowIntoColumns().
+   *
+   * @param string $mime_type
+   *   A string that is the mime-type of the input file.
+   *
+   *   HINT: You can get the mime-type of a file from the 'mime-type' property
+   *   of a file object.
+   *
+   * @return array
+   *   The list of delimiters that are supported by the file mime-type.
+   *
+   * @throws \Exception
+   *   - If mime_type is an empty string.
+   *   - If mime_type does not exist as a key in the mime_to_delimiter_mapping
+   *     array.
+   */
+  public static function getFileDelimiters(string $mime_type) {
+    // Check if mime type is an empty string.
+    if (empty($mime_type)) {
+      throw new \Exception("The getFileDelimiters() getter requires a string of the input file's mime-type and must not be empty.");
+    }
+
+    // Grab the delimiters for this mime-type.
+    if (array_key_exists($mime_type, self::$mime_to_delimiter_mapping)) {
+      return self::$mime_to_delimiter_mapping[$mime_type];
+    }
+    else {
+      throw new \Exception('Cannot retrieve file delimiters for the mime-type provided: ' . $mime_type);
+    }
+  }
+
 }
