@@ -204,7 +204,12 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
   /**
    * Process failed validation from GermplasmNameExists into a render array.
    *
-   *
+   * This process method renders up to 2 tables, one for germplasm missing from
+   * the database, and one for duplicate germplasm entries based on the name.
+   * NOTE: The rendered validation result does NOT include information on the
+   * duplicate records, but only lists the germplasm names. Future work may
+   * include a separate process method that displays the information stored in
+   * 'duplicates' of the 'failedItems' array.
    *
    * @param array $failures
    *   An associative array that was returned by the GermplasmNameExists
@@ -231,15 +236,15 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   - 'case-message-3': the message when the genus selected by the user is
    *     not configured to the selected project.
    * @param array $metadata
-   *   An array of additional metadata (or contextual information) needed for
-   *   by the process method. Here, the following keys are expected:
-   *   - 'column_headers': This contains an array of column headers that are
-   *     expected to contain germplasm names. The index in this array MUST match
-   *     the position (starting with 0) of the column in the input file. Eg:
-   *     'column_headers' => [
-   *       '2' => 'Maternal Germplasm Name', // Header of column #3
-   *       '4' => 'Paternal Germplasm Name', // Header of column #5
-   *     ].
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *   - 'column_headers': This contains an array of headers for columns that
+   *     are expected to contain germplasm names. The index in this array MUST
+   *     match the position (starting with 0) of the column in the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Maternal Germplasm Name', // Header of column #3
+   *           '4' => 'Paternal Germplasm Name', // Header of column #5
+   *         ]
    *
    * @return array
    *   A render array of type "item" used to display feedback to the user about
@@ -267,8 +272,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // appears in the file.
     $table_header = [-1 => 'Line Number'];
     // For this validator there are can be up to 2 tables:
-    // - 'table'->'missing': Germplasm name could not be found in the database.
-    // - 'table'->'duplicate': Germplasm name has duplicates in the database.
+    // - 'table'->'missing_cells': Germplasm name not found in the database.
+    // - 'table'->'duplicate_cells': Germplasm name has multiple records.
     $table = [];
 
     // Loop through each row in the $failures array and piece apart the
@@ -279,7 +284,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.
       if ($validation_result['case'] == 'Unable to lookup germplasm with empty values') {
-        // Create a helper method.
+        // @todo Create a helper method.
       }
       $table_case = [];
       if ($validation_result['case'] == 'Missing germplasm name(s) in the database') {
@@ -320,11 +325,11 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     }
     // Check which tables were created, and assign the correct message.
     // Note that both tables can exist at the same time, hence not an 'elseif'.
-    if (array_key_exists('file', $table)) {
-      $table['file']['message'] = 'These trait-method-unit combinations occurred multiple times within your input file. The line number indicates the duplicated occurrence(s).';
+    if (array_key_exists('missing_cells', $table)) {
+      $table['missing_cells']['message'] = 'The following germplasm names could not be found in the database.';
     }
-    if (array_key_exists('database', $table)) {
-      $table['database']['message'] = 'These trait-method-unit combinations have already been imported into this site. Please confirm the existing version fully represents your data. If it does, then you can remove it from your input file. If not then you need to make the names more specific.';
+    if (array_key_exists('duplicate_cells', $table)) {
+      $table['duplicate_cells']['message'] = 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or [contact-admin] for help with investigating.';
     }
 
     // Finally, loop through our tables and build our render array.
