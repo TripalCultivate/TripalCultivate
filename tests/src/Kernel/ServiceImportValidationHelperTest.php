@@ -36,6 +36,13 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
   ];
 
   /**
+   * Service name.
+   *
+   * @var string
+   */
+  private $service_ImportValidationHelper = 'TripalCultivateImportValidationHelper';
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() :void {
@@ -192,19 +199,6 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    */
   public function testSplitRowIntoColumns(string $expected_mime_type, string $expected_delimiter) {
 
-    $configuration = [];
-    $validator_id = 'fake_basically_base';
-    $plugin_definition = [
-      'id' => $validator_id,
-      'validator_name' => 'Basically Base Validator',
-      'input_types' => ['header-row', 'data-row'],
-    ];
-    $instance = new BasicallyBase($configuration, $validator_id, $plugin_definition);
-    $this->assertIsObject(
-      $instance,
-      "Unable to create fake_basically_base validator instance to test the base class."
-    );
-
     // Create a data row.
     // This line captures data values with quotes and leading/trailing spaces.
     $good_line = $raw_line = [
@@ -272,7 +266,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     // Test that the sanitized line is the same as the split values.
     $delimiter = $expected_delimiter;
     $str_line = implode($delimiter, $raw_line);
-    $values = TripalCultivateValidatorBase::splitRowIntoColumns($str_line, $expected_mime_type);
+    $values = TripalCultivateImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
     $this->assertEquals($good_line, $values, 'Line values does not match expected split values.');
   }
 
@@ -295,6 +289,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *        exception being triggered.
    */
   public function provideFaultyValidationStatusArray() {
+
     $scenarios = [];
 
     // #0: 'case' and 'failedItems' keys are missing.
@@ -409,6 +404,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    * @dataProvider provideFaultyValidationStatusArray
    */
   public function testCheckValidationStatusArray(array $validation_result, array $expectations) {
+
     $validator_name = 'My Validator';
     $exception_caught = FALSE;
     $exception_message = 'NONE';
