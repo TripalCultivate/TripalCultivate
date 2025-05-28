@@ -5,6 +5,7 @@ namespace Drupal\trpcultivate\Plugin\Validators;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnCount;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
+use Drupal\trpcultivate\Service\TripalCultivateImportValidationHelper;
 
 /**
  * Validate that a line in a data file is properly delimited.
@@ -69,7 +70,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
 
     // Get the supported delimiters based on the input file's mime type.
     $input_file_mime_type = $this->getFileMimeType();
-    $input_file_type_delimiters = $this->getFileDelimiters($input_file_mime_type);
+    $input_file_type_delimiters = TripalCultivateImportValidationHelper::getFileDelimiters($input_file_mime_type);
 
     // Check the row includes at least one delimiter returned by
     // getFileDelimiters().
@@ -102,7 +103,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
       ];
     }
 
-    $columns = TripalCultivateValidatorBase::splitRowIntoColumns($raw_row, $input_file_mime_type);
+    $columns = TripalCultivateImportValidationHelper::splitRowIntoColumns($raw_row, $input_file_mime_type);
     $no_cols = count($columns);
 
     if ($no_cols > $expected_columns['number_of_columns']) {
