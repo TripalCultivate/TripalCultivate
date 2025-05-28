@@ -271,6 +271,33 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
   }
 
   /**
+   * Quickly test that mime-types with multiple delimiters are handled.
+   */
+  public function testSplitRowIntoColumnsMultiDelimiter() {
+
+    $str_line = 'Line does not actually matter here as test/plain is not supported.';
+    $expected_mime_type = 'text/plain';
+    $expected_exception_message = "We don't currently support splitting mime types with multiple delimiter options";
+
+    $exception_caught = FALSE;
+    $exception_message = '';
+    try {
+      TripalCultivateImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+
+    $this->assertTrue($exception_caught, 'Failed to catch exception when splitRowIntoColumns() could not split line because text/plain has two supported delimiters and we dont yet know how to pick the right one reliably.');
+    $this->assertStringContainsString(
+      $expected_exception_message,
+      $exception_message,
+      'Expected exception message does not match message when splitRowIntoColumns() could not split line because there are too many supported delimiters.'
+    );
+  }
+
+  /**
    * Data Provider for triggering exceptions in checkValidationStatusArray().
    *
    * @return array
