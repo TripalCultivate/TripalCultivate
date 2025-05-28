@@ -244,7 +244,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *     Eg: 'column_headers' => [
    *           '2' => 'Maternal Germplasm Name', // Header of column #3
    *           '4' => 'Paternal Germplasm Name', // Header of column #5
-   *         ]
+   *         ].
    *
    * @return array
    *   A render array of type "item" used to display feedback to the user about
@@ -265,12 +265,6 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   - If the case string returned by the validator is not recognized.
    */
   public static function process(array $failures, array $tokens = [], array $metadata) {
-    // Define our table header.
-    // We will start with the line number and build the header from there as we
-    // go through the failures. There will be a column for each column checked
-    // by this validator instance and the column header will be the same as it
-    // appears in the file.
-    $table_header = [-1 => 'Line Number'];
     // For this validator there are can be up to 2 tables:
     // - 'table'->'missing_cells': Germplasm name not found in the database.
     // - 'table'->'duplicate_cells': Germplasm name has multiple records.
@@ -309,18 +303,22 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         if (!array_key_exists($case, $table)) {
           $table[$case]['rows'] = [];
         }
-        // Iterate through each index, and check our tokens array for the
-        // appropriate column header.
-        foreach ($validation_result['failedItems'][$case] as $index => $cell) {
-
+        // For each index with an failed germplasm, grab the column name from
+        // $metadata and add it to our table header.
+        foreach ($validation_result['failedItems'][$case] as $index => $germplasm) {
+          // Grab the column name based on the index of the germplasm
+          // and add it to this table header if it's not already there.
+          $column_name = $metadata['column_headers'][$index];
+          if (!array_key_exists($column_name, $table[$case]['header'])) {
+            $table[$case]['header'][$index] = $column_name;
+          }
+          // Now add a cell to the table to indicate this germplasm.
+          // We reuse the index from the original file as the key to preserve
+          // the same order of the columns. We also key the row with the line
+          // number to ensure that a line with more then one failure is
+          // compiled into a single row.
+          $table[$case]['rows'][$line_no][$index] = $germplasm['germplasm_name'];
         }
-
-        array_push($table[$case]['rows'], [
-          $line_no,
-          $validation_result['failedItems']['combo_provided'][$trait],
-          $validation_result['failedItems']['combo_provided'][$method],
-          $validation_result['failedItems']['combo_provided'][$unit],
-        ]);
       }
     }
     // Check which tables were created, and assign the correct message.
@@ -335,6 +333,10 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // Finally, loop through our tables and build our render array.
     $tables = [];
     foreach ($table as $table_key => $table_case) {
+      // Our table headers are now defined, with the exception of the line
+      // number as the first column. So we add that here using -1 to ensure it
+      // is the first one.
+      $table_case['header'][-1] = 'Line Number';
       array_push($tables, [
         [
           '#prefix' => '<div class="case-message case-' . $table_key . '">',
@@ -343,7 +345,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         ],
         [
           '#type' => 'table',
-          '#header' => $table_header,
+          '#header' => $table_case['header'],
           '#attributes' => [
             'class' => [
               'table-case-' . $table_key,
