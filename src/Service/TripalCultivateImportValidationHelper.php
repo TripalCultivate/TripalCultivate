@@ -150,8 +150,8 @@ class TripalCultivateImportValidationHelper {
       $results = [];
       $counts = [];
       foreach ($supported_delimiters as $delimiter) {
-        $results[$delimiter] = str_getcsv($row, $delimiter);
-        $counts[$delimiter] = count($results[$delimiter]);
+      $results[$delimiter] = str_getcsv($row, $delimiter);
+      $counts[$delimiter] = count($results[$delimiter]);
       }
 
       // Now lets choose the one with the most columns --shrugs-- not ideal
