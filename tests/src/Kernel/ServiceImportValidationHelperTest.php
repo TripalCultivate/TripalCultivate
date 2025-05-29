@@ -36,13 +36,6 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
   ];
 
   /**
-   * Service name.
-   *
-   * @var string
-   */
-  private $service_ImportValidationHelper = 'TripalCultivateImportValidationHelper';
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() :void {
