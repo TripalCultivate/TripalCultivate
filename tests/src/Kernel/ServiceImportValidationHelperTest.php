@@ -68,6 +68,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
         'The getFileDelimiters() getter requires a string of the input file\'s mime-type and must not be empty.',
         FALSE,
       ],
+
       // #1
       [
         'test tab-separated values mime type (tsv)',
@@ -76,6 +77,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
         '',
         ["\t"],
       ],
+
       // #2
       [
         'test comma-separated values mime type (csv)',
@@ -84,6 +86,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
         '',
         [','],
       ],
+
       // #3
       [
         'test tab-separated values mime type (txt)',
@@ -92,6 +95,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
         '',
         ["\t", ','],
       ],
+
       // #4
       [
         'test unsupported mime types (docx)',
@@ -233,7 +237,8 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $this->assertTrue($exception_caught, 'Failed to catch exception when no delimiter defined in splitRowIntoColumns().');
     $this->assertStringContainsString(
       'mime type "text/uncertain" passed into splitRowIntoColumns() is not supported', $exception_message,
-      'We did not get the expected message when an unknown mime type is passed into splitRowIntoColumns().');
+      'We did not get the expected message when an unknown mime type is passed into splitRowIntoColumns().'
+    );
 
     // Delimiter is not present in the line and could not split the line.
     // This case will return the original line.
@@ -254,7 +259,8 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $this->assertTrue($exception_caught, 'Failed to catch exception when splitRowIntoColumns() could not split line using the delimiter.');
     $this->assertStringContainsString(
       'line provided could not be split into columns', $exception_message,
-      'Expected exception message does not match message when splitRowIntoColumns() could not split line using the delimiter.');
+      'Expected exception message does not match message when splitRowIntoColumns() could not split line using the delimiter.'
+    );
 
     // Test that the sanitized line is the same as the split values.
     $delimiter = $expected_delimiter;
@@ -447,7 +453,6 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
         "ERROR: Found " . $expectations['expected_errors'] . " problem(s) with the validation result array",
         $exception_message,
         "The exception thrown does not contain the number of errors we expected for this scenario.",
-
       );
       $this->assertStringContainsString(
         "validation result array returned by the $validator_name validator.",
@@ -470,7 +475,8 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
       TripalCultivateImportValidationHelper::checkValidationStatusArray(
         $validation_result,
         $validator_name,
-        $line_no);
+        $line_no
+      );
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
