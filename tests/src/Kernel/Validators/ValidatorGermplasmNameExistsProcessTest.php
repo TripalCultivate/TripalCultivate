@@ -85,8 +85,9 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @return array
    *   Each scenario is an array with the following:
-   *   - The validation result array that gets passed to the process method. It
-   *     contains the following keys:
+   *   - An array of validation result arrays that get passed to the process
+   *     method. It is keyed by the line number that triggered this failed
+   *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed with the following keys.
@@ -99,21 +100,64 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *     - 'column_headers': an array of headers for columns that
    *       are expected to contain germplasm names. The index in this array MUST
    *       match the position (starting with 0) of the column in the input file.
-   *   - An array of expectations in the rendered output which has the following
-   *     keys:
+   *   - An array of expectations that we want to find in the resulting rendered
+   *     output. This array is nested by the tables expected (keyed by type),
+   *     in the order they are expected to show up on the page (ie. 1 array per
+   *     table). Each array has the following keys:
    *     - 'expected_message': The message expected in the return value of the
    *       process method for this scenario.
-   *     - 'expected_column_count': The number of columns expected in the
-   *       rendered table for this scenario.
-   *     - 'expected_table_rows': 1+ arrays keyed by the line number in the
-   *       input file that triggered the failed validation status, further keyed
-   *       by the column header name of a cell in this row and its value is the
-   *       invalid value. For example:
-   *       - 2 => [ 'Type' => 'Invalid Value' ]
+   *     - 1+ arrays keyed by the line number in the input file that triggered
+   *       the failed validation status, further keyed by:
+   *       - 'expected_column_count': The number of columns expected in the
+   *         rendered table for this scenario.
+   *       - 'expected_table_contents': an array keyed by the column header name
+   *         of a cell in this row and its value is the problematic germplasm
+   *         name. For example:
+   *         - [ 'Germplasm Name' => 'Invalid Value' ]
    */
   public function provideGermplasmNameExistsFailedCases() {
     $scenarios = [];
 
+    $basic_column_headers = [
+      'column_headers' => [
+        1 => 'Germplasm Name',
+      ],
+    ];
+
+    // ------ DEFAULT CASES (no tokens) ------
+    // @todo #0: A germplasm name cell is empty
+    // #1: A germplasm name cell is missing from the database
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Missing germplasm name(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'missing_cells' => [
+              1 => [
+                'germplasm_name' => 'Non-existant Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      [],
+      $basic_column_headers,
+      [
+        'missing_cells' => [
+          'expected_message' => 'The following germplasm names could not be found in the database.',
+          3 => [
+            'expected_column_count' => 2,
+            'expected_table_contents' => [
+              'Germplasm Name' => 'Non-existant Germplasm',
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    // #2: A germplasm name cell is duplicated in the database
+    // #3: In the same row, 1 cell has missing germplasm, and 1 has a duplicate
     return $scenarios;
 
   }
@@ -122,13 +166,13 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    * Tests the message processor method for the GermplasmNameExists validator.
    *
    * @param array $validation_result
-   *   The validation result array that gets passed to the process method. It
-   *   contains the following keys:
-   *   - 'case': a developer-focused string describing the case checked.
-   *   - 'valid': FALSE to indicate that validation failed.
-   *   - 'failedItems': an array of items that failed with the following keys.
-   *     - 'project_provided': The name of the project provided.
-   *     - 'genus_provided': The name of the genus provided.
+   *   - An array of validation result arrays that get passed to the process
+   *     method. It is keyed by the line number that triggered this failed
+   *     validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed with the following keys.
+   *       @todo summarize the failedItems that are used by this processor.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -140,17 +184,20 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *     are expected to contain germplasm names. The index in this array MUST
    *     match the position (starting with 0) of the column in the input file.
    * @param array $expectations
-   *   An array of the expected items in the rendered output. It has the
-   *   following keys:
-   *   - 'expected_message': The message expected in the return value of the
-   *     process method for this scenario.
-   *   - 'expected_column_count': The number of columns expected in the
-   *     rendered table for this scenario.
-   *   - 'expected_table_rows': 1+ arrays keyed by the line number in the
-   *     input file that triggered the failed validation status, further keyed
-   *     by the column header name of a cell in this row and its value is the
-   *     invalid value. For example:
-   *     - 2 => [ 'Type' => 'Invalid Value' ].
+   *   - An array of expectations that we want to find in the resulting rendered
+   *     output. This array is nested by the tables expected (keyed by type),
+   *     in the order they are expected to show up on the page (ie. 1 array per
+   *     table). Each array has the following keys:
+   *     - 'expected_message': The message expected in the return value of the
+   *       process method for this scenario.
+   *     - 1+ arrays keyed by the line number in the input file that triggered
+   *       the failed validation status, further keyed by:
+   *       - 'expected_column_count': The number of columns expected in the
+   *         rendered table for this scenario.
+   *       - 'expected_table_contents': an array keyed by the column header name
+   *         of a cell in this row and its value is the problematic germplasm
+   *         name. For example:
+   *         - [ 'Germplasm Name' => 'Invalid Value' ].
    *
    * @dataProvider provideGermplasmNameExistsFailedCases
    */
@@ -167,7 +214,19 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
-    // Check the render array here.
+    // Check the rendered output.
+    // Loop through expectations one table at a time.
+    foreach ($expectations as $table_case => $table) {
+      // Check the message above this table is correct.
+      $selected_message_markup = $this->cssSelect("ul li div.case-message.case-$table_case");
+      $table_message = (string) $selected_message_markup[0];
+      $this->assertStringContainsString(
+        $expectations[$table_case]['expected_message'],
+        $table_message,
+        'The message expected from processing GermplasmNameExists failures for this scenario did not match the message in the render array.'
+      );
+    }
+
   }
 
 }

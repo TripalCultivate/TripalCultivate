@@ -266,7 +266,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function process(array $failures, array $tokens = [], array $metadata) {
+  public static function process(array $validation_result, array $tokens = [], array $metadata) {
     // For this validator there are can be up to 2 tables:
     // - 'table'->'missing_cells': Germplasm name not found in the database.
     // - 'table'->'duplicate_cells': Germplasm name has multiple records.
@@ -274,25 +274,25 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
 
     // Loop through each row in the $failures array and piece apart the
     // different cases into different tables.
-    foreach ($failures as $line_no => $validation_result) {
+    foreach ($validation_result as $line_no => $validation_status) {
       // @todo Check the format of the validation_result parameter.
       // $this->checkValidationStatusArray($validation_result, 'GermplasmNameExists', $line_no);
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.
-      if ($validation_result['case'] == 'Unable to lookup germplasm with empty values') {
+      if ($validation_status['case'] == 'Unable to lookup germplasm with empty values') {
         // @todo Create a helper method.
       }
       $table_case = [];
-      if ($validation_result['case'] == 'Missing germplasm name(s) in the database') {
+      if ($validation_status['case'] == 'Missing germplasm name(s) in the database') {
         $table_case = ['missing_cells'];
       }
-      elseif ($validation_result['case'] == 'Duplicate(s) found in the database for germplasm name(s)') {
+      elseif ($validation_status['case'] == 'Duplicate(s) found in the database for germplasm name(s)') {
         $table_case = ['duplicate_cells'];
       }
-      elseif ($validation_result['case'] == 'Missing germplasm name(s) and found duplicate(s) in the database') {
+      elseif ($validation_status['case'] == 'Missing germplasm name(s) and found duplicate(s) in the database') {
         $table_case = ['missing_cells', 'duplicate_cells'];
       }
-      elseif ($validation_result['case'] == 'Germplasm name(s) exist(s) in the database') {
+      elseif ($validation_status['case'] == 'Germplasm name(s) exist(s) in the database') {
         throw new \Exception("The case string returned by the GermplasmNameExists validator at line #$line_no implies validation passed, but valid is set to FALSE.");
       }
       else {
@@ -301,13 +301,17 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       // Now set values that should appear for this row in the table(s) for this
       // particular case.
       foreach ($table_case as $case) {
-        // Declare the array storing rows for this table, if not already.
+        // Declare the array storing content for this table, if not already.
         if (!array_key_exists($case, $table)) {
+          // Set the first column to hold the line number of the failure.
+          // Use -1 to ensure it is the first column and doesn't conflict with
+          // column indices in the input file.
+          $table[$case]['header'][-1] = 'Line Number';
           $table[$case]['rows'] = [];
         }
         // For each index with an failed germplasm, grab the column name from
         // $metadata and add it to our table header.
-        foreach ($validation_result['failedItems'][$case] as $index => $germplasm) {
+        foreach ($validation_status['failedItems'][$case] as $index => $germplasm) {
           // Grab the column name based on the index of the germplasm
           // and add it to this table header if it's not already there.
           $column_name = $metadata['column_headers'][$index];
@@ -335,10 +339,6 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // Finally, loop through our tables and build our render array.
     $tables = [];
     foreach ($table as $table_key => $table_case) {
-      // Our table headers are now defined, with the exception of the line
-      // number as the first column. So we add that here using -1 to ensure it
-      // is the first one.
-      $table_case['header'][-1] = 'Line Number';
       array_push($tables, [
         [
           '#prefix' => '<div class="case-message case-' . $table_key . '">',
