@@ -211,15 +211,17 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    * include a separate process method that displays the information stored in
    * 'duplicates' of the 'failedItems' array.
    *
-   * @param array $failures
-   *   An associative array that was returned by the GermplasmNameExists
-   *   validator in the event of failed validation. It contains the following
-   *   keys:
-   *   - 'case': a developer-focused string describing the case checked.
-   *   - 'valid': FALSE to indicate that validation failed.
-   *   - 'failedItems': an array of items that failed depending on the case that
-   *     was triggered.
-   *     @see GermplasmNameExists::validateRow()
+   * @param array $validation_result
+   *   An associative array that stores the validation failures by the
+   *   GermplasmNameExists validator. It is keyed by the line number of the
+   *   input file where validation failed, and the value is an associative
+   *   array returned by the validator. The overall structure is:
+   *   - [LINE NUMBER]:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   *       @see GermplasmNameExists::validateRow()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see GermplasmNameExists::$default_tokens
@@ -260,7 +262,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *       - Headers include 'Row Number', 'Column Header', 'Germplasm Name'
    *
    * @throws \Exception
-   *   - If the failure parameter was not formatted properly.
+   *   - If any of the associative arrays per line were not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
