@@ -76,7 +76,7 @@ class TripalCultivateFileTemplateService {
     // File MIME type.
     $file_mime_type = TripalCultivateImportValidationHelper::$extension_to_mime_mapping[$file_extension];
     // File delimiter.
-    $file_delimiter = TripalCultivateImportValidationHelper::$mime_to_delimiter_mapping[$file_mime_type[0]];
+    $file_delimiter = TripalCultivateImportValidationHelper::getFileDelimiters($file_mime_type[0]);
 
     // Personalize the filename by appending display name of the current user,
     // but first sanitize it by replacing all spaces into a dash character.
