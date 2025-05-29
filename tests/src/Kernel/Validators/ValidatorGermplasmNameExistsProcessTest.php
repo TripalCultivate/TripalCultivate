@@ -106,14 +106,13 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *     table). Each array has the following keys:
    *     - 'expected_message': The message expected in the return value of the
    *       process method for this scenario.
-   *     - 1+ arrays keyed by the line number in the input file that triggered
-   *       the failed validation status, further keyed by:
-   *       - 'expected_column_count': The number of columns expected in the
-   *         rendered table for this scenario.
-   *       - 'expected_table_contents': an array keyed by the column header name
-   *         of a cell in this row and its value is the problematic germplasm
-   *         name. For example:
-   *         - [ 'Germplasm Name' => 'Invalid Value' ]
+   *     - 'expected_column_count': The number of columns expected in the
+   *       rendered table for this scenario.
+   *     - 'expected_rows': 1+ arrays keyed by the line number in the input file
+   *       that triggered the failed validation status, further keyed by the
+   *       column header name of a cell in this row and its value is the
+   *       problematic germplasm name. For example:
+   *        '2' => [ 'Germplasm Name' => 'Invalid Value' ]
    */
   public function provideGermplasmNameExistsFailedCases() {
     $scenarios = [];
@@ -146,9 +145,9 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       [
         'missing_cells' => [
           'expected_message' => 'The following germplasm names could not be found in the database.',
-          3 => [
-            'expected_column_count' => 2,
-            'expected_table_contents' => [
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            3 => [
               'Germplasm Name' => 'Non-existant Germplasm',
             ],
           ],
@@ -190,14 +189,13 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *     table). Each array has the following keys:
    *     - 'expected_message': The message expected in the return value of the
    *       process method for this scenario.
-   *     - 1+ arrays keyed by the line number in the input file that triggered
-   *       the failed validation status, further keyed by:
-   *       - 'expected_column_count': The number of columns expected in the
-   *         rendered table for this scenario.
-   *       - 'expected_table_contents': an array keyed by the column header name
-   *         of a cell in this row and its value is the problematic germplasm
-   *         name. For example:
-   *         - [ 'Germplasm Name' => 'Invalid Value' ].
+   *     - 'expected_column_count': The number of columns expected in the
+   *       rendered table for this scenario.
+   *     - 'expected_rows': 1+ arrays keyed by the line number in the input file
+   *       that triggered the failed validation status, further keyed by the
+   *       column header name of a cell in this row and its value is the
+   *       problematic germplasm name. For example:
+   *        '2' => [ 'Germplasm Name' => 'Invalid Value' ].
    *
    * @dataProvider provideGermplasmNameExistsFailedCases
    */
@@ -221,12 +219,42 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       $selected_message_markup = $this->cssSelect("ul li div.case-message.case-$table_case");
       $table_message = (string) $selected_message_markup[0];
       $this->assertStringContainsString(
-        $expectations[$table_case]['expected_message'],
+        $table['expected_message'],
         $table_message,
         'The message expected from processing GermplasmNameExists failures for this scenario did not match the message in the render array.'
       );
-    }
 
+      // Pull out the table rows for this table case.
+      $selected_rows = $this->cssSelect("table.table-case-$table_case tbody tr");
+      // Assert that the number of rows matches what we expect.
+      $expected_row_count = (count($table) - 2);
+      $this->assertCount(
+        $expected_row_count,
+        $selected_rows,
+        'We expected ' . $expected_row_count . 'rows in the rendered table for GermplasmNameExists failures for this scenario, but there are ' . count($selected_rows) . '.'
+      );
+
+      // Select and save the table header.
+      $selected_table_header = $this->cssSelect("table.table-case-$table_case thead tr");
+      $select_column_headers = (array) $selected_table_header[0]->th;
+      // Assert that the number of columns matches the number of we expect.
+      $this->assertCount(
+        $table['expected_column_count'],
+        $select_column_headers,
+        'We expected ' . $expected_values['expected_column_count'] . 'columns to be in the rendered table for GermplasmNameExists failures for this scenario, but instead there are ' . count($select_column_headers) . '.'
+      );
+
+      $current_row_index = 0;
+      // Loop through expectations for each row of each table.
+      foreach ($table as $expected_line_no => $expected_values) {
+        if ($expected_line_no == 'expected_message') {
+          continue;
+        }
+
+        // Move onto the next row.
+        $current_row_index++;
+      }
+    }
   }
 
 }
