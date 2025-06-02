@@ -8,7 +8,7 @@ use Drupal\user\Entity\User;
 /**
  * Test file template generator service.
  *
- * @group trpcultivate_phenotypes
+ * @group trpcultivate
  * @group template_generate
  */
 class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {

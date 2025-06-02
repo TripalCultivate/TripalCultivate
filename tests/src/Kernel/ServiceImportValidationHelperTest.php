@@ -8,7 +8,8 @@ use Drupal\trpcultivate\Service\ImportValidationHelper;
 /**
  * Test import validation helper service.
  *
- * @group trpcultivate_phenotypes
+ * @group trpcultivate
+ * @group validation_helper
  */
 class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
 
