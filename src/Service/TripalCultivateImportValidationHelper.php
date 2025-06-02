@@ -41,7 +41,13 @@ class TripalCultivateImportValidationHelper {
    * current importer, a list of valid mime-types for the extension(s) is looked
    * up in this mapping.
    *
+   * Official mime types are managed by IANA.
+   * @see https://www.iana.org/assignments/media-types/media-types.xhtml
+   *
    * @var array
+   *   An associative array where the key is the file extension (do not include
+   *   the dot separator) and the value is an array of official mime types
+   *   that are aloud to use this file extension.
    */
   public static array $extension_to_mime_mapping = [
     'tsv' => ['text/tab-separated-values'],
