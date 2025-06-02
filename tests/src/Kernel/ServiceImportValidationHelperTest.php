@@ -9,7 +9,6 @@ use Drupal\trpcultivate\Service\ImportValidationHelper;
  * Test import validation helper service.
  *
  * @group trpcultivate_phenotypes
- * @group template_generate
  */
 class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
 
