@@ -20,7 +20,13 @@ class TripalCultivateImportValidationHelper {
    * one-to-one mapping. If it is not a one-to-one mapping, then we loop through
    * the options.
    *
+   * Official mime types are managed by IANA.
+   * @see https://www.iana.org/assignments/media-types/media-types.xhtml
+   *
    * @var array
+   *   An associative array where the key is the official mime type and the
+   *   value is an array of supported delimiters for that mime type. Delimiters
+   *   should be enclosed in double quotes for consistency.
    */
   public static array $mime_to_delimiter_mapping = [
     'text/tab-separated-values' => ["\t"],
