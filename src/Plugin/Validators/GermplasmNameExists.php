@@ -309,6 +309,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
           $table[$case]['header'][-1] = 'Line Number';
           $table[$case]['rows'] = [];
         }
+        // Define a new row in our table for this line number.
+        $table[$case]['rows'][$line_no][-1] = $line_no;
         // For each index with an failed germplasm, grab the column name from
         // $metadata and add it to our table header.
         foreach ($validation_status['failedItems'][$case] as $index => $germplasm) {
@@ -334,6 +336,24 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     }
     if (array_key_exists('duplicate_cells', $table)) {
       $table['duplicate_cells']['message'] = 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or [contact-admin] for help with investigating.';
+    }
+
+    // If our table(s) have more than 2 columns with failed values, then iterate
+    // through and pad each table with empty strings where necessary.
+    foreach ($table as $table_case) {
+      // Sort the table header.
+      ksort($table_case['header']);
+      if (count($table_case['header']) > 2) {
+        foreach (array_keys($table_case['rows']) as $line_no) {
+          foreach (array_keys($table_case['header']) as $index) {
+            if (!array_key_exists($index, $table_case['rows'][$line_no])) {
+              $table_case['rows'][$line_no][$index] = '';
+            }
+          }
+          // Finally, sort the row by keys.
+          ksort($table_case['rows'][$line_no]);
+        }
+      }
     }
 
     // Finally, loop through our tables and build our render array.

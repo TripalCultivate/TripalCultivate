@@ -224,16 +224,6 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
         'The message expected from processing GermplasmNameExists failures for this scenario did not match the message in the render array.'
       );
 
-      // Pull out the table rows for this table case.
-      $selected_rows = $this->cssSelect("table.table-case-$table_case tbody tr");
-      // Assert that the number of rows matches what we expect.
-      $expected_row_count = (count($table) - 2);
-      $this->assertCount(
-        $expected_row_count,
-        $selected_rows,
-        'We expected ' . $expected_row_count . 'rows in the rendered table for GermplasmNameExists failures for this scenario, but there are ' . count($selected_rows) . '.'
-      );
-
       // Select and save the table header.
       $selected_table_header = $this->cssSelect("table.table-case-$table_case thead tr");
       $select_column_headers = (array) $selected_table_header[0]->th;
@@ -241,14 +231,47 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       $this->assertCount(
         $table['expected_column_count'],
         $select_column_headers,
-        'We expected ' . $expected_values['expected_column_count'] . 'columns to be in the rendered table for GermplasmNameExists failures for this scenario, but instead there are ' . count($select_column_headers) . '.'
+        'We expected ' . $table['expected_column_count'] . 'columns to be in the rendered table for GermplasmNameExists failures for this scenario, but instead there are ' . count($select_column_headers) . '.'
+      );
+
+      // Pull out the table rows for this table case.
+      $selected_rows = $this->cssSelect("table.table-case-$table_case tbody tr");
+      // Assert that the number of rows matches what we expect.
+      $expected_row_count = (count($table['expected_rows']));
+      $this->assertCount(
+        $expected_row_count,
+        $selected_rows,
+        'We expected ' . $expected_row_count . 'rows in the rendered table for GermplasmNameExists failures for this scenario, but there are ' . count($selected_rows) . '.'
       );
 
       $current_row_index = 0;
-      // Loop through expectations for each row of each table.
-      foreach ($table as $expected_line_no => $expected_values) {
-        if ($expected_line_no == 'expected_message') {
-          continue;
+      // Loop through expectations for each row of this table.
+      foreach ($table['expected_rows'] as $expected_line_no => $expected_values) {
+        $select_row_cells = (array) $selected_rows[$current_row_index]->td;
+
+        // 1st Column: Line Number.
+        $line_number = $select_row_cells[0];
+        $this->assertEquals(
+          $expected_line_no,
+          $line_number,
+          "Did not get the expected line number in the rendered table from processing GermplasmNameExists failures."
+        );
+        // 2nd Column and up: Column(s) with invalid value
+        $current_column_index = 1;
+        foreach ($expected_values as $column_header => $invalid_value) {
+          // Check that the invalid value is under the correct column header.
+          $this->assertEquals(
+            $column_header,
+            $select_column_headers[$current_column_index],
+            "We expected the column header $column_header to be present in the rendered table's header for GermplasmNameExists failures at index $current_column_index but it was not."
+          );
+          // Check that the invalid value in the table matches what we expect.
+          $this->assertEquals(
+            $invalid_value,
+            (string) $select_row_cells[$current_column_index],
+            "We expected an invalid value to be listed for $column_header at line #$expected_line_no in the rendered table for GermplasmNameExists failures."
+          );
+          $current_column_index++;
         }
 
         // Move onto the next row.
