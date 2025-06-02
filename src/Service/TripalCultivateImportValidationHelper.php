@@ -3,7 +3,14 @@
 namespace Drupal\trpcultivate\Service;
 
 /**
- * Import validation helper class.
+ * Provides helper methods for validation during data import.
+ *
+ * More specifically, this service can be used by either TripalImporter classes or
+ * TripalCultivate Validator classes. It provides a centralized place for helper
+ * methods that are not only used by the validator plugin instances.
+ *
+ * NOTE: Currently all the methods in this service are static. This was done to keep
+ * them isolated from each other and for performance reasons.
  */
 class TripalCultivateImportValidationHelper {
 
