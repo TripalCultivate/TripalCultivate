@@ -5,7 +5,7 @@ namespace Drupal\trpcultivate\Service;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
-use Drupal\trpcultivate\Service\TripalCultivateImportValidationHelper;
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 
 /**
  * Generate data collection template file used in the importer.
@@ -60,7 +60,7 @@ class TripalCultivateFileTemplateService {
    * @return string
    *   The relative path to the generated template file.
    *
-   * @see src/Service/TripalCultivateImportValidationHelper.php
+   * @see src/Service/ImportValidationHelper.php
    */
   public function generateFile($importer_id, $column_headers, $file_extensions) {
 
@@ -74,9 +74,9 @@ class TripalCultivateFileTemplateService {
     $file_extension = $file_extensions[0];
     // See referenced file in the doc block about the mapping variables used.
     // File MIME type.
-    $file_mime_type = TripalCultivateImportValidationHelper::$extension_to_mime_mapping[$file_extension];
+    $file_mime_type = ImportValidationHelper::$extension_to_mime_mapping[$file_extension];
     // File delimiter.
-    $file_delimiter = TripalCultivateImportValidationHelper::getFileDelimiters($file_mime_type[0]);
+    $file_delimiter = ImportValidationHelper::getFileDelimiters($file_mime_type[0]);
 
     // Personalize the filename by appending display name of the current user,
     // but first sanitize it by replacing all spaces into a dash character.

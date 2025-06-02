@@ -3,7 +3,7 @@
 namespace Drupal\Tests\tripalcultivate\Kernel;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
-use Drupal\trpcultivate\Service\TripalCultivateImportValidationHelper;
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 
 /**
  * Test import validation helper service.
@@ -132,7 +132,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $delimiter = FALSE;
 
     try {
-      $delimiter = TripalCultivateImportValidationHelper::getFileDelimiters($mime_type_input);
+      $delimiter = ImportValidationHelper::getFileDelimiters($mime_type_input);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -227,7 +227,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $exception_message = '';
 
     try {
-      TripalCultivateImportValidationHelper::splitRowIntoColumns($str_line, 'text/uncertain');
+      ImportValidationHelper::splitRowIntoColumns($str_line, 'text/uncertain');
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -249,7 +249,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $exception_message = '';
 
     try {
-      TripalCultivateImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
+      ImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -265,7 +265,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     // Test that the sanitized line is the same as the split values.
     $delimiter = $expected_delimiter;
     $str_line = implode($delimiter, $raw_line);
-    $values = TripalCultivateImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
+    $values = ImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
     $this->assertEquals($good_line, $values, 'Line values does not match expected split values.');
   }
 
@@ -281,7 +281,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $exception_caught = FALSE;
     $exception_message = '';
     try {
-      TripalCultivateImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
+      ImportValidationHelper::splitRowIntoColumns($str_line, $expected_mime_type);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -435,7 +435,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      TripalCultivateImportValidationHelper::checkValidationStatusArray($validation_result, $validator_name);
+      ImportValidationHelper::checkValidationStatusArray($validation_result, $validator_name);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -472,7 +472,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      TripalCultivateImportValidationHelper::checkValidationStatusArray(
+      ImportValidationHelper::checkValidationStatusArray(
         $validation_result,
         $validator_name,
         $line_no

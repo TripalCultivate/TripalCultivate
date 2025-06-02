@@ -2,7 +2,7 @@
 
 namespace Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits;
 
-use Drupal\trpcultivate\Service\TripalCultivateImportValidationHelper;
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 
 /**
  * Getters/setters for supported mime-types, file extensions and delimiters.
@@ -30,7 +30,7 @@ trait FileTypes {
     }
 
     // Check if mime-type is in our mapping array.
-    if (!isset(TripalCultivateImportValidationHelper::$mime_to_delimiter_mapping[$mime_type])) {
+    if (!isset(ImportValidationHelper::$mime_to_delimiter_mapping[$mime_type])) {
       // Since this is checking a user-provided value, the error is going to be
       // logged and then checked by a validator so that the error can be passed
       // to the user in a friendly way.
@@ -65,11 +65,11 @@ trait FileTypes {
     $invalid_ext = [];
 
     foreach ($extensions as $ext) {
-      if (!isset(TripalCultivateImportValidationHelper::$extension_to_mime_mapping[$ext])) {
+      if (!isset(ImportValidationHelper::$extension_to_mime_mapping[$ext])) {
         array_push($invalid_ext, $ext);
         continue;
       }
-      $mime_types = array_merge($mime_types, TripalCultivateImportValidationHelper::$extension_to_mime_mapping[$ext]);
+      $mime_types = array_merge($mime_types, ImportValidationHelper::$extension_to_mime_mapping[$ext]);
     }
 
     if ($invalid_ext) {

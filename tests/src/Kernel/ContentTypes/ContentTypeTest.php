@@ -83,7 +83,7 @@ class ContentTypeTest extends ChadoTestKernelBase {
 
     // Initialize the chado instance with all the records
     // that would be present after running prepare.
-    $this->connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
+    $this->chado_connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
   }
 
   /**
