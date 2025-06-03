@@ -54,7 +54,13 @@ class TripalCultivateImportValidationHelper {
    * Official mime types are managed by IANA.
    * @see https://www.iana.org/assignments/media-types/media-types.xhtml
    *
+   * Official mime types are managed by IANA.
+   * @see https://www.iana.org/assignments/media-types/media-types.xhtml
+   *
    * @var array
+   *   An associative array where the key is the file extension (do not include
+   *   the dot separator) and the value is an array of official mime types
+   *   that are aloud to use this file extension.
    *   An associative array where the key is the file extension (do not include
    *   the dot separator) and the value is an array of official mime types
    *   that are aloud to use this file extension.
