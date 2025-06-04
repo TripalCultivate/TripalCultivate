@@ -83,7 +83,7 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
    *     - 'case': validation test case message.
    *     - 'valid': true if validation passed, false if failed.
    */
-  public function provideRawRowToDelimitedFileValidator() {
+  public static function provideRawRowToDelimitedFileValidator() {
     return [
 
       // # 0: Raw row line is an empty string.

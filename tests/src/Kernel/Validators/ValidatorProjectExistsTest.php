@@ -121,7 +121,7 @@ class ValidatorProjectExistsTest extends ChadoTestKernelBase {
    *       Both name and id key corresponds to project name and project id value
    *       in the $test_project property, respectively.
    */
-  public function provideProjectToProjectExistsValidator() {
+  public static function provideProjectToProjectExistsValidator() {
     return [
       // # 0: A project that does not exist.
       [

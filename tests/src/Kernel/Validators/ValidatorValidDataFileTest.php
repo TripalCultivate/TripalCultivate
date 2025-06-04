@@ -231,7 +231,7 @@ class ValidatorValidDataFileTest extends ChadoTestKernelBase {
    *       - 'mime': the file MIME type.
    *       - 'extension': the file extension.
    */
-  public function provideFileForDataFileValidator() {
+  public static function provideFileForDataFileValidator() {
 
     return [
       // #0: Test a null file id number.

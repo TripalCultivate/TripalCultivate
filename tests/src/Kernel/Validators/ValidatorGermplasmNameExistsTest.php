@@ -185,7 +185,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *         - A list containing the indices of the empty cells (This can only
    *           be a subset of $indices).
    */
-  public function provideRowToGermplasmNameExists() {
+  public static function provideRowToGermplasmNameExists() {
     $scenarios = [];
 
     // #0: A simple row where column 1 is a germplasm name that doesn't exist.

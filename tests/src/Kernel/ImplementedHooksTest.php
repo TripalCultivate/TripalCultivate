@@ -68,7 +68,7 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
    *     - contains_library: TRUE|FALSE indicates whether the
    *       trpcultivate/tripal_entity_type should be attached to the page.
    */
-  public function provideTestRoutes() {
+  public static function provideTestRoutes() {
     $scenarios = [];
 
     $scenarios[] = [

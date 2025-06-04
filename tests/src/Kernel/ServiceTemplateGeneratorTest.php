@@ -106,7 +106,7 @@ class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
    *     - 'delimiter': the expected delimiter used to encode the header row.
    *     - 'header_row': the expected content (header row) of the file.
    */
-  public function provideParametersForFileTemplateGenerator() {
+  public static function provideParametersForFileTemplateGenerator() {
     return [
       // #0: A tsv file.
       [

@@ -58,7 +58,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *     request.
    *   - The expected delimiter returned.
    */
-  public function provideMimeTypesForFileDelimiterGetter() {
+  public static function provideMimeTypesForFileDelimiterGetter() {
     return [
       // #0
       [
@@ -157,7 +157,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *   - Mime type input.
    *   - Expected delimiter associated to the mime type provided.
    */
-  public function provideMimeTypeDelimiters() {
+  public static function provideMimeTypeDelimiters() {
     $sets = [];
 
     // #0
@@ -314,7 +314,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *     - 'expected_details': The details in the message expected to be in the
    *        exception being triggered.
    */
-  public function provideFaultyValidationStatusArray() {
+  public static function provideFaultyValidationStatusArray() {
 
     $scenarios = [];
 

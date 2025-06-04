@@ -101,7 +101,7 @@ class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
   /**
    * Data Provider: provides various scenarios of file extensions.
    */
-  public function provideExtensionsForSetter() {
+  public static function provideExtensionsForSetter() {
 
     $scenarios = [];
 
@@ -352,7 +352,7 @@ class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
   /**
    * Data Provider: provides scenarios of mime-types from a single input file.
    */
-  public function provideMimeTypeForSetter() {
+  public static function provideMimeTypeForSetter() {
 
     $scenarios = [];
 

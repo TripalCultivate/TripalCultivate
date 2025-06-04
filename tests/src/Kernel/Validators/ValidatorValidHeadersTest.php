@@ -102,7 +102,7 @@ class ValidatorValidHeadersTest extends ChadoTestKernelBase {
    *       splitting the line.
    *     - 'strict': indicates if number of columns must be exact.
    */
-  public function provideHeadersToHeadersValidator() {
+  public static function provideHeadersToHeadersValidator() {
 
     return [
       // #0: The headers input is an empty array.
