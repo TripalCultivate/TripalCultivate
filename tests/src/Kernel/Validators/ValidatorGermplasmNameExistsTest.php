@@ -41,7 +41,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *
    * @var string
    */
-  protected const string INSERTED_GERMPLASM_NAME = 'stock1';
+  protected const INSERTED_GERMPLASM_NAME = 'stock1';
 
   /**
    * Insert values for inserting the same germplasm name twice into Chado.
