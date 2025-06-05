@@ -114,7 +114,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *       problematic germplasm name. For example:
    *        '2' => [ 'Germplasm Name' => 'Invalid Value' ]
    */
-  public function provideGermplasmNameExistsFailedCases() {
+  public static function provideGermplasmNameExistsFailedCases() {
     $scenarios = [];
 
     $basic_column_headers = [
