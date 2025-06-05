@@ -97,7 +97,7 @@ class ValidatorTraitHeadersTest extends ChadoTestKernelBase {
    *     - 'required': headers array returned by the getRequiredHeaders().
    *     - 'optional: headers array returned by the getOptionalHeaders().
    */
-  public function provideHeadersForHeadersSetter() {
+  public static function provideHeadersForHeadersSetter() {
     return [
       // #0: Test the headers input array is an empty array value.
       [

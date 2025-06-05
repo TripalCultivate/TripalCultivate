@@ -5,24 +5,12 @@ namespace Drupal\trpcultivate\Service;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
-use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
-use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 
 /**
  * Generate data collection template file used in the importer.
  */
 class TripalCultivateFileTemplateService {
-
-  /**
-   * Validator Traits required by this validator.
-   *
-   * - FileTypes: Gets an array of all supported MIME types the importer is
-   *   configured to process.
-   *
-   * @todo Update when/if $extension_to_mime_mapping is moved to a more generic
-   * class (ie. not validator specific).
-   */
-  use FileTypes;
 
   /**
    * Module configuration.
@@ -72,8 +60,7 @@ class TripalCultivateFileTemplateService {
    * @return string
    *   The relative path to the generated template file.
    *
-   * @see src/TripalCultivateValidator/TripalCultivateValidatorBase.php
-   * @see src/TripalCultivateValidator/ValidatorTraits/FileTypes.php
+   * @see src/Service/ImportValidationHelper.php
    */
   public function generateFile($importer_id, $column_headers, $file_extensions) {
 
@@ -87,12 +74,9 @@ class TripalCultivateFileTemplateService {
     $file_extension = $file_extensions[0];
     // See referenced file in the doc block about the mapping variables used.
     // File MIME type.
-    // @todo Should move the following 2 methods to a more generic class
-    // instead of keeping them in FileTypes and ValidatorBase which are meant
-    // for validators.
-    $file_mime_type = self::$extension_to_mime_mapping[$file_extension];
+    $file_mime_type = ImportValidationHelper::$extension_to_mime_mapping[$file_extension];
     // File delimiter.
-    $file_delimiter = TripalCultivateValidatorBase::$mime_to_delimiter_mapping[$file_mime_type[0]];
+    $file_delimiter = ImportValidationHelper::getFileDelimiters($file_mime_type[0]);
 
     // Personalize the filename by appending display name of the current user,
     // but first sanitize it by replacing all spaces into a dash character.

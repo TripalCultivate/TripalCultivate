@@ -5,6 +5,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Core\Form\FormState;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
+use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Tests Tripal Cultivate Project Exists Validator Plugins.
@@ -49,6 +50,13 @@ class ValidatorProjectExistsTest extends ChadoTestKernelBase {
     'tripal_layout',
     'trpcultivate',
   ];
+
+  /**
+   * A Database query interface for querying Chado using Tripal DBX.
+   *
+   * @var Drupal\tripal_chado\Database\ChadoConnection
+   */
+  protected ChadoConnection $chado_connection;
 
   /**
    * {@inheritdoc}
@@ -113,7 +121,7 @@ class ValidatorProjectExistsTest extends ChadoTestKernelBase {
    *       Both name and id key corresponds to project name and project id value
    *       in the $test_project property, respectively.
    */
-  public function provideProjectToProjectExistsValidator() {
+  public static function provideProjectToProjectExistsValidator() {
     return [
       // # 0: A project that does not exist.
       [

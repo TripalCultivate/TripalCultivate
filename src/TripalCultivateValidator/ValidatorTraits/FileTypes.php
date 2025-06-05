@@ -2,25 +2,12 @@
 
 namespace Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits;
 
+use Drupal\trpcultivate\Service\ImportValidationHelper;
+
 /**
  * Getters/setters for supported mime-types, file extensions and delimiters.
  */
 trait FileTypes {
-
-  /**
-   * A mapping of file extensions and their supported mime-types.
-   *
-   * More specifically, based on the supported file extensions of the
-   * current importer, a list of valid mime-types for the extension(s) is looked
-   * up in this mapping.
-   *
-   * @var array
-   */
-  public static array $extension_to_mime_mapping = [
-    'tsv' => ['text/tab-separated-values'],
-    'csv' => ['text/csv'],
-    'txt' => ['text/plain'],
-  ];
 
   /**
    * Sets the mime-type of the input file and its supported file delimiters.
@@ -43,7 +30,7 @@ trait FileTypes {
     }
 
     // Check if mime-type is in our mapping array.
-    if (!isset(self::$mime_to_delimiter_mapping[$mime_type])) {
+    if (!isset(ImportValidationHelper::$mime_to_delimiter_mapping[$mime_type])) {
       // Since this is checking a user-provided value, the error is going to be
       // logged and then checked by a validator so that the error can be passed
       // to the user in a friendly way.
@@ -78,11 +65,11 @@ trait FileTypes {
     $invalid_ext = [];
 
     foreach ($extensions as $ext) {
-      if (!isset(self::$extension_to_mime_mapping[$ext])) {
+      if (!isset(ImportValidationHelper::$extension_to_mime_mapping[$ext])) {
         array_push($invalid_ext, $ext);
         continue;
       }
-      $mime_types = array_merge($mime_types, self::$extension_to_mime_mapping[$ext]);
+      $mime_types = array_merge($mime_types, ImportValidationHelper::$extension_to_mime_mapping[$ext]);
     }
 
     if ($invalid_ext) {

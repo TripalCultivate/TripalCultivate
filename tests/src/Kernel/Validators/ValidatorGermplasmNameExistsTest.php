@@ -41,7 +41,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *
    * @var string
    */
-  protected string $inserted_germplasm_name = 'stock1';
+  protected const INSERTED_GERMPLASM_NAME = 'stock1';
 
   /**
    * Insert values for inserting the same germplasm name twice into Chado.
@@ -132,13 +132,13 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     // Insert a single germplasm into chado.stock.
     $values = [
       'organism_id' => $this->organism_id,
-      'name' => $this->inserted_germplasm_name,
+      'name' => self::INSERTED_GERMPLASM_NAME,
       'uniquename' => 'TEST:1',
       'type_id' => 9,
     ];
     $stock_id = $this->chado_connection->insert('1:stock')
       ->fields($values)->execute();
-    $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . $this->inserted_germplasm_name . ' in Chado for testing.');
+    $this->assertIsNumeric($stock_id, 'We were not able to create the stock ' . self::INSERTED_GERMPLASM_NAME . ' in Chado for testing.');
 
     // Insert our set of duplicate germplasm names into chado.stock.
     foreach ($this->duplicate_insert_values as $key => $duplicate) {
@@ -185,7 +185,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *         - A list containing the indices of the empty cells (This can only
    *           be a subset of $indices).
    */
-  public function provideRowToGermplasmNameExists() {
+  public static function provideRowToGermplasmNameExists() {
     $scenarios = [];
 
     // #0: A simple row where column 1 is a germplasm name that doesn't exist.
@@ -213,7 +213,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     $scenarios[] = [
       [1],
       [
-        1 => $this->inserted_germplasm_name,
+        1 => self::INSERTED_GERMPLASM_NAME,
         2 => 'Column2',
         3 => 'Column3',
       ],
@@ -230,7 +230,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       [
         1 => 'Germplasm1',
         2 => 'Column2',
-        3 => $this->inserted_germplasm_name,
+        3 => self::INSERTED_GERMPLASM_NAME,
         4 => 'Column4',
         5 => 'Germplasm3',
       ],
@@ -281,7 +281,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       [1, 2, 3],
       [
         1 => $dup_germplasm_name_1,
-        2 => $this->inserted_germplasm_name,
+        2 => self::INSERTED_GERMPLASM_NAME,
         3 => $dup_germplasm_name_2,
       ],
       [
@@ -313,7 +313,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
       [
         1 => 'Column1',
         2 => $missing_germplasm,
-        3 => $this->inserted_germplasm_name,
+        3 => self::INSERTED_GERMPLASM_NAME,
         4 => 'Column4',
         5 => $dup_germplasm_name,
       ],
@@ -342,7 +342,7 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
     $scenarios[] = [
       [1, 2, 3, 4, 5],
       [
-        1 => $this->inserted_germplasm_name,
+        1 => self::INSERTED_GERMPLASM_NAME,
         2 => $dup_germplasm_name,
         3 => '',
         4 => $missing_germplasm,
