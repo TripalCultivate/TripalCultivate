@@ -4,6 +4,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorOrganismNOConnection;
+use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Tests the Organism validator trait.
@@ -41,6 +42,13 @@ class ValidatorTraitOrganismMissingConnectionTest extends ChadoTestKernelBase {
    * @var \Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorOrganismNOConnection
    */
   protected ValidatorOrganismNOConnection $instance;
+
+  /**
+   * A Database query interface for querying Chado using Tripal DBX.
+   *
+   * @var Drupal\tripal_chado\Database\ChadoConnection
+   */
+  protected ChadoConnection $chado_connection;
 
   /**
    * {@inheritdoc}

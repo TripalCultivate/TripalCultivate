@@ -5,6 +5,9 @@ services:
     class: 'Drupal\trpcultivate\Service\TripalCultivateFileTemplateService'
     arguments: ['@config.factory', '@current_user']
 
+  trpcultivate.import_validation_helper:
+    class: 'Drupal\trpcultivate\Service\ImportValidationHelper'
+
   plugin.manager.trpcultivate_validator:
     class: 'Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager'
     parent: default_plugin_manager

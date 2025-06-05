@@ -73,7 +73,7 @@ class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
    *   - The expected class name an item is tagged with. Each validation item
    *     corresponds to one class name based on the value of the status key.
    */
-  public function provideValidationResultRenderArray() {
+  public static function provideValidationResultRenderArray() {
 
     return [
       // #0: A passing validation.

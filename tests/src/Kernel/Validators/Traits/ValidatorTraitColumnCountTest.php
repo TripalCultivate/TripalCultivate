@@ -96,7 +96,7 @@ class ValidatorTraitColumnCountTest extends ChadoTestKernelBase {
    *       - 'catch_status': True to indicate an exception is expected.
    *       - 'message': The getter exception message if catch_status is true.
    */
-  public function provideExpectedColumnsForSetter() {
+  public static function provideExpectedColumnsForSetter() {
     return [
       // #0: A zero number of expected column.
       [
