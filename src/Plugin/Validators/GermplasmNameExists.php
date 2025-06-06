@@ -39,6 +39,69 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
   protected ChadoConnection $chado_connection;
 
   /**
+   * A mapping of all of the tokens supported by this validator.
+   *
+   * @var array
+   *
+   * @todo Move this generic documentation to ValidatorBase in TripalCultivate.
+   * This mapping starts with all of the potential cases for this validator,
+   * followed by additional tokens which are subsitutable within the message(s)
+   * provided to the user when validation fails.
+   *
+   * For each case, the array keys are the substitutable tokens for the entire
+   * case message, and MUST contain the prefix of 'case-', and contain the
+   * following key-value pairs:
+   * - 'token': the same token (same as the parent key- this can helpful for
+   *   code readability). Recall that it must contain the prefex 'case-'.
+   * - 'dev-case': The short, developer-focussed string describing the case.
+   * - 'default-msg': An informative message that gets displayed to the user
+   *   when validation fails for this particular case. This can contain any
+   *   number of smaller, non case-specific tokens contained in square brackets.
+   * NOTE: The token 'case-valid' is reserved for the valid case for this
+   * validator, and does not have a corresponding default message.
+   *
+   * For all remaining tokens, the array key is the substitutable token, with
+   * the following key-pairs:
+   * - 'token': the substitutable text in a message. This text would become
+   *   flanked by brackets within a message. For eg. [token]
+   * - 'default-msg': A string that would substitute the associated token
+   *   within a case message.
+   *
+   *  The following tokens are implemented for this mapping, with the following
+   *  descriptions for their 'default-msg' values:
+   *  - 'contact-admin': the phrase to use when the user needs a privileged
+   *    administrator to fix the problem.
+   *  - 'case-missing-germplasm': the message when a germplasm name is missing
+   *    in the database.
+   *  - 'case-duplicate-germplasm': the message when a germplasm name is
+   *    duplicated in the database.
+   */
+  protected static array $mapping = [
+    'case-missing-germplasm' => [
+      'token' => 'case-missing-germplasm',
+      'dev-case' => 'Missing germplasm name(s) in the database',
+      'default-msg' => 'The following germplasm names could not be found in the database.',
+    ],
+    'case-duplicate-germplasm' => [
+      'token' => 'case-duplicate-germplasm',
+      'dev-case' => 'Duplicate(s) found in the database for germplasm name(s)',
+      'default-msg' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or [contact-admin] for help with investigating.',
+    ],
+    'case-missing-and-duplicate-germplasm' => [
+      'token' => 'case-missing-and-duplicate-germplasm',
+      'dev-case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+    ],
+    'case-valid' => [
+      'token' => 'case-valid',
+      'dev-case' => 'Germplasm name(s) exist(s) in the database',
+    ],
+    'contact-admin' => [
+      'token' => 'contact-admin',
+      'default-msg' => 'contact your administrator',
+    ],
+  ];
+
+  /**
    * Constructs an instance of the Germplasm Name Exists validator.
    *
    * @param array $configuration
@@ -229,15 +292,14 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   The following tokens can be specfied as keys, with value as the
    *   replacement value for the token. These apply to all failure cases.
    *   @todo update these tokens for GermplasmNameExists
-   *   - 'project': the word to use when referring to the project.
    *   - 'contact-admin': the phrase to use when the user needs a privileged
    *     administrator to fix the problem.
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
-   *   - 'case-message-1': the message when a project does not exist.
-   *   - 'case-message-2': the message when a project has no genus set to it.
-   *   - 'case-message-3': the message when the genus selected by the user is
-   *     not configured to the selected project.
+   *   - 'case-missing-germplasm': the message when a germplasm name is missing
+   *     in the database.
+   *   - 'case-duplicate-germplasm': the message when a germplasm name is
+   *     duplicated in the database.
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
@@ -268,6 +330,18 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   - If the case string returned by the validator is not recognized.
    */
   public static function process(array $validation_result, array $tokens = [], array $metadata) {
+
+    // We use the Tripal Token Parser service to ensure that more complicated
+    // tokens are supported.
+    // NOTE: Dependency injection is NOT used since this is a static method.
+    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
+    // Grab the default messages for all of our tokens (ones with default-msg).
+    $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
+    // Combine our provided and our default token arrays. Because array_merge
+    // will overwrite values in the first array with values from the second
+    // array for the same keys, we provide our default tokens first.
+    $combined_tokens = array_merge($default_tokens, $tokens);
+
     // For this validator there are can be up to 2 tables:
     // - 'table'->'missing_cells': Germplasm name not found in the database.
     // - 'table'->'duplicate_cells': Germplasm name has multiple records.
@@ -278,11 +352,14 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     foreach ($validation_result as $line_no => $validation_status) {
       // Check the format of this line's validation status.
       ImportValidationHelper::checkValidationStatusArray($validation_status, 'GermplasmNameExists', $line_no);
-      // Keeps track of which table this one line's validation result gets added
-      // to based on the case it triggered.
+
+      // If any cells were found to be empty, this case takes presendence over
+      // any other cases that may have been triggered on this line.
       if ($validation_status['case'] == 'Unable to lookup germplasm with empty values') {
         // @todo Create a helper method.
       }
+      // Keeps track of which table this one line's validation result gets added
+      // to based on the case it triggered.
       $table_case = [];
       if ($validation_status['case'] == 'Missing germplasm name(s) in the database') {
         $table_case = ['missing_cells'];
@@ -333,10 +410,10 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // Check which tables were created, and assign the correct message.
     // Note that both tables can exist at the same time, hence not an 'elseif'.
     if (array_key_exists('missing_cells', $table)) {
-      $table['missing_cells']['message'] = 'The following germplasm names could not be found in the database.';
+      $table['missing_cells']['message'] = $combined_tokens['case-missing-germplasm'];
     }
     if (array_key_exists('duplicate_cells', $table)) {
-      $table['duplicate_cells']['message'] = 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or [contact-admin] for help with investigating.';
+      $table['duplicate_cells']['message'] = $combined_tokens['case-duplicate-germplasm'];
     }
 
     // If our table(s) have more than 2 columns with failed values, then iterate
@@ -363,7 +440,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       array_push($tables, [
         [
           '#prefix' => '<div class="case-message case-' . $table_key . '">',
-          '#markup' => $table_case['message'],
+          // Replace any tokens that are in our table message.
+          '#markup' => $service_TripalTokensParser->replaceTokens($table_case['message'], $combined_tokens),
           '#suffix' => '</div>',
         ],
         [

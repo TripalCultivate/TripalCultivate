@@ -156,6 +156,34 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
     ];
 
     // #2: A germplasm name cell is duplicated in the database
+    $scenarios[] = [
+      [
+        2 => [
+          'case' => 'Duplicate(s) found in the database for germplasm name(s)',
+          'valid' => FALSE,
+          'failedItems' => [
+            'duplicate_cells' => [
+              1 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      [],
+      $basic_column_headers,
+      [
+        'duplicate_cells' => [
+          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or contact your administrator for help with investigating.',
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            2 => [
+              'Germplasm Name' => 'Duplicate Germplasm',
+            ],
+          ],
+        ],
+      ],
+    ];
     // #3: In the same row, 1 cell has missing germplasm, and 1 has a duplicate
     return $scenarios;
 
