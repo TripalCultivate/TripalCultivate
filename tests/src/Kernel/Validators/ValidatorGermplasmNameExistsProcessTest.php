@@ -184,7 +184,57 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
         ],
       ],
     ];
-    // #3: In the same row, 1 cell has missing germplasm, and 1 has a duplicate
+
+    $two_germplasm_column_headers = [
+      'column_headers' => [
+        2 => 'Maternal Parent',
+        4 => 'Paternal Parent',
+      ],
+    ];
+
+    // #3: Within one row, 1 cell has missing germplasm, and 1 has a duplicate
+    $scenarios[] = [
+      [
+        5 => [
+          'case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'missing_cells' => [
+              2 => [
+                'germplasm_name' => 'Non-existant Germplasm',
+              ],
+            ],
+            'duplicate_cells' => [
+              4 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      [],
+      $two_germplasm_column_headers,
+      [
+        'missing_cells' => [
+          'expected_message' => 'The following germplasm names could not be found in the database.',
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            5 => [
+              'Maternal Parent' => 'Non-existant Germplasm',
+            ],
+          ],
+        ],
+        'duplicate_cells' => [
+          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or contact your administrator for help with investigating.',
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            5 => [
+              'Paternal Parent' => 'Duplicate Germplasm',
+            ],
+          ],
+        ],
+      ],
+    ];
     return $scenarios;
 
   }
@@ -291,13 +341,13 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           $this->assertEquals(
             $column_header,
             $select_column_headers[$current_column_index],
-            "We expected the column header $column_header to be present in the rendered table's header for GermplasmNameExists failures at index $current_column_index but it was not."
+            "We expected the column header \"$column_header\" to be present in the rendered table's header for GermplasmNameExists failures at index $current_column_index but it was not."
           );
           // Check that the invalid value in the table matches what we expect.
           $this->assertEquals(
             $invalid_value,
             (string) $select_row_cells[$current_column_index],
-            "We expected an invalid value to be listed for $column_header at line #$expected_line_no in the rendered table for GermplasmNameExists failures."
+            "We expected an invalid value to be listed for \"$column_header\" at line #$expected_line_no in the rendered table for GermplasmNameExists failures."
           );
           $current_column_index++;
         }
