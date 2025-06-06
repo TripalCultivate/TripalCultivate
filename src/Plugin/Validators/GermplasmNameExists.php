@@ -4,6 +4,7 @@ namespace Drupal\trpcultivate\Plugin\Validators;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\Organism;
@@ -275,8 +276,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // Loop through each row in the $failures array and piece apart the
     // different cases into different tables.
     foreach ($validation_result as $line_no => $validation_status) {
-      // @todo Check the format of the validation_result parameter.
-      // $this->checkValidationStatusArray($validation_result, 'GermplasmNameExists', $line_no);
+      // Check the format of this line's validation status.
+      ImportValidationHelper::checkValidationStatusArray($validation_status, 'GermplasmNameExists', $line_no);
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.
       if ($validation_status['case'] == 'Unable to lookup germplasm with empty values') {
