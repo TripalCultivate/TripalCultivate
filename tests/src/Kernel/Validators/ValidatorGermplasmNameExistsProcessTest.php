@@ -277,14 +277,14 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideGermplasmNameExistsFailedCases
    */
-  public function testProcess(array $validation_result, array $tokens, array $metadata, array $expectations) {
+  public function testProcessListWithDescribedTable(array $validation_result, array $tokens, array $metadata, array $expectations) {
 
     // Create a plugin instance for this validator.
     $validator_id = 'germplasm_name_exists';
     $instance = $this->plugin_manager->createInstance($validator_id);
 
     // Call the process method on our validation result.
-    $render_array = $instance->process($validation_result, $tokens, $metadata);
+    $render_array = $instance->processListWithDescribedTable($validation_result, $tokens, $metadata);
 
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);

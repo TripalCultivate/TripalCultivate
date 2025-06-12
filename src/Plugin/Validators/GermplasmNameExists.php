@@ -329,7 +329,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function process(array $validation_result, array $tokens = [], array $metadata) {
+  public static function processListWithDescribedTable(array $validation_result, array $tokens = [], array $metadata) {
 
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
@@ -419,19 +419,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // If our table(s) have more than 2 columns with failed values, then iterate
     // through and pad each table with empty strings where necessary.
     foreach ($table as $table_case) {
-      // Sort the table header.
-      ksort($table_case['header']);
-      if (count($table_case['header']) > 2) {
-        foreach (array_keys($table_case['rows']) as $line_no) {
-          foreach (array_keys($table_case['header']) as $index) {
-            if (!array_key_exists($index, $table_case['rows'][$line_no])) {
-              $table_case['rows'][$line_no][$index] = '';
-            }
-          }
-          // Finally, sort the row by keys.
-          ksort($table_case['rows'][$line_no]);
-        }
-      }
+      $table_case = self::fillTable($table_case);
     }
 
     // Finally, loop through our tables and build our render array.
@@ -468,6 +456,32 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     ];
 
     return $render_array;
+  }
+
+  /**
+   * Take an array with table contents and fills empty cells with empty strings.
+   *
+   * @param array $table
+   *
+   * @return array
+   *   Returns the same array as @param table, but with added keys and values
+   *   (white space) to fully represent all cells in the table.
+   */
+  public static function fillTable($table) {
+    // Sort the table header.
+    ksort($table['header']);
+    if (count($table['header']) > 2) {
+      foreach (array_keys($table['rows']) as $line_no) {
+        foreach (array_keys($table['header']) as $index) {
+          if (!array_key_exists($index, $table['rows'][$line_no])) {
+            $table['rows'][$line_no][$index] = '';
+          }
+        }
+        // Finally, sort the row by keys.
+        ksort($table['rows'][$line_no]);
+      }
+    }
+    return $table;
   }
 
 }
