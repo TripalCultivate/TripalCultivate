@@ -132,19 +132,9 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *   headers property defined by an importer instance.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
-   *   @see ProjectGenusMatch::$mapping
+   *   @see EmptyCell::$mapping
    *   The following tokens can be specfied as keys, with value as the
    *   replacement value for the token. These apply to all failure cases.
-   *   - 'project': the word to use when referring to the project.
-   *   - 'contact-admin': the phrase to use when the user needs a privileged
-   *     administrator to fix the problem.
-   *   The following token keys will substitute the entire existing case message
-   *   to the user with the value of that token.
-   *   - 'case-no-project': the message when a project does not exist.
-   *   - 'case-no-paired-genus': the message when a project has no genus set
-   *     to it.
-   *   - 'case-project-genus-mismatch': the message when the genus selected
-   *     by the user is not configured to the selected project.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
