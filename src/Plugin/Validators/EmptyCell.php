@@ -2,6 +2,7 @@
 
 namespace Drupal\trpcultivate\Plugin\Validators;
 
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
 
@@ -23,6 +24,31 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *   $row_values to validate.
    */
   use ColumnIndices;
+
+  /**
+   * A mapping of all of the tokens supported by this validator.
+   *
+   * @var array
+   *   An associative array mapping tokens to their details where each element
+   *   may contain a default message but must contain the dev-case and token.
+   *   The following tokens are implemented for this mapping, with the following
+   *   descriptions for their 'default-msg' values:
+   *   - 'case-empty-value': the message when a specific row-column does not
+   *     contain a value.
+   *
+   * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
+   */
+  protected static array $mapping = [
+    'case-empty-value' => [
+      'token' => 'case-empty-value',
+      'dev-case' => 'Empty value found in required column(s)',
+      'default-msg' => 'The following line number and column header combinations were empty, but a value is required.',
+    ],
+    'case-valid' => [
+      'token' => 'case-valid',
+      'dev-case' => 'No empty values found in required column(s)',
+    ],
+  ];
 
   /**
    * Validate the values within the cells of this row.
@@ -69,7 +95,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
     // Report if empty values were found that should not be empty.
     if ($empty) {
       $validator_status = [
-        'case' => 'Empty value found in required column(s)',
+        'case' => self::$mapping['case-empty-value']['dev-case'],
         'valid' => FALSE,
         'failedItems' => [
           'empty_indices' => $failed_indices,
@@ -78,12 +104,137 @@ class EmptyCell extends TripalCultivateValidatorBase {
     }
     else {
       $validator_status = [
-        'case' => 'No empty values found in required column(s)',
+        'case' => self::$mapping['case-valid']['dev-case'],
         'valid' => TRUE,
         'failedItems' => [],
       ];
     }
+
     return $validator_status;
+  }
+
+  /**
+   * Processes failed validation from EmptyCell into a render array.
+   *
+   * @param array $failures
+   *   An associative array that stores the validation failures by the
+   *   EmptyCell validator. It is keyed by the line number of the input
+   *   file where validation failed, and the value is an associative array
+   *   returned by the validator. Here is the overall structure of $failures:
+   *   - [LINE NUMBER]:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed:
+   *       - 'empty_indices': A list of column indices in the line which were
+   *         checked and found to be empty.
+   * @param array $headers
+   *   Header array that list the headers or columns in a data file. This is the
+   *   headers property defined by an importer instance.
+   * @param array $tokens
+   *   [OPTIONAL] An array of values to use for token replacement.
+   *   @see ProjectGenusMatch::$mapping
+   *   The following tokens can be specfied as keys, with value as the
+   *   replacement value for the token. These apply to all failure cases.
+   *   - 'project': the word to use when referring to the project.
+   *   - 'contact-admin': the phrase to use when the user needs a privileged
+   *     administrator to fix the problem.
+   *   The following token keys will substitute the entire existing case message
+   *   to the user with the value of that token.
+   *   - 'case-no-project': the message when a project does not exist.
+   *   - 'case-no-paired-genus': the message when a project has no genus set
+   *     to it.
+   *   - 'case-project-genus-mismatch': the message when the genus selected
+   *     by the user is not configured to the selected project.
+   *
+   * @return array
+   *   A render array of type unordered list which is used to display feedback
+   *   to the user about the case(s) that failed and the failed items from the
+   *   input file. This unordered list will include a table that lists the row
+   *   and column combinations with empty cells. It has the following headers:
+   *   - 'Line Number'
+   *   - 'Column(s) with empty value'
+   *
+   * @throws \Exception
+   *   - If the validation_result parameter was not formatted properly.
+   *   - If the case string returned by the validator implied validation passed.
+   *   - If the case string returned by the validator is not recognized.
+   */
+  public static function processListWithDescribedTable(array $failures, array $headers, array $tokens = []) {
+
+    // Define our table header.
+    $table_header = ['Line Number', 'Column(s) with empty value'];
+    $table['rows'] = [];
+    $table['message'] = self::$mapping['case-empty-value']['default-msg'];
+
+    $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
+    // Combine our provided and our default token arrays. Because array_merge
+    // will overwrite values in the first array with values from the second
+    // array for the same keys, we provide our default tokens first.
+    $combined_tokens = array_merge($default_tokens, $tokens);
+
+    foreach ($failures as $line_no => $validation_result) {
+      // Check the format of the validation_result parameter.
+      ImportValidationHelper::checkValidationStatusArray($validation_result, 'EmptyCell', $line_no);
+
+      if ($validation_result['case'] == self::$mapping['case-empty-value']['dev-case']) {
+        // Convert indices in failedItems to column headers.
+        $failed_indices = $validation_result['failedItems']['empty_indices'];
+        // For each index with an empty value, grab the column name from our
+        // $headers property and add to an array of header names.
+        $empty_headers = [];
+        foreach ($failed_indices as $index) {
+          array_push($empty_headers, $headers[$index]['name']);
+        }
+        // Implode the empty headers array into a string and then add it as a
+        // row to our table.
+        $columns_string = implode(", ", $empty_headers);
+        array_push($table['rows'], [
+          $line_no,
+          $columns_string,
+        ]);
+      }
+      elseif ($validation_result['case'] == self::$mapping['case-valid']['dev-case']) {
+        throw new \Exception("The case string returned by the EmptyCell validator at line #$line_no implies validation passed, but valid is set to FALSE.");
+      }
+      else {
+        throw new \Exception("The case string returned by the EmptyCell validator at line #$line_no is not recognized as a potential case.");
+      }
+    }
+
+    // Now replace any tokens that are in our message or items.
+    // We use the Tripal Token Parser service to ensure that more complicated
+    // tokens are supported.
+    // NOTE: Dependency injection is NOT used since this is a static method.
+    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
+    $replaced_message = $service_TripalTokensParser->replaceTokens($table['message'], $combined_tokens);
+
+    // Build the render array for our table.
+    $render_array = [
+      '#theme' => 'item_list',
+      '#type' => 'ul',
+      '#attributes' => [
+        'class' => [
+          'tcp-empty-cell-failures',
+        ],
+      ],
+      '#items' => [
+        [
+          [
+            '#prefix' => '<div class="case-message">',
+            '#markup' => $replaced_message,
+            '#suffix' => '</div>',
+          ],
+          [
+            '#type' => 'table',
+            '#header' => $table_header,
+            '#attributes' => [],
+            '#rows' => $table['rows'],
+          ],
+        ],
+      ],
+    ];
+
+    return $render_array;
   }
 
 }
