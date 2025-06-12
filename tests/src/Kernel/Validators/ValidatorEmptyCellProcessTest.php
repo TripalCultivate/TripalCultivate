@@ -247,7 +247,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideEmptyCellFailedCases
    */
-  public function testProcessEmptyCellFailures(array $failures, array $expectations) {
+  public function testProcessListWithDescribedTable(array $failures, array $expectations) {
 
     $render_array = $this->validator_instance::processListWithDescribedTable($failures, $this->headers, []);
     $rendered_markup = $this->renderer->renderRoot($render_array);
