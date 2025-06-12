@@ -418,7 +418,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessFailuresExceptions(string $process_method, array $passed_case, array $unrecognized_case) {
+  public function testProcessListWithDescribedTableExceptions(string $process_method, array $passed_case, array $unrecognized_case) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
