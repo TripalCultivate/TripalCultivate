@@ -149,7 +149,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithDescribedTable(array $failures, array $headers, array $tokens = []) {
+  public static function processListWithDescribedTable(array $failures, array $tokens = [], array $metadata) {
 
     // Define our table header.
     $table_header = ['Line Number', 'Column(s) with empty value'];
