@@ -127,14 +127,23 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *     - 'failedItems': an array of items that failed:
    *       - 'empty_indices': A list of column indices in the line which were
    *         checked and found to be empty.
-   * @param array $headers
-   *   Header array that list the headers or columns in a data file. This is the
-   *   headers property defined by an importer instance.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see EmptyCell::$mapping
-   *   The following tokens can be specfied as keys, with value as the
-   *   replacement value for the token. These apply to all failure cases.
+   *   The following token keys will substitute the entire existing case message
+   *   to the user with the value of that token.
+   *   - 'case-empty-value': the message when a specific row-column does not
+   *     contain a value.
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *   - 'column_headers': This contains an array of headers defined in the
+   *     importer. The index in this array MUST match the position
+   *     (starting with 0) of the column in the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Header 2', // Header of column #3
+   *           '4' => 'Header 4', // Header of column #5
+   *         ].
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
@@ -149,7 +158,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithDescribedTable(array $failures, array $tokens = [], array $metadata) {
+  public static function processListWithDescribedTable(array $failures, array $tokens = [], array $metadata = []) {
 
     // Define our table header.
     $table_header = ['Line Number', 'Column(s) with empty value'];
@@ -173,7 +182,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
         // $headers property and add to an array of header names.
         $empty_headers = [];
         foreach ($failed_indices as $index) {
-          array_push($empty_headers, $headers[$index]['name']);
+          array_push($empty_headers, $metadata['column_headers'][$index]);
         }
         // Implode the empty headers array into a string and then add it as a
         // row to our table.

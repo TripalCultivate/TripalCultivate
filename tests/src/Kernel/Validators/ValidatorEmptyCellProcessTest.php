@@ -48,58 +48,11 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   protected $renderer;
 
   /**
-   * An instance of the data file validator.
+   * An instance of the validator.
    *
-   * @var object
+   * @var Drupal\trpcultivate\Plugin\Validators\EmptyCell
    */
   protected $validator_instance;
-
-  /**
-   * Headers required by this importer.
-   *
-   * @var array
-   *
-   * The following keys are required:
-   * - 'name': The column header name as it should appear in the input file.
-   * - 'description': A user-friendly description of the header that will be
-   *   displayed to the user through the form.
-   * - 'type': one of "required" or "optional" to indicate whether the column
-   *   needs to have values present or not.
-   *
-   * NOTE: Order MUST reflect the desired order of headers in the input file.
-   */
-  private $headers = [
-    [
-      'name' => 'Trait Name',
-      'description' => 'The name of the trait, as you would like it to appear to the user (e.g. Days to Flower)',
-      'type' => 'required',
-    ],
-    [
-      'name' => 'Trait Description',
-      'description' => 'A full description of the trait. This is recommended to be at least one paragraph.',
-      'type' => 'required',
-    ],
-    [
-      'name' => 'Method Short Name',
-      'description' => 'A full, unique title for the method (e.g. Days till 10% of plants/plot have flowers)',
-      'type' => 'required',
-    ],
-    [
-      'name' => 'Collection Method',
-      'description' => 'A full description of how the trait was collected. This is also recommended to be at least one paragraph.',
-      'type' => 'required',
-    ],
-    [
-      'name' => 'Unit',
-      'description' => 'The full name of the unit used (e.g. days, centimeters)',
-      'type' => 'required',
-    ],
-    [
-      'name' => 'Type',
-      'description' => 'One of "Qualitative" or "Quantitative".',
-      'type' => 'required',
-    ],
-  ];
 
   /**
    * {@inheritdoc}
@@ -111,7 +64,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
     \Drupal::state()->set('is_a_test_environment', TRUE);
 
     $validator_id = 'empty_cell';
-    $this->validator_instance = \Drupal::service('plugin.manager.trpcultivate_validator')
+    $this->validator_instance = $this->container
+      ->get('plugin.manager.trpcultivate_validator')
       ->createInstance($validator_id);
 
     $this->renderer = $this->container->get('renderer');
@@ -130,6 +84,18 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *       - 'failedItems': array of items that failed with the following keys:
    *         - 'empty_indices': A list of column indices in the line which were
    *           checked and found to be empty.
+   *   - An array of tokens to use for altering the messages that get displayed
+   *     to the user. The key is the token, (ex. 'project'), and the value is
+   *     the new value to be shown for that token.
+   *   - An array of additional metadata (or contextual information) needed by
+   *     the process method. Here, the following keys are expected:
+   *     - 'column_headers': This contains an array of headers. The index in
+   *       this array MUST match the position (starting with 0) of the column in
+   *       the input file.
+   *       Eg: 'column_headers' => [
+   *             '2' => 'Header 1', // Header of column #3
+   *             '4' => 'Header 2', // Header of column #5
+   *           ].
    *   - An array of expectations that we want to find in the resulting rendered
    *     output which has the following keys:
    *     - 'expected_message': The message expected in the return value of the
@@ -142,6 +108,17 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   public static function provideEmptyCellFailedCases() {
 
     $scenarios = [];
+    $tokens = [];
+    $metadata = [
+      'column_headers' => [
+        'Trait Name',
+        'Trait Description',
+        'Method Short Name',
+        'Collection Method',
+        'Unit',
+        'Type',
+      ],
+    ];
 
     // #0: One empty required column on line #5
     $scenarios[] = [
@@ -154,6 +131,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $tokens,
+      $metadata,
       [
         'expected_message' => 'The following line number and column header combinations were empty, but a value is required.',
         5 => [
@@ -180,6 +159,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $tokens,
+      $metadata,
       [
         'expected_message' => 'The following line number and column header combinations were empty, but a value is required.',
         3 => [
@@ -209,6 +190,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $tokens,
+      $metadata,
       [
         'expected_message' => 'The following line number and column header combinations were empty, but a value is required.',
         2 => [
@@ -235,6 +218,20 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *     - 'failedItems': an array of items that failed with the following keys.
    *       - 'empty_indices': A list of column indices in the line which were
    *         checked and found to be empty.
+   * @param array $tokens
+   *   An array of tokens to use for altering the messages that get displayed
+   *     to the user. The key is the token, (ex. 'project'), and the value is
+   *     the new value to be shown for that token.
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *     - 'column_headers': This contains an array of headers. The index in
+   *       this array MUST match the position (starting with 0) of the column in
+   *       the input file.
+   *       Eg: 'column_headers' => [
+   *             '2' => 'Header 1', // Header of column #3
+   *             '4' => 'Header 2', // Header of column #5
+   *           ].
    * @param array $expectations
    *   An array of expectations that we want to find in the resulting rendered
    *   output which has the following keys:
@@ -247,9 +244,9 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideEmptyCellFailedCases
    */
-  public function testProcessListWithDescribedTable(array $failures, array $expectations) {
+  public function testProcessListWithDescribedTable(array $failures, array $tokens, array $metadata, array $expectations) {
 
-    $render_array = $this->validator_instance::processListWithDescribedTable($failures, $this->headers, []);
+    $render_array = $this->validator_instance::processListWithDescribedTable($failures, $tokens, $metadata);
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
@@ -343,34 +340,27 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
 
     // #0: EmptyCell passed + unrecognizable validation case message.
     $scenarios[] = [
-      'processListWithDescribedTable',
       [
         'process_method_params' => [
-          [
-            6 => [
-              'case' => 'No empty values found in required column(s)',
-              'valid' => FALSE,
-              'failedItems' => [
-                'empty_indices' => [2, 3, 4],
-              ],
+          6 => [
+            'case' => 'No empty values found in required column(s)',
+            'valid' => FALSE,
+            'failedItems' => [
+              'empty_indices' => [2, 3, 4],
             ],
           ],
-          [],
         ],
         'expected_message' => 'The case string returned by the EmptyCell validator at line #6 implies validation passed, but valid is set to FALSE.',
       ],
       [
         'process_method_params' => [
-          [
-            7 => [
-              'case' => 'unrecognizable case',
-              'valid' => FALSE,
-              'failedItems' => [
-                'empty_indices' => [2, 3, 4],
-              ],
+          7 => [
+            'case' => 'unrecognizable case',
+            'valid' => FALSE,
+            'failedItems' => [
+              'empty_indices' => [2, 3, 4],
             ],
           ],
-          [],
         ],
         'expected_message' => 'The case string returned by the EmptyCell validator at line #7 is not recognized as a potential case.',
       ],
@@ -382,8 +372,6 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   /**
    * Tests for exceptions thrown for passed and unrecognizable case strings.
    *
-   * @param string $process_method
-   *   The name of the process failures method being called in this test.
    * @param array $passed_case
    *   An array with the following keys:
    *   - 'process_method_params':
@@ -418,14 +406,13 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessListWithDescribedTableExceptions(string $process_method, array $passed_case, array $unrecognized_case) {
+  public function testProcessListWithDescribedTableExceptions(array $passed_case, array $unrecognized_case) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
-
     try {
-      call_user_func_array([$this->validator_instance, $process_method], $passed_case['process_method_params']);
+      $this->validator_instance->processListWithDescribedTable($passed_case['process_method_params']);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -433,19 +420,19 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
     }
     $this->assertTrue(
       $exception_caught,
-      "We expected an exception to be caught for providing a passed validation case string to $process_method, but one wasn't thrown.",
+      "We expected an exception to be caught for providing a passed validation case string to processListWithDescribedTable, but one wasn't thrown.",
     );
     $this->assertEquals(
       $passed_case['expected_message'],
       $exception_message,
-      "We expected the exception message to indicate that a passed validation string was provided to $process_method, but it does not match what was expected.",
+      "We expected the exception message to indicate that a passed validation string was provided to processListWithDescribedTable, but it does not match what was expected.",
     );
 
     // Test with an unrecognizable validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      call_user_func_array([$this->validator_instance, $process_method], $unrecognized_case['process_method_params']);
+      $this->validator_instance->processListWithDescribedTable($unrecognized_case['process_method_params']);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -453,12 +440,12 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
     }
     $this->assertTrue(
       $exception_caught,
-      "We expected an exception to be caught for providing an unrecognized validation case string to $process_method, but one wasn't thrown.",
+      "We expected an exception to be caught for providing an unrecognized validation case string to processListWithDescribedTable, but one wasn't thrown.",
     );
     $this->assertEquals(
       $unrecognized_case['expected_message'],
       $exception_message,
-      "We expected the exception message to indicate that an unrecognized validation string was provided to $process_method, but it does not match what was expected.",
+      "We expected the exception message to indicate that an unrecognized validation string was provided to processListWithDescribedTable, but it does not match what was expected.",
     );
   }
 
