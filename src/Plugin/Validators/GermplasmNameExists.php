@@ -286,6 +286,16 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *     - 'failedItems': an array of items that failed, where the key => value
    *       pairs map to the index => cell value(s) that failed validation.
    *       @see GermplasmNameExists::validateRow()
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *   - 'column_headers': This contains an array of headers for columns that
+   *     are expected to contain germplasm names. The index in this array MUST
+   *     match the position (starting with 0) of the column in the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Maternal Germplasm Name', // Header of column #3
+   *           '4' => 'Paternal Germplasm Name', // Header of column #5
+   *         ];
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see GermplasmNameExists::$default_tokens
@@ -300,16 +310,6 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *     in the database.
    *   - 'case-duplicate-germplasm': the message when a germplasm name is
    *     duplicated in the database.
-   * @param array $metadata
-   *   An array of additional metadata (or contextual information) needed by the
-   *   process method. Here, the following keys are expected:
-   *   - 'column_headers': This contains an array of headers for columns that
-   *     are expected to contain germplasm names. The index in this array MUST
-   *     match the position (starting with 0) of the column in the input file.
-   *     Eg: 'column_headers' => [
-   *           '2' => 'Maternal Germplasm Name', // Header of column #3
-   *           '4' => 'Paternal Germplasm Name', // Header of column #5
-   *         ].
    *
    * @return array
    *   A render array of type "item" used to display feedback to the user about
@@ -329,7 +329,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithDescribedTable(array $validation_result, array $tokens = [], array $metadata) {
+  public static function processListWithDescribedTable(array $validation_result, array $metadata, array $tokens = []) {
 
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
@@ -419,7 +419,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // If our table(s) have more than 2 columns with failed values, then iterate
     // through and pad each table with empty strings where necessary.
     foreach ($table as $table_case) {
-      $table_case = self::fillTable($table_case);
+      $table_case = self::fillTableGaps($table_case);
     }
 
     // Finally, loop through our tables and build our render array.
@@ -467,7 +467,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   Returns the same array as @param table, but with added keys and values
    *   (white space) to fully represent all cells in the table.
    */
-  public static function fillTable($table) {
+  public static function fillTableGaps($table) {
     // Sort the table header.
     ksort($table['header']);
     if (count($table['header']) > 2) {
