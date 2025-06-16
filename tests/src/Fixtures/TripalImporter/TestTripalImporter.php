@@ -13,7 +13,28 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * This is a test Tripal Importer for testing APIs.
+ * This importer is to help you manually test generic validators.
+ *
+ * It is purposely simple and generic. To use it:
+ *
+ * 1. Copy this class to the src/Plugin/TripalImporter directory in your docker.
+ * This may need to be created. DO NOT COMMIT modifications to this file.
+ *
+ * 2. Clear the cache and confirm this importer now shows up in the site under
+ * Tripal > Data Loaders as "Tripal Cultivate: Test Importer".
+ *
+ * 3. Add configuration for your validator below the block titled
+ * "CONFIGURE VALIDATOR HERE".
+ *
+ * 4. Call the validate method for your validator below the appropriate
+ * "CALL VALIDATE" block depending on the input type.
+ *
+ * 5. Call the process message method for your validator below the
+ * "CALL PROCESS MESSAGE" block.
+ *
+ * 6. Save these changes and clear the cache to see them reflected in
+ * the webpage. Make sure to attach this edited file to your PR within your
+ * testing instructions.
  *
  * NOTE: do not edit annotations.
  *
