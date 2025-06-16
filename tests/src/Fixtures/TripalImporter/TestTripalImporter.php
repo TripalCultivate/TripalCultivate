@@ -297,7 +297,13 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
             $failures[$validator_name] = [];
           }
 
+          // CALL VALIDATE (ROW LEVEL VALIDATORS)
+          // ..................................................
           // CALL THE VALIDATOR VALIDATE METHOD WITH THE REQUIRED PARAMETERS.
+          // NOTE: if you are testing a raw row validator then you can call
+          // it with `$line` directly. If not, the call the split row helper
+          // first by uncommenting the following line.
+          // $row = ImportValidationHelper::splitRowIntoColumns($line, $file_mime_type);
           $result = 'CALL VALIDATOR VALIDATE METHOD';
           // For example calling the validate method of valid_delimited_file:
           // $result = $validator->validateRawRow($line);.
