@@ -224,6 +224,8 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
   public function processValidationMessages($failures) {
 
     $messages = [];
+    // CALL PROCESS MESSAGE HERE.
+    // ..................................................
     // SEE src/Plugins/Validators for VALIDATOR IDs.
     //
     // PROCESS MESSAGE TEMPLATE:
