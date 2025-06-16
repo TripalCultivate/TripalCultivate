@@ -193,6 +193,8 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
 
     $validators = [];
 
+    // CONFIGURE VALIDATOR HERE.
+    // ..................................................
     // SEE src/Plugins/Validators for VALIDATOR IDs.
     // SEE TripalCultivateValidator/ValidatorTraits for setters and getters.
     //
