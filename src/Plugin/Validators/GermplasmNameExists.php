@@ -71,12 +71,19 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *  descriptions for their 'default-msg' values:
    *  - 'contact-admin': the phrase to use when the user needs a privileged
    *    administrator to fix the problem.
+   *  - 'case-empty-germplasm': the message when a cell that should contain a
+   *    germplasm name is empty.
    *  - 'case-missing-germplasm': the message when a germplasm name is missing
    *    in the database.
    *  - 'case-duplicate-germplasm': the message when a germplasm name is
    *    duplicated in the database.
    */
   protected static array $mapping = [
+    'case-empty-germplasm' => [
+      'token' => 'case-empty-germplasm',
+      'dev-case' => 'Unable to lookup germplasm with empty values',
+      'default-msg' => 'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: [column-headers]',
+    ],
     'case-missing-germplasm' => [
       'token' => 'case-missing-germplasm',
       'dev-case' => 'Missing germplasm name(s) in the database',
@@ -295,17 +302,18 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *     Eg: 'column_headers' => [
    *           '2' => 'Maternal Germplasm Name', // Header of column #3
    *           '4' => 'Paternal Germplasm Name', // Header of column #5
-   *         ];
+   *         ];.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see GermplasmNameExists::$default_tokens
    *   The following tokens can be specfied as keys, with value as the
    *   replacement value for the token. These apply to all failure cases.
-   *   @todo update these tokens for GermplasmNameExists
    *   - 'contact-admin': the phrase to use when the user needs a privileged
    *     administrator to fix the problem.
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
+   *   - 'case-empty-germplasm': the message when a cell that should contain a
+   *    germplasm name is empty.
    *   - 'case-missing-germplasm': the message when a germplasm name is missing
    *     in the database.
    *   - 'case-duplicate-germplasm': the message when a germplasm name is
@@ -354,9 +362,12 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       ImportValidationHelper::checkValidationStatusArray($validation_status, 'GermplasmNameExists', $line_no);
 
       // If any cells were found to be empty, this case takes presendence over
-      // any other cases that may have been triggered on this line.
+      // any other cases, and we return a warning message right away.
       if ($validation_status['case'] == 'Unable to lookup germplasm with empty values') {
-        // @todo Create a helper method.
+        // Add a token for the column header names of the germplasm columns.
+        $combined_tokens['column-headers'] = implode(',', $metadata['column_headers']);
+        $message = $service_TripalTokensParser->replaceTokens($combined_tokens['case-empty-germplasm'], $combined_tokens);
+        return renderSimpleWarningMessage($message, ['tc-germplasm-name-exists-empty']);
       }
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.
@@ -449,13 +460,53 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       '#type' => 'ul',
       '#attributes' => [
         'class' => [
-          'tcp-germplasm-name-exists-failures',
+          'tc-germplasm-name-exists-failures',
         ],
       ],
       '#items' => $tables,
     ];
 
     return $render_array;
+  }
+
+  /**
+   * A helper method that will process any simple message into a render array.
+   *
+   * @param string $message
+   *   A non-empty string that is the message to be displayed to the user. If
+   *   desired, this string may include css formatting.
+   *
+   * @param array $classes
+   *   [OPTIONAL] An array of strings to give to '#wrapper_attributes' of the
+   *   render array as a set of css classed. By default, this method adds the
+   *   class:
+   *   - 'simple-validation-warning'.
+   *
+   * @return array
+   *   A render array of type "markup", used to display a warning to the user
+   *   regarding a failed validation result.
+   *
+   * @throws \Exception
+   *   - If $message is an empty string.
+   */
+  public static function renderSimpleWarningMessage(string $message, array $classes = []) {
+
+    if (empty($message)) {
+      throw new \Exception('Expected a non-empty string for the message passed into renderSimpleWarningMessage().');
+    }
+
+    // Add our universal class for simple validation warning messages.
+    $classes[] = 'simple-validation-warning';
+
+    return [
+      '#type' => 'markup',
+      '#markup' => $message,
+      '#wrapper_attributes' => [
+        'class' => [
+          $classes,
+        ],
+      ],
+    ];
   }
 
   /**
