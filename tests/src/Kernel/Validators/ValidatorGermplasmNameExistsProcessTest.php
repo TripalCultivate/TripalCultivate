@@ -124,7 +124,6 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
     ];
 
     // ------ DEFAULT CASES (no tokens) ------
-    // @todo #0: A germplasm name cell is empty
     // #1: A germplasm name cell is missing from the database
     $scenarios[] = [
       [
@@ -356,6 +355,105 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
         $current_row_index++;
       }
     }
+  }
+
+  /**
+   * Data Provider for case of empty cells in GermplasmNameExists()
+   *
+   * @return array
+   *   Each scenario is an array with the following:
+   *   - An array of validation result arrays that get passed to the process
+   *     method. It is keyed by the line number that triggered this failed
+   *     validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed with the following key:
+   *       - 'empty_cells': an array of indices which are empty in the row.
+   *   - An array of tokens to use for altering the messages that get displayed
+   *     to the user. The key is the token, (ex. 'project'), and the value is
+   *     the new value to be shown for that token.
+   *   - An array of metadata needed by the process method. The method supports
+   *     the following keys:
+   *     - 'column_headers': an array of headers for columns that
+   *       are expected to contain germplasm names. The index in this array MUST
+   *       match the position (starting with 0) of the column in the input file.
+   *   - A string that is the expected message to be displayed in the returned
+   *     render array for this scenario.
+   */
+  public static function provideGermplasmNameExistsEmptyCellCase() {
+    $scenarios = [];
+
+    $basic_column_headers = [
+      'column_headers' => [
+        1 => 'Germplasm Name',
+      ],
+    ];
+
+    // #0: A single germplasm name cell is empty
+    $scenarios[] = [
+      [
+        5 => [
+          'case' => 'Unable to lookup germplasm with empty values',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [1],
+          ],
+        ],
+      ],
+      [],
+      $basic_column_headers,
+      'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: Germplasm Name',
+    ];
+
+    return $scenarios;
+  }
+
+  /**
+   * Tests the message processor method for the GermplasmNameExists validator.
+   *
+   * @param array $validation_result
+   *   - An array of validation result arrays that get passed to the process
+   *     method. It is keyed by the line number that triggered this failed
+   *     validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed with the following keys.
+   *       @todo summarize the failedItems that are used by this processor.
+   * @param array $tokens
+   *   An array of tokens to use for altering the messages that get displayed
+   *   to the user. The key is the token, (ex. 'project'), and the value is
+   *   the new value to be shown for that token.
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *   - 'column_headers': This contains an array of headers for columns that
+   *     are expected to contain germplasm names. The index in this array MUST
+   *     match the position (starting with 0) of the column in the input file.
+   * @param string $message
+   *   - The expected message to be displayed in the returned render array for
+   *     this scenario.
+   *
+   * @dataProvider provideGermplasmNameExistsEmptyCellCase
+   */
+  public function testProcessListWithDescribedTableEmptyCell(array $validation_result, array $tokens, array $metadata, string $message) {
+
+    // Create a plugin instance for this validator.
+    $validator_id = 'germplasm_name_exists';
+    $instance = $this->plugin_manager->createInstance($validator_id);
+
+    // Call the process method on our validation result.
+    $render_array = $instance->processListWithDescribedTable($validation_result, $metadata, $tokens);
+
+    // Render the array we were returned.
+    $rendered_markup = $this->renderer->renderRoot($render_array);
+    $this->setRawContent($rendered_markup);
+
+    // Check the rendered output.
+    $selected_message = $this->cssSelect('tc-germplasm-name-exists-empty');
+    //print_r($selected_message);
+    $provided_message = (string) $selected_message[0];
+    //$this->assertStringContainsString($message, $provided_message, 'The message expected from processing GermplasmNameExists failures with empty cells for this scenario did not match the one in the rendered output.');
+
   }
 
 }

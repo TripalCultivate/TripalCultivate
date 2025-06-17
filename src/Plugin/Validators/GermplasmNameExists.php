@@ -367,7 +367,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         // Add a token for the column header names of the germplasm columns.
         $combined_tokens['column-headers'] = implode(',', $metadata['column_headers']);
         $message = $service_TripalTokensParser->replaceTokens($combined_tokens['case-empty-germplasm'], $combined_tokens);
-        return renderSimpleWarningMessage($message, ['tc-germplasm-name-exists-empty']);
+        return self::renderSimpleWarningMessage($message, ['tc-germplasm-name-exists-empty']);
       }
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.
@@ -475,7 +475,6 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    * @param string $message
    *   A non-empty string that is the message to be displayed to the user. If
    *   desired, this string may include css formatting.
-   *
    * @param array $classes
    *   [OPTIONAL] An array of strings to give to '#wrapper_attributes' of the
    *   render array as a set of css classed. By default, this method adds the
