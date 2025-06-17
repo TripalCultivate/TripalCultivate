@@ -42,9 +42,10 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    * A mapping of all of the tokens supported by this validator.
    *
    * @var array
-   *   An associative array mapping tokens to their details. The following
-   *   tokens are implemented for this mapping, with the following descriptions
-   *   for their 'default-msg' values:
+   *   An associative array mapping tokens to their details, such as the
+   *   developer case string and the default message to substitute the token.
+   *   The following tokens are implemented for this mapping, with the following
+   *   descriptions for their 'default-msg' values:
    *  - 'contact-admin': the phrase to use when the user needs a privileged
    *    administrator to fix the problem.
    *  - 'case-empty-germplasm': the message when a cell that should contain a
@@ -260,7 +261,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    * include a separate process method that displays the information stored in
    * 'duplicates' of the 'failedItems' array.
    *
-   * @param array $validation_result
+   * @param array $validation_results
    *   An associative array that stores the validation failures by the
    *   GermplasmNameExists validator. It is keyed by the line number of the
    *   input file where validation failed, and the value is an associative
@@ -298,8 +299,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *     duplicated in the database.
    *
    * @return array
-   *   A render array of type "item" used to display feedback to the user about
-   *   the validation failure, where:
+   *   A render array of type "unordered list" used to display feedback to the
+   *   user about the validation failure, where:
    *   - The 'title' is a sentence describing the case triggered
    *   - The 'items' include a table for each potential case in the $failures
    *     array:
@@ -311,11 +312,11 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *       - Headers include 'Row Number', 'Column Header', 'Germplasm Name'
    *
    * @throws \Exception
-   *   - If any of the associative arrays per line were not formatted properly.
+   *   - If a validation status array was not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithDescribedTable(array $validation_result, array $metadata, array $tokens = []) {
+  public static function processListWithDescribedTable(array $validation_results, array $metadata, array $tokens = []) {
 
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
@@ -335,7 +336,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
 
     // Loop through each row in the $failures array and piece apart the
     // different cases into different tables.
-    foreach ($validation_result as $line_no => $validation_status) {
+    foreach ($validation_results as $line_no => $validation_status) {
       // Check the format of this line's validation status.
       ImportValidationHelper::checkValidationStatusArray($validation_status, 'GermplasmNameExists', $line_no);
 

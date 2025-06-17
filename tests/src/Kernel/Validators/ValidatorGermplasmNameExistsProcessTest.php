@@ -85,7 +85,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @return array
    *   Each scenario is an array with the following:
-   *   - An array of validation result arrays that get passed to the process
+   *   - An array of validation status arrays that get passed to the process
    *     method. It is keyed by the line number that triggered this failed
    *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
@@ -241,8 +241,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
   /**
    * Tests the message processor method for the GermplasmNameExists validator.
    *
-   * @param array $validation_result
-   *   - An array of validation result arrays that get passed to the process
+   * @param array $validation_results
+   *   - An array of validation status arrays that get passed to the process
    *     method. It is keyed by the line number that triggered this failed
    *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
@@ -276,14 +276,14 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideGermplasmNameExistsFailedCases
    */
-  public function testProcessListWithDescribedTable(array $validation_result, array $tokens, array $metadata, array $expectations) {
+  public function testProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
 
     // Create a plugin instance for this validator.
     $validator_id = 'germplasm_name_exists';
     $instance = $this->plugin_manager->createInstance($validator_id);
 
     // Call the process method on our validation result.
-    $render_array = $instance->processListWithDescribedTable($validation_result, $metadata, $tokens);
+    $render_array = $instance->processListWithDescribedTable($validation_results, $metadata, $tokens);
 
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);
@@ -362,7 +362,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @return array
    *   Each scenario is an array with the following:
-   *   - An array of validation result arrays that get passed to the process
+   *   - An array of validation status arrays that get passed to the process
    *     method. It is keyed by the line number that triggered this failed
    *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
@@ -483,8 +483,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
   /**
    * Tests the message processor method for the GermplasmNameExists validator.
    *
-   * @param array $validation_result
-   *   - An array of validation result arrays that get passed to the process
+   * @param array $validation_results
+   *   - An array of validation status arrays that get passed to the process
    *     method. It is keyed by the line number that triggered this failed
    *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
@@ -507,14 +507,14 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideGermplasmNameExistsEmptyCellCase
    */
-  public function testProcessListWithDescribedTableEmptyCell(array $validation_result, array $tokens, array $metadata, string $message) {
+  public function testProcessListWithDescribedTableEmptyCell(array $validation_results, array $tokens, array $metadata, string $message) {
 
     // Create a plugin instance for this validator.
     $validator_id = 'germplasm_name_exists';
     $instance = $this->plugin_manager->createInstance($validator_id);
 
     // Call the process method on our validation result.
-    $render_array = $instance->processListWithDescribedTable($validation_result, $metadata, $tokens);
+    $render_array = $instance->processListWithDescribedTable($validation_results, $metadata, $tokens);
 
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);
