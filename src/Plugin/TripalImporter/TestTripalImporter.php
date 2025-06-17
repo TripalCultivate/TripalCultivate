@@ -293,17 +293,19 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     // ************************************************************************
     // Metadata Validation
     // ************************************************************************
-    foreach ($validators['metadata'] as $validator_name => $validator) {
-      $failures[$validator_name] = [];
-      $result = $validator->validateMetadata($form_values);
+    if (isset($validators['metadata'])) {
+      foreach ($validators['metadata'] as $validator_name => $validator) {
+        $failures[$validator_name] = [];
+        $result = $validator->validateMetadata($form_values);
 
-      if (array_key_exists('valid', $result) && $result['valid'] === FALSE) {
-        $failed_validator = TRUE;
-        $failures[$validator_name] = $result;
+        if (array_key_exists('valid', $result) && $result['valid'] === FALSE) {
+          $failed_validator = TRUE;
+          $failures[$validator_name] = $result;
+        }
       }
     }
 
-    if ($failed_validator === FALSE) {
+    if ($failed_validator === FALSE && isset($validators['file'])) {
       // **********************************************************************
       // File Validation
       // **********************************************************************
@@ -318,7 +320,12 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
       }
     }
 
-    if ($failed_validator === FALSE) {
+    if ($failed_validator === FALSE &&
+      (isset($validators['raw-row']) ||
+      isset($validators['header-row']) ||
+      isset($validators['data-row']))
+    ) {
+
       $file_uri = $file->getFileUri();
       $handle = fopen($file_uri, 'r');
 
@@ -408,7 +415,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     $validation_feedback = $this->processValidationMessages($failures);
 
     $storage = $form_state->getStorage();
-    $storage[$this->validation_result] = $validation_feedback;
+    $storage[self::VALIDATION_RESULT] = $validation_feedback;
     $form_state->setStorage($storage);
 
     $submit_form = TRUE;
