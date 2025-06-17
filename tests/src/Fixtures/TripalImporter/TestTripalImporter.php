@@ -293,17 +293,19 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     // ************************************************************************
     // Metadata Validation
     // ************************************************************************
-    foreach ($validators['metadata'] as $validator_name => $validator) {
-      $failures[$validator_name] = [];
-      $result = $validator->validateMetadata($form_values);
+    if (isset($validators['metadata'])) {
+      foreach ($validators['metadata'] as $validator_name => $validator) {
+        $failures[$validator_name] = [];
+        $result = $validator->validateMetadata($form_values);
 
-      if (array_key_exists('valid', $result) && $result['valid'] === FALSE) {
-        $failed_validator = TRUE;
-        $failures[$validator_name] = $result;
+        if (array_key_exists('valid', $result) && $result['valid'] === FALSE) {
+          $failed_validator = TRUE;
+          $failures[$validator_name] = $result;
+        }
       }
     }
 
-    if ($failed_validator === FALSE) {
+    if ($failed_validator === FALSE && isset($validators['file'])) {
       // **********************************************************************
       // File Validation
       // **********************************************************************
@@ -319,6 +321,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     }
 
     if ($failed_validator === FALSE) {
+
       $file_uri = $file->getFileUri();
       $handle = fopen($file_uri, 'r');
 
@@ -336,16 +339,18 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
         // ********************************************************************
         // Raw Row Validation
         // ********************************************************************
-        foreach ($validators['raw-row'] as $validator_name => $validator) {
-          if (!array_key_exists($validator_name, $failures)) {
-            $failures[$validator_name] = [];
-          }
+        if (isset($validators['raw-row'])) {
+          foreach ($validators['raw-row'] as $validator_name => $validator) {
+            if (!array_key_exists($validator_name, $failures)) {
+              $failures[$validator_name] = [];
+            }
 
-          $result = $validator->validateRawRow($line);
+            $result = $validator->validateRawRow($line);
 
-          if (array_key_exists('valid', $result) && $result['valid'] === FALSE) {
-            $row_has_failed = TRUE;
-            $failures[$validator_name][$line_no] = $result;
+            if (array_key_exists('valid', $result) && $result['valid'] === FALSE) {
+              $row_has_failed = TRUE;
+              $failures[$validator_name][$line_no] = $result;
+            }
           }
         }
 
@@ -357,7 +362,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
         // ********************************************************************
         // Header Row Validation
         // ********************************************************************
-        if ($line_no == 1) {
+        if ($line_no == 1 && isset($validators['header-row'])) {
           $header_row = ImportValidationHelper::splitRowIntoColumns($line, $file_mime_type);
 
           foreach ($validators['header-row'] as $validator_name => $validator) {
@@ -384,7 +389,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
         // ********************************************************************
         // Data Row Validation
         // ********************************************************************
-        elseif ($line_no > 1) {
+        elseif ($line_no > 1 && isset($validators['data-row'])) {
           $data_row = ImportValidationHelper::splitRowIntoColumns($line, $file_mime_type);
 
           foreach ($validators['data-row'] as $validator_name => $validator) {
@@ -408,7 +413,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     $validation_feedback = $this->processValidationMessages($failures);
 
     $storage = $form_state->getStorage();
-    $storage[$this->validation_result] = $validation_feedback;
+    $storage[self::VALIDATION_RESULT] = $validation_feedback;
     $form_state->setStorage($storage);
 
     $submit_form = TRUE;
