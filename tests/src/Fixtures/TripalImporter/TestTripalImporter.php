@@ -16,6 +16,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * This importer is to help you manually test generic validators.
  *
+ * The validator ValidDelimitedFile has been pre-configured into this importer
+ * as an example and for immediate test implementation.
+ *
  * It is purposely simple and generic. To use it:
  *
  * 1. Copy this class to the src/Plugin/TripalImporter directory in your docker.
@@ -210,7 +213,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     //
     // Use relevant setters to set some values.
     // For example:
-    // $instance->setExpectedColumns($num_columns, TRUE);
+    // $instance->setExpectedColumns(count($this->headers), TRUE);
     // $instance->setFileMimeType($file_mime_type);
     // $instance->setHeaders($this->headers);
     // $instance->setIndices(1);
@@ -241,7 +244,8 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     // $id = 'REPLACE WITH VALIDATOR ID ANNOTATION - @id';
     $id = 'valid_delimited_file';
 
-    // Use title key to set a validator case message.
+    // Use title key to set a validator case message in $messages array.
+    // $messages[$id] = ['title' => 'REPLACE WITH A MESSAGE TITLE', ...];.
     $messages[$id] = [
       'title' => 'File is delimited',
       'status' => 'todo',
@@ -252,8 +256,11 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     if (array_key_exists($id, $failures)) {
       if (!empty($failures[$id])) {
         $messages[$id]['status'] = 'fail';
-        // $messages[$id]['details'] = 'USE VALIDATOR MESSAGE PROCESSOR HERE';
-        // For example using valid_delimiter_file validator message processsor:
+        // Use the message processor static method defined by the validator.
+        // $messages[$id]['details']='ValidatorClassName::processMessageName()';
+        //
+        // or if the method is defined in this class, call the method as shown
+        // in the following line.
         $messages[$id]['details'] = $this->processValidDelimitedFileFailures($failures[$id]);
       }
       else {
@@ -316,6 +323,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
           // first by uncommenting the following line.
           // $row = ImportValidationHelper::splitRowIntoColumns($line, $file_mime_type);.
           // $result = 'CALL VALIDATOR VALIDATE METHOD';
+          //
           // For example calling the validate method of valid_delimited_file:
           $result = $validator->validateRawRow($line);
 
@@ -408,6 +416,8 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
   /**
    * Valid delimited file process message.
    *
+   * REMOVE IF NOT REQUIRED.
+   *
    * @param array $failures
    *   Failures array.
    *
@@ -415,6 +425,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
    *   A render array.
    */
   public function processValidDelimitedFileFailures(array $failures) {
+
     // Define our table headers.
     $table_header = ['Line Number', 'Line Contents'];
 
@@ -423,6 +434,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     // - 'table'->'delimited': Rows that don't delimit to the expected number of
     //   columns.
     $table = [];
+
     // Loop through each row in the $failures array and piece apart the
     // different cases into different tables.
     foreach ($failures as $line_no => $validation_result) {
@@ -500,6 +512,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
         ],
       ];
     }
+
     $render_array = [
       '#theme' => 'item_list',
       '#type' => 'ul',
