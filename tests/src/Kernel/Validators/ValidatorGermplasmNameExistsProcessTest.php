@@ -389,6 +389,14 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    $additional_column_headers = [
+      'column_headers' => [
+        2 => 'Maternal Germplasm',
+        4 => 'Paternal Germplasm',
+        6 => 'Misc Germplasm',
+      ],
+    ];
+
     // #0: A single germplasm name cell is empty
     $scenarios[] = [
       [
@@ -403,6 +411,70 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       [],
       $basic_column_headers,
       'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: Germplasm Name',
+    ];
+
+    // #1: Multiple empty germplasm name cells
+    $scenarios[] = [
+      [
+        1 => [
+          'case' => 'Unable to lookup germplasm with empty values',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [2, 4],
+          ],
+        ],
+      ],
+      [],
+      $additional_column_headers,
+      'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: Maternal Germplasm, Paternal Germplasm, Misc Germplasm',
+    ];
+
+    // #2: An empty germplasm name cell, a missing germplasm, and a duplicate.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'missing_cells' => [
+              2 => [
+                'germplasm_name' => 'Non-existant Germplasm',
+              ],
+            ],
+            'duplicate_cells' => [
+              4 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+        7 => [
+          'case' => 'Unable to lookup germplasm with empty values',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [6],
+          ],
+        ],
+      ],
+      [],
+      $additional_column_headers,
+      'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: Maternal Germplasm, Paternal Germplasm, Misc Germplasm',
+    ];
+
+    // #3: An empty cell and a token to replace the entire displayed message.
+    $scenarios[] = [
+      [
+        2 => [
+          'case' => 'Unable to lookup germplasm with empty values',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [1],
+          ],
+        ],
+      ],
+      ['case-empty-germplasm' => 'Oh no! You left one or more cells empty in column(s) "[column-headers]" but there should be a germplasm name!'],
+      $basic_column_headers,
+      'Oh no! You left one or more cells empty in column(s) "Germplasm Name" but there should be a germplasm name!',
     ];
 
     return $scenarios;
@@ -449,11 +521,13 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
     $this->setRawContent($rendered_markup);
 
     // Check the rendered output.
-    $selected_message = $this->cssSelect('tc-germplasm-name-exists-empty');
-    //print_r($selected_message);
+    $selected_message = $this->cssSelect('div.case-message');
     $provided_message = (string) $selected_message[0];
-    //$this->assertStringContainsString($message, $provided_message, 'The message expected from processing GermplasmNameExists failures with empty cells for this scenario did not match the one in the rendered output.');
+    $this->assertStringContainsString($message, $provided_message, 'The message expected from processing GermplasmNameExists failures with empty cells for this scenario did not match the one in the rendered output.');
 
+    // Make sure we don't have any tables in rendered output.
+    $select_tables = $this->cssSelect('table');
+    $this->assertEmpty($select_tables, 'There should not be any tables when testing processListWithDescribedTable with empty cells where germplasm names should be, but there was.');
   }
 
 }
