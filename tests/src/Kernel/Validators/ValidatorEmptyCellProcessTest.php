@@ -76,12 +76,12 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @return array
    *   Each scenario is an array with the following:
-   *   - The failures array that gets passed to the process method. It contains
-   *     the following keys:
-   *     - The line number that triggered this failed validation status.
+   *   - An array of validation status arrays that get passed to the process
+   *     method. It is keyed by the line number that triggered this failed
+   *     validation status, further keyed by:
    *       - 'case': a developer-focused string describing the case checked.
    *       - 'valid': FALSE to indicate that validation failed.
-   *       - 'failedItems': array of items that failed with the following keys:
+   *       - 'failedItems': array of items that failed with the following keys.
    *         - 'empty_indices': A list of column indices in the line which were
    *           checked and found to be empty.
    *   - An array of tokens to use for altering the messages that get displayed
@@ -232,10 +232,10 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   /**
    * Tests the message processor method for the EmptyCell validator.
    *
-   * @param array $failures
-   *   The failures array that gets passed to the process method. It contains
-   *   the following keys:
-   *   - The line number that triggered this failed validation status.
+   * @param array $validation_results
+   *   An array of validation status arrays that get passed to the process
+   *   method. It is keyed by the line number that triggered this failed
+   *   validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed with the following keys.
@@ -267,9 +267,9 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideEmptyCellFailedCases
    */
-  public function testProcessListWithDescribedTable(array $failures, array $tokens, array $metadata, array $expectations) {
+  public function testProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
 
-    $render_array = $this->validator_instance::processListWithDescribedTable($failures, $tokens, $metadata);
+    $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $tokens, $metadata);
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
@@ -319,14 +319,14 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @return array
    *   Each scenario is an array with the following:
-   *   - The validation result array that gets passed to the process method. It
-   *     contains the following keys:
-   *     - The line number that triggered this failed validation status.
-   *       - 'case': a developer-focused string describing the case checked.
-   *       - 'valid': FALSE to indicate that validation failed.
-   *       - 'failedItems': array of items that failed with the following keys.
-   *         - 'project_provided': The name of the project provided.
-   *         - 'genus_provided': The name of the genus provided.
+   *   - An array of validation status arrays that get passed to the process
+   *     method. It is keyed by the line number that triggered this failed
+   *     validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed with the following key:
+   *       - 'empty_indices': A list of column indices in the line which were
+   *         checked and found to be empty.
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
@@ -396,14 +396,15 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   /**
    * Tests for exceptions thrown for passed and unrecognizable case strings.
    *
-   * @param array $validation_result
-   *   The validation result array that gets passed to the process method. It
-   *   contains the following keys:
-   *   - 'case': a developer-focused string describing the case checked.
-   *   - 'valid': FALSE to indicate that validation failed.
-   *   - 'failedItems': an array of items that failed with the following keys.
-   *     - 'project_provided': The name of the project provided.
-   *     - 'genus_provided': The name of the genus provided.
+   * @param array $validation_results
+   *   An array of validation status arrays that get passed to the process
+   *   method. It is keyed by the line number that triggered this failed
+   *   validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed with the following key:
+   *       - 'empty_indices': A list of column indices in the line which were
+   *         checked and found to be empty.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -425,31 +426,31 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessListWithDescribedTableExceptions(array $validation_result, array $tokens, array $metadata, array $expectations) {
+  public function testProcessListWithDescribedTableExceptions(array $validation_results, array $tokens, array $metadata, array $expectations) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      $this->validator_instance->processListWithDescribedTable($validation_result, $tokens, $metadata);
+      $this->validator_instance->processListWithDescribedTable($validation_results, $tokens, $metadata);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
       $exception_message = $e->getMessage();
     }
 
-    $line = array_keys($validation_result);
+    $line = array_keys($validation_results);
     $line = reset($line);
 
     $this->assertTrue(
       $exception_caught,
-      'We expected an exception to be caught ' . $validation_result[$line]['case'] . ', but one was not thrown.'
+      'We expected an exception to be caught ' . $validation_results[$line]['case'] . ', but one was not thrown.'
     );
 
     $this->assertEquals(
       $expectations['expected_message'],
       $exception_message,
-      'We expected the exception message to indicate that case ' . $validation_result[$line]['case'] . ', but it does not match what was expected.',
+      'We expected the exception message to indicate that case ' . $validation_results[$line]['case'] . ', but it does not match what was expected.',
     );
   }
 
