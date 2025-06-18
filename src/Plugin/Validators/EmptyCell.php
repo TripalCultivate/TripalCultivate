@@ -116,11 +116,11 @@ class EmptyCell extends TripalCultivateValidatorBase {
   /**
    * Processes failed validation from EmptyCell into a render array.
    *
-   * @param array $failures
+   * @param array $validation_results
    *   An associative array that stores the validation failures by the
    *   EmptyCell validator. It is keyed by the line number of the input
    *   file where validation failed, and the value is an associative array
-   *   returned by the validator. Here is the overall structure of $failures:
+   *   returned by the validator. Here is the overall structure:
    *   - [LINE NUMBER]:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
