@@ -126,7 +126,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed, where the key => value
    *       pairs map to the index => cell value(s) that failed validation.
-   *       @see EmptyCell::validateRow()
+   *       @see validateRow()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see EmptyCell::$mapping
@@ -164,7 +164,6 @@ class EmptyCell extends TripalCultivateValidatorBase {
     // Define our table header.
     $table_header = ['Line Number', 'Column(s) with empty value'];
     $table['rows'] = [];
-    $table['message'] = self::$mapping['case-empty-value']['default-msg'];
 
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
     // Combine our provided and our default token arrays. Because array_merge
@@ -177,6 +176,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
       ImportValidationHelper::checkValidationStatusArray($validation_status, 'EmptyCell', $line_no);
 
       if ($validation_status['case'] == self::$mapping['case-empty-value']['dev-case']) {
+        $table['message'] = $combined_tokens['case-empty-value'];
         // Convert indices in failedItems to column headers.
         $failed_indices = $validation_status['failedItems']['empty_indices'];
         // For each index with an empty value, grab the column name from our
