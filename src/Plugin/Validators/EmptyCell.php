@@ -155,7 +155,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *     - 'Column(s) with empty value'
    *
    * @throws \Exception
-   *   - If the validation_result parameter was not formatted properly.
+   *   - If a validation status array was not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
