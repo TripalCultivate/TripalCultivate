@@ -124,9 +124,9 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *   - [LINE NUMBER]:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed:
-   *       - 'empty_indices': A list of column indices in the line which were
-   *         checked and found to be empty.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   *       @see EmptyCell::validateRow()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see EmptyCell::$mapping
