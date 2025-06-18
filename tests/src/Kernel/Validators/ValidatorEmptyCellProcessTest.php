@@ -443,7 +443,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
 
     $this->assertTrue(
       $exception_caught,
-      'We expected an exception to be caught ' . $validation_result[$line]['case'] . ', but one was not thrown.'
+      'We expected an exception to be caught for case ' . $validation_result[$line]['case'] . ', but one was not thrown.'
     );
 
     $this->assertEquals(
