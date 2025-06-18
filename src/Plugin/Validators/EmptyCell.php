@@ -193,7 +193,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
           $columns_string,
         ]);
       }
-      elseif ($validation_result['case'] == self::$mapping['case-valid']['dev-case']) {
+      elseif ($validation_status['case'] == self::$mapping['case-valid']['dev-case']) {
         throw new \Exception("The case string returned by the EmptyCell validator at line #$line_no implies validation passed, but valid is set to FALSE.");
       }
       else {
