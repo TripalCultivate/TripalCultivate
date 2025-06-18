@@ -396,7 +396,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   /**
    * Tests for exceptions thrown for passed and unrecognizable case strings.
    *
-   * @param array $validation_result
+   * @param array $validation_results
    *   The validation result array that gets passed to the process method. It
    *   contains the following keys:
    *   - 'case': a developer-focused string describing the case checked.
