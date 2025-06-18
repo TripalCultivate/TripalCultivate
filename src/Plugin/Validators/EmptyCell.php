@@ -29,8 +29,8 @@ class EmptyCell extends TripalCultivateValidatorBase {
    * A mapping of all of the tokens supported by this validator.
    *
    * @var array
-   *   An associative array mapping tokens to their details where each element
-   *   may contain a default message but must contain the dev-case and token.
+   *   An associative array mapping tokens to their details, such as the
+   *   developer case string and the default message to substitute the token.
    *   The following tokens are implemented for this mapping, with the following
    *   descriptions for their 'default-msg' values:
    *   - 'case-empty-value': the message when a specific row-column does not
