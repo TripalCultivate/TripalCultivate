@@ -146,12 +146,13 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *         ].
    *
    * @return array
-   *   A render array of type unordered list which is used to display feedback
-   *   to the user about the case(s) that failed and the failed items from the
-   *   input file. This unordered list will include a table that lists the row
-   *   and column combinations with empty cells. It has the following headers:
-   *   - 'Line Number'
-   *   - 'Column(s) with empty value'
+   *   A render array of type "unordered list" used to display feedback to the
+   *   user about the validation failure, where:
+   *   - The 'title' is a sentence describing the case triggered
+   *   - The 'items' include a table that lists the row and column combinations
+   *     with empty cells. It has the following headers:
+   *     - 'Line Number'
+   *     - 'Column(s) with empty value'
    *
    * @throws \Exception
    *   - If the validation_result parameter was not formatted properly.
