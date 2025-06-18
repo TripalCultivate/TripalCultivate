@@ -172,13 +172,13 @@ class EmptyCell extends TripalCultivateValidatorBase {
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
 
-    foreach ($failures as $line_no => $validation_result) {
-      // Check the format of the validation_result parameter.
-      ImportValidationHelper::checkValidationStatusArray($validation_result, 'EmptyCell', $line_no);
+    foreach ($validation_results as $line_no => $validation_status) {
+      // Check the format of the validation_status parameter.
+      ImportValidationHelper::checkValidationStatusArray($validation_status, 'EmptyCell', $line_no);
 
-      if ($validation_result['case'] == self::$mapping['case-empty-value']['dev-case']) {
+      if ($validation_status['case'] == self::$mapping['case-empty-value']['dev-case']) {
         // Convert indices in failedItems to column headers.
-        $failed_indices = $validation_result['failedItems']['empty_indices'];
+        $failed_indices = $validation_status['failedItems']['empty_indices'];
         // For each index with an empty value, grab the column name from our
         // $headers property and add to an array of header names.
         $empty_headers = [];
