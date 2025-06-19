@@ -397,13 +397,14 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    * Tests for exceptions thrown for passed and unrecognizable case strings.
    *
    * @param array $validation_results
-   *   The validation result array that gets passed to the process method. It
-   *   contains the following keys:
-   *   - 'case': a developer-focused string describing the case checked.
-   *   - 'valid': FALSE to indicate that validation failed.
-   *   - 'failedItems': an array of items that failed with the following keys.
-   *     - 'project_provided': The name of the project provided.
-   *     - 'genus_provided': The name of the genus provided.
+   *   An array of validation status arrays that get passed to the process
+   *   method. It is keyed by the line number that triggered this failed
+   *   validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed with the following key:
+   *       - 'empty_indices': A list of column indices in the line which were
+   *         checked and found to be empty.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -443,7 +444,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
 
     $this->assertTrue(
       $exception_caught,
-      'We expected an exception to be caught for case ' . $validation_result[$line]['case'] . ', but one was not thrown.'
+      'We expected an exception to be caught for case ' . $validation_results[$line]['case'] . ', but one was not thrown.'
     );
 
     $this->assertEquals(
