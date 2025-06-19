@@ -214,7 +214,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
       '#type' => 'ul',
       '#attributes' => [
         'class' => [
-          'tcp-empty-cell-failures',
+          'tc-empty-cell-failures',
         ],
       ],
       '#items' => [
