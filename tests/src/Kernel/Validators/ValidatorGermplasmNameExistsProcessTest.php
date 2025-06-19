@@ -90,8 +90,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed with the following keys.
-   *       @todo summarize the failedItems that are used by this processor
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
@@ -123,8 +123,15 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    $two_germplasm_column_headers = [
+      'column_headers' => [
+        2 => 'Maternal Parent',
+        4 => 'Paternal Parent',
+      ],
+    ];
+
     // ------ DEFAULT CASES (no tokens) ------
-    // #1: A germplasm name cell is missing from the database
+    // #0: A germplasm name cell is missing from the database
     $scenarios[] = [
       [
         3 => [
@@ -154,7 +161,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #2: A germplasm name cell is duplicated in the database
+    // #1: A germplasm name cell is duplicated in the database
     $scenarios[] = [
       [
         2 => [
@@ -184,14 +191,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    $two_germplasm_column_headers = [
-      'column_headers' => [
-        2 => 'Maternal Parent',
-        4 => 'Paternal Parent',
-      ],
-    ];
-
-    // #3: Within one row, 1 cell has missing germplasm, and 1 has a duplicate
+    // #2: Within one row, 1 cell has missing germplasm, and 1 has a duplicate
     $scenarios[] = [
       [
         5 => [
@@ -234,6 +234,190 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
         ],
       ],
     ];
+
+    // #3: Test for both duplicate and mssign germplasm on multiple rows and in
+    // multiple columns.
+    $scenarios[] = [
+      [
+        1 => [
+          'case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'missing_cells' => [
+              2 => [
+                'germplasm_name' => 'Non-existant Germplasm',
+              ],
+            ],
+            'duplicate_cells' => [
+              4 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+        4 => [
+          'case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'duplicate_cells' => [
+              2 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+            'missing_cells' => [
+              4 => [
+                'germplasm_name' => 'Non-existant Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      [],
+      $two_germplasm_column_headers,
+      [
+        'missing_cells' => [
+          'expected_message' => 'The following germplasm names could not be found in the database.',
+          // We expect 3 columns since missing was triggered by 2 separate
+          // columns in the input (Line # + 2 Column Headers)
+          'expected_column_count' => 3,
+          'expected_rows' => [
+            1 => [
+              'Maternal Parent' => 'Non-existant Germplasm',
+            ],
+            4 => [
+              'Paternal Parent' => 'Non-existant Germplasm',
+            ],
+          ],
+        ],
+        'duplicate_cells' => [
+          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or contact your administrator for help with investigating.',
+          // We expect 3 columns since duplicate was triggered by 2 separate
+          // columns in the input (Line # + 2 Column Headers)
+          'expected_column_count' => 3,
+          'expected_rows' => [
+            1 => [
+              'Paternal Parent' => 'Duplicate Germplasm',
+            ],
+            4 => [
+              'Maternal Parent' => 'Duplicate Germplasm',
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    // ----------- TEST WITH TOKENS -------------
+    // #4: Test for [contact-admin] in the case of a duplicate germplasm.
+    $scenarios[] = [
+      [
+        2 => [
+          'case' => 'Duplicate(s) found in the database for germplasm name(s)',
+          'valid' => FALSE,
+          'failedItems' => [
+            'duplicate_cells' => [
+              1 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      ['contact-admin' => 'email your administrator at admin@email.com'],
+      $basic_column_headers,
+      [
+        'duplicate_cells' => [
+          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or email your administrator at admin@email.com for help with investigating.',
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            2 => [
+              'Germplasm Name' => 'Duplicate Germplasm',
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    // #5: Customize both the missing and duplicate case messages.
+    $scenarios[] = [
+      [
+        5 => [
+          'case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'missing_cells' => [
+              2 => [
+                'germplasm_name' => 'Non-existant Germplasm',
+              ],
+            ],
+            'duplicate_cells' => [
+              4 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      [
+        'case-missing-germplasm' => 'Where art thou, germplasm?',
+        'case-duplicate-germplasm' => 'Found an imposter germplasm!',
+      ],
+      $two_germplasm_column_headers,
+      [
+        'missing_cells' => [
+          'expected_message' => 'Where art thou, germplasm?',
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            5 => [
+              'Maternal Parent' => 'Non-existant Germplasm',
+            ],
+          ],
+        ],
+        'duplicate_cells' => [
+          'expected_message' => 'Found an imposter germplasm!',
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            5 => [
+              'Paternal Parent' => 'Duplicate Germplasm',
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    // #6: Provide a custom case message with tokens
+    $scenarios[] = [
+      [
+        7 => [
+          'case' => 'Duplicate(s) found in the database for germplasm name(s)',
+          'valid' => FALSE,
+          'failedItems' => [
+            'duplicate_cells' => [
+              1 => [
+                'germplasm_name' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      [
+        'contact-admin' => 'Contact your admin',
+        'fix' => 'resolution',
+        'case-duplicate-germplasm' => 'Found an imposter germplasm! [contact-admin] for help finding a [fix].',
+      ],
+      $basic_column_headers,
+      [
+        'duplicate_cells' => [
+          'expected_message' => 'Found an imposter germplasm! Contact your admin for help finding a resolution.',
+          'expected_column_count' => 2,
+          'expected_rows' => [
+            7 => [
+              'Germplasm Name' => 'Duplicate Germplasm',
+            ],
+          ],
+        ],
+      ],
+    ];
+
     return $scenarios;
 
   }
@@ -247,8 +431,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed with the following keys.
-   *       @todo summarize the failedItems that are used by this processor.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -489,8 +673,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *     validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed with the following keys.
-   *       @todo summarize the failedItems that are used by this processor.
+   *     - 'failedItems': an array of items that failed with the following key:
+   *       - 'empty_cells': an array of indices which are empty in the row.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is

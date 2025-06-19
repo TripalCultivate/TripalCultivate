@@ -271,7 +271,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed, where the key => value
    *       pairs map to the index => cell value(s) that failed validation.
-   *       @see GermplasmNameExists::validateRow()
+   *       @see validateRow()
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
