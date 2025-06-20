@@ -284,7 +284,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *         ];.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
-   *   @see GermplasmNameExists::$default_tokens
+   *   @see $mapping
    *   The following tokens can be specfied as keys, with value as the
    *   replacement value for the token. These apply to all failure cases.
    *   - 'contact-admin': the phrase to use when the user needs a privileged
@@ -406,15 +406,12 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       $table['duplicate_cells']['message'] = $combined_tokens['case-duplicate-germplasm'];
     }
 
-    // If our table(s) have more than 2 columns with failed values, then iterate
-    // through and pad each table with empty strings where necessary.
-    foreach ($table as $table_case) {
-      $table_case = self::fillTableGaps($table_case);
-    }
-
     // Finally, loop through our tables and build our render array.
     $tables = [];
-    foreach ($table as $table_key => $table_case) {
+    foreach ($table as $table_key => &$table_case) {
+      // If our table(s) have more than 2 columns with failed values, then
+      // iterate through and pad each table with empty strings where necessary.
+      self::fillTableGaps($table_case);
       array_push($tables, [
         [
           '#prefix' => '<div class="case-message case-' . $table_key . '">',
@@ -498,7 +495,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   Returns the same array as @param table, but with added keys and values
    *   (white space) to fully represent all cells in the table.
    */
-  public static function fillTableGaps($table) {
+  public static function fillTableGaps(array &$table) {
     // Sort the table header.
     ksort($table['header']);
     if (count($table['header']) > 2) {
@@ -512,7 +509,6 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         ksort($table['rows'][$line_no]);
       }
     }
-    return $table;
   }
 
 }

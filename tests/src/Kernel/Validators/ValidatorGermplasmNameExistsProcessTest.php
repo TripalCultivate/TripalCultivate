@@ -245,12 +245,12 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           'failedItems' => [
             'missing_cells' => [
               2 => [
-                'germplasm_name' => 'Non-existant Germplasm',
+                'germplasm_name' => 'Missing Germplasm 1',
               ],
             ],
             'duplicate_cells' => [
               4 => [
-                'germplasm_name' => 'Duplicate Germplasm',
+                'germplasm_name' => 'Duplicate Germplasm 1',
               ],
             ],
           ],
@@ -261,12 +261,12 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           'failedItems' => [
             'duplicate_cells' => [
               2 => [
-                'germplasm_name' => 'Duplicate Germplasm',
+                'germplasm_name' => 'Duplicate Germplasm 4',
               ],
             ],
             'missing_cells' => [
               4 => [
-                'germplasm_name' => 'Non-existant Germplasm',
+                'germplasm_name' => 'Missing Germplasm 4',
               ],
             ],
           ],
@@ -282,10 +282,10 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           'expected_column_count' => 3,
           'expected_rows' => [
             1 => [
-              'Maternal Parent' => 'Non-existant Germplasm',
+              'Maternal Parent' => 'Missing Germplasm 1',
             ],
             4 => [
-              'Paternal Parent' => 'Non-existant Germplasm',
+              'Paternal Parent' => 'Missing Germplasm 4',
             ],
           ],
         ],
@@ -296,10 +296,10 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           'expected_column_count' => 3,
           'expected_rows' => [
             1 => [
-              'Paternal Parent' => 'Duplicate Germplasm',
+              'Paternal Parent' => 'Duplicate Germplasm 1',
             ],
             4 => [
-              'Maternal Parent' => 'Duplicate Germplasm',
+              'Maternal Parent' => 'Duplicate Germplasm 4',
             ],
           ],
         ],
