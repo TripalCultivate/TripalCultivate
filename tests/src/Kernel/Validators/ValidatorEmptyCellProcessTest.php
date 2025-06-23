@@ -72,7 +72,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Data Provider for testProcessEmptyCellFailures().
+   * Data Provider for testProcessListWithDescribedTable().
    *
    * @return array
    *   Each scenario is an array with the following:
