@@ -346,7 +346,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         // Add a token for the column header names of the germplasm columns.
         $combined_tokens['column-headers'] = implode(', ', $metadata['column_headers']);
         $message = $service_TripalTokensParser->replaceTokens($combined_tokens['case-empty-germplasm'], $combined_tokens);
-        return self::renderSimpleWarningMessage($message, ['tc-germplasm-name-exists-empty']);
+        return ImportValidationHelper::renderSimpleWarningMessage($message, ['tc-germplasm-name-exists-empty']);
       }
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.
@@ -443,47 +443,6 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     ];
 
     return $render_array;
-  }
-
-  /**
-   * A helper method that will process any simple message into a render array.
-   *
-   * @param string $message
-   *   A non-empty string that is the message to be displayed to the user. If
-   *   desired, this string may include css formatting.
-   * @param array $classes
-   *   [OPTIONAL] An array of strings to give to '#wrapper_attributes' of the
-   *   render array as a set of css classed. By default, this method adds the
-   *   class:
-   *   - 'simple-validation-warning'.
-   *
-   * @return array
-   *   A render array of type "markup", used to display a warning to the user
-   *   regarding a failed validation result.
-   *
-   * @throws \Exception
-   *   - If $message is an empty string.
-   */
-  public static function renderSimpleWarningMessage(string $message, array $classes = []) {
-
-    if (empty($message)) {
-      throw new \Exception('Expected a non-empty string for the message passed into renderSimpleWarningMessage().');
-    }
-
-    // Add our universal class for simple validation warning messages.
-    $classes[] = 'simple-validation-warning';
-
-    return [
-      '#type' => 'markup',
-      '#prefix' => '<div class="case-message simple-validation-warning">',
-      '#markup' => $message,
-      '#suffix' => '</div>',
-      '#wrapper_attributes' => [
-        'class' => [
-          $classes,
-        ],
-      ],
-    ];
   }
 
 }
