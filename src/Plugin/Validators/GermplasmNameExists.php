@@ -490,10 +490,22 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    * Take an array with table contents and fills empty cells with empty strings.
    *
    * @param array $table
+   *   An associative array representing the contents of a single table, with
+   *   the following keys:
+   *   - 'header': The contents of the table's header, where key = index of the
+   *     column header, and value = content of the column header.
+   *   - 'rows': The contents of the table's rows. Each row is keyed by the line
+   *     number of the original input file that triggered validation failure,
+   *     followed by the index of the column, followed by the column's contents.
    *
-   * @return array
-   *   Returns the same array as @param table, but with added keys and values
-   *   (white space) to fully represent all cells in the table.
+   *   Essentially, $table is structured as follows:
+   *   - ['header'][COLUMN INDEX][COLUMN VALUE]
+   *   - ['rows'][LINE NUMBER][COLUMN INDEX][COLUMN VALUE]
+   *
+   *   The resulting array is the same as @param table, but with added keys and
+   *   values (empty string) to fully represent all cells in the table.
+   *   NOTE: $table is passed in by reference, meaning that the original array
+   *   is being modified directly and thus there is no return value.
    */
   public static function fillTableGaps(array &$table) {
     // Sort the table header.

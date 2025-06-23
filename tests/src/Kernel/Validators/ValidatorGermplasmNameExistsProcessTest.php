@@ -283,8 +283,10 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           'expected_rows' => [
             1 => [
               'Maternal Parent' => 'Missing Germplasm 1',
+              'Paternal Parent' => '',
             ],
             4 => [
+              'Maternal Parent' => '',
               'Paternal Parent' => 'Missing Germplasm 4',
             ],
           ],
@@ -296,10 +298,12 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           'expected_column_count' => 3,
           'expected_rows' => [
             1 => [
+              'Maternal Parent' => '',
               'Paternal Parent' => 'Duplicate Germplasm 1',
             ],
             4 => [
               'Maternal Parent' => 'Duplicate Germplasm 4',
+              'Paternal Parent' => '',
             ],
           ],
         ],
@@ -384,7 +388,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #6: Provide a custom case message with tokens
+    // #6: Provide a custom case message with default + custom tokens
     $scenarios[] = [
       [
         7 => [
