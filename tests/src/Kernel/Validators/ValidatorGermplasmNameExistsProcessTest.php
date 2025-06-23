@@ -4,8 +4,6 @@ namespace Drupal\Tests\trpcultivate_phenotypes\Kernel\Validators;
 
 use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
-use Drupal\tripal_chado\Database\ChadoConnection;
-use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 
 /**
  * Tests any message processing methods for the GermplasmNameExists validator.
@@ -16,18 +14,11 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
 class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
 
   /**
-   * Plugin Manager service.
+   * An instance of the validator.
    *
-   * @var \Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
+   * @var Drupal\trpcultivate\Plugin\Validators\GermplasmNameExists
    */
-  protected TripalCultivateValidatorManager $plugin_manager;
-
-  /**
-   * A Database query interface for querying Chado using Tripal DBX.
-   *
-   * @var \Drupal\tripal_chado\Database\ChadoConnection
-   */
-  protected ChadoConnection $chado_connection;
+  protected $validator_instance;
 
   /**
    * Drupal render service.
@@ -67,14 +58,10 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
     // Ensure we see all logging in tests.
     \Drupal::state()->set('is_a_test_environment', TRUE);
 
-    // Test Chado database.
-    // Create a test chado instance and then set it in the container for use by
-    // our service.
-    $this->chado_connection = $this->createTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
-    $this->container->set('tripal_chado.database', $this->chado_connection);
-
-    // Set plugin manager service.
-    $this->plugin_manager = \Drupal::service('plugin.manager.trpcultivate_validator');
+    $validator_id = 'germplasm_name_exists';
+    $this->validator_instance = $this->container
+      ->get('plugin.manager.trpcultivate_validator')
+      ->createInstance($validator_id);
 
     // Get our renderer.
     $this->renderer = $this->container->get('renderer');
@@ -466,12 +453,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    */
   public function testProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
 
-    // Create a plugin instance for this validator.
-    $validator_id = 'germplasm_name_exists';
-    $instance = $this->plugin_manager->createInstance($validator_id);
-
     // Call the process method on our validation result.
-    $render_array = $instance->processListWithDescribedTable($validation_results, $metadata, $tokens);
+    $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
 
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);
@@ -697,12 +680,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    */
   public function testProcessListWithDescribedTableEmptyCell(array $validation_results, array $tokens, array $metadata, string $message) {
 
-    // Create a plugin instance for this validator.
-    $validator_id = 'germplasm_name_exists';
-    $instance = $this->plugin_manager->createInstance($validator_id);
-
     // Call the process method on our validation result.
-    $render_array = $instance->processListWithDescribedTable($validation_results, $metadata, $tokens);
+    $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
 
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);
@@ -716,6 +695,163 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
     // Make sure we don't have any tables in rendered output.
     $select_tables = $this->cssSelect('table');
     $this->assertEmpty($select_tables, 'There should not be any tables when testing processListWithDescribedTable with empty cells where germplasm names should be, but there was.');
+  }
+
+  /**
+   * Data Provider for triggering exceptions in processListWithDescribedTable().
+   *
+   * @return array
+   *   Each scenario is an array with the following:
+   *   - An array of validation status arrays that get passed to the process
+   *     method. It is keyed by the line number that triggered this failed
+   *     validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   *   - An array of additional metadata (or contextual information) needed by
+   *     the process method. Here, the following keys are expected:
+   *     - 'column-headers': This contains an array of headers for columns that
+   *     are expected to contain germplasm names. The index in this array MUST
+   *     match the position (starting with 0) of the column in the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Maternal Germplasm Name', // Header of column #3
+   *           '4' => 'Paternal Germplasm Name', // Header of column #5
+   *   - An array of tokens to use for altering the messages that get displayed
+   *     to the user. The key is the token, (ex. 'project'), and the value is
+   *     the new value to be shown for that token.
+   *   - An array of expectations in the rendered output which has the
+   *     following keys:
+   *     - 'expected_message': The exception message that is expected to be
+   *       triggered.
+   */
+  public static function providePassedAndUnrecognizableCases() {
+
+    $scenarios = [];
+
+    $tokens = [];
+    $metadata = [
+      'column_headers' => [
+        2 => 'Maternal Parent',
+        4 => 'Paternal Parent',
+      ],
+    ];
+
+    // #0: Case of an empty germplasm name cell, but an invalid message is
+    // passed in using the token for case-empty-germplasm.
+    $scenarios[] = [
+      [
+        5 => [
+          'case' => 'Unable to lookup germplasm with empty values',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [4],
+          ],
+        ],
+      ],
+      $metadata,
+      ['case-empty-germplasm' => ''],
+      [
+        'expected_message' => 'Expected a non-empty string for the message passed into renderSimpleWarningMessage().',
+      ],
+    ];
+
+    // #1: GermplasmNameExists passed validation.
+    $scenarios[] = [
+      [
+        6 => [
+          'case' => 'Germplasm name(s) exist(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [2, 4],
+          ],
+        ],
+      ],
+      $metadata,
+      $tokens,
+      [
+        'expected_message' => 'The case string returned by the GermplasmNameExists validator at line #6 implies validation passed, but valid is set to FALSE.',
+      ],
+    ];
+
+    // #2: Unrecognizable validation case message.
+    $scenarios[] = [
+      [
+        7 => [
+          'case' => 'unrecognizable case',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [2, 4],
+          ],
+        ],
+      ],
+      $metadata,
+      $tokens,
+      [
+        'expected_message' => 'The case string returned by the GermplasmNameExists validator at line #7 is not recognized as a potential case.',
+      ],
+    ];
+
+    return $scenarios;
+  }
+
+  /**
+   * Tests for exceptions thrown for passed and unrecognizable case strings.
+   *
+   * @param array $validation_results
+   *   An array of validation status arrays that get passed to the process
+   *   method. It is keyed by the line number that triggered this failed
+   *   validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *     - 'column_headers': This contains an array of headers for columns that
+   *     are expected to contain germplasm names. The index in this array MUST
+   *     match the position (starting with 0) of the column in the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Maternal Germplasm Name', // Header of column #3
+   *           '4' => 'Paternal Germplasm Name', // Header of column #5.
+   * @param array $tokens
+   *   An array of tokens to use for altering the messages that get displayed
+   *   to the user. The key is the token, (ex. 'project'), and the value is
+   *   the new value to be shown for that token.
+   * @param array $expectations
+   *   An array of expectations in the rendered output which has the following
+   *   keys:
+   *   - 'expected_message': The exception message that is expected to be
+   *     triggered.
+   *
+   * @dataProvider providePassedAndUnrecognizableCases
+   */
+  public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
+
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      $this->validator_instance->processListWithDescribedTable($validation_results, $metadata, $tokens);
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+
+    $line = array_keys($validation_results);
+    $line = reset($line);
+
+    $this->assertTrue(
+      $exception_caught,
+      'We expected an exception to be caught for case ' . $validation_results[$line]['case'] . ', but one was not thrown.'
+    );
+
+    $this->assertEquals(
+      $expectations['expected_message'],
+      $exception_message,
+      'We expected the exception message to indicate that case ' . $validation_results[$line]['case'] . ', but it does not match what was expected.',
+    );
   }
 
 }
