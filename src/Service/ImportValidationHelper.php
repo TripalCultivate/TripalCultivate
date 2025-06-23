@@ -274,4 +274,41 @@ class ImportValidationHelper {
     return TRUE;
   }
 
+  /**
+   * Take an array with table contents and fill empty cells with empty strings.
+   *
+   * @param array $table
+   *   An associative array representing the contents of a single table, with
+   *   the following keys:
+   *   - 'header': The contents of the table's header, where key = index of the
+   *     column header, and value = content of the column header.
+   *   - 'rows': The contents of the table's rows. Each row is keyed by the line
+   *     number of the original input file that triggered validation failure,
+   *     followed by the index of the column, followed by the column's contents.
+   *
+   *   Essentially, $table is structured as follows:
+   *   - ['header'][COLUMN INDEX][COLUMN VALUE]
+   *   - ['rows'][LINE NUMBER][COLUMN INDEX][COLUMN VALUE]
+   *
+   *   The resulting array is the same as @param table, but with added keys and
+   *   values (as empty string) to fully represent all cells in the table.
+   *   NOTE: $table is passed in by reference, meaning that the original array
+   *   is being modified directly and thus there is no return value.
+   */
+  public static function fillTableGaps(array &$table) {
+    // Sort the table header.
+    ksort($table['header']);
+    if (count($table['header']) > 2) {
+      foreach (array_keys($table['rows']) as $line_no) {
+        foreach (array_keys($table['header']) as $index) {
+          if (!array_key_exists($index, $table['rows'][$line_no])) {
+            $table['rows'][$line_no][$index] = '';
+          }
+        }
+        // Finally, sort the row by keys.
+        ksort($table['rows'][$line_no]);
+      }
+    }
+  }
+
 }
