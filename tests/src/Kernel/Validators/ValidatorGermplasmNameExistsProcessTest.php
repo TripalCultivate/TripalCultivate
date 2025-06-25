@@ -222,7 +222,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #3: Test for both duplicate and mssign germplasm on multiple rows and in
+    // #3: Test for both duplicate and missing germplasm on multiple rows and in
     // multiple columns.
     $scenarios[] = [
       [

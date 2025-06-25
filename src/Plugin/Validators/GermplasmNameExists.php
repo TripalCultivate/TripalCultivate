@@ -329,7 +329,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
 
-    // For this validator there are can be up to 2 tables:
+    // For this validator there can be up to 2 tables:
     // - 'table'->'missing_cells': Germplasm name not found in the database.
     // - 'table'->'duplicate_cells': Germplasm name has multiple records.
     $table = [];
