@@ -489,6 +489,9 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
   /**
    * Valid delimited file process message.
    *
+   * @todo Remove this method and any reference when the process method for
+   * ValidDelimitedFile becomes available.
+   *
    * REMOVE IF NOT REQUIRED.
    *
    * @param array $failures
