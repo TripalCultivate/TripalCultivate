@@ -30,13 +30,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * 3. Add configuration for your validator below the block titled
  * "CONFIGURE VALIDATOR HERE".
  *
- * 4. Call the validate method for your validator below the appropriate
- * "CALL VALIDATE" block depending on the input type.
- *
- * 5. Call the process message method for your validator below the
+ * 4. Call the process message method for your validator below the
  * "CALL PROCESS MESSAGE" block.
  *
- * 6. Save these changes and clear the cache to see them reflected in
+ * 5. Save these changes and clear the cache to see them reflected in
  * the webpage. Make sure to attach this edited file to your PR within your
  * testing instructions.
  *
