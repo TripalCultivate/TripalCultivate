@@ -274,7 +274,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    *
-   * THIS METHOD IS REQUIRED!
+   * DO NOT MODIFY.
    */
   public function formValidate($form, &$form_state) {
 
