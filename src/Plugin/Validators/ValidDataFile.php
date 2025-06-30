@@ -55,12 +55,12 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     'case-invalid-fid' => [
       'token' => 'case-invalid-fid',
       'dev-case' => 'Invalid file id number',
-      'default-msg' => 'A problem occured in between uploading the file and submitting it for validation. Please try uploading and submitting it again, or [contact-admin] if the problem persists.',
+      'default-msg' => 'A problem occurred in between uploading the file and submitting it for validation. Please try uploading and submitting it again, or [contact-admin] if the problem persists.',
     ],
     'case-failed-fid' => [
       'token' => 'case-failed-fid',
       'dev-case' => 'File id failed to load a file object',
-      'default-msg' => 'A problem occured in between uploading the file and submitting it for validation. Please try uploading and submitting it again, or [contact-admin] if the problem persists.',
+      'default-msg' => 'A problem occurred in between uploading the file and submitting it for validation. Please try uploading and submitting it again, or [contact-admin] if the problem persists.',
     ],
     'case-empty-file' => [
       'token' => 'case-empty-file',
@@ -84,7 +84,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     ],
     'contact-admin' => [
       'token' => 'contact-admin',
-      'default-message' => 'contact your administrator',
+      'default-msg' => 'contact your administrator',
     ],
     'case-valid' => [
       'token' => 'case-valid',
@@ -336,6 +336,8 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
 
     // Define our items array.
     $items = [];
+    // Initialize message string.
+    $message = '';
 
     if (($validation_status['case'] == self::$mapping['case-invalid-fid']['dev-case']) ||
         ($validation_status['case'] == self::$mapping['case-failed-fid']['dev-case'])) {
@@ -356,7 +358,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     elseif (($validation_status['case'] == self::$mapping['case-unsupported-mime']['dev-case']) ||
             ($validation_status['case'] == self::$mapping['case-unsupported-extension']['dev-case'])) {
 
-      $message = $combined_tokens['case-unsupported-mim'];
+      $message = $combined_tokens['case-unsupported-mime'];
       // Give more info to the user AND log a message to the administrator using
       // these failed items:
       $file_mime = $validation_status['failedItems']['mime'];
