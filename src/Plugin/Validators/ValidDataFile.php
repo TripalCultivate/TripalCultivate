@@ -37,13 +37,17 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *   The following tokens are implemented for this mapping, with the following
    *   descriptions for their 'default-msg' values:
    *   - 'case-invalid-fid': the message when a file id is not a valid value.
-   *   - 'case-failed-fid': the message when a file id failed to load a file object.
-   *   - 'case-empty-file': the message when a file has no data or is an empty file.
-   *   - 'case-unsupported-mime': the message when file MIME type is not supported.
-   *   - 'case-unsupported-extension': the message when file type in not supported.
+   *   - 'case-failed-fid': the message when a file id failed to load a
+   *     file object.
+   *   - 'case-empty-file': the message when a file has no data or is an
+   *     empty file.
+   *   - 'case-unsupported-mime': the message when file MIME type is
+   *     not supported.
+   *   - 'case-unsupported-extension': the message when file type in
+   *     not supported.
    *   - 'case-locked-file': the message when a file could not be opened.
-   *   - 'case-contact-admin': the phrase to use when the user needs a priviledged
-   *     administrator to fix the problem.
+   *   - 'case-contact-admin': the phrase to use when the user needs a
+   *     priviledged administrator to fix the problem.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
@@ -78,7 +82,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       'dev-case' => 'Data file cannot be opened',
       'default-msg' => 'The file provided could not be opened. Please [contact-admin] for help.',
     ],
-    'contact-admin' = [
+    'contact-admin' => [
       'token' => 'contact-admin',
       'default-message' => 'contact your administrator',
     ],
@@ -286,13 +290,17 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
    *     - 'case-invalid-fid': the message when a file id is not a valid value.
-   *     - 'case-failed-fid': the message when a file id failed to load a file object.
-   *     - 'case-empty-file': the message when a file has no data or is an empty file.
-   *     - 'case-unsupported-mime': the message when file MIME type is not supported.
-   *     - 'case-unsupported-extension': the message when file type in not supported.
+   *     - 'case-failed-fid': the message when a file id failed to load a
+   *       file object.
+   *     - 'case-empty-file': the message when a file has no data or is an
+   *       empty file.
+   *     - 'case-unsupported-mime': the message when file MIME type is
+   *       not supported.
+   *     - 'case-unsupported-extension': the message when file type in
+   *       not supported.
    *     - 'case-locked-file': the message when a file could not be opened.
-   *     - 'case-contact-admin': the phrase to use when the user needs a priviledged
-   *       administrator to fix the problem.
+   *     - 'case-contact-admin': the phrase to use when the user needs a
+   *       priviledged administrator to fix the problem.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
@@ -310,7 +318,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
   public function processItemWithSimpleList(array $validation_status, array $tokens = []) {
 
     // Check the format of the validation_result parameter.
-    ImportValidationHelper::checkValidationStatusArray($validation_status 'ValidDataFile');
+    ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidDataFile');
     // Grab the default messages for all of our tokens (ones with default-msg).
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
     // Combine our provided and our default token arrays. Because array_merge
