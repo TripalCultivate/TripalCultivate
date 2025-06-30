@@ -88,7 +88,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     ],
     'case-valid' => [
       'token' => 'case-valid',
-      'dev-case' => 'No empty values found in required column(s)',
+      'dev-case' => 'Data file is valid',
     ],
   ];
 
@@ -306,12 +306,12 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *   A render array of type unordered list which is used to display feedback
    *   to the user about the case that failed and the failed items from the
    *   input file. The one item in the list is either the filename, as below:
-   *   - Filename: $validation_status['failedItems']['filename']
-   *   OR it is a message informing the user that their file's extension and
-   *   mime type are not compatible.
+   *     - Filename: $validation_status['failedItems']['filename']
+   *       OR it is a message informing the user that their file's extension and
+   *       mime type are not compatible.
    *
    * @throws \Exception
-   *   - If the validation_result parameter was not formatted properly.
+   *   - If the $validation_status parameter was not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
