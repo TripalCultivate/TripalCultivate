@@ -213,7 +213,7 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     // $instance->setExpectedColumns(count($this->headers), TRUE);
     // $instance->setFileMimeType($file_mime_type);
     // $instance->setHeaders($this->headers);
-    // $instance->setIndices(1);
+    // $instance->setIndices([0, 1]);.
     //
     $instance->setExpectedColumns(count($this->headers), TRUE);
     $instance->setFileMimeType($file_mime_type);
