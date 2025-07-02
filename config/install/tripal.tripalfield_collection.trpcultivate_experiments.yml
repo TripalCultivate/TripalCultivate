@@ -139,6 +139,54 @@ fields:
             default:
               region: content
 
+    -   name: exp_dataset
+        content_type: research_experiment
+        label: Datasets
+        type: chado_property_type_default
+        description: Use this field to describe specific datasets to be attached to the experiment. You should preferentially use the importers for data. This field is meant for datasets not yet supported by our system. Make sure to describe every column of tabular data.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: C25474
+        display:
+          view:
+            default:
+              region: content
+              label: hidden
+          form:
+            default:
+              region: content
+
+    -   name: exp_research_outputs
+        content_type: research_experiment
+        label: Research Outputs
+        type: chado_property_type_default
+        description: Include non-dataset focused research outputs here such as software and presentations.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: CO_010
+            termAccession: '0000159'
+        display:
+          view:
+            default:
+              region: content
+              label: hidden
+          form:
+            default:
+              region: content
+
 ### -------------------------------------------------------------------------
 ## ATTRIBUTION
 ###
@@ -697,6 +745,30 @@ fields:
               region: content
               weight: 2
 
+    -   name: researchstudy_dataset
+        content_type: research_study
+        label: Datasets
+        type: chado_property_type_default
+        description: Use this field to describe specific datasets to be attached to the experiment. You should preferentially use the importers for data. This field is meant for datasets not yet supported by our system. Make sure to describe every column of tabular data.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: C25474
+        display:
+          view:
+            default:
+              region: content
+              label: hidden
+          form:
+            default:
+              region: content
+
     -   name: researchstudy_type
         content_type: research_study
         label: Type
@@ -775,6 +847,78 @@ fields:
             default:
               region: content
               weight: 100
+
+    -   name: researchstudy_projectdescription
+        content_type: research_study
+        label: Project Description
+        type: chado_property_type_default
+        description: Description of a project.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: Project Description
+        display:
+          view:
+            default:
+              region: content
+              label: above
+          form:
+            default:
+              region: content
+
+    -   name: researchstudy_research_outputs
+        content_type: research_study
+        label: Research Outputs
+        type: chado_property_type_default
+        description: Include non-dataset focused research outputs here such as software and presentations.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: CO_010
+            termAccession: '0000159'
+        display:
+          view:
+            default:
+              region: content
+              label: hidden
+          form:
+            default:
+              region: content
+
+    -   name: researchstudy_url_token
+        content_type: research_study
+        label: Url-token
+        type: chado_property_type_default
+        description: This token should be unique and should not include spaces or any special characters. Usually it is based on the title or uniquename of the content. IT SHOULD NOT BE CHANGED ONCE SET OR YOU RISK BREAKING LINKS. If you must change it then make sure to setup a redirect for the old link.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: local
+            termAccession: 'url-token'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+          form:
+            default:
+              region: content
 
   ## GERMPLASM ---------------------------------------------------------------
 
@@ -885,11 +1029,36 @@ fields:
               region: content
               weight: 30
 
+    -   name: researchstudy_collaborator
+        content_type: research_study
+        label: Collaborator
+        type: chado_contact_by_role_type_default
+        description: The researcher(s) that collaborates on the research study — this field should be used only for researchers who do not fall under any other categories.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                linker_table: project_contact
+                linker_fkey_column: contact_id
+        settings:
+            termIdSpace: CO_010
+            termAccession: '0000348'
+        display:
+          view:
+            default:
+              region: content
+              label: hidden
+          form:
+            default:
+              region: content
+
     -   name: researchstudy_curator
         content_type: research_study
         label: Data Curator
         type: chado_contact_by_role_type_default
-        description: The researcher(s) responsible for curatingthe metadata associated with this research study.
+        description: The researcher(s) responsible for curating the metadata associated with this research study.
         cardinality: -1
         required: false
         storage_settings:
@@ -1464,3 +1633,31 @@ fields:
             default:
               region: content
               weight: 100
+
+  ## FUNDING -----------------------------------------------------------------
+
+    -   name: grant_funding_range
+        content_type: grant_section
+        label: Funding Range
+        type: chado_property_type_default
+        description: The year range that this study is funded for.
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: chado_storage
+            storage_plugin_settings:
+                base_table: project
+                prop_table: projectprop
+        settings:
+            termIdSpace: NCIT
+            termAccession: 'C29848'
+        display:
+          view:
+            default:
+              region: content
+              label: above
+              weight: 50
+          form:
+            default:
+              region: content
+              weight: 50
