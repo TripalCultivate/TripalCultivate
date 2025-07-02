@@ -28,6 +28,58 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
   use ColumnCount;
 
   /**
+   * A mapping of all of the tokens supported by this validator.
+   *
+   * @var array
+   *   An associative array mapping tokens to their details, such as the
+   *   developer case string and the default message to substitute the token.
+   *   The following tokens are implemented for this mapping, with the following
+   *   descriptions for their 'default-msg' values:
+   *   - 'case-empty-row': the message when a row is empty string.
+   *   - 'case-no-delimiter': the message when no delimiter was used.
+   *   - 'case-excess-columns': the message when row has excess columns.
+   *   - 'case-insufficient-columns': the message when row has less columns.
+   *
+   * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
+   */
+  protected static array $mapping = [
+    'case-empty-row' => [
+      'token' => 'case-empty-row',
+      'dev-case' => 'Raw row is empty',
+      'default-msg' => 'The following lines in the input file do not contain a valid delimiter supported by this importer.',
+    ],
+    'case-no-delimiter' => [
+      'token' => 'case-no-delimiter',
+      'dev-case' => 'None of the delimiters supported by the file type was used',
+      'default-msg' => '',
+    ],
+    'case-excess-columns' => [
+      'token' => 'case-excess-columns',
+      'dev-case' => 'Raw row exceeds number of strict columns',
+      'default-msg' => '',
+    ],
+    'case-insufficient-columns' => [
+      'token' => 'case-insufficient-columns',
+      'dev-case' => 'Raw row has insufficient number of columns',
+      'default-msg' => 'This importer requires a [strict-or-min] number of [num-expected-columns] columns for each line. The following lines do not contain the expected number of columns.',
+    ],
+    'strict-or-min' => [
+      'token' => 'strict-or-min',
+    ],
+    'num-expected-columns' => [
+      'token' => 'num-expected-columns',
+    ],
+    'case-valid-singlecol' => [
+      'token' => 'case-valid-singlecol',
+      'dev-case' => 'Raw row has expected number of columns',
+    ],
+    'case-valid' => [
+      'token' => 'case-valid',
+      'dev-case' => 'Raw row is delimited',
+    ],
+  ];
+
+  /**
    * Perform validation of a raw row in a data file.
    *
    * Checks include:
@@ -57,7 +109,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     // Parameter check, verify that raw row is not an empty string.
     if (empty(trim($raw_row))) {
       return [
-        'case' => 'Raw row is empty',
+        'case' => self::$mapping['case-empty-row']['dev-case'],
         'valid' => FALSE,
         'failedItems' => [
           'raw_row' => $raw_row,
@@ -88,14 +140,14 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
       // number of columns is set to 1.
       if ($expected_columns['number_of_columns'] == 1) {
         return [
-          'case' => 'Raw row has expected number of columns',
+          'case' => self::$mapping['case-valid-singlecol']['dev-case'],
           'valid' => TRUE,
           'failedItems' => [],
         ];
       }
 
       return [
-        'case' => 'None of the delimiters supported by the file type was used',
+        'case' => self::$mapping['case-no-delimiter']['dev-case'],
         'valid' => FALSE,
         'failedItems' => [
           'raw_row' => $raw_row,
@@ -110,7 +162,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
       // The line has more columns than expected.
       if ($expected_columns['strict']) {
         return [
-          'case' => 'Raw row exceeds number of strict columns',
+          'case' => self::$mapping['case-excess-columns']['dev-case'],
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row,
@@ -124,7 +176,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     if ($no_cols < $expected_columns['number_of_columns']) {
       // The line has less column than expected.
       return [
-        'case' => 'Raw row has insufficient number of columns',
+        'case' => self::$mapping['case-insufficient-columns']['dev-case'],
         'valid' => FALSE,
         'failedItems' => [
           'raw_row' => $raw_row,
@@ -135,7 +187,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     }
 
     return [
-      'case' => 'Raw row is delimited',
+      'case' => self::$mapping['case-valid']['dev-case'],
       'valid' => TRUE,
       'failedItems' => [],
     ];
