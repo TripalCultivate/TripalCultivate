@@ -127,13 +127,6 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *     - 'failedItems': an array of items that failed, where the key => value
    *       pairs map to the index => cell value(s) that failed validation.
    *       @see validateRow()
-   * @param array $tokens
-   *   [OPTIONAL] An array of values to use for token replacement.
-   *   @see EmptyCell::$mapping
-   *   The following token keys will substitute the entire existing case message
-   *   to the user with the value of that token.
-   *   - 'case-empty-value': the message when a specific row-column does not
-   *     contain a value.
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
@@ -143,14 +136,22 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *     Eg: 'column_headers' => [
    *           '2' => 'Header 2', // Header of column #3
    *           '4' => 'Header 4', // Header of column #5
-   *         ].
+   *         ];.
+   * @param array $tokens
+   *   [OPTIONAL] An array of values to use for token replacement.
+   *   @see EmptyCell::$mapping
+   *   The following token keys will substitute the entire existing case message
+   *   to the user with the value of that token.
+   *   - 'case-empty-value': the message when a specific row-column does not
+   *     contain a value.
    *
    * @return array
    *   A render array of type "unordered list" used to display feedback to the
-   *   user about the validation failure, where:
-   *   - The 'title' is a sentence describing the case triggered
-   *   - The 'items' include a table that lists the row and column combinations
-   *     with empty cells. It has the following headers:
+   *   user about the validation failure, where each item is a
+   *   markup block containing:
+   *   - A message describing the case triggered.
+   *   - A table that lists the row and column combinations with empty cells.
+   *     It has the following headers.
    *     - 'Line Number'
    *     - 'Column(s) with empty value'
    *
@@ -159,7 +160,7 @@ class EmptyCell extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithDescribedTable(array $validation_results, array $tokens = [], array $metadata = []) {
+  public static function processListWithDescribedTable(array $validation_results, array $metadata, array $tokens = []) {
 
     // Define our table header.
     $table_header = ['Line Number', 'Column(s) with empty value'];

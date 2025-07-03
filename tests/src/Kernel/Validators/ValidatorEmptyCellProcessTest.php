@@ -108,7 +108,6 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
   public static function provideEmptyCellFailedCases() {
 
     $scenarios = [];
-    $tokens = [];
     $metadata = [
       'column_headers' => [
         'Trait Name',
@@ -119,6 +118,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
         'Type',
       ],
     ];
+    $tokens = [];
 
     // #0: One empty required column on line #5
     $scenarios[] = [
@@ -131,8 +131,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
-      $tokens,
       $metadata,
+      $tokens,
       [
         'expected_message' => 'The following line number and column header combinations were empty, but a value is required.',
         5 => [
@@ -159,8 +159,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
-      $tokens,
       $metadata,
+      $tokens,
       [
         'expected_message' => 'The following line number and column header combinations were empty, but a value is required.',
         3 => [
@@ -190,8 +190,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
-      $tokens,
       $metadata,
+      $tokens,
       [
         'expected_message' => 'The following line number and column header combinations were empty, but a value is required.',
         2 => [
@@ -214,10 +214,10 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       [
         'case-empty-value' => 'Nothing provided.',
       ],
-      $metadata,
       [
         'expected_message' => 'Nothing provided.',
         3 => [
@@ -241,10 +241,6 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *     - 'failedItems': an array of items that failed with the following keys.
    *       - 'empty_indices': A list of column indices in the line which were
    *         checked and found to be empty.
-   * @param array $tokens
-   *   An array of tokens to use for altering the messages that get displayed
-   *     to the user. The key is the token, (ex. 'project'), and the value is
-   *     the new value to be shown for that token.
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
@@ -254,7 +250,11 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *       Eg: 'column_headers' => [
    *             '2' => 'Header 1', // Header of column #3
    *             '4' => 'Header 2', // Header of column #5
-   *           ].
+   *           ];.
+   * @param array $tokens
+   *   An array of tokens to use for altering the messages that get displayed
+   *   to the user. The key is the token, (ex. 'project'), and the value is
+   *   the new value to be shown for that token.
    * @param array $expectations
    *   An array of expectations that we want to find in the resulting rendered
    *   output which has the following keys:
@@ -267,9 +267,9 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideEmptyCellFailedCases
    */
-  public function testProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
+  public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
-    $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $tokens, $metadata);
+    $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
@@ -347,12 +347,12 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
 
     $scenarios = [];
 
-    // Make tokens an empty array for now. Maybe in the future we'll want to
-    // incorporate them into exception messages?
-    $tokens = [];
     $metadata = [
       'column_headers' => [],
     ];
+    // Make tokens an empty array for now. Maybe in the future we'll want to
+    // incorporate them into exception messages?
+    $tokens = [];
 
     // #0: EmptyCell passed.
     $scenarios[] = [
@@ -365,8 +365,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
-      $tokens,
       $metadata,
+      $tokens,
       [
         'expected_message' => 'The case string returned by the EmptyCell validator at line #6 implies validation passed, but valid is set to FALSE.',
       ],
@@ -383,8 +383,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
-      $tokens,
       $metadata,
+      $tokens,
       [
         'expected_message' => 'The case string returned by the EmptyCell validator at line #7 is not recognized as a potential case.',
       ],
@@ -405,10 +405,6 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *     - 'failedItems': an array of items that failed with the following key:
    *       - 'empty_indices': A list of column indices in the line which were
    *         checked and found to be empty.
-   * @param array $tokens
-   *   An array of tokens to use for altering the messages that get displayed
-   *   to the user. The key is the token, (ex. 'project'), and the value is
-   *   the new value to be shown for that token.
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
@@ -418,6 +414,10 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *       Eg: 'column_headers' => [
    *             '2' => 'Header 1', // Header of column #3
    *             '4' => 'Header 2', // Header of column #5.
+   * @param array $tokens
+   *   An array of tokens to use for altering the messages that get displayed
+   *   to the user. The key is the token, (ex. 'project'), and the value is
+   *   the new value to be shown for that token.
    * @param array $expectations
    *   An array of expectations in the rendered output which has the following
    *   keys:
@@ -426,13 +426,13 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessListWithDescribedTableExceptions(array $validation_results, array $tokens, array $metadata, array $expectations) {
+  public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      $this->validator_instance->processListWithDescribedTable($validation_results, $tokens, $metadata);
+      $this->validator_instance->processListWithDescribedTable($validation_results, $metadata, $tokens);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
