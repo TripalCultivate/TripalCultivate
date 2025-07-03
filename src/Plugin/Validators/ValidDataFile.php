@@ -43,8 +43,8 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *     empty file.
    *   - 'case-unsupported-mime': the message when file MIME type is
    *     not supported.
-   *   - 'case-unsupported-extension': the message when file type in
-   *     not supported.
+   *   - 'case-unsupported-extension': the message when mime type and extension
+   *     are not supported.
    *   - 'case-locked-file': the message when a file could not be opened.
    *   - 'case-contact-admin': the phrase to use when the user needs a
    *     priviledged administrator to fix the problem.
@@ -70,12 +70,12 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     'case-unsupported-mime' => [
       'token' => 'case-unsupported-mime',
       'dev-case' => 'Unsupported file MIME type',
-      'default-msg' => 'The type of file uploaded is not supported by this importer. Please ensure your file has one of the supported file extensions and was saved using software that supports that type of file. For example, a \'tsv\' file should be saved as such by a spreadsheet editor such as Microsoft Excel',
+      'default-msg' => 'The type of file uploaded is not supported by this importer. Please ensure your file has one of the supported file extensions and was saved using software that supports that type of file. For example, a \'tsv\' file should be saved as such by a spreadsheet editor such as Microsoft Excel.',
     ],
     'case-unsupported-extension' => [
       'token' => 'case-unsupported-extension',
       'dev-case' => 'Unsupported file mime type and unsupported extension',
-      'default-msg' => 'The type of file uploaded is not supported by this importer. Please ensure your file has one of the supported file extensions and was saved using software that supports that type of file. For example, a \'tsv\' file should be saved as such by a spreadsheet editor such as Microsoft Excel',
+      'default-msg' => 'The type of file uploaded is not supported by this importer. Please ensure your file has one of the supported file extensions and was saved using software that supports that type of file. For example, a \'tsv\' file should be saved as such by a spreadsheet editor such as Microsoft Excel.',
     ],
     'case-locked-file' => [
       'token' => 'case-locked-file',
@@ -294,8 +294,8 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *       empty file.
    *     - 'case-unsupported-mime': the message when file MIME type is
    *       not supported.
-   *     - 'case-unsupported-extension': the message when file type in
-   *       not supported.
+   *     - 'case-unsupported-extension': the message when mime type and
+   *       extension are not supported.
    *     - 'case-locked-file': the message when a file could not be opened.
    *     - 'case-contact-admin': the phrase to use when the user needs a
    *       priviledged administrator to fix the problem.
@@ -315,7 +315,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    */
   public function processItemWithSimpleList(array $validation_status, array $tokens = []) {
 
-    // Check the format of the $validation_status parameter.
+    // Check the format of the validation_status parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidDataFile');
     // Grab the default messages for all of our tokens (ones with default-msg).
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
@@ -341,7 +341,6 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
         ($validation_status['case'] == self::$mapping['case-failed-fid']['dev-case'])) {
 
       $message = $combined_tokens['case-invalid-fid'];
-
       // Get the fid of the uploaded file.
       $fid = $validation_status['failedItems']['fid'];
       // Log a message for the administrator to help with debugging the issue.
