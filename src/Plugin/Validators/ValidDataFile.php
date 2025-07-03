@@ -271,19 +271,17 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *
    * @param array $validation_status
    *   An associative array that stores the validation failures by the
-   *   EmptyCell validator. It is keyed by the line number of the input
-   *   file where validation failed, and the value is an associative array
-   *   returned by the validator. Here is the overall structure:
-   *   - [LINE NUMBER]:
+   *   ValidDataFile validator. It is an associative array returned by the
+   *   validator. Here is the overall structure:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed with one or more of the
-   *     following keys:
-   *       - 'filename': The provided name of the file.
-   *       - 'fid': The fid of the provided file.
-   *       - 'mime': The mime type of the input file if it is not supported.
-   *       - 'extension': The extension of the input file if not supported.
-   *       @see validateFile()
+   *       following keys:
+   *         - 'filename': The provided name of the file.
+   *         - 'fid': The fid of the provided file.
+   *         - 'mime': The mime type of the input file if it is not supported.
+   *         - 'extension': The extension of the input file if not supported.
+   *         @see validateFile()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see ValidDataFile::$mapping
@@ -317,7 +315,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    */
   public function processItemWithSimpleList(array $validation_status, array $tokens = []) {
 
-    // Check the format of the validation_result parameter.
+    // Check the format of the $validation_status parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidDataFile');
     // Grab the default messages for all of our tokens (ones with default-msg).
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
