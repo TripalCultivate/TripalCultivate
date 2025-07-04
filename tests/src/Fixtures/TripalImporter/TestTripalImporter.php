@@ -28,7 +28,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Tripal > Data Loaders as "Tripal Cultivate: Test Importer".
  *
  * 3. Add configuration for your validator below the block titled
- * "CONFIGURE VALIDATOR HERE".
+ * "CONFIGURE VALIDATOR HERE". If your validator requires form field elements,
+ * use the method insertTestFields() to insert each fields.
  *
  * 4. Call the process message method for your validator below the
  * "CALL PROCESS MESSAGE" block.
@@ -269,12 +270,42 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
   }
 
   /**
+   * Insert form fields required by a validator.
+   *
+   * This is a simplified alternative method for creating form field elements
+   * instead of using the Drupal Form API in the form() method.
+   *
+   * DO NOT IMPLEMENT IN PRODUCTION IMPORTER!
+   *
+   * @param object $form_state
+   *   Drupal form state object.
+   *
+   * @return void
+   *   No return value.
+   */
+  public function insertTestFields(&$form_state) {
+
+    // TESTING VALIDATOR WITH REQUIRED FORM FIELD ELEMENTS.
+    // ............................................................
+    //
+    // Insert the following line for each form fields required by a validator.
+    // $form_state->setValue('FORM FIELD #1 NAME', 'VALUE);
+    // $form_state->setValue('FORM FIELD #2 NAME', 'VALUE);
+    //
+    // Example:
+    // Test ProjectExists validator that requires a field element named project.
+    // $form_state->setValue('project', 'My Test Project');.
+    //
+  }
+
+  /**
    * {@inheritdoc}
    *
    * DO NOT MODIFY.
    */
   public function formValidate($form, &$form_state) {
 
+    $this->insertTestFields($form_state);
     $form_values = $form_state->getValues();
 
     $file_id = $form_values['file_upload'];
