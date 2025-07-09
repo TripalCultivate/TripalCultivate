@@ -193,4 +193,161 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     ];
   }
 
+  /**
+   * Processes failed validation from ValidDelimitedFile into a render array.
+   *
+   * @param array $validation_results
+   *   An associative array that stores the validation failures by the
+   *   EmptyCell validator. It is keyed by the line number of the input
+   *   file where validation failed, and the value is an associative array
+   *   returned by the validator. Here is the overall structure:
+   *   - [LINE NUMBER]:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   *       @see validateRow()
+   * @param array $tokens
+   *   [OPTIONAL] An array of values to use for token replacement.
+   *   @see ValidDelimitedFile::$mapping
+   *   The following token keys will substitute the entire existing case message
+   *   to the user with the value of that token.
+   *     - 'case-empty-row': the message when a row is empty string.
+   *     - 'case-no-delimiter': the message when no delimiter was used.
+   *     - 'case-excess-columns': the message when row has excess columns.
+   *     - 'case-insufficient-columns': the message when row has less columns.
+   *
+   * @return array
+   *   A render array of type unordered list which is used to display feedback
+   *   to the user about the case(s) that failed and the failed items from the
+   *   input file. This unordered list will include a table for each potential
+   *   case in the $failures array:
+   *   - A table for lines that are empty or contain unsupported delimiters
+   *   - A table for lines that once delimited, do not contain the expected
+   *     number of columns.
+   *   Both tables contain the following headers:
+   *   - 'Line Number'
+   *   - 'Line Contents'
+   *
+   * @throws \Exception
+   *   - If the validation_results parameter was not formatted properly.
+   *   - If the case string returned by the validator implied validation passed.
+   *   - If the case string returned by the validator is not recognized.
+   */
+  public function processListWithDescribedTable(array $validation_results, array $tokens = []) {
+
+    // Define our table headers.
+    $table_header = ['Line Number', 'Line Contents'];
+
+    // For this validator there can be up to 2 tables:
+    // - 'table'->'unsupported': Empty rows or no supported delimiters present.
+    // - 'table'->'delimited': Rows that don't delimit to the expected number of
+    //   columns.
+    $table = [];
+    // Loop through each row in the $failures array and piece apart the
+    // different cases into different tables.
+    foreach ($failures as $line_no => $validation_result) {
+      // Check the format of the validation_result parameter.
+      ImportValidationHelper::checkValidationStatusArray($validation_results, 'ValidDelimitedFile', $line_no);
+      // Keeps track of which table this one line's validation result gets added
+      // to based on the case it triggered.
+      $table_case = '';
+      if (($validation_result['case'] == self::$mapping['case-empty-row']['dev-case']) ||
+          ($validation_result['case'] == self::$mapping['case-no-delimiter']['dev-case'])) {
+
+        $table_case = 'unsupported';
+      }
+      elseif (($validation_result['case'] == self::$mapping['case-excess-columns']['dev-case']) ||
+              ($validation_result['case'] == self::$mapping['case-insufficient-column']['dev-case'])) {
+
+        $table_case = 'delimited';
+        if (!isset($num_expected_columns)) {
+          $num_expected_columns = $validation_result['failedItems']['expected_columns'];
+          $strict = $validation_result['failedItems']['strict'];
+        }
+      }
+      elseif (($validation_result['case'] == self::$mapping['case-valid']['dev-case']) ||
+              ($validation_result['case'] == self::$mapping['case-valid-singlecol']['dev-case'])) {
+
+        throw new \Exception("The case string returned by the ValidDelimitedFile validator at line #$line_no implies validation passed, but valid is set to FALSE.");
+      }
+      else {
+        throw new \Exception("The case string returned by the ValidDelimitedFile validator at line #$line_no is not recognized as a potential case.");
+      }
+
+      // Checked all cases, now add a row to our appropriate table.
+      if (!array_key_exists($table_case, $table)) {
+        // Declare the array storing rows for this table, if not already.
+        $table[$table_case]['rows'] = [];
+      }
+      $table[$table_case]['rows'][] = [
+        $line_no,
+        $validation_result['failedItems']['raw_row'],
+      ];
+    }
+
+    // Grab the default messages for all of our tokens (ones with default-msg).
+    $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
+    // Combine our provided and our default token arrays. Because array_merge
+    // will overwrite values in the first array with values from the second
+    // array for the same keys, we provide our default tokens first.
+    $combined_tokens = array_merge($default_tokens, $tokens);
+
+    // Check which tables were created, and assign the correct message.
+    // Note that both tables can exist at the same time.
+    if (array_key_exists('unsupported', $table)) {
+      $table['unsupported']['message'] = $combined_tokens['case-empty-row'];
+    }
+
+    if (array_key_exists('delimited', $table)) {
+      $delimited_msg = $service_TripalTokensParser->replaceTokensArray(
+        $combined_tokens['case-insufficient-columns'],
+        [
+          self::$mapping['strict-or-min']['token'] => ($strict) ? 'strict' : 'minimum',
+          self::$mapping['number-expected-columns']['token'] => $num_expected_columns,
+        ],
+      );
+
+      $table['delimited']['message'] = $delimited_msg;
+    }
+
+    // Finally, loop through our tables and build our render array.
+    $tables = [];
+    foreach ($table as $table_key => $table_case) {
+      $replaced_message = $service_TripalTokensParser->replaceTokens($table_case['message'], $combined_tokens);
+
+      $tables[] = [
+        [
+          '#prefix' => '<div class="case-message case-' . $table_key . '">',
+          '#markup' => $replaced_message,
+          '#suffix' => '</div>',
+        ],
+        [
+          '#type' => 'table',
+          '#header' => $table_header,
+          '#attributes' => [
+            'class' => [
+              'tcp-raw-row',
+              'table-case-' . $table_key,
+            ],
+          ],
+          '#rows' => $table_case['rows'],
+        ],
+      ];
+    }
+
+    $render_array = [
+      '#theme' => 'item_list',
+      '#type' => 'ul',
+      '#attributes' => [
+        'class' => [
+          'tcp-valid-delimited-file-failures',
+        ],
+      ],
+      '#items' => $tables,
+    ];
+
+    return $render_array;
+  }
+
 }
