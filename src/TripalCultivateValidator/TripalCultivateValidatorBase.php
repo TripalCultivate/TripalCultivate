@@ -25,7 +25,7 @@ abstract class TripalCultivateValidatorBase extends PluginBase implements Tripal
    * A mapping array that maps tokens to their details for a validator.
    *
    * This mapping starts with all of the potential cases for a validator,
-   * followed by additional tokens which are subsitutable within the message(s)
+   * followed by additional tokens which are substitutable within the message(s)
    * provided to the user when validation fails.
    *
    * For each case, the array keys are the substitutable tokens for the entire
@@ -53,7 +53,7 @@ abstract class TripalCultivateValidatorBase extends PluginBase implements Tripal
    * - 'token': the substitutable text in a message. This text would become
    *   flanked by brackets within a message string. For eg. [token]
    * - 'default-msg': A string that would substitute the associated token
-   *   within a case message.
+   *   elsewhere in the render array (e.g. within the case message).
    */
   protected static array $mapping = [];
 

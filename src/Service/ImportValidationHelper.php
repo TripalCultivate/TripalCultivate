@@ -316,10 +316,10 @@ class ImportValidationHelper {
    *
    * @param string $message
    *   A non-empty string that is the message to be displayed to the user. If
-   *   desired, this string may include css formatting.
+   *   desired, this string may include HTML tags.
    * @param array $classes
    *   [OPTIONAL] An array of strings to give to '#wrapper_attributes' of the
-   *   render array as a set of css classed. By default, this method adds the
+   *   render array as a set of css classes. By default, this method adds the
    *   class:
    *   - 'simple-validation-warning'.
    *
