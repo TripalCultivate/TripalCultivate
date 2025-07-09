@@ -266,7 +266,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
   public function testProcessItemWithSimpleList(array $validation_status, array $tokens, array $expectations) {
 
     // Call the process method on our validation result.
-    $render_array = $this->validator_instance->processItemWithSimpleList($validation_status, $tokens);
+    $render_array = $this->validator_instance::processItemWithSimpleList($validation_status, $tokens);
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
@@ -381,7 +381,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      $this->validator_instance->processItemWithSimpleList($validation_status, $tokens);
+      $this->validator_instance::processItemWithSimpleList($validation_status, $tokens);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;

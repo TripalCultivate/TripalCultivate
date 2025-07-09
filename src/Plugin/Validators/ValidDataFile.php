@@ -4,8 +4,6 @@ namespace Drupal\trpcultivate\Plugin\Validators;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\tripal\Services\TripalLogger;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
@@ -102,20 +100,6 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
   protected EntityTypeManagerInterface $service_EntityTypeManager;
 
   /**
-   * Tripal logger service.
-   *
-   * @var \Drupal\tripal\Services\TripalLogger
-   */
-  protected TripalLogger $service_TripalLogger;
-
-  /**
-   * Current user service.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected AccountInterface $service_CurrentUser;
-
-  /**
    * Constructs an instance of the ValidDataFile validator.
    *
    * @param array $configuration
@@ -126,25 +110,17 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *   The plugin implementation definition.
    * @param Drupal\Core\Entity\EntityTypeManagerInterface $service_EntityTypeManager
    *   The entity type manager service.
-   * @param \Drupal\tripal\Services\TripalLogger $service_TripalLogger
-   *   Tripal logger service.
-   * @param \Drupal\Core\Session\AccountInterface $service_CurrentUser
-   *   Current user service.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
     EntityTypeManagerInterface $service_EntityTypeManager,
-    TripalLogger $service_TripalLogger,
-    AccountInterface $service_CurrentUser,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
-    // Set services.
+    // Set service.
     $this->service_EntityTypeManager = $service_EntityTypeManager;
-    $this->service_TripalLogger = $service_TripalLogger;
-    $this->service_CurrentUser = $service_CurrentUser;
   }
 
   /**
@@ -156,8 +132,6 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('tripal.logger'),
-      $container->get('current_user'),
     );
   }
 
@@ -339,7 +313,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public function processItemWithSimpleList(array $validation_status, array $tokens = []) {
+  public static function processItemWithSimpleList(array $validation_status, array $tokens = []) {
 
     // Check the format of the validation_status parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidDataFile');
@@ -351,9 +325,12 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
 
+    $container = \Drupal::getContainer();
+
     // Get the current user in case we trigger a case that needs to log a
     // message to the administrator.
-    $username = $this->service_CurrentUser->getAccountName();
+    $username = $container->get('current_user')->getAccountName();
+    $service_TripalLogger = $container->get('tripal.logger');
 
     // Define our items array.
     $items = [];
@@ -366,7 +343,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       $fid = $validation_status['failedItems']['fid'];
 
       // Log a message for the administrator to help with debugging the issue.
-      $this->service_TripalLogger
+      $service_TripalLogger
         ->info("The user $username uploaded a file with FID $fid using the Traits Importer, but could not import it as something is wrong with the filename/FID. More specifically, the case message '" . $validation_status['case'] . "' was reported.");
     }
     elseif ($validation_status['case'] == self::$mapping['case-empty-file']['dev-case']) {
@@ -388,7 +365,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       ];
 
       // Log a message for the administrator to help with debugging the issue.
-      $this->service_TripalLogger
+      $service_TripalLogger
         ->info("The user $username uploaded a file to the Traits Importer with file extension \"$file_extension\" and mime type \"$file_mime\"");
     }
     elseif ($validation_status['case'] == self::$mapping['case-locked-file']['dev-case']) {
@@ -400,7 +377,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       ];
 
       // Log a message for the administrator to help with debugging the issue.
-      $this->service_TripalLogger
+      $service_TripalLogger
         ->info("The user $username uploaded a file with FID $fid using the Traits Importer, but the file could not be opened using \'@fopen\'. Filename was '$filename'.");
     }
     elseif ($validation_status['case'] == self::$mapping['case-valid']['dev-case']) {
@@ -414,7 +391,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
     // NOTE: Dependency injection is NOT used since this is a static method.
-    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
+    $service_TripalTokensParser = $container->get('tripal.token_parser');
     $replaced_message = $service_TripalTokensParser->replaceTokens($message, $combined_tokens);
 
     // To do - determine if we want to include tokens in the items.
