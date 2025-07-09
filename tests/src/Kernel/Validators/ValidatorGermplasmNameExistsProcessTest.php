@@ -137,7 +137,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       $basic_column_headers,
       [
         'missing_cells' => [
-          'expected_message' => 'The following germplasm names could not be found in the database.',
+          'expected_message' => 'The following germplasm names do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the germplasm pages or contact your administrator to have them added if they do not yet exist.',
           'expected_column_count' => 2,
           'expected_rows' => [
             3 => [
@@ -167,7 +167,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       $basic_column_headers,
       [
         'duplicate_cells' => [
-          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or contact your administrator for help with investigating.',
+          'expected_message' => 'The following germplasm names in your file have been duplicated in this site (i.e. there are two or more pages for the same germplasm). If there is a more specific germplasm already existing in the site, then use that in your file. Regardless, contact your administrator to have the duplications resolved in the site.',
           'expected_column_count' => 2,
           'expected_rows' => [
             2 => [
@@ -202,7 +202,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       $two_germplasm_column_headers,
       [
         'missing_cells' => [
-          'expected_message' => 'The following germplasm names could not be found in the database.',
+          'expected_message' => 'The following germplasm names do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the germplasm pages or contact your administrator to have them added if they do not yet exist.',
           'expected_column_count' => 2,
           'expected_rows' => [
             5 => [
@@ -211,7 +211,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           ],
         ],
         'duplicate_cells' => [
-          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or contact your administrator for help with investigating.',
+          'expected_message' => 'The following germplasm names in your file have been duplicated in this site (i.e. there are two or more pages for the same germplasm). If there is a more specific germplasm already existing in the site, then use that in your file. Regardless, contact your administrator to have the duplications resolved in the site.',
           'expected_column_count' => 2,
           'expected_rows' => [
             5 => [
@@ -263,7 +263,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       $two_germplasm_column_headers,
       [
         'missing_cells' => [
-          'expected_message' => 'The following germplasm names could not be found in the database.',
+          'expected_message' => 'The following germplasm names do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the germplasm pages or contact your administrator to have them added if they do not yet exist.',
           // We expect 3 columns since missing was triggered by 2 separate
           // columns in the input (Line # + 2 Column Headers)
           'expected_column_count' => 3,
@@ -279,7 +279,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
           ],
         ],
         'duplicate_cells' => [
-          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or contact your administrator for help with investigating.',
+          'expected_message' => 'The following germplasm names in your file have been duplicated in this site (i.e. there are two or more pages for the same germplasm). If there is a more specific germplasm already existing in the site, then use that in your file. Regardless, contact your administrator to have the duplications resolved in the site.',
           // We expect 3 columns since duplicate was triggered by 2 separate
           // columns in the input (Line # + 2 Column Headers)
           'expected_column_count' => 3,
@@ -317,7 +317,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       $basic_column_headers,
       [
         'duplicate_cells' => [
-          'expected_message' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or email your administrator at admin@email.com for help with investigating.',
+          'expected_message' => 'The following germplasm names in your file have been duplicated in this site (i.e. there are two or more pages for the same germplasm). If there is a more specific germplasm already existing in the site, then use that in your file. Regardless, email your administrator at admin@email.com to have the duplications resolved in the site.',
           'expected_column_count' => 2,
           'expected_rows' => [
             2 => [
@@ -581,7 +581,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
       [],
       $basic_column_headers,
-      'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: Germplasm Name',
+      'One or more cells which are required to contain germplasm names were empty. Please ensure that you have entered existing germplasm names for all cells in the following columns: Germplasm Name',
     ];
 
     // #1: Multiple empty germplasm name cells
@@ -597,7 +597,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
       [],
       $additional_column_headers,
-      'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: Maternal Germplasm, Paternal Germplasm, Misc Germplasm',
+      'One or more cells which are required to contain germplasm names were empty. Please ensure that you have entered existing germplasm names for all cells in the following columns: Maternal Germplasm, Paternal Germplasm, Misc Germplasm',
     ];
 
     // #2: An empty germplasm name cell, a missing germplasm, and a duplicate.
@@ -629,7 +629,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
       [],
       $additional_column_headers,
-      'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: Maternal Germplasm, Paternal Germplasm, Misc Germplasm',
+      'One or more cells which are required to contain germplasm names were empty. Please ensure that you have entered existing germplasm names for all cells in the following columns: Maternal Germplasm, Paternal Germplasm, Misc Germplasm',
     ];
 
     // #3: An empty cell and a token to replace the entire displayed message.
