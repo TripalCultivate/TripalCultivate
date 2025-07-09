@@ -185,6 +185,11 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         // Trim the contents of our cell in case we have flanking whitespace.
         $cell = trim($cell);
         // Check if our cell is empty and save the index if it is.
+        // @todo Currently, processListWithDescribedTable() below only cares
+        // about the first instance of an empty cell. If we don't need a
+        // processor that looks for empty cells row by row, then performance can
+        // be improved by following Reynold's suggestion here:
+        // https://github.com/TripalCultivate/TripalCultivate/pull/63#discussion_r2167332580
         if (!isset($cell) || empty($cell)) {
           $empty = TRUE;
           $failedItems['empty_cells'][] = $index;
