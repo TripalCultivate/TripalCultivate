@@ -65,9 +65,11 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     ],
     'strict-or-min' => [
       'token' => 'strict-or-min',
+      'default-msg' => '',
     ],
     'num-expected-columns' => [
       'token' => 'num-expected-columns',
+      'default-msg' => '',
     ],
     'case-valid-singlecol' => [
       'token' => 'case-valid-singlecol',
@@ -234,7 +236,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public function processListWithDescribedTable(array $validation_results, array $tokens = []) {
+  public static function processListWithDescribedTable(array $validation_results, array $tokens = []) {
 
     // Define our table headers.
     $table_header = ['Line Number', 'Line Contents'];
@@ -246,9 +248,9 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     $table = [];
     // Loop through each row in the $failures array and piece apart the
     // different cases into different tables.
-    foreach ($failures as $line_no => $validation_result) {
+    foreach ($validation_results as $line_no => $validation_result) {
       // Check the format of the validation_result parameter.
-      ImportValidationHelper::checkValidationStatusArray($validation_results, 'ValidDelimitedFile', $line_no);
+      ImportValidationHelper::checkValidationStatusArray($validation_result, 'ValidDelimitedFile', $line_no);
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.
       $table_case = '';
@@ -258,7 +260,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
         $table_case = 'unsupported';
       }
       elseif (($validation_result['case'] == self::$mapping['case-excess-columns']['dev-case']) ||
-              ($validation_result['case'] == self::$mapping['case-insufficient-column']['dev-case'])) {
+              ($validation_result['case'] == self::$mapping['case-insufficient-columns']['dev-case'])) {
 
         $table_case = 'delimited';
         if (!isset($num_expected_columns)) {
@@ -293,6 +295,12 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
 
+    // Now replace any tokens that are in our message or items.
+    // We use the Tripal Token Parser service to ensure that more complicated
+    // tokens are supported.
+    // NOTE: Dependency injection is NOT used since this is a static method.
+    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
+
     // Check which tables were created, and assign the correct message.
     // Note that both tables can exist at the same time.
     if (array_key_exists('unsupported', $table)) {
@@ -300,13 +308,9 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     }
 
     if (array_key_exists('delimited', $table)) {
-      $delimited_msg = $service_TripalTokensParser->replaceTokensArray(
-        $combined_tokens['case-insufficient-columns'],
-        [
-          self::$mapping['strict-or-min']['token'] => ($strict) ? 'strict' : 'minimum',
-          self::$mapping['number-expected-columns']['token'] => $num_expected_columns,
-        ],
-      );
+      $combined_tokens['strict-or-min'] = ($strict) ? 'strict' : 'minimum';
+      $combined_tokens['num-expected-columns'] = $num_expected_columns;
+      $delimited_msg = $service_TripalTokensParser->replaceTokens($combined_tokens['case-insufficient-columns'], $combined_tokens);
 
       $table['delimited']['message'] = $delimited_msg;
     }
@@ -341,7 +345,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
       '#type' => 'ul',
       '#attributes' => [
         'class' => [
-          'tcp-valid-delimited-file-failures',
+          'tc-valid-delimited-file-failures',
         ],
       ],
       '#items' => $tables,
