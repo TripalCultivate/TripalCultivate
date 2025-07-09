@@ -305,16 +305,18 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *
    * @return array
    *   A render array of type "unordered list" used to display feedback to the
-   *   user about the validation failure, where:
-   *   - The 'title' is a sentence describing the case triggered
-   *   - The 'items' include a table for each potential case in the $failures
-   *     array:
-   *     - If a germplasm name is empty
-   *       - Headers include 'Row Number', 'Column Header'
-   *     - A duplicate germplasm name seen in the database
-   *       - Headers include 'Row Number', 'Column Header', 'Germplasm Name'
-   *     - A missing germplasm name from the database
-   *       - Headers include 'Row Number', 'Column Header', 'Germplasm Name'
+   *   user about the validation failure, where each item is a markup block
+   *   containing:
+   *   - A message describing the case triggered
+   *   - A table that lists the row and column combinations with failures for
+   *     this case.
+   *   Each case triggered will have its own markup block. The table headers for
+   *   each case are:
+   *     - Germplasm name is empty: 'Row Number', 'Column Header'
+   *     - Duplicate germplasm name seen in the database:
+   *       'Row Number', 'Column Header', 'Germplasm Name'
+   *     - Missing germplasm name from the database:
+   *       'Row Number', 'Column Header', 'Germplasm Name'
    *
    * @throws \Exception
    *   - If a validation status array was not formatted properly.
