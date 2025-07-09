@@ -194,7 +194,25 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #5: Test token reversal.
+    // #5: Test token reversal - default message.
+    $scenarios[] = [
+      [
+        'case' => 'Invalid file id number',
+        'valid' => FALSE,
+        'failedItems' => [
+          'fid' => 'wrongid',
+        ],
+      ],
+      [
+        'case-invalid-fid' => 'Not a valid Drupal File ID.',
+      ],
+      [
+        'expected_message' => 'Not a valid Drupal File ID.',
+        'expected_item_count' => 0,
+      ],
+    ];
+
+    // #6: Test token reversal - token.
     $filename = 'unopenable.tsv';
     $scenarios[] = [
       [
