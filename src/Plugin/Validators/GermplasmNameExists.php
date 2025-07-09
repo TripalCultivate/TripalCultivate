@@ -61,17 +61,17 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     'case-empty-germplasm' => [
       'token' => 'case-empty-germplasm',
       'dev-case' => 'Unable to lookup germplasm with empty values',
-      'default-msg' => 'One or more cells which are expected to contain germplasm names was empty. Please ensure that you have non-empty cells for the following columns: [column-headers]',
+      'default-msg' => 'One or more cells which are required to contain germplasm names were empty. Please ensure that you have entered existing germplasm names for all cells in the following columns: [column-headers]',
     ],
     'case-missing-germplasm' => [
       'token' => 'case-missing-germplasm',
       'dev-case' => 'Missing germplasm name(s) in the database',
-      'default-msg' => 'The following germplasm names could not be found in the database.',
+      'default-msg' => 'The following germplasm names do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the germplasm pages or [contact-admin] to have them added if they do not yet exist.',
     ],
     'case-duplicate-germplasm' => [
       'token' => 'case-duplicate-germplasm',
       'dev-case' => 'Duplicate(s) found in the database for germplasm name(s)',
-      'default-msg' => 'The following germplasm names have 2 or more records in the database associated with them. Please resolve the duplications or [contact-admin] for help with investigating.',
+      'default-msg' => 'The following germplasm names in your file have been duplicated in this site (i.e. there are two or more pages for the same germplasm). If there is a more specific germplasm already existing in the site, then use that in your file. Regardless, [contact-admin] to have the duplications resolved in the site.',
     ],
     'case-missing-and-duplicate-germplasm' => [
       'token' => 'case-missing-and-duplicate-germplasm',
