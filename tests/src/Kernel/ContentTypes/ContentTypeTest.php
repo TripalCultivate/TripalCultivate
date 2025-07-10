@@ -56,9 +56,9 @@ class ContentTypeTest extends ChadoTestKernelBase {
   protected $expected_contenttypes = [
     'Research Management' => [
       'research_grant' => 11,
-      'grant_section' => 6,
-      'research_study' => 14,
-      'research_experiment' => 36,
+      'grant_section' => 7,
+      'research_study' => 17,
+      'research_experiment' => 38,
     ],
   ];
 
