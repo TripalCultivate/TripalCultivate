@@ -152,8 +152,8 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCIT
-            termAccession: C25474
+            termIdSpace: SIO
+            termAccession: '000089'
         display:
           view:
             default:
@@ -176,8 +176,8 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: CO_010
-            termAccession: '0000159'
+            termIdSpace: NCIT
+            termAccession: 'C47906'
         display:
           view:
             default:
@@ -758,8 +758,8 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: NCIT
-            termAccession: C25474
+            termIdSpace: SIO
+            termAccession: '000089'
         display:
           view:
             default:
@@ -848,30 +848,6 @@ fields:
               region: content
               weight: 100
 
-    -   name: researchstudy_projectdescription
-        content_type: research_study
-        label: Project Description
-        type: chado_property_type_default
-        description: Description of a project.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: local
-            termAccession: Project Description
-        display:
-          view:
-            default:
-              region: content
-              label: above
-          form:
-            default:
-              region: content
-
     -   name: researchstudy_research_outputs
         content_type: research_study
         label: Research Outputs
@@ -885,37 +861,13 @@ fields:
                 base_table: project
                 prop_table: projectprop
         settings:
-            termIdSpace: CO_010
-            termAccession: '0000159'
+            termIdSpace: NCIT
+            termAccession: 'C47906'
         display:
           view:
             default:
               region: content
               label: hidden
-          form:
-            default:
-              region: content
-
-    -   name: researchstudy_url_token
-        content_type: research_study
-        label: Url-token
-        type: chado_property_type_default
-        description: This token should be unique and should not include spaces or any special characters. Usually it is based on the title or uniquename of the content. IT SHOULD NOT BE CHANGED ONCE SET OR YOU RISK BREAKING LINKS. If you must change it then make sure to setup a redirect for the old link.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: local
-            termAccession: 'url-token'
-        display:
-          view:
-            default:
-              region: content
-              label: above
           form:
             default:
               region: content
@@ -1043,8 +995,8 @@ fields:
                 linker_table: project_contact
                 linker_fkey_column: contact_id
         settings:
-            termIdSpace: CO_010
-            termAccession: '0000348'
+            termIdSpace: NCIT
+            termAccession: 'C84336'
         display:
           view:
             default:
