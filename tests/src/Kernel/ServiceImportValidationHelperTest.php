@@ -496,4 +496,45 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     }
   }
 
+  /**
+   * Tests the method that processes a simple message into a render array.
+   */
+  public function testRenderSimpleWarningMessage() {
+
+    // Test with an empty string as the message.
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      ImportValidationHelper::renderSimpleWarningMessage('');
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+    $this->assertTrue(
+      $exception_caught,
+      "We expected an exception to be caught when trying to render a simple warning message using an empty string, but one wasn't thrown.",
+    );
+    $this->assertStringContainsString(
+      'Expected a non-empty string for the message passed into renderSimpleWarningMessage().',
+      $exception_message,
+      'Expected exception message does not match exception message when renderSimpleWarningMessage() is given an empty string as a message.'
+    );
+
+    // Test with a valid message.
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      ImportValidationHelper::renderSimpleWarningMessage('This is a warning message.');
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+    $this->assertFalse(
+      $exception_caught,
+      "We didn't expect an exception to be thrown when trying to render a simple warning message with a valid string, but were thrown: $exception_message.",
+    );
+  }
+
 }

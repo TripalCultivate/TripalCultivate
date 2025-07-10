@@ -792,7 +792,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #3: Pass in metadata that is missing the 'column_headers' key
+    // #3: Pass in empty metadata that is missing the 'column_headers' key
     $scenarios[] = [
       [
         8 => [
