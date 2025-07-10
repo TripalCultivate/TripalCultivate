@@ -283,14 +283,14 @@ class ImportValidationHelper {
    *   where missing cells were previously.
    *
    * @param array $header
-   *   - The contents of the table's header, where key = index of the
-   *     column header, and value = content of the column header.
-   *     ie. $header[COLUMN INDEX][COLUMN VALUE].
+   *   The contents of the table's header, where key = index of the column
+   *   header, and value = content of the column header.
+   *   ie. $header[COLUMN INDEX][COLUMN VALUE].
    * @param array $rows
-   *   - The contents of the table's rows. Each row is keyed by the line
-   *     number of the original input file that triggered validation failure,
-   *     followed by the index of the column, followed by the column's contents.
-   *     ie. [LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
+   *   The contents of the table's rows. Each row is keyed by the line number of
+   *   the original input file that triggered validation failure, followed by
+   *   the index of the column, followed by the column's contents.
+   *   ie. [LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
    *
    * @return void
    *   NOTE: $header and $rows are passed in by reference, meaning that the
