@@ -359,8 +359,14 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       if ($validation_status['case'] == 'Unable to lookup germplasm with empty values') {
         // Add a token for the column header names of the germplasm columns.
         $combined_tokens['column-headers'] = implode(', ', $metadata['column_headers']);
-        $message = $service_TripalTokensParser->replaceTokens($combined_tokens['case-empty-germplasm'], $combined_tokens);
-        return ImportValidationHelper::renderSimpleWarningMessage($message, ['tc-germplasm-name-exists-empty']);
+        $message = $service_TripalTokensParser->replaceTokens(
+          $combined_tokens['case-empty-germplasm'],
+          $combined_tokens
+        );
+        return ImportValidationHelper::renderSimpleWarningMessage(
+          $message,
+          ['case-message', 'tc-germplasm-name-exists-empty'],
+        );
       }
       // Keeps track of which table this one line's validation result gets added
       // to based on the case it triggered.

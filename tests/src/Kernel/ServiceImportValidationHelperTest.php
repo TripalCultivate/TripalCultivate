@@ -521,11 +521,16 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
       'Expected exception message does not match exception message when renderSimpleWarningMessage() is given an empty string as a message.'
     );
 
-    // Test with a valid message.
+    // Test with a valid message + an array of css classes.
+    $message = 'This is a warning message.';
+    $css_classes = [
+      'test-class',
+      'another-test-class',
+    ];
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      ImportValidationHelper::renderSimpleWarningMessage('This is a warning message.');
+      $render_array = ImportValidationHelper::renderSimpleWarningMessage($message, $css_classes);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -535,6 +540,29 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
       $exception_caught,
       "We didn't expect an exception to be thrown when trying to render a simple warning message with a valid string, but were thrown: $exception_message.",
     );
+
+    // Render the array we were returned.
+    $renderer = $this->container->get('renderer');
+    $rendered_markup = $renderer->renderRoot($render_array);
+    $this->setRawContent($rendered_markup);
+
+    // Check the message in the rendered output using our default css class.
+    $selected_message = $this->cssSelect('div.simple-validation-warning');
+    $provided_message = (string) $selected_message[0];
+    $this->assertStringContainsString($message, $provided_message, 'The message expected in the render array returned by renderSmpleWarningMessage did not match the one in the rendered output using the simple-validation-warning class.');
+
+    // Check that our additional classes can also pull out the message.
+    $selected_message = $this->cssSelect('div.test-class');
+    $provided_message = (string) $selected_message[0];
+    $this->assertStringContainsString($message, $provided_message, 'The message expected in the render array returned by renderSmpleWarningMessage did not match the one in the rendered output using the test-class class.');
+
+    $selected_message = $this->cssSelect('div.another-test-class');
+    $provided_message = (string) $selected_message[0];
+    $this->assertStringContainsString($message, $provided_message, 'The message expected in the render array returned by renderSmpleWarningMessage did not match the one in the rendered output using the another-test-class class.');
+
+    // Make sure we don't have any tables in rendered output.
+    $select_tables = $this->cssSelect('table');
+    $this->assertEmpty($select_tables, 'There should not be any tables when testing renderSimpleWarningMessage, but there was.');
   }
 
 }

@@ -324,7 +324,7 @@ class ImportValidationHelper {
    *   - 'simple-validation-warning'.
    *
    * @return array
-   *   A render array of type "markup", used to display a warning to the user
+   *   A render array of type "html_tag", used to display a warning to the user
    *   regarding a failed validation result.
    *
    * @throws \Exception
@@ -340,14 +340,11 @@ class ImportValidationHelper {
     $classes[] = 'simple-validation-warning';
 
     return [
-      '#type' => 'markup',
-      '#prefix' => '<div class="case-message simple-validation-warning">',
-      '#markup' => $message,
-      '#suffix' => '</div>',
-      '#wrapper_attributes' => [
-        'class' => [
-          $classes,
-        ],
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => $message,
+      '#attributes' => [
+        'class' => $classes,
       ],
     ];
   }
