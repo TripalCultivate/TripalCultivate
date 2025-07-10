@@ -72,18 +72,23 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Data Provider for testProcessListWithDescribedTable().
+   * Data Provider for testProcessValidDelimitedFileFailures().
    *
    * @return array
    *   Each scenario is an array with the following:
    *   - An array of validation status arrays that get passed to the process
    *     method. It is keyed by the line number that triggered this failed
    *     validation status, further keyed by:
+   *     - The line number that triggered this failed validation status.
    *       - 'case': a developer-focused string describing the case checked.
    *       - 'valid': FALSE to indicate that validation failed.
-   *       - 'failedItems': array of items that failed with the following keys.
-   *         - 'empty_indices': A list of column indices in the line which were
-   *           checked and found to be empty.
+   *       - 'failedItems': array of items that failed with the following keys:
+   *         - 'raw_row': The contents of the raw row as it appears in the file.
+   *         - 'expected_columns': The number of columns expected in the input
+   *           file as determined by calling getExpectedColumns().
+   *         - 'strict': A boolean indicating whether the number of expected
+   *           columns by the validator is strict (TRUE) or is the minimum
+   *           number required (FALSE).
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
@@ -263,7 +268,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #5: Test token reversal.
+    // #5: Test token reversal - message.
     $scenarios[] = [
       [
         1 => [
@@ -297,15 +302,16 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *   An array of validation status arrays that get passed to the process
    *   method. It is keyed by the line number that triggered this failed
    *   validation status, further keyed by:
-   *     - 'case': a developer-focused string describing the case checked.
-   *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed with the following keys.
-   *       - 'raw_row': The contents of the row as it appears in the file.
-   *       - 'expected_columns': The number of columns expected in the input
-   *         file as determined by calling getExpectedColumns().
-   *       - 'strict': A boolean indicating whether the number of expected
-   *         columns by the validator is strict (TRUE) or is the minimum number
-   *         required (FALSE).
+   *     - The line number that triggered this failed validation status.
+   *       - 'case': a developer-focused string describing the case checked.
+   *       - 'valid': FALSE to indicate that validation failed.
+   *       - 'failedItems': array of items that failed with the following keys:
+   *         - 'raw_row': The contents of the raw row as it appears in the file.
+   *         - 'expected_columns': The number of columns expected in the input
+   *           file as determined by calling getExpectedColumns().
+   *         - 'strict': A boolean indicating whether the number of expected
+   *           columns by the validator is strict (TRUE) or is the minimum
+   *           number required (FALSE).
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -323,10 +329,10 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideValidDelimitedFileFailedCases
    */
-  public function testProcessListWithDescribedTable(array $validation_results, array $tokens, array $expectations) {
+  public function testProcessValidDelimitedFileFailures(array $validation_results, array $tokens, array $expectations) {
 
     // Process our test failures array.
-    $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $tokens);
+    $render_array = $this->validator_instance::processValidDelimitedFileFailures($validation_results, $tokens);
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
@@ -380,17 +386,28 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *   - An array of validation status arrays that get passed to the process
    *     method. It is keyed by the line number that triggered this failed
    *     validation status, further keyed by:
+   *     - The line number that triggered this failed validation status.
    *       - 'case': a developer-focused string describing the case checked.
    *       - 'valid': FALSE to indicate that validation failed.
-   *       - 'failedItems': array of items that failed with the following keys.
-   *         - 'raw_row': the data row/line.
+   *       - 'failedItems': array of items that failed with the following keys:
+   *         - 'raw_row': The contents of the raw row as it appears in the file.
+   *         - 'expected_columns': The number of columns expected in the input
+   *           file as determined by calling getExpectedColumns().
+   *         - 'strict': A boolean indicating whether the number of expected
+   *           columns by the validator is strict (TRUE) or is the minimum
+   *           number required (FALSE).
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
-   *   - An array of expectations in the rendered output which has the
-   *     following keys:
-   *     - 'expected_message': The exception message that is expected to be
-   *       triggered.
+   *   - An array of expectations that we want to find in the resulting rendered
+   *     output. This array is nested by the tables expected (keyed by type -
+   *     'unsupported' or 'delimited'), in the order they are expected to show
+   *     up on the page (1 array per table). Each array has the following keys:
+   *     - 'expected_message': The message expected in the return value of the
+   *       process method for this scenario.
+   *     - 1+ arrays keyed by the line number in the input file that triggered
+   *       the failed validation status, further keyed by:
+   *       - 'line_contents': The raw contents of this line that failed.
    */
   public static function providePassedAndUnrecognizableCases() {
 
@@ -400,7 +417,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     // incorporate them into exception messages?
     $tokens = [];
 
-    // #0e ValidDelimitedFile passed.
+    // #0: ValidDelimitedFile passed.
     $scenarios[] = [
       [
         4 => [
@@ -444,29 +461,40 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *   An array of validation status arrays that get passed to the process
    *   method. It is keyed by the line number that triggered this failed
    *   validation status, further keyed by:
-   *     - 'case': a developer-focused string describing the case checked.
-   *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': array of items that failed with the following keys.
-   *       - 'raw_row': the data row/line.
+   *     - The line number that triggered this failed validation status.
+   *       - 'case': a developer-focused string describing the case checked.
+   *       - 'valid': FALSE to indicate that validation failed.
+   *       - 'failedItems': array of items that failed with the following keys:
+   *         - 'raw_row': The contents of the raw row as it appears in the file.
+   *         - 'expected_columns': The number of columns expected in the input
+   *           file as determined by calling getExpectedColumns().
+   *         - 'strict': A boolean indicating whether the number of expected
+   *           columns by the validator is strict (TRUE) or is the minimum
+   *           number required (FALSE).
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
    *   the new value to be shown for that token.
    * @param array $expectations
-   *   An array of expectations in the rendered output which has the
-   *   following keys:
-   *     - 'expected_message': The exception message that is expected to be
-   *       triggered.
+   *   An array of expectations that we want to find in the resulting rendered
+   *   output. This array is nested by the tables expected (keyed by type -
+   *   'unsupported' or 'delimited'), in the order they are expected to show
+   *   up on the page (1 array per table). Each array has the following keys:
+   *     - 'expected_message': The message expected in the return value of the
+   *       process method for this scenario.
+   *     - 1+ arrays keyed by the line number in the input file that triggered
+   *       the failed validation status, further keyed by:
+   *       - 'line_contents': The raw contents of this line that failed.
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessListWithDescribedTableExceptions(array $validation_results, array $tokens, array $expectations) {
+  public function testProcessValidDelimitedFileFailuresExceptions(array $validation_results, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      $this->validator_instance::processListWithDescribedTable($validation_results, $tokens);
+      $this->validator_instance::processValidDelimitedFileFailures($validation_results, $tokens);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;

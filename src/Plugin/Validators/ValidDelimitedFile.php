@@ -200,15 +200,21 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *
    * @param array $validation_results
    *   An associative array that stores the validation failures by the
-   *   EmptyCell validator. It is keyed by the line number of the input
-   *   file where validation failed, and the value is an associative array
-   *   returned by the validator. Here is the overall structure:
+   *   ValidDelimitedFile validator. It is keyed by the line number of the
+   *   input file where validation failed, and the value is an associative
+   *   array returned by the validator. The overall structure is:
    *   - [LINE NUMBER]:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed, where the key => value
-   *       pairs map to the index => cell value(s) that failed validation.
-   *       @see validateRow()
+   *     - 'failedItems': an array of items that failed:
+   *       - 'raw_row': A string indicating the row is empty OR the contents of
+   *         the row as it appears in the file.
+   *       - 'expected_columns': The number of columns expected in the input
+   *         file as determined by calling getExpectedColumns().
+   *       - 'strict': A boolean indicating whether the number of expected
+   *         columns by the validator is strict (TRUE) or is the minimum number
+   *         required (FALSE).
+   *     @see validateRawRow()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see ValidDelimitedFile::$mapping
@@ -236,7 +242,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithDescribedTable(array $validation_results, array $tokens = []) {
+  public static function processValidDelimitedFileFailures(array $validation_results, array $tokens = []) {
 
     // Define our table headers.
     $table_header = ['Line Number', 'Line Contents'];
