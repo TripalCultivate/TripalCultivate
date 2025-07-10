@@ -275,38 +275,39 @@ class ImportValidationHelper {
   }
 
   /**
-   * Take an array with table contents and fill empty cells with empty strings.
+   * Fill missing cells in a table's rows with empty cells.
    *
-   * @param array $table
-   *   An associative array representing the contents of a single table, with
-   *   the following keys:
-   *   - 'header': The contents of the table's header, where key = index of the
+   * Since the params are passed in by reference, they are updated as follows:
+   * - Headers are sorted by index.
+   * - Rows are sorted by index and have column keys added with an empty value
+   *   where missing cells were previously.
+   *
+   * @param array $header
+   *   - The contents of the table's header, where key = index of the
    *     column header, and value = content of the column header.
-   *   - 'rows': The contents of the table's rows. Each row is keyed by the line
+   *     ie. $header[COLUMN INDEX][COLUMN VALUE].
+   * @param array $rows
+   *   - The contents of the table's rows. Each row is keyed by the line
    *     number of the original input file that triggered validation failure,
    *     followed by the index of the column, followed by the column's contents.
+   *     ie. [LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
    *
-   *   Essentially, $table is structured as follows:
-   *   - ['header'][COLUMN INDEX][COLUMN VALUE]
-   *   - ['rows'][LINE NUMBER][COLUMN INDEX][COLUMN VALUE]
-   *
-   *   The resulting array is the same as @param table, but with added keys and
-   *   values (as empty string) to fully represent all cells in the table.
-   *   NOTE: $table is passed in by reference, meaning that the original array
-   *   is being modified directly and thus there is no return value.
+   * @return void
+   *   NOTE: $header and $rows are passed in by reference, meaning that the
+   *   original arrays are modified directly and thus there is no return value.
    */
-  public static function fillTableGaps(array &$table) {
+  public static function fillTableGaps(array &$header, array &$rows) {
     // Sort the table header.
-    ksort($table['header']);
-    if (count($table['header']) > 2) {
-      foreach (array_keys($table['rows']) as $line_no) {
-        foreach (array_keys($table['header']) as $index) {
-          if (!array_key_exists($index, $table['rows'][$line_no])) {
-            $table['rows'][$line_no][$index] = '';
+    ksort($header);
+    if (count($header) > 2) {
+      foreach (array_keys($rows) as $line_no) {
+        foreach (array_keys($header) as $index) {
+          if (!array_key_exists($index, $rows[$line_no])) {
+            $rows[$line_no][$index] = '';
           }
         }
         // Finally, sort the row by keys.
-        ksort($table['rows'][$line_no]);
+        ksort($rows[$line_no]);
       }
     }
   }

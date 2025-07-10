@@ -431,7 +431,7 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     foreach ($table as $table_key => &$table_case) {
       // If our table(s) have more than 2 columns with failed values, then
       // iterate through and pad each table with empty strings where necessary.
-      ImportValidationHelper::fillTableGaps($table_case);
+      ImportValidationHelper::fillTableGaps($table_case['header'], $table_case['rows']);
       array_push($tables, [
         [
           '#prefix' => '<div class="case-message case-' . $table_key . '">',
