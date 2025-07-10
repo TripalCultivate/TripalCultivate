@@ -792,6 +792,28 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #3: Pass in metadata that is missing the 'column_headers' key
+    $scenarios[] = [
+      [
+        8 => [
+          'case' => 'Duplicate(s) found in the database for germplasm name(s)',
+          'valid' => FALSE,
+          'failedItems' => [
+            'duplicate_cells' => [
+              2 => [
+                'duplicate_germplasm' => 'Duplicate Germplasm',
+              ],
+            ],
+          ],
+        ],
+      ],
+      [],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain 'column_headers' when processing failures from GermplasmNameExists, but it does not.",
+      ],
+    ];
+
     return $scenarios;
   }
 

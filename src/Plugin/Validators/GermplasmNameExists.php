@@ -319,11 +319,18 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *       'Row Number', 'Column Header', 'Germplasm Name'
    *
    * @throws \Exception
+   *   - If key 'column_headers' is missing from $metadata
    *   - If a validation status array was not formatted properly.
+   *   - If the message for token 'case-empty-germplasm' is an empty string.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
   public static function processListWithDescribedTable(array $validation_results, array $metadata, array $tokens = []) {
+
+    // Validate that metadata contains the expected keys.
+    if (!array_key_exists('column_headers', $metadata)) {
+      throw new \Exception("Expected metadata to contain 'column_headers' when processing failures from GermplasmNameExists, but it does not.");
+    }
 
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
