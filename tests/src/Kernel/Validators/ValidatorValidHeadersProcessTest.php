@@ -170,7 +170,7 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #3: Test token reversal.
+    // #3: Test token reversal - message.
     $scenarios[] = [
       [
         'case' => 'Header row is an empty value',
@@ -185,6 +185,28 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
       ],
       [
         'expected_message' => 'Nothing Provided.',
+      ],
+    ];
+
+    // #4: Test token reversal - in-message token.
+    // Correct number of headers, but there's a mismatch.
+    $scenarios[] = [
+      [
+        'case' => 'Headers provided does not have the expected number of headers',
+        'valid' => FALSE,
+        'failedItems' => [
+          'Trait Name',
+          'Trait Description',
+          'Method Short Name',
+          'Method Description',
+        ],
+      ],
+      $metadata,
+      [
+        'num-expected-columns' => 'SIX',
+      ],
+      [
+        'expected_message' => 'This importer requires a strict number of SIX column headers.',
       ],
     ];
 
@@ -277,11 +299,11 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
-   *   - An array of additional metadata (or contextual information) needed by the
-   *     process method. Here, the following keys are expected:
+   *   - An array of additional metadata (or contextual information) needed by
+   *     the process method. Here, the following keys are expected:
    *       - 'column_headers': This contains an array of headers. The index in
-   *         this array MUST match the position (starting with 0) of the column in
-   *         the input file.
+   *         this array MUST match the position (starting with 0) of the column
+   *         in the input file.
    *         Eg: 'column_headers' => [
    *               '2' => 'Header 1', // Header of column #3
    *               '4' => 'Header 2', // Header of column #5
