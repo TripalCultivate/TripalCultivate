@@ -51,12 +51,12 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     'case-no-delimiter' => [
       'token' => 'case-no-delimiter',
       'dev-case' => 'None of the delimiters supported by the file type was used',
-      'default-msg' => '',
+      'default-msg' => 'The following lines in the input file do not contain a valid delimiter supported by this importer.',
     ],
     'case-excess-columns' => [
       'token' => 'case-excess-columns',
       'dev-case' => 'Raw row exceeds number of strict columns',
-      'default-msg' => '',
+      'default-msg' => 'This importer requires a [strict-or-min] number of [num-expected-columns] columns for each line. The following lines do not contain the expected number of columns.',
     ],
     'case-insufficient-columns' => [
       'token' => 'case-insufficient-columns',
@@ -270,8 +270,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
 
         $table_case = 'delimited';
         if (!isset($num_expected_columns)) {
-          $num_expected_columns = $validation_result['failedItems']['expected_columns'];
-          $strict = $validation_result['failedItems']['strict'];
+          self::$mapping['strict-or-min']['default-msg'] = ($validation_result['failedItems']['strict']) ? 'strict' : 'minimum';
+          self::$mapping['num-expected-columns']['default-msg'] = $validation_result['failedItems']['expected_columns'];
         }
       }
       elseif (($validation_result['case'] == self::$mapping['case-valid']['dev-case']) ||
@@ -314,11 +314,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     }
 
     if (array_key_exists('delimited', $table)) {
-      $combined_tokens['strict-or-min'] = ($strict) ? 'strict' : 'minimum';
-      $combined_tokens['num-expected-columns'] = $num_expected_columns;
-      $delimited_msg = $service_TripalTokensParser->replaceTokens($combined_tokens['case-insufficient-columns'], $combined_tokens);
-
-      $table['delimited']['message'] = $delimited_msg;
+      $table['delimited']['message'] = $service_TripalTokensParser
+        ->replaceTokens($combined_tokens['case-insufficient-columns'], $combined_tokens);
     }
 
     // Finally, loop through our tables and build our render array.
