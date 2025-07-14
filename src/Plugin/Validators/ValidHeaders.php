@@ -182,13 +182,13 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   expected headers followed by a row of the provided headers.
    *
    * @throws \Exception
-   *   - If the validation_result parameter was not formatted properly.
+   *   - If the validation_status parameter was not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithMsgAndTable(array $validation_status, array $metadata, array $tokens = []) {
+  public static function processValidHeadersFailures(array $validation_status, array $metadata, array $tokens = []) {
 
-    // Check the format of the validation_results parameter.
+    // Check the format of the validation_status parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidHeaders');
 
     self::$mapping['num-expected-columns']['default-msg'] = count($metadata['column_headers']);
@@ -199,19 +199,19 @@ class ValidHeaders extends TripalCultivateValidatorBase {
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
 
-    if ($validation_result['case'] == self::$mapping['case-empty-headers']['dev-case']) {
+    if ($validation_status['case'] == self::$mapping['case-empty-headers']['dev-case']) {
       $message = $combined_tokens['case-empty-headers'];
       $provided_headers = [];
     }
-    elseif ($validation_result['case'] == self::$mapping['case-mismatch-values']['dev-case']) {
+    elseif ($validation_status['case'] == self::$mapping['case-mismatch-values']['dev-case']) {
       $message = $combined_tokens['case-mismatch-values'];
-      $provided_headers = $validation_result['failedItems'];
+      $provided_headers = $validation_status['failedItems'];
     }
-    elseif ($validation_result['case'] == self::$mapping['case-mismatch-count']['dev-case']) {
+    elseif ($validation_status['case'] == self::$mapping['case-mismatch-count']['dev-case']) {
       $message = $combined_tokens['case-mismatch-count'];
-      $provided_headers = $validation_result['failedItems'];
+      $provided_headers = $validation_status['failedItems'];
     }
-    elseif ($validation_result['case'] == self::$mapping['valid-case']['dev-case']) {
+    elseif ($validation_status['case'] == self::$mapping['case-valid']['dev-case']) {
       throw new \Exception('The case string returned by the ValidHeaders validator implies validation passed, but valid is set to FALSE.');
     }
     else {
@@ -222,7 +222,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
     // NOTE: Dependency injection is NOT used since this is a static method.
-    $service_TripalTokensParser = $container->get('tripal.token_parser');
+    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
     $replaced_message = $service_TripalTokensParser->replaceTokens($message, $combined_tokens);
 
     // Get the expected and actual headers to build the rows in our table render
