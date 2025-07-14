@@ -27,6 +27,42 @@ class ValidHeaders extends TripalCultivateValidatorBase {
   use ColumnCount;
 
   /**
+   * A mapping of all of the tokens supported by this validator.
+   *
+   * @var array
+   *   An associative array mapping tokens to their details, such as the
+   *   developer case string and the default message to substitute the token.
+   *   The following tokens are implemented for this mapping, with the following
+   *   descriptions for their 'default-msg' values:
+   *   - 'case-empty-headers': the message when there is no header row.
+   *   - 'case-mismatch-values': the message when headers are not expected.
+   *   - 'case-mismatch-count': the message when headers count is not expected.
+   *
+   * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
+   */
+  protected static array $mapping = [
+    'case-empty-headers' => [
+      'token' => 'case-empty-headers',
+      'dev-case' => 'Header row is an empty value',
+      'default-msg' => 'The file has an empty row where the header was expected.',
+    ],
+    'case-mismatch-values' => [
+      'token' => 'case-mismatch-values',
+      'dev-case' => 'Headers do not match expected headers',
+      'default-msg' => 'One or more of the column headers in the input file does not match what was expected. Please check if your column header is in the correct order and matches the template exactly.',
+    ],
+    'case-mismatch-count' => [
+      'token' => 'case-mismatch-count',
+      'dev-case' => 'Headers provided does not have the expected number of headers',
+      'default-msg' => 'This importer requires a strict number of [num-expected-columns] column headers. Please ensure your column header matches the template exactly and remove any additional column headers from the file.',
+    ],
+    'case-valid' => [
+      'token' => 'case-valid',
+      'dev-case' => 'Headers exists and match expected headers',
+    ],
+  ];
+
+  /**
    * Validate the header row.
    *
    * Checks include:
