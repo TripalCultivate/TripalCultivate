@@ -60,9 +60,13 @@ class ValidHeaders extends TripalCultivateValidatorBase {
       'token' => 'num-expected-columns',
       'default-msg' => '',
     ],
+    'missing-header-note' => [
+      'token' => 'missing-header-note',
+      'default-msg' => 'headers array is an empty array',
+    ],
     'case-valid' => [
       'token' => 'case-valid',
-      'dev-case' => 'Headers exists and match expected headers',
+      'dev-case' => 'Headers exist and match expected headers',
     ],
   ];
 
@@ -94,10 +98,10 @@ class ValidHeaders extends TripalCultivateValidatorBase {
     if (empty($headers)) {
       // Headers array is an empty array.
       return [
-        'case' => 'Header row is an empty value',
+        'case' => self::$mapping['case-empty-headers']['dev-case'],
         'valid' => FALSE,
         'failedItems' => [
-          'headers' => 'headers array is an empty array',
+          'headers' => self::$mapping['missing-header-note']['default-msg'],
         ],
       ];
     }
@@ -112,7 +116,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
 
       if ($cur_input_header && $header != trim($cur_input_header)) {
         return [
-          'case' => 'Headers do not match expected headers',
+          'case' => self::$mapping['case-mismatch-values']['dev-case'],
           'valid' => FALSE,
           'failedItems' => $headers,
         ];
@@ -126,7 +130,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
       // The importer specified a strict requirement for number of columns in
       // the input file, but the header has more or less than that amount.
       return [
-        'case' => 'Headers provided does not have the expected number of headers',
+        'case' => self::$mapping['case-mismatch-count']['dev-case'],
         'valid' => FALSE,
         'failedItems' => $headers,
       ];
@@ -134,7 +138,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
 
     // At this point the headers input array is valid.
     return [
-      'case' => 'Headers exist and match expected headers',
+      'case' => self::$mapping['case-valid']['dev-case'],
       'valid' => TRUE,
       'failedItems' => [],
     ];
