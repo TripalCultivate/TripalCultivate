@@ -183,7 +183,7 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public function processValueInListFailures(array $validation_results, array $metadata, array $tokens = []) {
+  public static function processValueInListFailures(array $validation_results, array $metadata, array $tokens = []) {
 
     // Define our table header.
     // We will start with the line number and build the header from there as we
