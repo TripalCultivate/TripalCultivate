@@ -50,7 +50,7 @@ class ValueInList extends TripalCultivateValidatorBase {
     ],
     'case-insensitive-match' => [
       'token' => 'case-insensitive-match',
-      'dev-case' => 'Invalid value(s) in required column(s) with >= 1 case insensitive match',
+      'dev-case' => 'Invalid value(s) in required column(s) with >=1 case insensitive match',
       'default-msg' => 'The following line number and column combinations did not contain one of the following allowed values: [expected-values] Note that values should be case sensitive. <strong>If any cell in the table below is empty, then the value given in the file for that cell was one of the allowed values.</strong>',
     ],
     'expected-values' => [
