@@ -193,7 +193,7 @@ class ValueInList extends TripalCultivateValidatorBase {
     $table_header = [-1 => 'Line Number'];
     $table['rows'] = [];
 
-    self::$mapping['expected-values']['default-msg'] = implode('", "', $expected_values);
+    self::$mapping['expected-values']['default-msg'] = implode('", "', $metadata['expected_values']);
 
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
     // Combine our provided and our default token arrays. Because array_merge
@@ -234,7 +234,7 @@ class ValueInList extends TripalCultivateValidatorBase {
           $table['rows'][$line_no][$index] = $failed_value;
         }
       }
-      elseif ($validation_result['case'] == 'Values in required column(s) are valid') {
+      elseif ($validation_result['case'] == self::$mapping['case-valid']['dev-case']) {
         throw new \Exception("The case string returned by the ValueInList validator at line #$line_no implies validation passed, but valid is set to FALSE.");
       }
       else {
