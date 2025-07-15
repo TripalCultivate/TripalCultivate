@@ -29,6 +29,41 @@ class ValueInList extends TripalCultivateValidatorBase {
   use ValidValues;
 
   /**
+   * A mapping of all of the tokens supported by this validator.
+   *
+   * @var array
+   *   An associative array mapping tokens to their details, such as the
+   *   developer case string and the default message to substitute the token.
+   *   The following tokens are implemented for this mapping, with the following
+   *   descriptions for their 'default-msg' values:
+   *   - 'case-invalid-value': the message when there is an invalid value.
+   *   - 'case-insensitive-match': the message when there is invalid value with
+   *     case insensitive match.
+   *
+   * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
+   */
+  protected static array $mapping = [
+    'case-invalid-value' => [
+      'token' => 'case-invalid-value',
+      'dev-case' => 'Invalid value(s) in required column(s)',
+      'default-msg' => 'The following line number and column combinations did not contain one of the following allowed values: [expected-values]. <strong>If any cell in the table below is empty, then the value given in the file for that cell was one of the allowed values.</strong>',
+    ],
+    'case-insensitive-match' => [
+      'token' => 'case-insensitive-match',
+      'dev-case' => 'Invalid value(s) in required column(s) with >= 1 case insensitive match',
+      'default-msg' => 'The following line number and column combinations did not contain one of the following allowed values: [expected-values] Note that values should be case sensitive. <strong>If any cell in the table below is empty, then the value given in the file for that cell was one of the allowed values.</strong>',
+    ],
+    'expected-values' => [
+      'token' => 'expected-values',
+      'default-msg' => '',
+    ],
+    'case-valid' => [
+      'token' => 'case-valid',
+      'dev-case' => 'Values in required column(s) are valid',
+    ],
+  ];
+
+  /**
    * Validate the values within the cells of this row.
    *
    * @param array $row_values
@@ -84,18 +119,19 @@ class ValueInList extends TripalCultivateValidatorBase {
     }
     // Report if any values were invalid.
     if (!$valid) {
+      $case_token = ($wrong_case)
+        ? self::$mapping['case-insensitive-match']['token']
+        : self::$mapping['case-invalid-value']['token'];
+
       $validator_status = [
-        'case' => 'Invalid value(s) in required column(s)',
+        'case' => self::$mapping[$case_token]['dev-case'],
         'valid' => FALSE,
         'failedItems' => $failed_items,
       ];
-      if ($wrong_case) {
-        $validator_status['case'] .= ' with >=1 case insensitive match';
-      }
     }
     else {
       $validator_status = [
-        'case' => 'Values in required column(s) are valid',
+        'case' => self::$mapping['case-valid']['dev-case'],
         'valid' => TRUE,
         'failedItems' => [],
       ];
