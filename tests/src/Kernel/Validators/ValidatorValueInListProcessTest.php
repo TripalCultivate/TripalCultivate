@@ -54,6 +54,39 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    */
   protected $validator_instance;
 
+  public const COLUMN_HEADERS = [
+    [
+      'name' => 'Trait Name',
+      'description' => 'The name of the trait, as you would like it to appear to the user (e.g. Days to Flower)',
+      'type' => 'required',
+    ],
+    [
+      'name' => 'Trait Description',
+      'description' => 'A full description of the trait. This is recommended to be at least one paragraph.',
+      'type' => 'required',
+    ],
+    [
+      'name' => 'Method Short Name',
+      'description' => 'A full, unique title for the method (e.g. Days till 10% of plants/plot have flowers)',
+      'type' => 'required',
+    ],
+    [
+      'name' => 'Collection Method',
+      'description' => 'A full description of how the trait was collected. This is also recommended to be at least one paragraph.',
+      'type' => 'required',
+    ],
+    [
+      'name' => 'Unit',
+      'description' => 'The full name of the unit used (e.g. days, centimeters)',
+      'type' => 'required',
+    ],
+    [
+      'name' => 'Type',
+      'description' => 'One of "Qualitative" or "Quantitative".',
+      'type' => 'required',
+    ],
+  ];
+
   /**
    * {@inheritdoc}
    */
@@ -113,6 +146,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
         'Quantitative',
         'Qualitative',
       ],
+      'column_headers' => self::COLUMN_HEADERS,
     ];
     $scenarios[] = [
       [
@@ -144,6 +178,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
         'days',
         'scale',
       ],
+      'column_headers' => self::COLUMN_HEADERS,
     ];
     // #1: An invalid value on multiple rows (1 column)
     $scenarios[] = [
@@ -265,7 +300,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
   public function testProcessValueInListFailures(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Process our test failures array for this scenario.
-    $render_array = $this->importer::processValueInListFailures($validation_results, $metadata, $tokens);
+    $render_array = $this->validator_instance::processValueInListFailures($validation_results, $metadata, $tokens);
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
@@ -376,7 +411,9 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
-      [],
+      [
+        'expected_values' => ['Quantitative', 'Qualitative'],
+      ],
       $tokens,
       [
         'expected_message' => 'The case string returned by the ValueInList validator at line #2 implies validation passed, but valid is set to FALSE.',
@@ -395,10 +432,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
         ],
       ],
       [
-        'expected_values' => [
-          'Quantitative',
-          'Qualitative',
-        ],
+        'expected_values' => ['Quantitative', 'Qualitative'],
       ],
       $tokens,
       [

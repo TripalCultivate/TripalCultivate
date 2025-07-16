@@ -160,6 +160,13 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - 'expected_values': A list of valid values that was provided to the
    *     ValueinList validator instance that is being processed for
    *     feedback to the user.
+   *   - 'column_headers': This contains an array of headers defined in the
+   *     importer. The index in this array MUST match the position
+   *     (starting with 0) of the column in the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Header 2', // Header of column #3
+   *           '4' => 'Header 4', // Header of column #5
+   *         ];.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see ValueInList::$mapping
@@ -193,7 +200,10 @@ class ValueInList extends TripalCultivateValidatorBase {
     $table_header = [-1 => 'Line Number'];
     $table['rows'] = [];
 
-    self::$mapping['expected-values']['default-msg'] = implode('", "', $metadata['expected_values']);
+    // Wrap each value in the expected values with double quotes.
+    self::$mapping['expected-values']['default-msg'] = implode(', ', array_map(function ($in_list_value) {
+      return '"' . $in_list_value . '"';
+    }, $metadata['expected_values']));
 
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
     // Combine our provided and our default token arrays. Because array_merge
@@ -207,11 +217,11 @@ class ValueInList extends TripalCultivateValidatorBase {
 
       // Check for the expected failed case message.
       if ($validation_result['case'] == self::$mapping['case-invalid-value']['dev-case'] ||
-          $validation_result['case'] == self::$mapping['case-insensitive-value']['dev-case']) {
+          $validation_result['case'] == self::$mapping['case-insensitive-match']['dev-case']) {
 
         $case_token = ($validation_result['case'] == self::$mapping['case-invalid-value']['dev-case'])
           ? self::$mapping['case-invalid-value']['token']
-          : self::$mapping['case-insensitive-value']['token'];
+          : self::$mapping['case-insensitive-match']['token'];
 
         $table['message'] = $combined_tokens[$case_token];
 
@@ -222,7 +232,7 @@ class ValueInList extends TripalCultivateValidatorBase {
         foreach ($validation_result['failedItems'] as $index => $failed_value) {
           // Grab the column name based on the index of the invalid value
           // and add it to this table header if it's not already there.
-          $column_name = $this->headers[$index]['name'];
+          $column_name = $metadata['column_headers'][$index]['name'];
           if (!array_key_exists($column_name, $table_header)) {
             $table_header[$index] = $column_name;
           }
