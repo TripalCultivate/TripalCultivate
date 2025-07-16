@@ -172,6 +172,33 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #1: Test token reversal - message.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Invalid value(s) in required column(s)',
+          'valid' => FALSE,
+          'failedItems' => [
+            // Column 'Type' is at index 5.
+            5 => 'Invalid Type',
+          ],
+        ],
+      ],
+      $metadata,
+      [
+        'case-invalid-value' => 'Not Valid Value.'
+      ],
+      [
+        'expected_message' => 'Not Valid Value',
+        'expected_column_count' => 2,
+        'expected_table_rows' => [
+          3 => [
+            'Type' => 'Invalid Type',
+          ],
+        ],
+      ],
+    ];
+
     $metadata = [
       'expected_values' => [
         'cm',
@@ -180,7 +207,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       'column_headers' => self::COLUMN_HEADERS,
     ];
-    // #1: An invalid value on multiple rows (1 column)
+    // #2: An invalid value on multiple rows (1 column)
     $scenarios[] = [
       [
         2 => [
@@ -215,7 +242,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #2: Multiple different invalid values in different columns.
+    // #3: Multiple different invalid values in different columns.
     $scenarios[] = [
       [
         2 => [
