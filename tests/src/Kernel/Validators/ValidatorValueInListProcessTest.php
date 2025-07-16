@@ -172,7 +172,32 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #1: Test token reversal - message.
+    // #1: Case insensitive match.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Invalid value(s) in required column(s) with >=1 case insensitive match',
+          'valid' => FALSE,
+          'failedItems' => [
+            // Column 'Type' is at index 5.
+            5 => 'qualitative',
+          ],
+        ],
+      ],
+      $metadata,
+      $tokens,
+      [
+        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '" Note that values should be case sensitive.',
+        'expected_column_count' => 2,
+        'expected_table_rows' => [
+          3 => [
+            'Type' => 'qualitative',
+          ],
+        ],
+      ],
+    ];
+
+    // #2: Test token reversal - message.
     $scenarios[] = [
       [
         3 => [
@@ -186,7 +211,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       $metadata,
       [
-        'case-invalid-value' => 'Not Valid Value.'
+        'case-invalid-value' => 'Not Valid Value.',
       ],
       [
         'expected_message' => 'Not Valid Value',
@@ -207,7 +232,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       'column_headers' => self::COLUMN_HEADERS,
     ];
-    // #2: An invalid value on multiple rows (1 column)
+    // #3: An invalid value on multiple rows (1 column)
     $scenarios[] = [
       [
         2 => [
@@ -242,7 +267,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #3: Multiple different invalid values in different columns.
+    // #4: Multiple different invalid values in different columns.
     $scenarios[] = [
       [
         2 => [
