@@ -169,11 +169,12 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *         ];.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
-   *   @see EmptyCell::$mapping
+   *   @see ValidHeaders::$mapping
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
-   *   - 'case-empty-value': the message when a specific row-column does not
-   *     contain a value.
+   *   - 'case-empty-headers': the message when there is no header row.
+   *   - 'case-mismatch-values': the message when headers are not expected.
+   *   - 'case-mismatch-count': the message when headers count is not expected.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
