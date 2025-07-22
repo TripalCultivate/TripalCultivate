@@ -648,6 +648,24 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       'Oh no! You left one or more cells empty in column(s) "Germplasm Name" but there should be a germplasm name!',
     ];
 
+    // #4: An empty cell and a token passed in for 'column-headers'.
+    // This token is expected to NOT be substituted since it is reserved for
+    // being determined at runtime.
+    $scenarios[] = [
+      [
+        4 => [
+          'case' => 'Unable to lookup germplasm with empty values',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [1],
+          ],
+        ],
+      ],
+      ['column-headers' => 'Column 1'],
+      $basic_column_headers,
+      'One or more cells which are required to contain germplasm names were empty. Please ensure that you have entered existing germplasm names for all cells in the following columns: Germplasm Name',
+    ];
+
     return $scenarios;
   }
 
