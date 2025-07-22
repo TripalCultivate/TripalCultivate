@@ -46,6 +46,9 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *   - 'case-unsupported-extension': the message when mime type and extension
    *     are not supported.
    *   - 'case-locked-file': the message when a file could not be opened.
+   *   - 'explain-unsupported-mime': the message about unsupported mime type.
+   *   - 'file-mime': the file mime type.
+   *   - 'file-extension': the file extension.
    *   - 'contact-admin': the phrase to use when the user needs a
    *     priviledged administrator to fix the problem.
    *
@@ -81,6 +84,16 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       'token' => 'case-locked-file',
       'dev-case' => 'Data file cannot be opened',
       'default-msg' => 'The file provided could not be opened. Please [contact-admin] for help.',
+    ],
+    'explain-unsupported-mime' => [
+      'token' => 'explain-unsupported-mime',
+      'default-msg' => 'The file extension indicates the file is [file-extension] but our system detected the file is of type [file-mime]',
+    ],
+    'file-mime' => [
+      'token' => 'file-mime',
+    ],
+    'file-extension' => [
+      'token' => 'file-extension',
     ],
     'contact-admin' => [
       'token' => 'contact-admin',
@@ -360,8 +373,11 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       // these failed items:
       $file_mime = $validation_status['failedItems']['mime'];
       $file_extension = $validation_status['failedItems']['extension'];
+
+      $combined_tokens['file-mime'] = '"' . $file_mime . '"';
+      $combined_tokens['file-extension'] = '"' . $file_extension . '"';
       $items = [
-        "The file extension indicates the file is \"$file_extension\" but our system detected the file is of type \"$file_mime\"",
+        $combined_tokens['explain-unsupported-mime'],
       ];
 
       // Log a message for the administrator to help with debugging the issue.
@@ -393,8 +409,6 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
     // NOTE: Dependency injection is NOT used since this is a static method.
     $service_TripalTokensParser = $container->get('tripal.token_parser');
     $replaced_message = $service_TripalTokensParser->replaceTokens($message, $combined_tokens);
-
-    // To do - determine if we want to include tokens in the items.
     $items = $service_TripalTokensParser->replaceTokensArray($items, $combined_tokens);
 
     // Build the render array.

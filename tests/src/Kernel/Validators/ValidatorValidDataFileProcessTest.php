@@ -233,6 +233,29 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #7: Test static tokens - expected item remain unchanged, no replacements.
+    $mime = 'application/pdf';
+    $extension = 'tsv';
+    $scenarios[] = [
+      [
+        'case' => 'Unsupported file MIME type',
+        'valid' => FALSE,
+        'failedItems' => [
+          'mime' => $mime,
+          'extension' => $extension,
+        ],
+      ],
+      [
+        'file-mime' => 'a file mime',
+        'file-extension' => 'unsupported extension',
+      ],
+      [
+        'expected_message' => 'The type of file uploaded is not supported by this importer. Please ensure your file has one of the supported file extensions and was saved using software that supports that type of file.',
+        'expected_item_count' => 1,
+        'expected_item' => "The file extension indicates the file is \"$extension\" but our system detected the file is of type \"$mime\"",
+      ],
+    ];
+
     return $scenarios;
   }
 
