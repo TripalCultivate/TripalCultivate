@@ -47,10 +47,11 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *     are not supported.
    *   - 'case-locked-file': the message when a file could not be opened.
    *   - 'explain-unsupported-mime': the message about unsupported mime type.
-   *   - 'file-mime': the file mime type.
-   *   - 'file-extension': the file extension.
    *   - 'contact-admin': the phrase to use when the user needs a
    *     priviledged administrator to fix the problem.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
+   *   - 'file-mime': the file mime type.
+   *   - 'file-extension': the file extension.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
@@ -89,15 +90,15 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
       'token' => 'explain-unsupported-mime',
       'default-msg' => 'The file extension indicates the file is [file-extension] but our system detected the file is of type [file-mime]',
     ],
+    'contact-admin' => [
+      'token' => 'contact-admin',
+      'default-msg' => 'contact your administrator',
+    ],
     'file-mime' => [
       'token' => 'file-mime',
     ],
     'file-extension' => [
       'token' => 'file-extension',
-    ],
-    'contact-admin' => [
-      'token' => 'contact-admin',
-      'default-msg' => 'contact your administrator',
     ],
     'case-valid' => [
       'token' => 'case-valid',
