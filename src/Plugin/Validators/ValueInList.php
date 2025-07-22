@@ -40,6 +40,7 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - 'case-invalid-value': the message when there is an invalid value.
    *   - 'case-insensitive-match': the message when there is invalid value with
    *     case insensitive match.
+   *   - 'expected-values': list of expected values a column considers valid.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
@@ -175,6 +176,7 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - 'case-invalid-value': the message when there is an invalid value.
    *   - 'case-insensitive-match': the message when there is invalid value with
    *     case insensitive match.
+   *   - 'expected-values': list of expected values a column considers valid.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
