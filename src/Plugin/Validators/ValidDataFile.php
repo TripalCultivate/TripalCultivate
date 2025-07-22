@@ -289,13 +289,9 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *   validator. Here is the overall structure:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed with one or more of the
-   *       following keys:
-   *         - 'filename': The provided name of the file.
-   *         - 'fid': The fid of the provided file.
-   *         - 'mime': The mime type of the input file if it is not supported.
-   *         - 'extension': The extension of the input file if not supported.
-   *         @see validateFile()
+   *     - 'failedItems': an array of items that failed, where the key is
+   *.      a shorthand of the case and the value contains the failed item.
+   *       @see validateFile()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see ValidDataFile::$mapping
@@ -311,6 +307,8 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *     - 'case-unsupported-extension': the message when mime type and
    *       extension are not supported.
    *     - 'case-locked-file': the message when a file could not be opened.
+   *     The following tokens can be specfied as keys, with value as the
+   *     replacement value for the token.
    *     - 'contact-admin': the phrase to use when the user needs a
    *       priviledged administrator to fix the problem.
    *
