@@ -46,14 +46,16 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    *   developer case string and the default message to substitute the token.
    *   The following tokens are implemented for this mapping, with the following
    *   descriptions for their 'default-msg' values:
-   *  - 'contact-admin': the phrase to use when the user needs a privileged
-   *    administrator to fix the problem.
-   *  - 'case-empty-germplasm': the message when a cell that should contain a
-   *    germplasm name is empty.
-   *  - 'case-missing-germplasm': the message when a germplasm name is missing
-   *    in the database.
-   *  - 'case-duplicate-germplasm': the message when a germplasm name is
-   *    duplicated in the database.
+   *   - 'contact-admin': the phrase to use when the user needs a privileged
+   *     administrator to fix the problem.
+   *   - 'case-empty-germplasm': the message when a cell that should contain a
+   *     germplasm name is empty.
+   *   - 'case-missing-germplasm': the message when a germplasm name is missing
+   *     in the database.
+   *   - 'case-duplicate-germplasm': the message when a germplasm name is
+   *     duplicated in the database.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
+   *   - 'column-headers': The column header names for germplasm name columns.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
@@ -84,6 +86,9 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     'contact-admin' => [
       'token' => 'contact-admin',
       'default-msg' => 'contact your administrator',
+    ],
+    'column-headers' => [
+      'token' => 'column_headers',
     ],
   ];
 
