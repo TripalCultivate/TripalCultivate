@@ -292,7 +292,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #6: Test token reversal - in-message tokens.
+    // #6: Test static token - expected message remains the same.
     // 1 row with too few columns, 1 with too many columns, strict = TRUE
     $raw_row_3 = "Column 1\tColumn 2\tColumn 3\tColumn 4";
     $raw_row_5 = "Column 1\tColumn 2\tColumn 3\tColumn 4\tColumn 5\tColumn 6\tColumn 7\tColumn 8";
@@ -318,12 +318,12 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
         ],
       ],
       [
-        'strict-or-min' => 'FIXED',
+        'strict-or-min' => 'STRICT',
         'num-expected-columns' => 'SIX',
       ],
       [
         'delimited' => [
-          'expected_message' => 'This importer requires a FIXED number of SIX columns for each line. The following lines do not contain the expected number of columns.',
+          'expected_message' => 'This importer requires a strict number of 6 columns for each line. The following lines do not contain the expected number of columns.',
           3 => [
             'line_contents' => $raw_row_3,
           ],

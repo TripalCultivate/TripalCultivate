@@ -67,11 +67,9 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     ],
     'strict-or-min' => [
       'token' => 'strict-or-min',
-      'default-msg' => '',
     ],
     'num-expected-columns' => [
       'token' => 'num-expected-columns',
-      'default-msg' => '',
     ],
     'case-valid-singlecol' => [
       'token' => 'case-valid-singlecol',
@@ -248,6 +246,13 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    */
   public static function processValidDelimitedFileFailures(array $validation_results, array $tokens = []) {
 
+    // Grab the default messages for all of our tokens (ones with default-msg).
+    $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
+    // Combine our provided and our default token arrays. Because array_merge
+    // will overwrite values in the first array with values from the second
+    // array for the same keys, we provide our default tokens first.
+    $combined_tokens = array_merge($default_tokens, $tokens);
+
     // Define our table headers.
     $table_header = ['Line Number', 'Line Contents'];
 
@@ -274,8 +279,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
 
         $table_case = 'delimited';
         if (!isset($num_expected_columns)) {
-          self::$mapping['strict-or-min']['default-msg'] = ($validation_result['failedItems']['strict']) ? 'strict' : 'minimum';
-          self::$mapping['num-expected-columns']['default-msg'] = $validation_result['failedItems']['expected_columns'];
+          $combined_tokens['strict-or-min'] = ($validation_result['failedItems']['strict']) ? 'strict' : 'minimum';
+          $combined_tokens['num-expected-columns'] = $validation_result['failedItems']['expected_columns'];
         }
       }
       elseif (($validation_result['case'] == self::$mapping['case-valid']['dev-case']) ||
@@ -297,13 +302,6 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
         $validation_result['failedItems']['raw_row'],
       ];
     }
-
-    // Grab the default messages for all of our tokens (ones with default-msg).
-    $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
-    // Combine our provided and our default token arrays. Because array_merge
-    // will overwrite values in the first array with values from the second
-    // array for the same keys, we provide our default tokens first.
-    $combined_tokens = array_merge($default_tokens, $tokens);
 
     // Now replace any tokens that are in our message or items.
     // We use the Tripal Token Parser service to ensure that more complicated
