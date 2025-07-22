@@ -38,6 +38,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   - 'case-empty-headers': the message when there is no header row.
    *   - 'case-mismatch-values': the message when headers are not expected.
    *   - 'case-mismatch-count': the message when headers count is not expected.
+   *   - 'num-expected-columns': number of expected column headers.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
@@ -175,6 +176,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   - 'case-empty-headers': the message when there is no header row.
    *   - 'case-mismatch-values': the message when headers are not expected.
    *   - 'case-mismatch-count': the message when headers count is not expected.
+   *   - 'num-expected-columns': number of expected column headers.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
