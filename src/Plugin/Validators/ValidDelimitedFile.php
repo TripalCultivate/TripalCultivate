@@ -39,6 +39,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - 'case-no-delimiter': the message when no delimiter was used.
    *   - 'case-excess-columns': the message when row has excess columns.
    *   - 'case-insufficient-columns': the message when row has less columns.
+   *   - 'strict-or-min': header comparison settings (strict or minimum).
+   *   - 'num-expected-colums': number of expected column headers.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
@@ -224,6 +226,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *     - 'case-no-delimiter': the message when no delimiter was used.
    *     - 'case-excess-columns': the message when row has excess columns.
    *     - 'case-insufficient-columns': the message when row has less columns.
+   *     - 'strict-or-min': header comparison settings (strict or minimum).
+   *     - 'num-expected-colums': number of expected column headers.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
