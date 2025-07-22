@@ -115,7 +115,23 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #1: An empty file was provided.
+    // #1: Failed file ID is provided.
+    $scenarios[] = [
+      [
+        'case' => 'File id failed to load a file object',
+        'valid' => FALSE,
+        'failedItems' => [
+          'fid' => '9999',
+        ],
+      ],
+      $tokens,
+      [
+        'expected_message' => 'A problem occurred in between uploading the file and submitting it for validation.',
+        'expected_item_count' => 0,
+      ],
+    ];
+
+    // #2: An empty file was provided.
     $filename = 'empty_file.txt';
     $scenarios[] = [
       [
@@ -134,7 +150,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #2: The file MIME type is unsupported.
+    // #3: The file MIME type is unsupported.
     $mime = 'application/pdf';
     $extension = 'tsv';
     $scenarios[] = [
@@ -154,7 +170,47 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #3: The data file couldn't be opened.
+    // #4: The file extensio is unsupported.
+    $mime = 'text/tab-separated-values';
+    $extension = 'exe';
+    $scenarios[] = [
+      [
+        'case' => 'Unsupported file mime type and unsupported extension',
+        'valid' => FALSE,
+        'failedItems' => [
+          'mime' => $mime,
+          'extension' => $extension,
+        ],
+      ],
+      $tokens,
+      [
+        'expected_message' => 'The type of file uploaded is not supported by this importer. Please ensure your file has one of the supported file extensions and was saved using software that supports that type of file.',
+        'expected_item_count' => 1,
+        'expected_item' => "The file extension indicates the file is \"$extension\" but our system detected the file is of type \"$mime\"",
+      ],
+    ];
+
+    // #5: File MIME type and file extension are unsupported.
+    $mime = 'application/zip';
+    $extension = 'exe';
+    $scenarios[] = [
+      [
+        'case' => 'Unsupported file mime type and unsupported extension',
+        'valid' => FALSE,
+        'failedItems' => [
+          'mime' => $mime,
+          'extension' => $extension,
+        ],
+      ],
+      $tokens,
+      [
+        'expected_message' => 'The type of file uploaded is not supported by this importer. Please ensure your file has one of the supported file extensions and was saved using software that supports that type of file.',
+        'expected_item_count' => 1,
+        'expected_item' => "The file extension indicates the file is \"$extension\" but our system detected the file is of type \"$mime\"",
+      ],
+    ];
+
+    // #6: The data file couldn't be opened.
     $filename = 'unopenable.tsv';
     $scenarios[] = [
       [
@@ -173,7 +229,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #4: Test token reversal.
+    // #7: Test token reversal.
     $filename = 'unopenable.tsv';
     $scenarios[] = [
       [
@@ -194,7 +250,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #5: Test token reversal - default message.
+    // #8: Test token reversal - default message.
     $scenarios[] = [
       [
         'case' => 'Invalid file id number',
@@ -212,7 +268,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #6: Test token reversal - token.
+    // #9: Test token reversal - token.
     $filename = 'unopenable.tsv';
     $scenarios[] = [
       [
@@ -233,7 +289,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #7: Test static tokens - expected item remain unchanged, no replacements.
+    // #10: Test static tokens -expected item remain unchanged, no replacements.
     $mime = 'application/pdf';
     $extension = 'tsv';
     $scenarios[] = [
