@@ -338,7 +338,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
     // #1: unrecognizable validation case message.
     $scenarios[] = [
       [
-        'case' => $unrecognized_case_string,
+        'case' => 'unrecognizable case',
         'valid' => FALSE,
         'failedItems' => [
           'fid' => 100,
