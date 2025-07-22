@@ -311,6 +311,8 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *     - 'case-unsupported-extension': the message when mime type and
    *       extension are not supported.
    *     - 'case-locked-file': the message when a file could not be opened.
+   *     The following tokens can be specfied as keys, with value as the
+   *     replacement value for the token.
    *     - 'contact-admin': the phrase to use when the user needs a
    *       priviledged administrator to fix the problem.
    *
