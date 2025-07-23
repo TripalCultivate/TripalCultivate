@@ -140,7 +140,6 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
     $scenarios = [];
     $tokens = [];
 
-    // #0: An invalid value in a required column on one row.
     $metadata = [
       'expected_values' => [
         'Quantitative',
@@ -148,6 +147,8 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       'column_headers' => self::COLUMN_HEADERS,
     ];
+
+    // #0: An invalid value in a required column on one row.
     $scenarios[] = [
       [
         3 => [
@@ -224,6 +225,33 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #3: Test static token - expected message remains unchanged.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Invalid value(s) in required column(s) with >=1 case insensitive match',
+          'valid' => FALSE,
+          'failedItems' => [
+            // Column 'Type' is at index 5.
+            5 => 'qualitative',
+          ],
+        ],
+      ],
+      $metadata,
+      [
+        'expected-values' => '"Another expected values"',
+      ],
+      [
+        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '" Note that values should be case sensitive.',
+        'expected_column_count' => 2,
+        'expected_table_rows' => [
+          3 => [
+            'Type' => 'qualitative',
+          ],
+        ],
+      ],
+    ];
+
     $metadata = [
       'expected_values' => [
         'cm',
@@ -232,7 +260,8 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       'column_headers' => self::COLUMN_HEADERS,
     ];
-    // #3: An invalid value on multiple rows (1 column)
+
+    // #4: An invalid value on multiple rows (1 column)
     $scenarios[] = [
       [
         2 => [
@@ -267,7 +296,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #4: Multiple different invalid values in different columns.
+    // #5: Multiple different invalid values in different columns.
     $scenarios[] = [
       [
         2 => [
