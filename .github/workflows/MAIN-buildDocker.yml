@@ -28,6 +28,7 @@ jobs:
           - "14"
           - "15"
           - "16"
+          - "17"
         drupal-version:
           - "10.3.x-dev"
           - "10.4.x-dev"
@@ -70,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Check out code
-      - uses: mr-smithers-excellent/docker-build-push@v6.3
+      - uses: mr-smithers-excellent/docker-build-push@v6.5
         name: Build & push Full matrix of Docker images
         with:
           image: knowpulse/tripalcultivate-base
@@ -80,7 +81,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},pgsqlversion=${{ matrix.pgsql-version }}"
           labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}"'
-      - uses: mr-smithers-excellent/docker-build-push@v6.3
+      - uses: mr-smithers-excellent/docker-build-push@v6.5
         name: Build & push Full matrix of Docker images WITHOUT THEME
         with:
           image: knowpulse/tripalcultivate-base
@@ -90,9 +91,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},pgsqlversion=${{ matrix.pgsql-version }},installTheme='notheme-'"
           labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}"'
-      - uses: mr-smithers-excellent/docker-build-push@v6.3
-        name: Build baseonly-latest using 11.1.x-dev, PHP 8.3, PgSQL 16
-        if: ${{ matrix.drupal-version == '11.1.x-dev' && matrix.php-version == '8.3' && matrix.pgsql-version == '16' }}
+      - uses: mr-smithers-excellent/docker-build-push@v6.5
+        name: Build baseonly-latest using 11.1.x-dev, PHP 8.3, PgSQL 17
+        if: ${{ matrix.drupal-version == '11.1.x-dev' && matrix.php-version == '8.3' && matrix.pgsql-version == '17' }}
         with:
           image: knowpulse/tripalcultivate-base
           tags: latest
