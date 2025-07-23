@@ -39,12 +39,12 @@ docker run --publish=80:80 -tid --name=trpcultivate-basee knowpulse/tripalcultiv
 ### Automated Testing
 
 This package is dedicated to a high standard of automated testing. We use
-PHPUnit for testing and CodeClimate to ensure good test coverage and maintainability.
-There are more details on [our CodeClimate project page] describing our specific
+PHPUnit for testing and QLTY Cloud to ensure good test coverage and maintainability.
+There are more details on [our QLTY Cloud project page] describing our specific
 maintainability issues and test coverage.
 
-![MaintainabilityBadge]
-![TestCoverageBadge]
+[![Maintainability](https://qlty.sh/gh/TripalCultivate/projects/TripalCultivate/maintainability.svg)](https://qlty.sh/gh/TripalCultivate/projects/TripalCultivate)
+[![Code Coverage](https://qlty.sh/gh/TripalCultivate/projects/TripalCultivate/coverage.svg)](https://qlty.sh/gh/TripalCultivate/projects/TripalCultivate)
 
 The following compatibility is proven via automated testing workflows.
 
@@ -55,9 +55,7 @@ The following compatibility is proven via automated testing workflows.
 | **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] | ![Grid4C-Badge] | ![Grid5C-Badge] |
 
 
-[our CodeClimate project page]: https://codeclimate.com/github/TripalCultivate/TripalCultivate
-[MaintainabilityBadge]: https://api.codeclimate.com/v1/badges/730d572b51ad41cbbd69/maintainability
-[TestCoverageBadge]: https://api.codeclimate.com/v1/badges/730d572b51ad41cbbd69/test_coverage
+[our QLTY Cloud project page]: https://qlty.sh/gh/TripalCultivate/projects/TripalCultivate
 
 [Grid1A-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid1A.yml/badge.svg
 [Grid1B-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid1B.yml/badge.svg
