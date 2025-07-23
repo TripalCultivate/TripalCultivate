@@ -2,10 +2,10 @@
 
 namespace Drupal\trpcultivate\Plugin\Validators;
 
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnCount;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
-use Drupal\trpcultivate\Service\ImportValidationHelper;
 
 /**
  * Validate that a line in a data file is properly delimited.
