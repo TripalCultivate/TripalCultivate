@@ -23,7 +23,6 @@ exclude_patterns = [
   "*.min.*",
   "**/vendor/**",
   "**/images/",
-  "**/tests/",
 ]
 
 test_patterns = [
@@ -57,8 +56,9 @@ threshold = 30
 enabled = true
 
 [smells.duplication]
-threshold = 100
-nodes_threshold = 300
+threshold = 20
+nodes_threshold = 75
+enabled = true
 
 [[plugin]]
 name = "yamllint"
@@ -66,9 +66,11 @@ enabled = true
 
 [[plugin]]
 name = "actionlint"
+enabled = true
 
 [[plugin]]
 name = "checkov"
+enabled = true
 
 [[exclude]]
 plugins = ["yamllint"]
@@ -78,3 +80,11 @@ file_patterns = [".github/workflows/**"]
 match.plugins = ["checkov"]
 match.levels = ["low","medium"]
 set.ignored = true
+
+[[triage]]
+match.plugins = ["qlty"]
+match.rules = ["qlty:similar-code", "qlty:identical-code", "qlty:function-complexity"]
+match.file_patterns = ["tests/**"]
+set.ignored = true
+set.level = "low"
+set.mode = "comment"
