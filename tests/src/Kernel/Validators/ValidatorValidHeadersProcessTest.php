@@ -188,7 +188,7 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #4: Test token reversal - in-message token.
+    // #4: Test static token - expected message remains unchanged.
     // Correct number of headers, but there's a mismatch.
     $scenarios[] = [
       [
@@ -206,7 +206,7 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
         'num-expected-columns' => 'SIX',
       ],
       [
-        'expected_message' => 'This importer requires a strict number of SIX column headers.',
+        'expected_message' => 'This importer requires a strict number of 6 column headers.',
       ],
     ];
 

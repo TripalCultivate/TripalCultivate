@@ -38,6 +38,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   - 'case-empty-headers': the message when there is no header row.
    *   - 'case-mismatch-values': the message when headers are not expected.
    *   - 'case-mismatch-count': the message when headers count is not expected.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
    *   - 'num-expected-columns': number of expected column headers.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
@@ -60,11 +61,6 @@ class ValidHeaders extends TripalCultivateValidatorBase {
     ],
     'num-expected-columns' => [
       'token' => 'num-expected-columns',
-      'default-msg' => '',
-    ],
-    'missing-header-note' => [
-      'token' => 'missing-header-note',
-      'default-msg' => 'headers array is an empty array',
     ],
     'case-valid' => [
       'token' => 'case-valid',
@@ -103,7 +99,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
         'case' => self::$mapping['case-empty-headers']['dev-case'],
         'valid' => FALSE,
         'failedItems' => [
-          'headers' => self::$mapping['missing-header-note']['default-msg'],
+          'headers' => 'headers array is an empty array',
         ],
       ];
     }
@@ -194,13 +190,13 @@ class ValidHeaders extends TripalCultivateValidatorBase {
     // Check the format of the validation_status parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidHeaders');
 
-    self::$mapping['num-expected-columns']['default-msg'] = count($metadata['column_headers']);
-
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
     // Combine our provided and our default token arrays. Because array_merge
     // will overwrite values in the first array with values from the second
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
+
+    $combined_tokens['num-expected-columns'] = count($metadata['column_headers']);
 
     if ($validation_status['case'] == self::$mapping['case-empty-headers']['dev-case']) {
       $message = $combined_tokens['case-empty-headers'];
