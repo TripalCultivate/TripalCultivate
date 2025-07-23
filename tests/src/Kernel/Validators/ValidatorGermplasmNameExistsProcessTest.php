@@ -393,12 +393,12 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
       [
         'contact-admin' => 'Contact your admin',
         'fix' => 'resolution',
-        'case-duplicate-germplasm' => 'Found an imposter germplasm! [contact-admin] for help finding a [fix].',
+        'case-duplicate-germplasm' => 'Found an imposter germplasm in column(s): [column-headers]. [contact-admin] for help finding a [fix].',
       ],
       $basic_column_headers,
       [
         'duplicate_cells' => [
-          'expected_message' => 'Found an imposter germplasm! Contact your admin for help finding a resolution.',
+          'expected_message' => 'Found an imposter germplasm in column(s): Germplasm Name. Contact your admin for help finding a resolution.',
           'expected_column_count' => 2,
           'expected_rows' => [
             7 => [

@@ -347,6 +347,8 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
     // will overwrite values in the first array with values from the second
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
+    // Add a token for the column header names of the germplasm columns.
+    $combined_tokens['column-headers'] = implode(', ', $metadata['column_headers']);
 
     // For this validator there can be up to 2 tables:
     // - 'table'->'missing_cells': Germplasm name not found in the database.
@@ -362,8 +364,6 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       // If any cells were found to be empty, this case takes presendence over
       // any other cases, and we return a warning message right away.
       if ($validation_status['case'] == 'Unable to lookup germplasm with empty values') {
-        // Add a token for the column header names of the germplasm columns.
-        $combined_tokens['column-headers'] = implode(', ', $metadata['column_headers']);
         $message = $service_TripalTokensParser->replaceTokens(
           $combined_tokens['case-empty-germplasm'],
           $combined_tokens
