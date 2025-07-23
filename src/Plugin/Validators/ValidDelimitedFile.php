@@ -207,14 +207,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - [LINE NUMBER]:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': an array of items that failed:
-   *       - 'raw_row': A string indicating the row is empty OR the contents of
-   *         the row as it appears in the file.
-   *       - 'expected_columns': The number of columns expected in the input
-   *         file as determined by calling getExpectedColumns().
-   *       - 'strict': A boolean indicating whether the number of expected
-   *         columns by the validator is strict (TRUE) or is the minimum number
-   *         required (FALSE).
+   *     - 'failedItems': an array of items that failed, where the key is
+   *       a shorthand of the case and the value contains the failed item.
    *     @see validateRawRow()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
