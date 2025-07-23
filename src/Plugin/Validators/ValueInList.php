@@ -40,6 +40,7 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - 'case-invalid-value': the message when there is an invalid value.
    *   - 'case-insensitive-match': the message when there is invalid value with
    *     case insensitive match.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
    *   - 'expected-values': list of expected values a column considers valid.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
@@ -57,7 +58,6 @@ class ValueInList extends TripalCultivateValidatorBase {
     ],
     'expected-values' => [
       'token' => 'expected-values',
-      'default-msg' => '',
     ],
     'case-valid' => [
       'token' => 'case-valid',
@@ -202,16 +202,16 @@ class ValueInList extends TripalCultivateValidatorBase {
     $table_header = [-1 => 'Line Number'];
     $table['rows'] = [];
 
-    // Wrap each value in the expected values with double quotes.
-    self::$mapping['expected-values']['default-msg'] = implode(', ', array_map(function ($in_list_value) {
-      return '"' . $in_list_value . '"';
-    }, $metadata['expected_values']));
-
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
     // Combine our provided and our default token arrays. Because array_merge
     // will overwrite values in the first array with values from the second
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
+
+    // Wrap each value in the expected values with double quotes.
+    $combined_tokens['expected-values'] = implode(', ', array_map(function ($in_list_value) {
+      return '"' . $in_list_value . '"';
+    }, $metadata['expected_values']));
 
     foreach ($validation_results as $line_no => $validation_result) {
       // Check the format of the validation_result parameter.
