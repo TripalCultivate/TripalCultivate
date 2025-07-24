@@ -274,4 +274,80 @@ class ImportValidationHelper {
     return TRUE;
   }
 
+  /**
+   * Fill missing cells in a table's rows with empty cells.
+   *
+   * Since the params are passed in by reference, they are updated as follows:
+   * - Headers are sorted by index.
+   * - Rows are sorted by index and have column keys added with an empty value
+   *   where missing cells were previously.
+   *
+   * @param array $header
+   *   The contents of the table's header, where key = index of the column
+   *   header, and value = content of the column header.
+   *   ie. $header[COLUMN INDEX][COLUMN VALUE].
+   * @param array $rows
+   *   The contents of the table's rows. Each row is keyed by the line number of
+   *   the original input file that triggered validation failure, followed by
+   *   the index of the column, followed by the column's contents.
+   *   ie. [LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
+   *
+   * @return void
+   *   NOTE: $header and $rows are passed in by reference, meaning that the
+   *   original arrays are modified directly and thus there is no return value.
+   */
+  public static function fillTableGaps(array &$header, array &$rows) {
+    // Sort the table header.
+    ksort($header);
+    if (count($header) > 2) {
+      foreach (array_keys($rows) as $line_no) {
+        foreach (array_keys($header) as $index) {
+          if (!array_key_exists($index, $rows[$line_no])) {
+            $rows[$line_no][$index] = '';
+          }
+        }
+        // Finally, sort the row by keys.
+        ksort($rows[$line_no]);
+      }
+    }
+  }
+
+  /**
+   * A helper method that will process any simple message into a render array.
+   *
+   * @param string $message
+   *   A non-empty string that is the message to be displayed to the user. If
+   *   desired, this string may include HTML tags.
+   * @param array $classes
+   *   [OPTIONAL] An array of strings to give to '#wrapper_attributes' of the
+   *   render array as a set of css classes. By default, this method adds the
+   *   class:
+   *   - 'simple-validation-warning'.
+   *
+   * @return array
+   *   A render array of type "html_tag", used to display a warning to the user
+   *   regarding a failed validation result.
+   *
+   * @throws \Exception
+   *   - If $message is an empty string.
+   */
+  public static function renderSimpleWarningMessage(string $message, array $classes = []) {
+
+    if (empty($message)) {
+      throw new \Exception('Expected a non-empty string for the message passed into renderSimpleWarningMessage().');
+    }
+
+    // Add our universal class for simple validation warning messages.
+    $classes[] = 'simple-validation-warning';
+
+    return [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => $message,
+      '#attributes' => [
+        'class' => $classes,
+      ],
+    ];
+  }
+
 }

@@ -496,4 +496,293 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     }
   }
 
+  /**
+   * Data Provider for testFillTableGaps().
+   *
+   * @return array
+   *   Each scenario is an array with the following:
+   *   - An array representing the column header of our input table, where key =
+   *     index of the column header, and value = content of the column header.
+   *     ie. $header[COLUMN INDEX][COLUMN VALUE].
+   *   - An array representing the rows of our input table, where ach row is
+   *     keyed by the line number of the original input file that triggered
+   *     validation failure, followed by the index of the column, followed by
+   *     the column's contents.
+   *     ie. $rows[LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
+   *   - An array of the expected finished table output, where any pre-existing
+   *     gaps have been filled. It contains the following keys:
+   *     - 'header': [COLUMN INDEX][COLUMN VALUE]
+   *     - 'rows': [LINE NUMBER][COLUMN INDEX][COLUMN VALUE]
+   */
+  public static function provideTablesWithGaps() {
+    $scenarios = [];
+
+    $header = [
+      0 => 'Column 1',
+      1 => 'Column 2',
+      2 => 'Column 3',
+    ];
+    $rows = [
+      2 => [
+        0 => 'Value 1',
+        1 => 'Value 2',
+        2 => 'Value 3',
+      ],
+    ];
+
+    // #0: A simple table with no gaps.
+    $scenarios[] = [
+      $header,
+      $rows,
+      [
+        'header' => $header,
+        'rows' => $rows,
+      ],
+    ];
+
+    // #1: A table that has a gap in the middle of one row.
+    $scenarios[] = [
+      $header,
+      [
+        2 => [
+          0 => 'Value 1',
+          2 => 'Value 2',
+        ],
+      ],
+      [
+        'header' => $header,
+        'rows' => [
+          2 => [
+            0 => 'Value 1',
+            1 => '',
+            2 => 'Value 2',
+          ],
+        ],
+      ],
+    ];
+
+    // #2: A table with gaps at both edges of a row.
+    $scenarios[] = [
+      $header,
+      [
+        2 => [
+          1 => 'Value 1',
+        ],
+      ],
+      [
+        'header' => $header,
+        'rows' => [
+          2 => [
+            0 => '',
+            1 => 'Value 1',
+            2 => '',
+          ],
+        ],
+      ],
+    ];
+
+    // #3: A complex table with multiple gaps on multiple rows.
+    $scenarios[] = [
+      $header,
+      [
+        2 => [
+          1 => 'Value 1',
+          2 => 'Value 2',
+        ],
+        3 => [
+          0 => 'Value 3',
+          2 => 'Value 4',
+        ],
+        4 => [
+          0 => 'Value 5',
+          1 => 'Value 6',
+        ],
+      ],
+      [
+        'header' => $header,
+        'rows' => [
+          2 => [
+            0 => '',
+            1 => 'Value 1',
+            2 => 'Value 2',
+          ],
+          3 => [
+            0 => 'Value 3',
+            1 => '',
+            2 => 'Value 4',
+          ],
+          4 => [
+            0 => 'Value 5',
+            1 => 'Value 6',
+            2 => '',
+          ],
+        ],
+      ],
+    ];
+
+    // #4: An unsorted table with gaps. Note that index #1 is missing.
+    $scenarios[] = [
+      [
+        4 => 'Blue',
+        0 => 'Red',
+        3 => 'Green',
+        2 => 'Yellow',
+        5 => 'Purple',
+        // 1 => 'Orange',
+      ],
+      [
+        2 => [
+          3 => 'Green 1',
+        ],
+        3 => [
+          0 => 'Red 1',
+        ],
+        4 => [
+          4 => 'Blue 1',
+          2 => 'Yellow 1',
+          3 => 'Green 2',
+        ],
+      ],
+      [
+        'header' => [
+          0 => 'Red',
+          2 => 'Yellow',
+          3 => 'Green',
+          4 => 'Blue',
+          5 => 'Purple',
+        ],
+        'rows' => [
+          2 => [
+            0 => '',
+            2 => '',
+            3 => 'Green 1',
+            4 => '',
+            5 => '',
+          ],
+          3 => [
+            0 => 'Red 1',
+            2 => '',
+            3 => '',
+            4 => '',
+            5 => '',
+          ],
+          4 => [
+            0 => '',
+            2 => 'Yellow 1',
+            3 => 'Green 2',
+            4 => 'Blue 1',
+            5 => '',
+          ],
+        ],
+      ],
+    ];
+    return $scenarios;
+  }
+
+  /**
+   * Tests the method that fills missing cells in a table with empty cells.
+   *
+   * @param array $header
+   *   The contents of the table's header, where key = index of the column
+   *   header, and value = content of the column header.
+   *   ie. $header[COLUMN INDEX][COLUMN VALUE].
+   * @param array $rows
+   *   The contents of the table's rows. Each row is keyed by the line number of
+   *   the original input file that triggered validation failure, followed by
+   *   the index of the column, followed by the column's contents.
+   *   ie. $rows[LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
+   * @param array $expected_table
+   *   An array representing the expected finished table with gaps filled.
+   *   It contains the following keys:
+   *   - 'header': [COLUMN INDEX][COLUMN VALUE]
+   *   - 'rows': [LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
+   *
+   * @dataProvider provideTablesWithGaps
+   */
+  public function testFillTableGaps(array $header, array $rows, array $expected_table) {
+    ImportValidationHelper::fillTableGaps($header, $rows);
+
+    // Iterate through the expected table array to check that header and rows
+    // have been filled correctly.
+    foreach ($expected_table['header'] as $column_index => $column_value) {
+      $this->assertArrayHasKey($column_index, $header, "We expected the resulting table
+      header to contain the expected column index #$column_index for this scenario.");
+      $this->assertEquals($column_value, $header[$column_index], "We expected the resulting table header to contain the column value \"$column_value\" at index #$column_index for this scenario.");
+    }
+    foreach ($expected_table['rows'] as $line_no => $columns) {
+      $this->assertArrayHasKey($line_no, $rows, "We expected the resulting table rows to contain the line number $line_no for this scenario.");
+      $this->assertEquals($columns, $rows[$line_no], "We expected the resulting table row at line number $line_no to be the same as our expected table row, but they were different for this scenario.");
+    }
+
+  }
+
+  /**
+   * Tests the method that processes a simple message into a render array.
+   */
+  public function testRenderSimpleWarningMessage() {
+
+    // Test with an empty string as the message.
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      ImportValidationHelper::renderSimpleWarningMessage('');
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+    $this->assertTrue(
+      $exception_caught,
+      "We expected an exception to be caught when trying to render a simple warning message using an empty string, but one wasn't thrown.",
+    );
+    $this->assertStringContainsString(
+      'Expected a non-empty string for the message passed into renderSimpleWarningMessage().',
+      $exception_message,
+      'Expected exception message does not match exception message when renderSimpleWarningMessage() is given an empty string as a message.'
+    );
+
+    // Test with a valid message + an array of css classes.
+    $message = 'This is a warning message.';
+    $css_classes = [
+      'test-class',
+      'another-test-class',
+    ];
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      $render_array = ImportValidationHelper::renderSimpleWarningMessage($message, $css_classes);
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+    $this->assertFalse(
+      $exception_caught,
+      "We didn't expect an exception to be thrown when trying to render a simple warning message with a valid string, but were thrown: $exception_message.",
+    );
+
+    // Render the array we were returned.
+    $renderer = $this->container->get('renderer');
+    $rendered_markup = $renderer->renderRoot($render_array);
+    $this->setRawContent($rendered_markup);
+
+    // Check the message in the rendered output using our default css class.
+    $selected_message = $this->cssSelect('div.simple-validation-warning');
+    $provided_message = (string) $selected_message[0];
+    $this->assertStringContainsString($message, $provided_message, 'The message expected in the render array returned by renderSmpleWarningMessage did not match the one in the rendered output using the simple-validation-warning class.');
+
+    // Check that our additional classes can also pull out the message.
+    $selected_message = $this->cssSelect('div.test-class');
+    $provided_message = (string) $selected_message[0];
+    $this->assertStringContainsString($message, $provided_message, 'The message expected in the render array returned by renderSmpleWarningMessage did not match the one in the rendered output using the test-class class.');
+
+    $selected_message = $this->cssSelect('div.another-test-class');
+    $provided_message = (string) $selected_message[0];
+    $this->assertStringContainsString($message, $provided_message, 'The message expected in the render array returned by renderSmpleWarningMessage did not match the one in the rendered output using the another-test-class class.');
+
+    // Make sure we don't have any tables in rendered output.
+    $select_tables = $this->cssSelect('table');
+    $this->assertEmpty($select_tables, 'There should not be any tables when testing renderSimpleWarningMessage, but there was.');
+  }
+
 }

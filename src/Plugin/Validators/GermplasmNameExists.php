@@ -4,6 +4,7 @@ namespace Drupal\trpcultivate\Plugin\Validators;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\Organism;
@@ -36,6 +37,60 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
    * @var Drupal\tripal_chado\Database\ChadoConnection
    */
   protected ChadoConnection $chado_connection;
+
+  /**
+   * A mapping of all of the tokens supported by this validator.
+   *
+   * @var array
+   *   An associative array mapping tokens to their details, such as the
+   *   developer case string and the default message to substitute the token.
+   *   The following tokens are implemented for this mapping, with the following
+   *   descriptions for their 'default-msg' values:
+   *   - 'contact-admin': the phrase to use when the user needs a privileged
+   *     administrator to fix the problem.
+   *   - 'case-empty-germplasm': the message when a cell that should contain a
+   *     germplasm name is empty.
+   *   - 'case-missing-germplasm': the message when a germplasm name is missing
+   *     in the database.
+   *   - 'case-duplicate-germplasm': the message when a germplasm name is
+   *     duplicated in the database.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
+   *   - 'column-headers': The column header names for germplasm name columns.
+   *
+   * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
+   */
+  protected static array $mapping = [
+    'case-empty-germplasm' => [
+      'token' => 'case-empty-germplasm',
+      'dev-case' => 'Unable to lookup germplasm with empty values',
+      'default-msg' => 'One or more cells which are required to contain germplasm names were empty. Please ensure that you have entered existing germplasm names for all cells in the following columns: [column-headers]',
+    ],
+    'case-missing-germplasm' => [
+      'token' => 'case-missing-germplasm',
+      'dev-case' => 'Missing germplasm name(s) in the database',
+      'default-msg' => 'The following germplasm names do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the germplasm pages or [contact-admin] to have them added if they do not yet exist.',
+    ],
+    'case-duplicate-germplasm' => [
+      'token' => 'case-duplicate-germplasm',
+      'dev-case' => 'Duplicate(s) found in the database for germplasm name(s)',
+      'default-msg' => 'The following germplasm names in your file have been duplicated in this site (i.e. there are two or more pages for the same germplasm). If there is a more specific germplasm already existing in the site, then use that in your file. Regardless, [contact-admin] to have the duplications resolved in the site.',
+    ],
+    'case-missing-and-duplicate-germplasm' => [
+      'token' => 'case-missing-and-duplicate-germplasm',
+      'dev-case' => 'Missing germplasm name(s) and found duplicate(s) in the database',
+    ],
+    'case-valid' => [
+      'token' => 'case-valid',
+      'dev-case' => 'Germplasm name(s) exist(s) in the database',
+    ],
+    'contact-admin' => [
+      'token' => 'contact-admin',
+      'default-msg' => 'contact your administrator',
+    ],
+    'column-headers' => [
+      'token' => 'column_headers',
+    ],
+  ];
 
   /**
    * Constructs an instance of the Germplasm Name Exists validator.
@@ -135,6 +190,11 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
         // Trim the contents of our cell in case we have flanking whitespace.
         $cell = trim($cell);
         // Check if our cell is empty and save the index if it is.
+        // @todo Currently, processListWithDescribedTable() below only cares
+        // about the first instance of an empty cell. If we don't need a
+        // processor that looks for empty cells row by row, then performance can
+        // be improved by following Reynold's suggestion here:
+        // https://github.com/TripalCultivate/TripalCultivate/pull/63#discussion_r2167332580
         if (!isset($cell) || empty($cell)) {
           $empty = TRUE;
           $failedItems['empty_cells'][] = $index;
@@ -199,6 +259,215 @@ class GermplasmNameExists extends TripalCultivateValidatorBase implements Contai
       'valid' => FALSE,
       'failedItems' => $failedItems,
     ];
+  }
+
+  /**
+   * Process failed validation from GermplasmNameExists into a render array.
+   *
+   * This process method renders up to 2 tables, one for germplasm missing from
+   * the database, and one for duplicate germplasm entries based on the name.
+   * NOTE: The rendered validation result does NOT include information on the
+   * duplicate records, but only lists the germplasm names. Future work may
+   * include a separate process method that displays the information stored in
+   * 'duplicates' of the 'failedItems' array.
+   *
+   * @param array $validation_results
+   *   An associative array that stores the validation failures by the
+   *   GermplasmNameExists validator. It is keyed by the line number of the
+   *   input file where validation failed, and the value is an associative
+   *   array returned by the validator. The overall structure is:
+   *   - [LINE NUMBER]:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   *       @see validateRow()
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *   - 'column_headers': This contains an array of headers for columns that
+   *     are expected to contain germplasm names. The index in this array MUST
+   *     match the position (starting with 0) of the column in the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Maternal Germplasm Name', // Header of column #3
+   *           '4' => 'Paternal Germplasm Name', // Header of column #5
+   *         ];.
+   * @param array $tokens
+   *   [OPTIONAL] An array of values to use for token replacement.
+   *   @see $mapping
+   *   The following tokens can be specfied as keys, with value as the
+   *   replacement value for the token. These apply to all failure cases.
+   *   - 'contact-admin': the phrase to use when the user needs a privileged
+   *     administrator to fix the problem.
+   *   The following token keys will substitute the entire existing case message
+   *   to the user with the value of that token.
+   *   - 'case-empty-germplasm': the message when a cell that should contain a
+   *    germplasm name is empty.
+   *   - 'case-missing-germplasm': the message when a germplasm name is missing
+   *     in the database.
+   *   - 'case-duplicate-germplasm': the message when a germplasm name is
+   *     duplicated in the database.
+   *
+   * @return array
+   *   A render array of type "unordered list" used to display feedback to the
+   *   user about the validation failure, where each item is a markup block
+   *   containing:
+   *   - A message describing the case triggered
+   *   - A table that lists the row and column combinations with failures for
+   *     this case.
+   *   Each case triggered will have its own markup block. The table headers for
+   *   each case are:
+   *     - Germplasm name is empty: 'Row Number', 'Column Header'
+   *     - Duplicate germplasm name seen in the database:
+   *       'Row Number', 'Column Header', 'Germplasm Name'
+   *     - Missing germplasm name from the database:
+   *       'Row Number', 'Column Header', 'Germplasm Name'
+   *
+   * @throws \Exception
+   *   - If key 'column_headers' is missing from $metadata
+   *   - If a validation status array was not formatted properly.
+   *   - If the message for token 'case-empty-germplasm' is an empty string.
+   *   - If the case string returned by the validator implied validation passed.
+   *   - If the case string returned by the validator is not recognized.
+   */
+  public static function processListWithDescribedTable(array $validation_results, array $metadata, array $tokens = []) {
+
+    // Validate that metadata contains the expected keys.
+    if (!array_key_exists('column_headers', $metadata)) {
+      throw new \Exception("Expected metadata to contain 'column_headers' when processing failures from GermplasmNameExists, but it does not.");
+    }
+
+    // We use the Tripal Token Parser service to ensure that more complicated
+    // tokens are supported.
+    // NOTE: Dependency injection is NOT used since this is a static method.
+    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
+    // Grab the default messages for all of our tokens (ones with default-msg).
+    $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
+    // Combine our provided and our default token arrays. Because array_merge
+    // will overwrite values in the first array with values from the second
+    // array for the same keys, we provide our default tokens first.
+    $combined_tokens = array_merge($default_tokens, $tokens);
+    // Add a token for the column header names of the germplasm columns.
+    $combined_tokens['column-headers'] = implode(', ', $metadata['column_headers']);
+
+    // For this validator there can be up to 2 tables:
+    // - 'table'->'missing_cells': Germplasm name not found in the database.
+    // - 'table'->'duplicate_cells': Germplasm name has multiple records.
+    $table = [];
+
+    // Loop through each row in the $failures array and piece apart the
+    // different cases into different tables.
+    foreach ($validation_results as $line_no => $validation_status) {
+      // Check the format of this line's validation status.
+      ImportValidationHelper::checkValidationStatusArray($validation_status, 'GermplasmNameExists', $line_no);
+
+      // If any cells were found to be empty, this case takes presendence over
+      // any other cases, and we return a warning message right away.
+      if ($validation_status['case'] == 'Unable to lookup germplasm with empty values') {
+        $message = $service_TripalTokensParser->replaceTokens(
+          $combined_tokens['case-empty-germplasm'],
+          $combined_tokens
+        );
+        return ImportValidationHelper::renderSimpleWarningMessage(
+          $message,
+          ['case-message', 'tc-germplasm-name-exists-empty'],
+        );
+      }
+      // Keeps track of which table this one line's validation result gets added
+      // to based on the case it triggered.
+      $table_case = [];
+      if ($validation_status['case'] == 'Missing germplasm name(s) in the database') {
+        $table_case = ['missing_cells'];
+      }
+      elseif ($validation_status['case'] == 'Duplicate(s) found in the database for germplasm name(s)') {
+        $table_case = ['duplicate_cells'];
+      }
+      elseif ($validation_status['case'] == 'Missing germplasm name(s) and found duplicate(s) in the database') {
+        $table_case = ['missing_cells', 'duplicate_cells'];
+      }
+      elseif ($validation_status['case'] == 'Germplasm name(s) exist(s) in the database') {
+        throw new \Exception("The case string returned by the GermplasmNameExists validator at line #$line_no implies validation passed, but valid is set to FALSE.");
+      }
+      else {
+        throw new \Exception("The case string returned by the GermplasmNameExists validator at line #$line_no is not recognized as a potential case.");
+      }
+      // Now set values that should appear for this row in the table(s) for this
+      // particular case.
+      foreach ($table_case as $case) {
+        // Declare the array storing content for this table, if not already.
+        if (!array_key_exists($case, $table)) {
+          // Set the first column to hold the line number of the failure.
+          // Use -1 to ensure it is the first column and doesn't conflict with
+          // column indices in the input file.
+          $table[$case]['header'][-1] = 'Line Number';
+          $table[$case]['rows'] = [];
+        }
+        // Define a new row in our table for this line number.
+        $table[$case]['rows'][$line_no][-1] = $line_no;
+        // For each index with an failed germplasm, grab the column name from
+        // $metadata and add it to our table header.
+        foreach ($validation_status['failedItems'][$case] as $index => $germplasm) {
+          // Grab the column name based on the index of the germplasm
+          // and add it to this table header if it's not already there.
+          $column_name = $metadata['column_headers'][$index];
+          if (!array_key_exists($column_name, $table[$case]['header'])) {
+            $table[$case]['header'][$index] = $column_name;
+          }
+          // Now add a cell to the table to indicate this germplasm.
+          // We reuse the index from the original file as the key to preserve
+          // the same order of the columns. We also key the row with the line
+          // number to ensure that a line with more then one failure is
+          // compiled into a single row.
+          $table[$case]['rows'][$line_no][$index] = $germplasm['germplasm_name'];
+        }
+      }
+    }
+    // Check which tables were created, and assign the correct message.
+    // Note that both tables can exist at the same time, hence not an 'elseif'.
+    if (array_key_exists('missing_cells', $table)) {
+      $table['missing_cells']['message'] = $combined_tokens['case-missing-germplasm'];
+    }
+    if (array_key_exists('duplicate_cells', $table)) {
+      $table['duplicate_cells']['message'] = $combined_tokens['case-duplicate-germplasm'];
+    }
+
+    // Finally, loop through our tables and build our render array.
+    $tables = [];
+    foreach ($table as $table_key => &$table_case) {
+      // If our table(s) have more than 2 columns with failed values, then
+      // iterate through and pad each table with empty strings where necessary.
+      ImportValidationHelper::fillTableGaps($table_case['header'], $table_case['rows']);
+      array_push($tables, [
+        [
+          '#prefix' => '<div class="case-message case-' . $table_key . '">',
+          // Replace any tokens that are in our table message.
+          '#markup' => $service_TripalTokensParser->replaceTokens($table_case['message'], $combined_tokens),
+          '#suffix' => '</div>',
+        ],
+        [
+          '#type' => 'table',
+          '#header' => $table_case['header'],
+          '#attributes' => [
+            'class' => [
+              'table-case-' . $table_key,
+            ],
+          ],
+          '#rows' => $table_case['rows'],
+        ],
+      ]);
+    }
+    $render_array = [
+      '#theme' => 'item_list',
+      '#type' => 'ul',
+      '#attributes' => [
+        'class' => [
+          'tc-germplasm-name-exists-failures',
+        ],
+      ],
+      '#items' => $tables,
+    ];
+
+    return $render_array;
   }
 
 }
