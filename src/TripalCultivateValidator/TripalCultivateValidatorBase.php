@@ -22,6 +22,42 @@ abstract class TripalCultivateValidatorBase extends PluginBase implements Tripal
   protected array $context = [];
 
   /**
+   * A mapping array that maps tokens to their details for a validator.
+   *
+   * This mapping starts with all of the potential cases for a validator,
+   * followed by additional tokens which are substitutable within the message(s)
+   * provided to the user when validation fails.
+   *
+   * For each case, the array keys are the substitutable tokens for the entire
+   * case message, and MUST contain the prefix of 'case-', and may contain the
+   * following key-value pairs:
+   * - 'token': the same token (same as the parent key- this can helpful for
+   *   code readability). Recall that it must contain the prefix 'case-'.
+   * - 'dev-case': The short, developer-focussed string describing the case.
+   * - 'default-msg': An informative message that gets displayed to the user
+   *   when validation fails for this particular case. This can contain any
+   *   number of smaller, non case-specific tokens contained in square brackets.
+   *   For example:
+   *     "The selected [project] does not exist. Please [contact-admin] to have
+   *     this added." where both [project] and [contact-admin] are separate
+   *     non case-specific tokens (see definition of remaining tokens below).
+   *
+   * NOTE: The token 'case-valid' is reserved for the valid case for this
+   * validator, and does NOT have a corresponding default message. Although
+   * uncommon, when there is more than one valid case, assign 'case-valid' to
+   * the most common passed case, and suffix `case-valid' with more details for
+   * the other(s).
+   *
+   * For all remaining tokens, the array key is the substitutable token, with
+   * the following key-pairs:
+   * - 'token': the substitutable text in a message. This text would become
+   *   flanked by brackets within a message string. For eg. [token]
+   * - 'default-msg': A string that would substitute the associated token
+   *   elsewhere in the render array (e.g. within the case message).
+   */
+  protected static array $mapping = [];
+
+  /**
    * The TripalLogger service.
    *
    * This is used to report status and errors to both site users and
