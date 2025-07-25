@@ -363,10 +363,10 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *   output. This array is nested by the tables expected (keyed by type -
    *   'unsupported' or 'delimited'), in the order they are expected to show
    *   up on the page (1 array per table). Each array has the following keys:
-   *     - 'expected_message': The message expected in the return value of the
-   *       process method for this scenario.
-   *     - 1+ arrays keyed by the line number in the input file that triggered
-   *       the failed validation status, further keyed by:
+   *   - 'expected_message': The message expected in the return value of the
+   *     process method for this scenario.
+   *   - 1+ arrays keyed by the line number in the input file that triggered
+   *     the failed validation status, further keyed by:
    *     - 'line_contents': The raw contents of this line that failed.
    *
    * @dataProvider provideValidDelimitedFileFailedCases
