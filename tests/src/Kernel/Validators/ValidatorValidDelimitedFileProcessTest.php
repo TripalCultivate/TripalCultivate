@@ -334,6 +334,31 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #7: Test token reversal - token + static token.
+    $raw_row = "This is one very long string without any supported delimiters in it.";
+    $scenarios[] = [
+      [
+        2 => [
+          'case' => 'None of the delimiters supported by the file type was used',
+          'valid' => FALSE,
+          'failedItems' => [
+            'raw_row' => $raw_row,
+          ],
+        ],
+      ],
+      [
+        'case-no-delimiter' => 'No delimiter ([strict-or-min]).',
+      ],
+      [
+        'unsupported' => [
+          'expected_message' => 'No delimiter ().',
+          2 => [
+            'line_contents' => $raw_row,
+          ],
+        ],
+      ],
+    ];
+
     return $scenarios;
   }
 
@@ -513,10 +538,10 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *   to the user. The key is the token, (ex. 'project'), and the value is
    *   the new value to be shown for that token.
    * @param array $expectations
-   *   - An array of expectations that we want to find in the resulting rendered  
-   *     output. It has the following keys:  
-   *     - 'expected_message': The message expected in the return value of the  
-   *       process method for this scenario.  
+   *   - An array of expectations that we want to find in the resulting rendered
+   *     output. It has the following keys:
+   *     - 'expected_message': The message expected in the return value of the
+   *       process method for this scenario.
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */

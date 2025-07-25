@@ -271,8 +271,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
 
         $table_case = 'delimited';
         if (!isset($num_expected_columns)) {
-          $combined_tokens['strict-or-min'] = ($validation_result['failedItems']['strict']) ? 'strict' : 'minimum';
-          $combined_tokens['num-expected-columns'] = $validation_result['failedItems']['expected_columns'];
+          $strict = ($validation_result['failedItems']['strict'] === TRUE) ? 'strict' : 'minimum';
+          $num_expected_columns = $validation_result['failedItems']['expected_columns'];
         }
       }
       elseif (($validation_result['case'] == self::$mapping['case-valid']['dev-case']) ||
@@ -304,12 +304,22 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     // Check which tables were created, and assign the correct message.
     // Note that both tables can exist at the same time.
     if (array_key_exists('unsupported', $table)) {
-      $table['unsupported']['message'] = $combined_tokens['case-empty-row'];
+      $case_token = (isset($tokens['case-empty-row'])) ?
+        self::$mapping['case-empty-row']['token'] :
+        self::$mapping['case-no-delimiter']['token'];
+
+      $table['unsupported']['message'] = $combined_tokens[$case_token];
     }
 
     if (array_key_exists('delimited', $table)) {
-      $table['delimited']['message'] = $service_TripalTokensParser
-        ->replaceTokens($combined_tokens['case-insufficient-columns'], $combined_tokens);
+      $case_token = (isset($tokens['case-insufficient-columns'])) ?
+        self::$mapping['case-insufficient-columns']['token'] :
+        self::$mapping['case-excess-columns']['token'];
+
+      $combined_tokens['strict-or-min'] = $strict;
+      $combined_tokens['num-expected-columns'] = $num_expected_columns;
+
+      $table['delimited']['message'] = $combined_tokens[$case_token];
     }
 
     // Finally, loop through our tables and build our render array.
