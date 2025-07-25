@@ -39,9 +39,6 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - 'case-no-delimiter': the message when no delimiter was used.
    *   - 'case-excess-columns': the message when row has excess columns.
    *   - 'case-insufficient-columns': the message when row has less columns.
-   *   Tokens below cannot be overriden as their value is determined at runtime:
-   *   - 'strict-or-min': header comparison settings (strict or minimum).
-   *   - 'num-expected-colums': number of expected column headers.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
