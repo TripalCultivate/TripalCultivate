@@ -89,6 +89,13 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *         - 'strict': A boolean indicating whether the number of expected
    *           columns by the validator is strict (TRUE) or is the minimum
    *           number required (FALSE).
+   *   - An array of additional metadata (or contextual information) needed by
+   *     the process method. Here, the following keys are expected:
+   *     - 'strict_flag': indicates whether the value for number_of_columns
+   *       is minimum number of columns required (FALSE) or if it is strictly
+   *       the only acceptable number of columns (TRUE).
+   *     - 'number_of_columns': the number of columns thar are anticipated in
+   *       a data row.
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
@@ -105,8 +112,11 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
   public static function provideValidDelimitedFileFailedCases() {
 
     $tokens = [];
+    $metadata = [];
 
     // #0: The first row is empty (single whitespace).
+    $metadata['strict_flag'] = TRUE;
+    $metadata['number_of_columns'] = 5;
     $scenarios[] = [
       [
         1 => [
@@ -117,6 +127,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       $tokens,
       [
         'unsupported' => [
@@ -130,6 +141,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
 
     // #1: No supported delimiters were used.
     $raw_row = "This is one very long string without any supported delimiters in it.";
+    $metadata['strict_flag'] = TRUE;
+    $metadata['number_of_columns'] = 5;
     $scenarios[] = [
       [
         2 => [
@@ -140,6 +153,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       $tokens,
       [
         'unsupported' => [
@@ -154,6 +168,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     // #2: Multiple rows with too few columns and strict = FALSE
     $raw_row_2 = "Column 1\tColumn 2";
     $raw_row_4 = "Column 1\tColumn 2\tColumn 3";
+    $metadata['strict_flag'] = FALSE;
+    $metadata['number_of_columns'] = 4;
     $scenarios[] = [
       [
         2 => [
@@ -175,6 +191,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       $tokens,
       [
         'delimited' => [
@@ -192,6 +209,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     // #3: 1 row with too few columns, 1 with too many columns, strict = TRUE
     $raw_row_3 = "Column 1\tColumn 2\tColumn 3\tColumn 4";
     $raw_row_5 = "Column 1\tColumn 2\tColumn 3\tColumn 4\tColumn 5\tColumn 6\tColumn 7\tColumn 8";
+    $metadata['strict_flag'] = TRUE;
+    $metadata['number_of_columns'] = 6;
     $scenarios[] = [
       [
         3 => [
@@ -213,6 +232,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       $tokens,
       [
         'delimited' => [
@@ -230,6 +250,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     // #4: A mix of unsupported delimiters and insufficient columns.
     $raw_row_6 = "Column 1 Column 2 Column 3 Column 4";
     $raw_row_7 = "Column 1\tColumn 2\tColumn 3\tColumn 4\tColumn 5\tColumn 6\tColumn 7";
+    $metadata['strict_flag'] = TRUE;
+    $metadata['number_of_columns'] = 6;
     $scenarios[] = [
       [
         6 => [
@@ -251,6 +273,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       $tokens,
       [
         'unsupported' => [
@@ -269,6 +292,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     ];
 
     // #5: Test token reversal - message.
+    $metadata['strict_flag'] = TRUE;
+    $metadata['number_of_columns'] = 5;
     $scenarios[] = [
       [
         1 => [
@@ -279,8 +304,9 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       [
-        'case-empty-row' => 'Nothing Provided.',
+        'table-unsupported' => 'Nothing Provided.',
       ],
       [
         'unsupported' => [
@@ -296,6 +322,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     // 1 row with too few columns, 1 with too many columns, strict = TRUE
     $raw_row_3 = "Column 1\tColumn 2\tColumn 3\tColumn 4";
     $raw_row_5 = "Column 1\tColumn 2\tColumn 3\tColumn 4\tColumn 5\tColumn 6\tColumn 7\tColumn 8";
+    $metadata['strict_flag'] = TRUE;
+    $metadata['number_of_columns'] = 6;
     $scenarios[] = [
       [
         3 => [
@@ -317,6 +345,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       [
         'strict-or-min' => 'STRICT',
         'num-expected-columns' => 'SIX',
@@ -335,6 +364,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     ];
 
     // #7: Test token reversal - token + static token.
+    $metadata['strict_flag'] = TRUE;
+    $metadata['number_of_columns'] = 5;
     $raw_row = "This is one very long string without any supported delimiters in it.";
     $scenarios[] = [
       [
@@ -346,12 +377,13 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       [
         'case-no-delimiter' => 'No delimiter ([strict-or-min]).',
       ],
       [
         'unsupported' => [
-          'expected_message' => 'No delimiter ().',
+          'expected_message' => 'The following lines in the input file do not contain a valid delimiter supported by this importer.',
           2 => [
             'line_contents' => $raw_row,
           ],
@@ -379,6 +411,14 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *         - 'strict': A boolean indicating whether the number of expected
    *           columns by the validator is strict (TRUE) or is the minimum
    *           number required (FALSE).
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by
+   *   the process method. Here, the following keys are expected:
+   *     - 'strict_flag': indicates whether the value for number_of_columns
+   *       is minimum number of columns required (FALSE) or if it is strictly
+   *       the only acceptable number of columns (TRUE).
+   *     - 'number_of_columns': the number of columns thar are anticipated in
+   *       a data row.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -396,10 +436,10 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideValidDelimitedFileFailedCases
    */
-  public function testProcessValidDelimitedFileFailures(array $validation_results, array $tokens, array $expectations) {
+  public function testProcessValidDelimitedFileFailures(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Process our test failures array.
-    $render_array = $this->validator_instance::processValidDelimitedFileFailures($validation_results, $tokens);
+    $render_array = $this->validator_instance::processValidDelimitedFileFailures($validation_results, $metadata, $tokens);
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
@@ -463,6 +503,13 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *         - 'strict': A boolean indicating whether the number of expected
    *           columns by the validator is strict (TRUE) or is the minimum
    *           number required (FALSE).
+   *   - An array of additional metadata (or contextual information) needed by
+   *     the process method. Here, the following keys are expected:
+   *      - 'strict_flag': indicates whether the value for number_of_columns
+   *        is minimum number of columns required (FALSE) or if it is strictly
+   *        the only acceptable number of columns (TRUE).
+   *      - 'number_of_columns': the number of columns thar are anticipated in
+   *        a data row.
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
@@ -478,6 +525,10 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
     // Make tokens an empty array for now. Maybe in the future we'll want to
     // incorporate them into exception messages?
     $tokens = [];
+    $metadata = [
+      'strict_flag' => TRUE,
+      'number_of_columns' => 5,
+    ];
 
     // #0: ValidDelimitedFile passed.
     $scenarios[] = [
@@ -490,6 +541,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       $tokens,
       [
         'expected_message' => 'The case string returned by the ValidDelimitedFile validator at line #4 implies validation passed, but valid is set to FALSE.',
@@ -507,9 +559,68 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
+      $metadata,
       $tokens,
       [
         'expected_message' => 'The case string returned by the ValidDelimitedFile validator at line #5 is not recognized as a potential case.',
+      ],
+    ];
+
+    // #2: missing strict_flag from metadata.
+    $scenarios[] = [
+      [
+        5 => [
+          'case' => 'unrecognizable case',
+          'valid' => FALSE,
+          'failedItems' => [
+            'raw_row' => 'This is a raw row.',
+          ],
+        ],
+      ],
+      [
+        'number_of_columns' => 5,
+      ],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.",
+      ],
+    ];
+
+    // #3: missing number_of_columns from metadata.
+    $scenarios[] = [
+      [
+        5 => [
+          'case' => 'unrecognizable case',
+          'valid' => FALSE,
+          'failedItems' => [
+            'raw_row' => 'This is a raw row.',
+          ],
+        ],
+      ],
+      [
+        'strict_flag' => TRUE,
+      ],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.",
+      ],
+    ];
+
+    // #4: missing strict_flag and number_of_columns from metadata.
+    $scenarios[] = [
+      [
+        5 => [
+          'case' => 'unrecognizable case',
+          'valid' => FALSE,
+          'failedItems' => [
+            'raw_row' => 'This is a raw row.',
+          ],
+        ],
+      ],
+      [],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.",
       ],
     ];
 
@@ -533,6 +644,14 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *         - 'strict': A boolean indicating whether the number of expected
    *           columns by the validator is strict (TRUE) or is the minimum
    *           number required (FALSE).
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by
+   *   the process method. Here, the following keys are expected:
+   *     - 'strict_flag': indicates whether the value for number_of_columns
+   *       is minimum number of columns required (FALSE) or if it is strictly
+   *       the only acceptable number of columns (TRUE).
+   *     - 'number_of_columns': the number of columns thar are anticipated in
+   *       a data row.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -545,13 +664,13 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessValidDelimitedFileFailuresExceptions(array $validation_results, array $tokens, array $expectations) {
+  public function testProcessValidDelimitedFileFailuresExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      $this->validator_instance::processValidDelimitedFileFailures($validation_results, $tokens);
+      $this->validator_instance::processValidDelimitedFileFailures($validation_results, $metadata, $tokens);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;

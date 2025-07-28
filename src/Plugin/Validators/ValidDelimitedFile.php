@@ -35,33 +35,42 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   developer case string and the default message to substitute the token.
    *   The following tokens are implemented for this mapping, with the following
    *   descriptions for their 'default-msg' values:
+   *   - 'table-unsupported': the token containing the message used by cases
+   *     where raw row is empty or raw row is not delimited.
+   *   - 'table-delimited': the token containing the message used by cases
+   *     where raw row has excess column or raw row has missing columns.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
    *   - 'case-empty-row': the message when a row is empty string.
    *   - 'case-no-delimiter': the message when no delimiter was used.
    *   - 'case-excess-columns': the message when row has excess columns.
-   *   - 'case-insufficient-columns': the message when row has less columns.
+   *   - 'case-missing-columns': the message when row has less columns.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
   protected static array $mapping = [
+    'table-unsupported' => [
+      'token' => 'table-unsupported',
+      'default-msg' => 'The following lines in the input file do not contain a valid delimiter supported by this importer.',
+    ],
+    'table-delimited' => [
+      'token' => 'table-delimited',
+      'default-msg' => 'This importer requires a [strict-or-min] number of [num-expected-columns] columns for each line. The following lines do not contain the expected number of columns.',
+    ],
     'case-empty-row' => [
       'token' => 'case-empty-row',
       'dev-case' => 'Raw row is empty',
-      'default-msg' => 'The following lines in the input file do not contain a valid delimiter supported by this importer.',
     ],
     'case-no-delimiter' => [
       'token' => 'case-no-delimiter',
       'dev-case' => 'None of the delimiters supported by the file type was used',
-      'default-msg' => 'The following lines in the input file do not contain a valid delimiter supported by this importer.',
     ],
     'case-excess-columns' => [
       'token' => 'case-excess-columns',
       'dev-case' => 'Raw row exceeds number of strict columns',
-      'default-msg' => 'This importer requires a [strict-or-min] number of [num-expected-columns] columns for each line. The following lines do not contain the expected number of columns.',
     ],
-    'case-insufficient-columns' => [
-      'token' => 'case-insufficient-columns',
+    'case-missing-columns' => [
+      'token' => 'case-missing-columns',
       'dev-case' => 'Raw row has insufficient number of columns',
-      'default-msg' => 'This importer requires a [strict-or-min] number of [num-expected-columns] columns for each line. The following lines do not contain the expected number of columns.',
     ],
     'strict-or-min' => [
       'token' => 'strict-or-min',
@@ -207,6 +216,14 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *     - 'failedItems': an array of items that failed, where the key is
    *       a shorthand of the case and the value contains the failed item.
    *     @see validateRawRow()
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *   - 'strict_flag': indicates whether the value for number_of_columns
+   *     is minimum number of columns required (FALSE) or if it is strictly
+   *     the only acceptable number of columns (TRUE).
+   *   - 'number_of_columns': the number of columns thar are anticipated in
+   *     a data row.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see ValidDelimitedFile::$mapping
@@ -215,7 +232,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *     - 'case-empty-row': the message when a row is empty string.
    *     - 'case-no-delimiter': the message when no delimiter was used.
    *     - 'case-excess-columns': the message when row has excess columns.
-   *     - 'case-insufficient-columns': the message when row has less columns.
+   *     - 'case-missing-columns': the message when row has less columns.
    *     - 'strict-or-min': header comparison settings (strict or minimum).
    *     - 'num-expected-colums': number of expected column headers.
    *
@@ -240,7 +257,12 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processValidDelimitedFileFailures(array $validation_results, array $tokens = []) {
+  public static function processValidDelimitedFileFailures(array $validation_results, array $metadata, array $tokens = []) {
+
+    // Validate that metadata contains the expected keys.
+    if (!isset($metadata['strict_flag'], $metadata['number_of_columns'])) {
+      throw new \Exception("Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.");
+    }
 
     // Grab the default messages for all of our tokens (ones with default-msg).
     $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
@@ -248,6 +270,9 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     // will overwrite values in the first array with values from the second
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
+
+    $combined_tokens['strict-or-min'] = $metadata['strict_flag'] == TRUE ? 'strict' : 'minimum';
+    $combined_tokens['num-expected-columns'] = $metadata['number_of_columns'];
 
     // Define our table headers.
     $table_header = ['Line Number', 'Line Contents'];
@@ -268,16 +293,12 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
       if (($validation_result['case'] == self::$mapping['case-empty-row']['dev-case']) ||
           ($validation_result['case'] == self::$mapping['case-no-delimiter']['dev-case'])) {
 
-        $table_case = 'unsupported';
+        $table_case = self::$mapping['table-unsupported']['token'];
       }
       elseif (($validation_result['case'] == self::$mapping['case-excess-columns']['dev-case']) ||
-              ($validation_result['case'] == self::$mapping['case-insufficient-columns']['dev-case'])) {
+              ($validation_result['case'] == self::$mapping['case-missing-columns']['dev-case'])) {
 
-        $table_case = 'delimited';
-        if (!isset($num_expected_columns)) {
-          $strict = ($validation_result['failedItems']['strict'] === TRUE) ? 'strict' : 'minimum';
-          $num_expected_columns = $validation_result['failedItems']['expected_columns'];
-        }
+        $table_case = self::$mapping['table-delimited']['token'];
       }
       elseif (($validation_result['case'] == self::$mapping['case-valid']['dev-case']) ||
               ($validation_result['case'] == self::$mapping['case-valid-singlecol']['dev-case'])) {
@@ -291,27 +312,18 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
       // Checked all cases, now add a row to our appropriate table.
       if (!array_key_exists($table_case, $table)) {
         // Declare the array storing rows for this table, if not already.
-        $table[$table_case]['rows'] = [];
+        // Check which tables were created, and assign the correct message.
+        // Note that both tables can exist at the same time.
+        $table[$table_case] = [
+          'rows' => [],
+          'message' => $combined_tokens[$table_case],
+        ];
       }
+
       $table[$table_case]['rows'][] = [
         $line_no,
         $validation_result['failedItems']['raw_row'],
       ];
-    }
-
-    // Check which tables were created, and assign the correct message.
-    // Note that both tables can exist at the same time.
-    if (array_key_exists('unsupported', $table)) {
-      $case_token = isset($tokens['case-no-delimiter']) ? 'case-no-delimiter' : 'case-empty-row';
-      $table['unsupported']['message'] = $combined_tokens[self::$mapping[$case_token]['token']];
-    }
-
-    if (array_key_exists('delimited', $table)) {
-      $case_token = isset($tokens['case-insufficient-columns']) ? 'case-insufficient-columns' : 'case-excess-columns';
-      $table['delimited']['message'] = $combined_tokens[self::$mapping[$case_token]['token']];
-
-      $combined_tokens['strict-or-min'] = $strict;
-      $combined_tokens['num-expected-columns'] = $num_expected_columns;
     }
 
     // Now replace any tokens that are in our message or items.
@@ -325,6 +337,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     foreach ($table as $table_key => $table_case) {
       $replaced_message = $service_TripalTokensParser->replaceTokens($table_case['message'], $combined_tokens);
 
+      $table_key = ltrim($table_key, 'table-');
       $tables[] = [
         [
           '#prefix' => '<div class="case-message case-' . $table_key . '">',
