@@ -220,10 +220,14 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *     - 'num-expected-colums': number of expected column headers.
    *
    * @return array
-   *   A render array of type unordered list which is used to display feedback
-   *   to the user about the case(s) that failed and the failed items from the
-   *   input file. This unordered list will include a table for each potential
-   *   case in the $failures array:
+   *   A render array of type "unordered list" which is used to display feedback
+   *   to the user about the validation failure, where each item is a markup
+   *   block containing:
+   *   - A message describing the case triggered.
+   *   - A table that lists the row and column combinations with failures for
+   *     this case.
+   *   Each list item is a markup block describing a potential case in the
+   *   $failures array using a message describing the case triggered and either:
    *   - A table for lines that are empty or contain unsupported delimiters
    *   - A table for lines that once delimited, do not contain the expected
    *     number of columns.
@@ -295,32 +299,26 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
       ];
     }
 
+    // Check which tables were created, and assign the correct message.
+    // Note that both tables can exist at the same time.
+    if (array_key_exists('unsupported', $table)) {
+      $case_token = isset($tokens['case-no-delimiter']) ? 'case-no-delimiter' : 'case-empty-row';
+      $table['unsupported']['message'] = $combined_tokens[self::$mapping[$case_token]['token']];
+    }
+
+    if (array_key_exists('delimited', $table)) {
+      $case_token = isset($tokens['case-insufficient-columns']) ? 'case-insufficient-columns' : 'case-excess-columns';
+      $table['delimited']['message'] = $combined_tokens[self::$mapping[$case_token]['token']];
+
+      $combined_tokens['strict-or-min'] = $strict;
+      $combined_tokens['num-expected-columns'] = $num_expected_columns;
+    }
+
     // Now replace any tokens that are in our message or items.
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
     // NOTE: Dependency injection is NOT used since this is a static method.
     $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
-
-    // Check which tables were created, and assign the correct message.
-    // Note that both tables can exist at the same time.
-    if (array_key_exists('unsupported', $table)) {
-      $case_token = (isset($tokens['case-empty-row'])) ?
-        self::$mapping['case-empty-row']['token'] :
-        self::$mapping['case-no-delimiter']['token'];
-
-      $table['unsupported']['message'] = $combined_tokens[$case_token];
-    }
-
-    if (array_key_exists('delimited', $table)) {
-      $case_token = (isset($tokens['case-insufficient-columns'])) ?
-        self::$mapping['case-insufficient-columns']['token'] :
-        self::$mapping['case-excess-columns']['token'];
-
-      $combined_tokens['strict-or-min'] = $strict;
-      $combined_tokens['num-expected-columns'] = $num_expected_columns;
-
-      $table['delimited']['message'] = $combined_tokens[$case_token];
-    }
 
     // Finally, loop through our tables and build our render array.
     $tables = [];
