@@ -174,10 +174,13 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   - 'case-mismatch-count': the message when the number of headers is not what is expected.
    *
    * @return array
-   *   A render array of type unordered list which is used to display feedback
-   *   to the user about the case that failed and the failed items from the
-   *   input file. This unordered list will include a table with a row of the
-   *   expected headers followed by a row of the provided headers.
+   *   A render array of type "unordered list" which is used to display feedback
+   *   to the user about the validation failure. This process method renders a
+   *   a single item consisting of a markup block with a message describing the
+   *   case that was triggered, and a table with the following rows:
+   *   - 'Expected Headers': the column header as it is expected by the importer
+   *   - 'Provided Headers': the column header exactly as it was provided in the
+   *     input file.
    *
    * @throws \Exception
    *   - If the validation_status parameter was not formatted properly.
