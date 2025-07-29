@@ -44,6 +44,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - 'case-no-delimiter': the message when no delimiter was used.
    *   - 'case-excess-columns': the message when row has excess columns.
    *   - 'case-missing-columns': the message when row has less columns.
+   *   - 'strict-or-min': header comparison settings (strict or minimum).
+   *   - 'num-expected-colums': number of expected column headers.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
@@ -229,12 +231,10 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   @see ValidDelimitedFile::$mapping
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
-   *     - 'case-empty-row': the message when a row is empty string.
-   *     - 'case-no-delimiter': the message when no delimiter was used.
-   *     - 'case-excess-columns': the message when row has excess columns.
-   *     - 'case-missing-columns': the message when row has less columns.
-   *     - 'strict-or-min': header comparison settings (strict or minimum).
-   *     - 'num-expected-colums': number of expected column headers.
+   *     - 'table-unsupported': the token containing the message used by cases
+   *       where raw row is empty or raw row is not delimited.
+   *     - 'table-delimited': the token containing the message used by cases
+   *       where raw row has excess column or raw row has missing columns.
    *
    * @return array
    *   A render array of type "unordered list" which is used to display feedback
