@@ -170,8 +170,8 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
    *   - 'case-empty-headers': the message when there is no header row.
-   *   - 'case-mismatch-values': the message when headers are not expected.
-   *   - 'case-mismatch-count': the message when headers count is not expected.
+   *   - 'case-mismatch-values': the message when header values are not what is expected.
+   *   - 'case-mismatch-count': the message when the number of headers is not what is expected.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
