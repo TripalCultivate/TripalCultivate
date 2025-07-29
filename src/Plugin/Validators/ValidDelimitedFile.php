@@ -185,7 +185,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
     if ($no_cols < $expected_columns['number_of_columns']) {
       // The line has less column than expected.
       return [
-        'case' => self::$mapping['case-insufficient-columns']['dev-case'],
+        'case' => self::$mapping['case-missing-columns']['dev-case'],
         'valid' => FALSE,
         'failedItems' => [
           'raw_row' => $raw_row,
@@ -261,7 +261,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
 
     // Validate that metadata contains the expected keys.
     if (!isset($metadata['strict_flag'], $metadata['number_of_columns'])) {
-      throw new \Exception("Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.");
+      throw new \Exception("Expected metadata to contain both 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not.");
     }
 
     // Grab the default messages for all of our tokens (ones with default-msg).
