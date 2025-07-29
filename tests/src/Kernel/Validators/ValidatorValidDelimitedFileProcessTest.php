@@ -582,7 +582,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
       ],
       $tokens,
       [
-        'expected_message' => "Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.",
+        'expected_message' => "Expected metadata to contain both 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not.",
       ],
     ];
 
@@ -602,7 +602,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
       ],
       $tokens,
       [
-        'expected_message' => "Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.",
+        'expected_message' => "Expected metadata to contain both 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not.",
       ],
     ];
 
@@ -620,7 +620,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
       [],
       $tokens,
       [
-        'expected_message' => "Expected metadata to contain 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not both.",
+        'expected_message' => "Expected metadata to contain both 'strict_flag' and 'number_of_columns' when processing failures from ValidDelimiters, but it does not.",
       ],
     ];
 
