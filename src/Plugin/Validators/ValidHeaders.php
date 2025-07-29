@@ -170,8 +170,10 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
    *   - 'case-empty-headers': the message when there is no header row.
-   *   - 'case-mismatch-values': the message when header values are not what is expected.
-   *   - 'case-mismatch-count': the message when the number of headers is not what is expected.
+   *   - 'case-mismatch-values': the message when header values are not
+   *     what is expected.
+   *   - 'case-mismatch-count': the message when the number of headers is
+   *     not what is expected.
    *
    * @return array
    *   A render array of type "unordered list" which is used to display feedback
@@ -187,7 +189,12 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processValidHeadersFailures(array $validation_status, array $metadata, array $tokens = []) {
+  public static function processListWithDescribedTable(array $validation_status, array $metadata, array $tokens = []) {
+
+    // Validate that metadata contains the expected keys.
+    if (!array_key_exists('column_headers', $metadata)) {
+      throw new \Exception("Expected metadata to contain 'column_headers' when processing failures from ValidHeaders, but it does not.");
+    }
 
     // Check the format of the validation_status parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidHeaders');

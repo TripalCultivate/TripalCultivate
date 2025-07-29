@@ -246,10 +246,10 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideValidHeadersFailedCases
    */
-  public function testProcessValidHeadersFailures(array $validation_status, array $metadata, array $tokens, array $expectations) {
+  public function testProcessListWithDescribedTableFailures(array $validation_status, array $metadata, array $tokens, array $expectations) {
 
     // Call the process method on our validation result.
-    $render_array = $this->validator_instance::processValidHeadersFailures($validation_status, $metadata, $tokens);
+    $render_array = $this->validator_instance::processListWithDescribedTable($validation_status, $metadata, $tokens);
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
@@ -264,7 +264,7 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
     );
     // Check that we have a table that contains the expected 2 rows.
     $selected_table_rows = $this->cssSelect('tbody tr');
-    $this->assertCount(2, $selected_table_rows, 'The rendered table by processValidHeadersFailures does not contain the expected 2 rows for this scenario.');
+    $this->assertCount(2, $selected_table_rows, 'The rendered table by processListWithDescribedTable does not contain the expected 2 rows for this scenario.');
     // Check for the "Provided Headers" heading on the 2nd row.
     $selected_provided_headers_th = $this->cssSelect('tbody tr.provided-headers th');
     $this->assertEquals(
@@ -356,6 +356,24 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #2: missing metadata column_headers key.
+    $scenarios[] = [
+      [
+        'case' => 'Unrecognized case string',
+        'valid' => FALSE,
+        'failedItems' => [
+          'headers' => 'headers array is an empty array',
+        ],
+      ],
+      [
+        'header_columns' => [],
+      ],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain 'column_headers' when processing failures from ValidHeaders, but it does not.",
+      ],
+    ];
+
     return $scenarios;
   }
 
@@ -391,13 +409,13 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessValidHeadersFailuresExceptions(array $validation_status, array $metadata, array $tokens, array $expectations) {
+  public function testProcessListWithDescribedTableExceptions(array $validation_status, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      $this->validator_instance::processValidHeadersFailures($validation_status, $metadata, $tokens);
+      $this->validator_instance::processListWithDescribedTable($validation_status, $metadata, $tokens);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
