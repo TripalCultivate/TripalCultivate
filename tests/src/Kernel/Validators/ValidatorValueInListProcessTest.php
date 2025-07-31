@@ -120,6 +120,13 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *     the process method. Here, the following keys are expected:
    *       - 'expected_values': the list of values that are considered valid
    *         by this validator.
+   *       - 'column_headers': This contains an array of headers. The index in
+   *       this array MUST match the position (starting with 0) of the column in
+   *       the input file.
+   *       Eg: 'column_headers' => [
+   *           '2' => 'Header 1', // Header of column #3
+   *           '4' => 'Header 2', // Header of column #5
+   *         ].
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
@@ -139,13 +146,14 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
 
     $scenarios = [];
     $tokens = [];
+    $column_headers = array_column(self::COLUMN_HEADERS, 'name');
 
     $metadata = [
       'expected_values' => [
         'Quantitative',
         'Qualitative',
       ],
-      'column_headers' => self::COLUMN_HEADERS,
+      'column_headers' => $column_headers,
     ];
 
     // #0: An invalid value in a required column on one row.
@@ -188,7 +196,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       $metadata,
       $tokens,
       [
-        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '" Note that values should be case sensitive.',
+        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '".',
         'expected_column_count' => 2,
         'expected_table_rows' => [
           3 => [
@@ -212,7 +220,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       $metadata,
       [
-        'case-invalid-value' => 'Not Valid Value.',
+        'table-invalid' => 'Not Valid Value.',
       ],
       [
         'expected_message' => 'Not Valid Value',
@@ -242,7 +250,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
         'expected-values' => '"Another expected values"',
       ],
       [
-        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '" Note that values should be case sensitive.',
+        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '".',
         'expected_column_count' => 2,
         'expected_table_rows' => [
           3 => [
@@ -258,10 +266,82 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
         'days',
         'scale',
       ],
-      'column_headers' => self::COLUMN_HEADERS,
+      'column_headers' => $column_headers,
     ];
 
-    // #4: An invalid value on multiple rows (1 column)
+    // #4: Test static token - expected message remains unchanged.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Invalid value(s) in required column(s) with >=1 case insensitive match',
+          'valid' => FALSE,
+          'failedItems' => [
+            // Column 'Type' is at index 5.
+            5 => 'qualitative',
+          ],
+        ],
+      ],
+      $metadata,
+      [
+        'case-invalid-value' => 'Case is invalid value.',
+      ],
+      [
+        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '".',
+        'expected_column_count' => 2,
+        'expected_table_rows' => [
+          3 => [
+            'Type' => 'qualitative',
+          ],
+        ],
+      ],
+    ];
+
+    $metadata = [
+      'expected_values' => [
+        'cm',
+        'days',
+        'scale',
+      ],
+      'column_headers' => $column_headers,
+    ];
+
+    // #5: Test static token - expected message remains unchanged.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Invalid value(s) in required column(s) with >=1 case insensitive match',
+          'valid' => FALSE,
+          'failedItems' => [
+            // Column 'Type' is at index 5.
+            5 => 'qualitative',
+          ],
+        ],
+      ],
+      $metadata,
+      [
+        'case-insensitive-match' => 'Case is insensitive match.',
+      ],
+      [
+        'expected_message' => 'The following line number and column combinations did not contain one of the following allowed values: "' . implode('", "', $metadata['expected_values']) . '".',
+        'expected_column_count' => 2,
+        'expected_table_rows' => [
+          3 => [
+            'Type' => 'qualitative',
+          ],
+        ],
+      ],
+    ];
+
+    $metadata = [
+      'expected_values' => [
+        'cm',
+        'days',
+        'scale',
+      ],
+      'column_headers' => $column_headers,
+    ];
+
+    // #6: An invalid value on multiple rows (1 column)
     $scenarios[] = [
       [
         2 => [
@@ -296,7 +376,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
-    // #5: Multiple different invalid values in different columns.
+    // #7: Multiple different invalid values in different columns.
     $scenarios[] = [
       [
         2 => [
@@ -357,8 +437,15 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by
    *   the process method. Here, the following keys are expected:
-   *     - 'expected_values': the list of values that are considered valid
-   *       by this validator.
+   *   - 'expected_values': the list of values that are considered valid
+   *     by this validator.
+   *   - 'column_headers': This contains an array of headers. The index in
+   *     this array MUST match the position (starting with 0) of the column in
+   *     the input file.
+   *     Eg: 'column_headers' => [
+   *           '2' => 'Header 1', // Header of column #3
+   *           '4' => 'Header 2', // Header of column #5
+   *         ].
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is
@@ -465,6 +552,13 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *     the process method. Here, the following keys are expected:
    *     - 'expected_values': the list of values that are considered valid
    *       by this validator.
+   *     - 'column_headers': This contains an array of headers. The index in
+   *       this array MUST match the position (starting with 0) of the column in
+   *       the input file.
+   *       Eg: 'column_headers' => [
+   *             '2' => 'Header 1', // Header of column #3
+   *             '4' => 'Header 2', // Header of column #5
+   *           ].
    *   - An array of tokens to use for altering the messages that get displayed
    *     to the user. The key is the token, (ex. 'project'), and the value is
    *     the new value to be shown for that token.
@@ -494,6 +588,10 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       [
         'expected_values' => ['Quantitative', 'Qualitative'],
+        'column_headers' => [
+          0 => 'Header 1',
+          1 => 'Header 2',
+        ],
       ],
       $tokens,
       [
@@ -514,10 +612,75 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
       ],
       [
         'expected_values' => ['Quantitative', 'Qualitative'],
+        'column_headers' => [
+          0 => 'Header 1',
+          1 => 'Header 2',
+        ],
       ],
       $tokens,
       [
         'expected_message' => 'The case string returned by the ValueInList validator at line #3 is not recognized as a potential case.',
+      ],
+    ];
+
+    // #2: missing expected_values from metadata.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Unrecognized case string',
+          'valid' => FALSE,
+          'failedItems' => [
+            5 => 'Invalid value',
+          ],
+        ],
+      ],
+      [
+        'column_headers' => [
+          0 => 'Header 1',
+          1 => 'Header 2',
+        ],
+      ],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain both 'expected_values' and 'column_headers' when processing failures from ValueInList, but it does not.",
+      ],
+    ];
+
+    // #3: missing column_headers from metadata.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Unrecognized case string',
+          'valid' => FALSE,
+          'failedItems' => [
+            5 => 'Invalid value',
+          ],
+        ],
+      ],
+      [
+        'expected_values' => ['Quantitative', 'Qualitative'],
+      ],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain both 'expected_values' and 'column_headers' when processing failures from ValueInList, but it does not.",
+      ],
+    ];
+
+    // #4: missing expected_values and column_headers from metadata.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Unrecognized case string',
+          'valid' => FALSE,
+          'failedItems' => [
+            5 => 'Invalid value',
+          ],
+        ],
+      ],
+      [],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain both 'expected_values' and 'column_headers' when processing failures from ValueInList, but it does not.",
       ],
     ];
 
@@ -540,6 +703,13 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *   the process method. Here, the following keys are expected:
    *     - 'expected_values': the list of values that are considered valid
    *       by this validator.
+   *     - 'column_headers': This contains an array of headers. The index in
+   *       this array MUST match the position (starting with 0) of the column in
+   *       the input file.
+   *       Eg: 'column_headers' => [
+   *             '2' => 'Header 1', // Header of column #3
+   *             '4' => 'Header 2', // Header of column #5
+   *           ].
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
    *   to the user. The key is the token, (ex. 'project'), and the value is

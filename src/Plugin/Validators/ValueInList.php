@@ -37,24 +37,29 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   developer case string and the default message to substitute the token.
    *   The following tokens are implemented for this mapping, with the following
    *   descriptions for their 'default-msg' values:
+   *   - 'table-invalid': the token containing the message used by cases where
+   *     data in row and column combination is invalid value or failed
+   *     a case insensitive match.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
    *   - 'case-invalid-value': the message when there is an invalid value.
    *   - 'case-insensitive-match': the message when there is invalid value with
    *     case insensitive match.
-   *   Tokens below cannot be overriden as their value is determined at runtime:
    *   - 'expected-values': list of expected values a column considers valid.
    *
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
   protected static array $mapping = [
+    'table-invalid' => [
+      'token' => 'table-invalid',
+      'default-msg' => 'The following line number and column combinations did not contain one of the following allowed values: [expected-values]. Note that values should be case sensitive. <strong>If any cell in the table below is empty, then the value given in the file for that cell was one of the allowed values.</strong>',
+    ],
     'case-invalid-value' => [
       'token' => 'case-invalid-value',
       'dev-case' => 'Invalid value(s) in required column(s)',
-      'default-msg' => 'The following line number and column combinations did not contain one of the following allowed values: [expected-values]. <strong>If any cell in the table below is empty, then the value given in the file for that cell was one of the allowed values.</strong>',
     ],
     'case-insensitive-match' => [
       'token' => 'case-insensitive-match',
       'dev-case' => 'Invalid value(s) in required column(s) with >=1 case insensitive match',
-      'default-msg' => 'The following line number and column combinations did not contain one of the following allowed values: [expected-values] Note that values should be case sensitive. <strong>If any cell in the table below is empty, then the value given in the file for that cell was one of the allowed values.</strong>',
     ],
     'expected-values' => [
       'token' => 'expected-values',
@@ -165,18 +170,17 @@ class ValueInList extends TripalCultivateValidatorBase {
    *     importer. The index in this array MUST match the position
    *     (starting with 0) of the column in the input file.
    *     Eg: 'column_headers' => [
-   *           '2' => 'Header 2', // Header of column #3
-   *           '4' => 'Header 4', // Header of column #5
-   *         ];.
+   *           '2' => 'Header 1', // Header of column #3
+   *           '4' => 'Header 2', // Header of column #5
+   *         ].
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see ValueInList::$mapping
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
-   *   - 'case-invalid-value': the message when there is an invalid value.
-   *   - 'case-insensitive-match': the message when there is invalid value with
-   *     case insensitive match.
-   *   - 'expected-values': list of expected values a column considers valid.
+   *   - 'table-invalid': the token containing the message used by cases where
+   *     data in row and column combination is invalid value or failed
+   *     a case insensitive match.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
@@ -193,6 +197,11 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator is not recognized.
    */
   public static function processValueInListFailures(array $validation_results, array $metadata, array $tokens = []) {
+
+    // Validate that metadata contains the expected keys.
+    if (!isset($metadata['expected_values'], $metadata['column_headers'])) {
+      throw new \Exception("Expected metadata to contain both 'expected_values' and 'column_headers' when processing failures from ValueInList, but it does not.");
+    }
 
     // Define our table header.
     // We will start with the line number and build the header from there as we
@@ -221,11 +230,7 @@ class ValueInList extends TripalCultivateValidatorBase {
       if ($validation_result['case'] == self::$mapping['case-invalid-value']['dev-case'] ||
           $validation_result['case'] == self::$mapping['case-insensitive-match']['dev-case']) {
 
-        $case_token = ($validation_result['case'] == self::$mapping['case-invalid-value']['dev-case'])
-          ? self::$mapping['case-invalid-value']['token']
-          : self::$mapping['case-insensitive-match']['token'];
-
-        $table['message'] = $combined_tokens[$case_token];
+        $table['message'] = $combined_tokens[self::$mapping['table-invalid']['token']];
 
         // Define a new row in our table for this line number.
         $table['rows'][$line_no][-1] = $line_no;
@@ -234,7 +239,7 @@ class ValueInList extends TripalCultivateValidatorBase {
         foreach ($validation_result['failedItems'] as $index => $failed_value) {
           // Grab the column name based on the index of the invalid value
           // and add it to this table header if it's not already there.
-          $column_name = $metadata['column_headers'][$index]['name'];
+          $column_name = $metadata['column_headers'][$index];
           if (!array_key_exists($column_name, $table_header)) {
             $table_header[$index] = $column_name;
           }
