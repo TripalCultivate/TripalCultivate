@@ -179,8 +179,6 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row,
-            'expected_columns' => $expected_columns['number_of_columns'],
-            'strict' => $expected_columns['strict'],
           ],
         ];
       }
@@ -193,8 +191,6 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
         'valid' => FALSE,
         'failedItems' => [
           'raw_row' => $raw_row,
-          'expected_columns' => $expected_columns['number_of_columns'],
-          'strict' => $expected_columns['strict'],
         ],
       ];
     }
@@ -255,6 +251,8 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - 'Line Contents'
    *
    * @throws \Exception
+   *   - If key 'strict_flag' is missing from $metadata.
+   *   - If key 'number_of_columns' is missing from $metadata.
    *   - If the validation_results parameter was not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
