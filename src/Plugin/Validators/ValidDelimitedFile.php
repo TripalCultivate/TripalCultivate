@@ -224,7 +224,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - 'strict_flag': indicates whether the value for number_of_columns
    *     is minimum number of columns required (FALSE) or if it is strictly
    *     the only acceptable number of columns (TRUE).
-   *   - 'number_of_columns': the number of columns thar are anticipated in
+   *   - 'number_of_columns': the number of columns that are anticipated in
    *     a data row.
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
