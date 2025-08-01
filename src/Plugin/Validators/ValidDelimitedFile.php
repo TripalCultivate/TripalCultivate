@@ -39,7 +39,9 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *     where raw row is empty or raw row is not delimited.
    *   - 'table-delimited': the token containing the message used by cases
    *     where raw row has excess column or raw row has missing columns.
-   *   Tokens below cannot be overriden as their value is determined at runtime:
+   *   Tokens below cannot be overriden as their value is determined at runtime
+   *   or case messages are designed to cover multiple cases. See above for
+   *   tokens that can be changed.
    *   - 'case-empty-row': the message when a row is empty string.
    *   - 'case-no-delimiter': the message when no delimiter was used.
    *   - 'case-excess-columns': the message when row has excess columns.
