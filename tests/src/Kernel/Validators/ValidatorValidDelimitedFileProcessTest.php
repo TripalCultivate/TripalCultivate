@@ -172,8 +172,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row_2,
-            'expected_columns' => 4,
-            'strict' => FALSE,
           ],
         ],
         4 => [
