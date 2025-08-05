@@ -185,6 +185,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
    *     input file.
    *
    * @throws \Exception
+   *   - If key 'column_headers' is missing from $metadata
    *   - If the validation_status parameter was not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
