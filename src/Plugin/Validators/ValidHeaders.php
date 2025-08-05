@@ -57,7 +57,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
     'case-mismatch-count' => [
       'token' => 'case-mismatch-count',
       'dev-case' => 'Headers provided does not have the expected number of headers',
-      'default-msg' => 'This importer requires a strict number of [num-expected-columns] column headers. Please ensure your column header matches the template exactly and remove any additional column headers from the file.',
+      'default-msg' => 'This importer requires a strict number of [num-expected-columns] column headers. Please ensure your column header matches the template exactly.',
     ],
     'num-expected-columns' => [
       'token' => 'num-expected-columns',
