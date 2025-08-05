@@ -84,11 +84,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *       - 'valid': FALSE to indicate that validation failed.
    *       - 'failedItems': array of items that failed with the following keys:
    *         - 'raw_row': The contents of the raw row as it appears in the file.
-   *         - 'expected_columns': The number of columns expected in the input
-   *           file as determined by calling getExpectedColumns().
-   *         - 'strict': A boolean indicating whether the number of expected
-   *           columns by the validator is strict (TRUE) or is the minimum
-   *           number required (FALSE).
    *   - An array of additional metadata (or contextual information) needed by
    *     the process method. Here, the following keys are expected:
    *     - 'strict_flag': indicates whether the value for number_of_columns
