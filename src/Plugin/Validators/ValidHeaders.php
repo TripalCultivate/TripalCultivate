@@ -234,8 +234,7 @@ class ValidHeaders extends TripalCultivateValidatorBase {
     $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
     $replaced_message = $service_TripalTokensParser->replaceTokens($message, $combined_tokens);
 
-    // Get the expected and actual headers to build the rows in our table render
-    // array.
+    // Get the expected headers to build the first row in our table render array.
     $expected_headers = array_values($metadata['column_headers']);
 
     // Build the render array.
