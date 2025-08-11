@@ -252,7 +252,7 @@ class ValidDelimitedFile extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processValidDelimitedFileFailures(array $validation_results, array $metadata, array $tokens = []) {
+  public static function processListWithDescribedTable(array $validation_results, array $metadata, array $tokens = []) {
 
     // Validate that metadata contains the expected keys.
     if (!isset($metadata['strict_flag'], $metadata['number_of_columns'])) {

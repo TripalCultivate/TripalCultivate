@@ -72,7 +72,7 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Data Provider for testProcessValidDelimitedFileFailures().
+   * Data Provider for testProcessListWithDescribedTable().
    *
    * @return array
    *   Each scenario is an array with the following:
@@ -410,10 +410,10 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideValidDelimitedFileFailedCases
    */
-  public function testProcessValidDelimitedFileFailures(array $validation_results, array $metadata, array $tokens, array $expectations) {
+  public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Process our test failures array.
-    $render_array = $this->validator_instance::processValidDelimitedFileFailures($validation_results, $metadata, $tokens);
+    $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
@@ -628,13 +628,13 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
-  public function testProcessValidDelimitedFileFailuresExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
+  public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.
     $exception_caught = FALSE;
     $exception_message = 'NONE';
     try {
-      $this->validator_instance::processValidDelimitedFileFailures($validation_results, $metadata, $tokens);
+      $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
