@@ -209,8 +209,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row_3,
-            'expected_columns' => 6,
-            'strict' => TRUE,
           ],
         ],
         5 => [
@@ -218,8 +216,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row_5,
-            'expected_columns' => 6,
-            'strict' => TRUE,
           ],
         ],
       ],
@@ -250,8 +246,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row_6,
-            'expected_columns' => 6,
-            'strict' => TRUE,
           ],
         ],
         7 => [
@@ -259,8 +253,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row_7,
-            'expected_columns' => 6,
-            'strict' => TRUE,
           ],
         ],
       ],
@@ -322,8 +314,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row_3,
-            'expected_columns' => 6,
-            'strict' => TRUE,
           ],
         ],
         5 => [
@@ -331,8 +321,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => $raw_row_5,
-            'expected_columns' => 6,
-            'strict' => TRUE,
           ],
         ],
       ],
@@ -397,11 +385,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *       - 'valid': FALSE to indicate that validation failed.
    *       - 'failedItems': array of items that failed with the following keys:
    *         - 'raw_row': The contents of the raw row as it appears in the file.
-   *         - 'expected_columns': The number of columns expected in the input
-   *           file as determined by calling getExpectedColumns().
-   *         - 'strict': A boolean indicating whether the number of expected
-   *           columns by the validator is strict (TRUE) or is the minimum
-   *           number required (FALSE).
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by
    *   the process method. Here, the following keys are expected:
@@ -489,11 +472,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *       - 'valid': FALSE to indicate that validation failed.
    *       - 'failedItems': array of items that failed with the following keys:
    *         - 'raw_row': The contents of the raw row as it appears in the file.
-   *         - 'expected_columns': The number of columns expected in the input
-   *           file as determined by calling getExpectedColumns().
-   *         - 'strict': A boolean indicating whether the number of expected
-   *           columns by the validator is strict (TRUE) or is the minimum
-   *           number required (FALSE).
    *   - An array of additional metadata (or contextual information) needed by
    *     the process method. Here, the following keys are expected:
    *      - 'strict_flag': indicates whether the value for number_of_columns
@@ -630,11 +608,6 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *       - 'valid': FALSE to indicate that validation failed.
    *       - 'failedItems': array of items that failed with the following keys:
    *         - 'raw_row': The contents of the raw row as it appears in the file.
-   *         - 'expected_columns': The number of columns expected in the input
-   *           file as determined by calling getExpectedColumns().
-   *         - 'strict': A boolean indicating whether the number of expected
-   *           columns by the validator is strict (TRUE) or is the minimum
-   *           number required (FALSE).
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by
    *   the process method. Here, the following keys are expected:
