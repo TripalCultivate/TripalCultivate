@@ -8,6 +8,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\tripal_chado\TripalImporter\ChadoImporterBase;
+use Drupal\trpcultivate\Plugin\Validators\ValidDelimitedFile;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -242,7 +243,15 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
     // $id = 'REPLACE WITH VALIDATOR ID ANNOTATION - @id';
     $id = 'valid_delimited_file';
 
-    // Use title key to set a validator case message in $messages array.
+    // METADATA
+    // 2: Set the metadata array for each validator that requires it.
+    // NOTE: Make sure this aligns with values set in configureValidators().
+    $metadata['number_of_columns'] = count($this->headers);
+    $metadata['strict_flag'] = TRUE;
+
+    // MESSAGES ARRAY
+    // 3: Use title key to set the default validator case message in $messages
+    // array.
     // $messages[$id] = ['title' => 'REPLACE WITH A MESSAGE TITLE', ...];.
     $messages[$id] = [
       'title' => 'File is delimited',
@@ -250,16 +259,13 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
       'details' => '',
     ];
 
-    // 2: Inspect validator-specific $failures and switch status accordingly.
+    // 4: Inspect validator-specific $failures and switch status accordingly.
     if (array_key_exists($id, $failures)) {
       if (!empty($failures[$id])) {
         $messages[$id]['status'] = 'fail';
         // Use the message processor static method defined by the validator.
         // $messages[$id]['details']='ValidatorClassName::processMessageName()';
-        //
-        // or if the method is defined in this class, call the method as shown
-        // in the following line.
-        $messages[$id]['details'] = $this->processValidDelimitedFileFailures($failures[$id]);
+        $messages[$id]['details'] = ValidDelimitedFile::processListWithDescribedTable($failures[$id], $metadata);
       }
       else {
         $messages[$id]['status'] = 'pass';
@@ -516,122 +522,5 @@ class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPl
    * DO NOT MODIFY.
    */
   public function postRun() {}
-
-  /**
-   * Valid delimited file process message.
-   *
-   * @todo Remove this method and any reference when the process method for
-   * ValidDelimitedFile becomes available.
-   *
-   * REMOVE IF NOT REQUIRED.
-   *
-   * @param array $failures
-   *   Failures array.
-   *
-   * @return array
-   *   A render array.
-   */
-  public function processValidDelimitedFileFailures(array $failures) {
-
-    // Define our table headers.
-    $table_header = ['Line Number', 'Line Contents'];
-
-    // For this validator there can be up to 2 tables:
-    // - 'table'->'unsupported': Empty rows or no supported delimiters present.
-    // - 'table'->'delimited': Rows that don't delimit to the expected number of
-    //   columns.
-    $table = [];
-
-    // Loop through each row in the $failures array and piece apart the
-    // different cases into different tables.
-    foreach ($failures as $line_no => $validation_result) {
-      // Check the format of the validation_result parameter.
-      ImportValidationHelper::checkValidationStatusArray($validation_result, 'ValidDelimitedFile', $line_no);
-      // Keeps track of which table this one line's validation result gets added
-      // to based on the case it triggered.
-      $table_case = '';
-      if (($validation_result['case'] == 'Raw row is empty') ||
-          ($validation_result['case'] == 'None of the delimiters supported by the file type was used')) {
-        $table_case = 'unsupported';
-      }
-      elseif (($validation_result['case'] == 'Raw row exceeds number of strict columns') ||
-            ($validation_result['case'] == 'Raw row has insufficient number of columns')) {
-        $table_case = 'delimited';
-        if (!isset($num_expected_columns)) {
-          $num_expected_columns = $validation_result['failedItems']['expected_columns'];
-          $strict = $validation_result['failedItems']['strict'];
-        }
-      }
-      elseif (($validation_result['case'] == 'Raw row has expected number of columns') ||
-             ($validation_result['case'] == 'Raw row is delimited')) {
-        throw new \Exception("The case string returned by the ValidDelimitedFile validator at line #$line_no implies validation passed, but valid is set to FALSE.");
-      }
-      else {
-        throw new \Exception("The case string returned by the ValidDelimitedFile validator at line #$line_no is not recognized as a potential case.");
-      }
-
-      // Checked all cases, now add a row to our appropriate table.
-      if (!array_key_exists($table_case, $table)) {
-        // Declare the array storing rows for this table, if not already.
-        $table[$table_case]['rows'] = [];
-      }
-      $table[$table_case]['rows'][] = [
-        $line_no,
-        $validation_result['failedItems']['raw_row'],
-      ];
-    }
-    // Check which tables were created, and assign the correct message.
-    // Note that both tables can exist at the same time.
-    if (array_key_exists('unsupported', $table)) {
-      $table['unsupported']['message'] = 'The following lines in the input file do not contain a valid delimiter supported by this importer.';
-    }
-    if (array_key_exists('delimited', $table)) {
-      // Check if number of columns is strict, then set the message accordingly.
-      if ($strict) {
-        $strict_or_min = 'strict';
-      }
-      else {
-        $strict_or_min = 'minimum';
-      }
-      $message = "This importer requires a $strict_or_min number of $num_expected_columns columns for each line. The following lines do not contain the expected number of columns.";
-      $table['delimited']['message'] = $message;
-    }
-
-    // Finally, loop through our tables and build our render array.
-    $tables = [];
-    foreach ($table as $table_key => $table_case) {
-      $tables[] = [
-        [
-          '#prefix' => '<div class="case-message case-' . $table_key . '">',
-          '#markup' => $table_case['message'],
-          '#suffix' => '</div>',
-        ],
-        [
-          '#type' => 'table',
-          '#header' => $table_header,
-          '#attributes' => [
-            'class' => [
-              'tcp-raw-row',
-              'table-case-' . $table_key,
-            ],
-          ],
-          '#rows' => $table_case['rows'],
-        ],
-      ];
-    }
-
-    $render_array = [
-      '#theme' => 'item_list',
-      '#type' => 'ul',
-      '#attributes' => [
-        'class' => [
-          'tcp-valid-delimited-file-failures',
-        ],
-      ],
-      '#items' => $tables,
-    ];
-
-    return $render_array;
-  }
 
 }
