@@ -82,6 +82,7 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
    *   - An array of expected validation results.
    *     - 'case': validation test case message.
    *     - 'valid': true if validation passed, false if failed.
+   *     - 'failedItems': raw row input value keyed by 'raw_row'.
    */
   public static function provideRawRowToDelimitedFileValidator() {
     return [
@@ -130,8 +131,6 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => "Data Value One\tData Value Two\tData Value Three\tData Value Four\tData Value Five",
-            'expected_columns' => 4,
-            'strict' => TRUE,
           ],
         ],
       ],
@@ -149,8 +148,6 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => "Data Value One\tData Value Two\tData Value Three",
-            'expected_columns' => 4,
-            'strict' => TRUE,
           ],
         ],
       ],
@@ -168,8 +165,6 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'raw_row' => "Data Value One\tData Value Two\tData Value Three",
-            'expected_columns' => 4,
-            'strict' => FALSE,
           ],
         ],
       ],
@@ -268,6 +263,7 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
    *   An array of expected validation results:
    *   - 'case': validation test case message.
    *   - 'valid': true if validation passed, false if failed.
+   *   - 'failedItems': raw row input value keyed by 'raw_row'.
    *
    * @dataProvider provideRawRowToDelimitedFileValidator
    */
