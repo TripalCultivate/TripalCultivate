@@ -290,7 +290,7 @@ class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFac
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed, where the key is
-   *.      a shorthand of the case and the value contains the failed item.
+   *       a shorthand of the case and the value contains the failed item.
    *       @see validateFile()
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
