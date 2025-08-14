@@ -40,7 +40,9 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - 'table-invalid': the token containing the message used by cases where
    *     data in row and column combination is invalid value or failed
    *     a case insensitive match.
-   *   Tokens below cannot be overriden as their value is determined at runtime:
+   *   Tokens below cannot be overriden as their value is determined at runtime
+   *   or case messages are designed to cover multiple cases. See above for
+   *   tokens that can be changed.
    *   - 'case-invalid-value': the message when there is an invalid value.
    *   - 'case-insensitive-match': the message when there is invalid value with
    *     case insensitive match.
