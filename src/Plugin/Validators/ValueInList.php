@@ -192,6 +192,8 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - Column Header(s) of the cell(s) that has/have an invalid value.
    *
    * @throws \Exception
+   *   - If key 'expected_values' is missing from $metadata.
+   *   - If key 'column_headers' is missing from $metadata.
    *   - If any validation result arrays are not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
