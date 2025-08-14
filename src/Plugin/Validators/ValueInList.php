@@ -183,11 +183,11 @@ class ValueInList extends TripalCultivateValidatorBase {
    *     a case insensitive match.
    *
    * @return array
-   *   A render array of type unordered list which is used to display feedback
-   *   to the user about the case(s) that failed and the failed items from the
-   *   input file. This unordered list will include a table that lists the row
-   *   and column combinations with an invalid value. It has the following
-   *   headers:
+   *   A render array of type "unordered list" which is used to display feedback
+   *   to the user about the validation failure. This process method renders a
+   *   a single item consisting of a markup block with a message describing the
+   *   cases that were triggered, and a table that lists the row and column
+   *   combinations with an invalid value. It has the following headers:
    *   - 'Line Number'
    *   - Column Header(s) of the cell(s) that has/have an invalid value.
    *
