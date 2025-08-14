@@ -695,8 +695,8 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *   validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
-   *     - 'failedItems': array of items that failed with the following keys.
-   *       - 'raw_row': the data row/line.
+   *     - 'failedItems': array of items that failed, where the key => value
+   *         pairs map to the index => cell value(s) that failed validation.
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by
    *   the process method. Here, the following keys are expected:
