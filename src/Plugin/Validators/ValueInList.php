@@ -263,8 +263,8 @@ class ValueInList extends TripalCultivateValidatorBase {
       }
     }
 
-    // If our table(s) have more than 2 columns with failed values, then
-    // iterate through and pad each table with empty strings where necessary.
+    // If our table has more than 2 columns with failed values, then iterate
+    // through and fill empty cells with empty strings.
     ImportValidationHelper::fillTableGaps($table_header, $table['rows']);
 
     // Now replace any tokens that are in our message or items.
