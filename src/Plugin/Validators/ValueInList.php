@@ -198,7 +198,7 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processValueInListFailures(array $validation_results, array $metadata, array $tokens = []) {
+  public static function processListWithDescribedTable(array $validation_results, array $metadata, array $tokens = []) {
 
     // Validate that metadata contains the expected keys.
     if (!isset($metadata['expected_values'], $metadata['column_headers'])) {
@@ -261,22 +261,9 @@ class ValueInList extends TripalCultivateValidatorBase {
       }
     }
 
-    // If our table has more than 2 columns with failed values, then iterate
-    // through and pad the table with empty strings where necessary.
-    if (count($table_header) > 2) {
-      foreach (array_keys($table['rows']) as $line_no) {
-        foreach (array_keys($table_header) as $index) {
-          if (!array_key_exists($index, $table['rows'][$line_no])) {
-            $table['rows'][$line_no][$index] = '';
-          }
-        }
-        // Finally, sort the row by keys.
-        ksort($table['rows'][$line_no]);
-      }
-    }
-
-    // Sort the table header.
-    ksort($table_header);
+    // If our table(s) have more than 2 columns with failed values, then
+    // iterate through and pad each table with empty strings where necessary.
+    ImportValidationHelper::fillTableGaps($table_header, $table['rows']);
 
     // Now replace any tokens that are in our message or items.
     // We use the Tripal Token Parser service to ensure that more complicated
