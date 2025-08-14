@@ -164,7 +164,7 @@ class ValueInList extends TripalCultivateValidatorBase {
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
    *   - 'expected_values': A list of valid values that was provided to the
-   *     ValueinList validator instance that is being processed for
+   *     ValueInList validator instance that is being processed for
    *     feedback to the user.
    *   - 'column_headers': This contains an array of headers defined in the
    *     importer. The index in this array MUST match the position
