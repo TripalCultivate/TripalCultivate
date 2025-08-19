@@ -106,6 +106,8 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
    *   An array describing what we should expect.
    *     - contains_library: TRUE|FALSE indicates whether the
    *       trpcultivate/tripal_entity_type should be attached to the page.
+   *
+   * @dataProvider provideTestRoutes
    */
   #[DataProvider('provideTestRoutes')]
   public function testPreprocessPage(string $route_name, array $expectations) {

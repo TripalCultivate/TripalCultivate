@@ -451,6 +451,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *       column header name of a cell in this row and its value is the
    *       problematic germplasm name. For example:
    *        '2' => [ 'Germplasm Name' => 'Invalid Value' ].
+   *
+   * @dataProvider provideGermplasmNameExistsFailedCases
    */
   #[DataProvider('provideGermplasmNameExistsFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
@@ -695,6 +697,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    * @param string $message
    *   - The expected message to be displayed in the returned render array for
    *     this scenario.
+   *
+   * @dataProvider provideGermplasmNameExistsEmptyCellCase
    */
   #[DataProvider('provideGermplasmNameExistsEmptyCellCase')]
   public function testProcessListWithDescribedTableEmptyCell(array $validation_results, array $tokens, array $metadata, string $message) {
@@ -865,6 +869,8 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *   keys:
    *   - 'expected_message': The exception message that is expected to be
    *     triggered.
+   *
+   * @dataProvider providePassedAndUnrecognizableCases
    */
   #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {

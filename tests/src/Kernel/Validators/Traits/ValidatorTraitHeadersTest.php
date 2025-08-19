@@ -454,6 +454,8 @@ class ValidatorTraitHeadersTest extends ChadoTestKernelBase {
    *   An array of exception messages that setter and getters will throw.
    * @param array $expected
    *   An array of headers array each getter will produce.
+   *
+   * @dataProvider provideHeadersForHeadersSetter
    */
   #[DataProvider('provideHeadersForHeadersSetter')]
   public function testHeaderSetterAndGetters($scenario, $headers_input, $types_input, $has_exception, $exception_message, $expected) {

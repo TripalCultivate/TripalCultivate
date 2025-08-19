@@ -398,6 +398,8 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *       cannot be looked up in the database.
    *        - A list containing the indices of the empty cells (This can only
    *          be a subset of $indices).
+   *
+   * @dataProvider provideRowToGermplasmNameExists
    */
   #[DataProvider('provideRowToGermplasmNameExists')]
   public function testValidatorGermplasmNameExists(array $indices, array $row_values, array $expectations) {

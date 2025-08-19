@@ -246,6 +246,8 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
    *   following keys:
    *     - 'expected_message': The message expected in the return value of the
    *       process method for this scenario.
+   *
+   * @dataProvider provideValidHeadersFailedCases
    */
   #[DataProvider('provideValidHeadersFailedCases')]
   public function testProcessListWithDescribedTableFailures(array $validation_status, array $metadata, array $tokens, array $expectations) {
@@ -408,6 +410,8 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
    *   following keys:
    *     - 'expected_message': The exception message that is expected to be
    *       triggered.
+   *
+   * @dataProvider providePassedAndUnrecognizableCases
    */
   #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_status, array $metadata, array $tokens, array $expectations) {

@@ -267,6 +267,8 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
    *   - 'case': validation test case message.
    *   - 'valid': true if validation passed, false if failed.
    *   - 'failedItems': raw row input value keyed by 'raw_row'.
+   *
+   * @dataProvider provideRawRowToDelimitedFileValidator
    */
   #[DataProvider('provideRawRowToDelimitedFileValidator')]
   public function testDataFileRowIsDelimited(string $scenario, string $raw_row_input, $validator_config, $expected) {

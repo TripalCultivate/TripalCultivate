@@ -228,6 +228,8 @@ class ValidatorProjectExistsTest extends ChadoTestKernelBase {
    *     - 'id': the failed item if the input was the project id.
    *     Both name and id key corresponds to project name and project id value
    *     in the $test_project property, respectively.
+   *
+   * @dataProvider provideProjectToProjectExistsValidator
    */
   #[DataProvider('provideProjectToProjectExistsValidator')]
   public function testProjectExists($scenario, $test_key, $expected) {

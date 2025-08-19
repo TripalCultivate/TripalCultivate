@@ -525,6 +525,8 @@ class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
    * @param array $expected_exception_message
    *   An array of expected exception messages with the key being the method
    *   name and value being the expected message (empty string if not expected).
+   *
+   * @dataProvider provideExtensionsForSetter
    */
   #[DataProvider('provideExtensionsForSetter')]
   public function testSupportedMimeTypes($scenario, $file_extensions, $expected_mime_types, $expected_exception_thrown, $expected_exception_message) {
@@ -682,6 +684,8 @@ class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
    *   - 'logged_message': an array of expected logged messages with
    *      the keys being the method and the value being the message we expect
    *      (empty string if no logged message expected)
+   *
+   * @dataProvider provideMimeTypeForSetter
    */
   #[DataProvider('provideMimeTypeForSetter')]
   public function testFileMimeType($scenario, $mime_type, $expectations) {

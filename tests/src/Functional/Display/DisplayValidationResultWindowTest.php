@@ -414,6 +414,8 @@ class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
    * @param array $expected_class
    *   The expected class name an item is tagged with. Each validation item
    *   corresponds to one class name based on the value of the status key.
+   *
+   * @dataProvider provideValidationResultRenderArray
    */
   #[DataProvider('provideValidationResultRenderArray')]
   public function testResultWindowDisplay(string $scenario, array $validation_result_input, array $expected_class) {

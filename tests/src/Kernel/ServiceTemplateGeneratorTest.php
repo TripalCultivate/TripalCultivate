@@ -181,6 +181,8 @@ class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
    *     - 'extension': the expected file extension of the template file.
    *     - 'delimiter': the expected delimiter used to encode the header row.
    *     - 'header_row': the expected content (header row) of the file.
+   *
+   * @dataProvider provideParametersForFileTemplateGenerator
    */
   #[DataProvider('provideParametersForFileTemplateGenerator')]
   public function testTemplateGeneratorService($scenario, $importer_id, $column_headers, $file_extensions, $expected) {

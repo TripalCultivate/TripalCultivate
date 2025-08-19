@@ -410,6 +410,8 @@ class ValidatorValidDataFileTest extends ChadoTestKernelBase {
    *     - 'fid': the file id number.
    *     - 'mime': the file MIME type.
    *     - 'extension': the file extension.
+   *
+   * @dataProvider provideFileForDataFileValidator
    */
   #[DataProvider('provideFileForDataFileValidator')]
   public function testDataFileInput(string $scenario, string $test_file_key, array $expected) {

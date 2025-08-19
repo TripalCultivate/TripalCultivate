@@ -168,6 +168,8 @@ class ValidatorTraitColumnCountTest extends ChadoTestKernelBase {
 
   /**
    * Test getter method to get expected columns.
+   *
+   * @dataProvider provideExpectedColumnsForSetter
    */
   #[DataProvider('provideExpectedColumnsForSetter')]
   public function testValidatorSetterAndGetter($scenario, $column_numbers_input, $strict_input, $expected, $exception) {

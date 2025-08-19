@@ -267,6 +267,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *     the failed validation status, further keyed by:
    *     - 'expected_columns': A comma-separated list of column headers that
    *       map to the expected columns with empty values.
+   *
+   * @dataProvider provideEmptyCellFailedCases
    */
   #[DataProvider('provideEmptyCellFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
@@ -425,6 +427,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *   keys:
    *   - 'expected_message': The exception message that is expected to be
    *     triggered.
+   *
+   * @dataProvider providePassedAndUnrecognizableCases
    */
   #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {

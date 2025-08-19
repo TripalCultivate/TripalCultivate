@@ -464,6 +464,8 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *     by the column header name of a cell in this row and its value is the
    *     invalid value. For example:
    *     - 2 => [ 'Type' => 'Invalid Value' ].
+   *
+   * @dataProvider provideValueInListFailedCases
    */
   #[DataProvider('provideValueInListFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
@@ -720,6 +722,8 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *   following keys:
    *     - 'expected_message': The exception message that is expected to be
    *       triggered.
+   *
+   * @dataProvider providePassedAndUnrecognizableCases
    */
   #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {

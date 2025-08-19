@@ -415,6 +415,8 @@ class ValidatorValidHeadersTest extends ChadoTestKernelBase {
    *   - 'number_of_columns': number of column headers to expect after splitting
    *     the line.
    *   - 'strict': indicates if number of columns must be exact.
+   *
+   * @dataProvider provideHeadersToHeadersValidator
    */
   #[DataProvider('provideHeadersToHeadersValidator')]
   public function testHeaders(string $scenario, array $headers_input, array $expected, array $expected_columns) {
