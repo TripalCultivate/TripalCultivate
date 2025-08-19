@@ -11,7 +11,7 @@ use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
  *
  * @group trpcultivate_test_trait
  */
-#[Group('trpcultivatw_test_trait')]
+#[Group('trpcultivate_test_trait')]
 class TripalCultivateImporterTestTraitTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
