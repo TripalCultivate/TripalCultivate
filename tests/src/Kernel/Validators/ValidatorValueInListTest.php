@@ -8,6 +8,10 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
 
 /**
  * Tests the Value In List validator.
+ *
+ * @group trpcultivate
+ * @group validators
+ * @group row_validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]

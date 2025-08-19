@@ -10,6 +10,9 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
 
 /**
  * Tests Tripal Cultivate Validator Base functions.
+ *
+ * @group trpcultivate
+ * @group validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]

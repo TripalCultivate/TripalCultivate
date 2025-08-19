@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test import validation helper service.
+ *
+ * @group trpcultivate
+ * @group validation_helper
  */
 #[Group('trpcultivate')]
 #[Group('validation_helper')]

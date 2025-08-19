@@ -7,6 +7,9 @@ use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Tests that the content types and fields associated with them are created.
+ *
+ * @group ContentTypes
+ * @group Fields
  */
 #[Group('ContentTypes')]
 #[Group('Fields')]

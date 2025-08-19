@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Headers Validator Plugin.
+ *
+ * @group trpcultivate
+ * @group validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]

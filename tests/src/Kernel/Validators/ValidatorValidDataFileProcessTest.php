@@ -7,6 +7,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test any message process methods for the ValidDataFile validator.
+ *
+ * @group trpcultivate
+ * @group validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]

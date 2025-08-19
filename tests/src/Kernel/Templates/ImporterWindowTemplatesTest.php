@@ -8,6 +8,9 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 
 /**
  * Tests window templates used in importer.
+ *
+ * @group trpcultivate
+ * @group templates
  */
 #[Group('trpcultivate')]
 #[Group('templates')]

@@ -9,6 +9,9 @@ use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Simple test to ensure that main page loads with module enabled.
+ *
+ * @group TrpCultivate
+ * @group Installation
  */
 #[Group('TrpCultivate')]
 #[Group('Installation')]

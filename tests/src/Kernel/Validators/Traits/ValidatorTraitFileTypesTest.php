@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the FileTypes validator trait.
+ *
+ * @group trpcultivate
+ * @group validator_traits
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]

@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests our implementation of specific hooks.
+ *
+ * @group Hooks
  */
 #[Group('Hooks')]
 class ImplementedHooksTest extends ChadoTestKernelBase {

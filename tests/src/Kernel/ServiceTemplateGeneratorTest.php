@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test file template generator service.
+ *
+ * @group trpcultivate
+ * @group template_generate
  */
 #[Group('trpcultivate')]
 #[Group('template_generate')]

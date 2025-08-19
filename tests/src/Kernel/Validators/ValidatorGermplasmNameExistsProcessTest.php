@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests any message processing methods for the GermplasmNameExists validator.
+ *
+ * @group trpcultivate
+ * @group validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]

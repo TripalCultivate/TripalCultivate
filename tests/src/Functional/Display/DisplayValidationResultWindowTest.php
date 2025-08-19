@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Validation Result Window.
+ *
+ * @group trpcultivate
+ * @group displays
  */
 #[Group('trpcultivate')]
 #[Group('displays')]

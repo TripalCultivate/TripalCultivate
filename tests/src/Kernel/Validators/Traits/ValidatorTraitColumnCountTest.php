@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the ColumnCount validator trait.
+ *
+ * @group trpcultivate
+ * @group validator_traits
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]

@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Project Exists Validator Plugins.
+ *
+ * @group trpcultivate
+ * @group validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]

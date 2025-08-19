@@ -9,6 +9,9 @@ use Drupal\tripal_chado\Database\ChadoConnection;
 
 /**
  * Tests the Organism validator trait.
+ *
+ * @group trpcultivate
+ * @group validator_traits
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]
