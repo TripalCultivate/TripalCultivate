@@ -6,13 +6,13 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorFileTypes;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
 use Drupal\tripal\Services\TripalLogger;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the FileTypes validator trait.
- *
- * @group trpcultivate
- * @group validator_traits
  */
+#[Group('trpcultivate')]
+#[Group('validator_traits')]
 class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
@@ -522,9 +522,8 @@ class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
    * @param array $expected_exception_message
    *   An array of expected exception messages with the key being the method
    *   name and value being the expected message (empty string if not expected).
-   *
-   * @dataProvider provideExtensionsForSetter
    */
+  #[DataProvider('provideExtensionsForSetter')]
   public function testSupportedMimeTypes($scenario, $file_extensions, $expected_mime_types, $expected_exception_thrown, $expected_exception_message) {
 
     // These exception messages are expected when we intially call the getter
@@ -680,9 +679,8 @@ class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
    *   - 'logged_message': an array of expected logged messages with
    *      the keys being the method and the value being the message we expect
    *      (empty string if no logged message expected)
-   *
-   * @dataProvider provideMimeTypeForSetter
    */
+  #[DataProvider('provideMimeTypeForSetter')]
   public function testFileMimeType($scenario, $mime_type, $expectations) {
 
     // This exception message is expected when we intially call the getter

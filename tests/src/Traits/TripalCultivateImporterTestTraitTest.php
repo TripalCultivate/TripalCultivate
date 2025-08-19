@@ -8,9 +8,8 @@ use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
 
 /**
  * Test importer test trait.
- *
- * @group trpcultivate_test_trait
  */
+#[Group('trpcultivatw_test_trait')]
 class TripalCultivateImporterTestTraitTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;

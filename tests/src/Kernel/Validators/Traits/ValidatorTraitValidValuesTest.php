@@ -7,10 +7,9 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorValidVal
 
 /**
  * Tests the ValidValues validator trait.
- *
- * @group trpcultivate
- * @group validator_traits
  */
+#[Group('trpcultivate')]
+#[Group('validator_traits')]
 class ValidatorTraitValidValuesTest extends ChadoTestKernelBase {
 
   /**

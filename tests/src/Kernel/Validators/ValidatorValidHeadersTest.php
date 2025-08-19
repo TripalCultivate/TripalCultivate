@@ -4,13 +4,13 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Headers Validator Plugin.
- *
- * @group trpcultivate
- * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorValidHeadersTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
@@ -412,9 +412,8 @@ class ValidatorValidHeadersTest extends ChadoTestKernelBase {
    *   - 'number_of_columns': number of column headers to expect after splitting
    *     the line.
    *   - 'strict': indicates if number of columns must be exact.
-   *
-   * @dataProvider provideHeadersToHeadersValidator
    */
+  #[DataProvider('provideHeadersToHeadersValidator')]
   public function testHeaders(string $scenario, array $headers_input, array $expected, array $expected_columns) {
 
     $this->validator_instance->setExpectedColumns($expected_columns['number_of_columns'], $expected_columns['strict']);

@@ -2,20 +2,21 @@
 
 namespace Drupal\trpcultivate\Plugin\Validators;
 
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ValidValues;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Validate that column only contains a set list of values.
- *
- * @TripalCultivateValidator(
- *   id = "value_in_list",
- *   validator_name = @Translation("Value In List Validator"),
- *   input_types = {"header-row", "data-row"},
- * )
  */
+#[TripalCultivateValidator(
+  id: 'value_in_list',
+  validator_name: new TranslatableMarkup('Value In List Validator'),
+  input_types: ['header-row', 'data-row']
+)]
 class ValueInList extends TripalCultivateValidatorBase {
 
   /**

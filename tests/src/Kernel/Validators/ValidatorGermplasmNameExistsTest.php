@@ -5,14 +5,14 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Germplasm Name Exists Validator Plugin.
- *
- * @group trpcultivate
- * @group validators
- * @group row_validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
+#[Group('row_validators')]
 class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
 
   /**
@@ -394,9 +394,8 @@ class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
    *       cannot be looked up in the database.
    *        - A list containing the indices of the empty cells (This can only
    *          be a subset of $indices).
-   *
-   * @dataProvider provideRowToGermplasmNameExists
    */
+  #[DataProvider('provideRowToGermplasmNameExists')]
   public function testValidatorGermplasmNameExists(array $indices, array $row_values, array $expectations) {
 
     // Create a plugin instance for this validator.

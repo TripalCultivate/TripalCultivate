@@ -6,13 +6,13 @@ use Drupal\Core\Form\FormState;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Project Exists Validator Plugins.
- *
- * @group trpcultivate
- * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorProjectExistsTest extends ChadoTestKernelBase {
 
   /**
@@ -225,9 +225,8 @@ class ValidatorProjectExistsTest extends ChadoTestKernelBase {
    *     - 'id': the failed item if the input was the project id.
    *     Both name and id key corresponds to project name and project id value
    *     in the $test_project property, respectively.
-   *
-   * @dataProvider provideProjectToProjectExistsValidator
    */
+  #[DataProvider('provideProjectToProjectExistsValidator')]
   public function testProjectExists($scenario, $test_key, $expected) {
     // Create a plugin instance for this validator.
     $validator_id = 'project_exists';

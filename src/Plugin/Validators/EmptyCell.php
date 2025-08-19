@@ -5,16 +5,17 @@ namespace Drupal\trpcultivate\Plugin\Validators;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Validate empty cells of an importer.
- *
- * @TripalCultivateValidator(
- *   id = "empty_cell",
- *   validator_name = @Translation("Empty Cell Validator"),
- *   input_types = {"header-row", "data-row"},
- * )
  */
+#[TripalCultivateValidator(
+   id: 'empty_cell',
+   validator_name: new TranslatableMarkup('Empty Cell Validator'),
+   input_types: ['header-row', 'data-row'],
+ )]
 class EmptyCell extends TripalCultivateValidatorBase {
 
   /**

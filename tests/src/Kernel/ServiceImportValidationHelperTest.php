@@ -4,13 +4,13 @@ namespace Drupal\Tests\tripalcultivate\Kernel;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test import validation helper service.
- *
- * @group trpcultivate
- * @group validation_helper
  */
+#[Group('trpcultivate')]
+#[Group('validation_helper')]
 class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
 
   /**
@@ -122,9 +122,8 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *   an exception.
    * @param array|false $expected
    *   The expected returned file delimiter, false if none expected.
-   *
-   * @dataProvider provideMimeTypesForFileDelimiterGetter
    */
+  #[DataProvider('provideMimeTypesForFileDelimiterGetter')]
   public function testFileDelimiterGetter(string $scenario, string $mime_type_input, bool $has_exception, string $exception_message, array|false $expected) {
 
     $exception_caught = FALSE;
@@ -191,9 +190,8 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    * @param string $expected_delimiter
    *   The expected delimiter that is associated to the mime type according to
    *   the mime type - delimiter mapping array.
-   *
-   * @dataProvider provideMimeTypeDelimiters
    */
+  #[DataProvider('provideMimeTypeDelimiters')]
   public function testSplitRowIntoColumns(string $expected_mime_type, string $expected_delimiter) {
 
     // Create a data row.
@@ -426,9 +424,8 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *   - 'expected_errors': The number of expected problems with the array.
    *   - 'expected_details': The details in the message expected to be in the
    *     exception being triggered.
-   *
-   * @dataProvider provideFaultyValidationStatusArray
    */
+  #[DataProvider('provideFaultyValidationStatusArray')]
   public function testCheckValidationStatusArray(array $validation_result, array $expectations) {
 
     $validator_name = 'My Validator';
@@ -696,9 +693,8 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *   It contains the following keys:
    *   - 'header': [COLUMN INDEX][COLUMN VALUE]
    *   - 'rows': [LINE NUMBER][COLUMN INDEX][COLUMN VALUE].
-   *
-   * @dataProvider provideTablesWithGaps
    */
+  #[DataProvider('provideTablesWithGaps')]
   public function testFillTableGaps(array $header, array $rows, array $expected_table) {
     ImportValidationHelper::fillTableGaps($header, $rows);
 

@@ -6,13 +6,13 @@ use Drupal\Core\Url;
 use Drupal\Component\Utility\Html;
 use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
 use Drupal\KernelTests\AssertContentTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Validation Result Window.
- *
- * @group trpcultivate
- * @group displays
  */
+#[Group('trpcultivate')]
+#[Group('displays')]
 class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
 
   use AssertContentTrait;
@@ -411,9 +411,8 @@ class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
    * @param array $expected_class
    *   The expected class name an item is tagged with. Each validation item
    *   corresponds to one class name based on the value of the status key.
-   *
-   * @dataProvider provideValidationResultRenderArray
    */
+  #[DataProvider('provideValidationResultRenderArray')]
   public function testResultWindowDisplay(string $scenario, array $validation_result_input, array $expected_class) {
 
     $validation_window = [

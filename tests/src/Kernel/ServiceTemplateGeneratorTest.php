@@ -4,13 +4,13 @@ namespace Drupal\Tests\tripalcultivate\Kernel;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\user\Entity\User;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test file template generator service.
- *
- * @group trpcultivate
- * @group template_generate
  */
+#[Group('trpcultivate')]
+#[Group('template_generate')]
 class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
 
   /**
@@ -178,9 +178,8 @@ class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
    *     - 'extension': the expected file extension of the template file.
    *     - 'delimiter': the expected delimiter used to encode the header row.
    *     - 'header_row': the expected content (header row) of the file.
-   *
-   * @dataProvider provideParametersForFileTemplateGenerator
    */
+  #[DataProvider('provideParametersForFileTemplateGenerator')]
   public function testTemplateGeneratorService($scenario, $importer_id, $column_headers, $file_extensions, $expected) {
 
     // Generate the template file.

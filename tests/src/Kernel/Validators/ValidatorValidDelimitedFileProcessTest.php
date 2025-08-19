@@ -3,13 +3,13 @@
 namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test any message process methods for the ValidDelimitedFile validator.
- *
- * @group trpcultivate
- * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -407,9 +407,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *   - 1+ arrays keyed by the line number in the input file that triggered
    *     the failed validation status, further keyed by:
    *     - 'line_contents': The raw contents of this line that failed.
-   *
-   * @dataProvider provideValidDelimitedFileFailedCases
    */
+  #[DataProvider('provideValidDelimitedFileFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Process our test failures array.
@@ -625,9 +624,8 @@ class ValidatorValidDelimitedFileProcessTest extends ChadoTestKernelBase {
    *     output. It has the following keys:
    *     - 'expected_message': The message expected in the return value of the
    *       process method for this scenario.
-   *
-   * @dataProvider providePassedAndUnrecognizableCases
    */
+  #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.

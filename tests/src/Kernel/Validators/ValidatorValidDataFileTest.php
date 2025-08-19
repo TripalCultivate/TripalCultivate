@@ -4,13 +4,13 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Data File Validator Plugins.
- *
- * @group trpcultivate
- * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorValidDataFileTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
@@ -407,9 +407,8 @@ class ValidatorValidDataFileTest extends ChadoTestKernelBase {
    *     - 'fid': the file id number.
    *     - 'mime': the file MIME type.
    *     - 'extension': the file extension.
-   *
-   * @dataProvider provideFileForDataFileValidator
    */
+  #[DataProvider('provideFileForDataFileValidator')]
   public function testDataFileInput(string $scenario, string $test_file_key, array $expected) {
     $file_input = $this->test_files[$test_file_key];
     $fid = $file_input['fid'];

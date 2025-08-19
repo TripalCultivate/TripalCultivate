@@ -4,13 +4,13 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorColumnCount;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the ColumnCount validator trait.
- *
- * @group trpcultivate
- * @group validator_traits
  */
+#[Group('trpcultivate')]
+#[Group('validator_traits')]
 class ValidatorTraitColumnCountTest extends ChadoTestKernelBase {
 
   /**
@@ -165,9 +165,8 @@ class ValidatorTraitColumnCountTest extends ChadoTestKernelBase {
 
   /**
    * Test getter method to get expected columns.
-   *
-   * @dataProvider provideExpectedColumnsForSetter
    */
+  #[DataProvider('provideExpectedColumnsForSetter')]
   public function testValidatorSetterAndGetter($scenario, $column_numbers_input, $strict_input, $expected, $exception) {
 
     // Test the setter method.

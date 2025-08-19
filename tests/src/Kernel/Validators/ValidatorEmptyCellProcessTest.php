@@ -3,13 +3,13 @@
 namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test any message process methods for the EmptyCell validator.
- *
- * @group trpcultivate
- * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -264,9 +264,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *     the failed validation status, further keyed by:
    *     - 'expected_columns': A comma-separated list of column headers that
    *       map to the expected columns with empty values.
-   *
-   * @dataProvider provideEmptyCellFailedCases
    */
+  #[DataProvider('provideEmptyCellFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
@@ -423,9 +422,8 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *   keys:
    *   - 'expected_message': The exception message that is expected to be
    *     triggered.
-   *
-   * @dataProvider providePassedAndUnrecognizableCases
    */
+  #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.
