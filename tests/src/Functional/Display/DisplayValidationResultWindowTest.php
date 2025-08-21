@@ -6,6 +6,7 @@ use Drupal\Core\Url;
 use Drupal\Component\Utility\Html;
 use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
 use Drupal\KernelTests\AssertContentTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Validation Result Window.
@@ -13,6 +14,8 @@ use Drupal\KernelTests\AssertContentTrait;
  * @group trpcultivate
  * @group displays
  */
+#[Group('trpcultivate')]
+#[Group('displays')]
 class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
 
   use AssertContentTrait;
@@ -414,6 +417,7 @@ class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
    *
    * @dataProvider provideValidationResultRenderArray
    */
+  #[DataProvider('provideValidationResultRenderArray')]
   public function testResultWindowDisplay(string $scenario, array $validation_result_input, array $expected_class) {
 
     $validation_window = [

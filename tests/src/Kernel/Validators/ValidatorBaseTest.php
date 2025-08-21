@@ -14,6 +14,8 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
  * @group trpcultivate
  * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorBaseTest extends ChadoTestKernelBase {
 
   /**

@@ -3,6 +3,7 @@
 namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test any message process methods for the ValidDataFile validator.
@@ -10,6 +11,8 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group trpcultivate
  * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -342,6 +345,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideValidDataFileFailedCases
    */
+  #[DataProvider('provideValidDataFileFailedCases')]
   public function testProcessItemWithSimpleList(array $validation_status, array $tokens, array $expectations) {
 
     // Call the process method on our validation result.
@@ -454,6 +458,7 @@ class ValidatorValidDataFileProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
+  #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessItemWithSimpleListExceptions(array $validation_status, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.

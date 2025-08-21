@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\tripal_chado\TripalImporter\ChadoImporterBase;
 use Drupal\trpcultivate\Plugin\Validators\ValidDelimitedFile;
@@ -13,6 +14,7 @@ use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\tripal\TripalImporter\Attribute\TripalImporter;
 
 /**
  * This importer is to help you manually test generic validators.
@@ -40,30 +42,28 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * testing instructions.
  *
  * NOTE: do not edit annotations.
- *
- * @TripalImporter(
- *   id = "trpcultivate-test-importer",
- *   label = @Translation("Tripal Cultivate: Test Importer"),
- *   description = @Translation("A Tripal Importer used to test APIs."),
- *   file_types = {"tsv"},
- *   upload_description = @Translation("Please provide a data file."),
- *   upload_title = @Translation("Import data file*"),
- *   use_analysis = FALSE,
- *   require_analysis = FALSE,
- *   use_button = True,
- *   submit_disabled = FALSE,
- *   button_text = "Import",
- *   file_upload = TRUE,
- *   file_local = FALSE,
- *   file_remote = FALSE,
- *   file_required = TRUE,
- *   cardinality = 1,
- *   menu_path = "",
- *   callback = "",
- *   callback_module = "",
- *   callback_path = "",
- * )
  */
+#[TripalImporter(
+   id: 'trpcultivate-test-importer',
+   label: new TranslatableMarkup('Tripal Cultivate: Test Importer'),
+   description: new TranslatableMarkup('A Tripal Importer used to test APIs.'),
+   file_types: ['tsv'],
+   upload_description: new TranslatableMarkup('Please provide a data file.'),
+   upload_title: new TranslatableMarkup('Import data file*'),
+   use_analysis: FALSE,
+   require_analysis: FALSE,
+   use_button: TRUE,
+   submit_disabled: FALSE,
+   button_text: new TranslatableMarkup('Import'),
+   file_upload: TRUE,
+   file_local: FALSE,
+   file_remote: FALSE,
+   file_required: TRUE,
+   cardinality: 1,
+   menu_path: '',
+   callback: '',
+   callback_path: '',
+  )]
 class TestTripalImporter extends ChadoImporterBase implements ContainerFactoryPluginInterface {
 
   /**

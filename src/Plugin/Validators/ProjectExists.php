@@ -2,18 +2,19 @@
 
 namespace Drupal\trpcultivate\Plugin\Validators;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal_chado\Controller\ChadoProjectAutocompleteController;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 
 /**
  * Validate that project exists.
- *
- * @TripalCultivateValidator(
- *   id = "project_exists",
- *   validator_name = @Translation("Project Exists Validator"),
- *   input_types = {"metadata"}
- * )
  */
+#[TripalCultivateValidator(
+   id: 'project_exists',
+   validator_name: new TranslatableMarkup('Project Exists Validator'),
+   input_types: ['metadata']
+ )]
 class ProjectExists extends TripalCultivateValidatorBase {
 
   /**

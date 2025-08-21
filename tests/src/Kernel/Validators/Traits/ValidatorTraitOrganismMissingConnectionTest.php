@@ -12,6 +12,8 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  * @group trpcultivate
  * @group validator_traits
  */
+#[Group('trpcultivate')]
+#[Group('validator_traits')]
 class ValidatorTraitOrganismMissingConnectionTest extends ChadoTestKernelBase {
 
   /**

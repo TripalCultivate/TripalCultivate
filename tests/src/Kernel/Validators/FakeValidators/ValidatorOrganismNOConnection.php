@@ -5,18 +5,19 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\Organism;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Fake Validator that does not implement any of its own methods.
  *
  * Used to test the Organism trait with NO ChadoConnection.
- *
- * @TripalCultivateValidator(
- *   id = "validator_requiring_organism_no_connection",
- *   validator_name = @Translation("Validator Using Organism Trait NO Connection"),
- *   input_types = {"header-row", "data-row"}
- * )
  */
+#[TripalCultivateValidator(
+   id: 'validator_requiring_organism_no_connection',
+   validator_name: new TranslatableMarkup('Validator Using Organism Trait NO Connection'),
+   input_types: ['header-row', 'data-row']
+ )]
 class ValidatorOrganismNOConnection extends TripalCultivateValidatorBase {
 
   use Organism;

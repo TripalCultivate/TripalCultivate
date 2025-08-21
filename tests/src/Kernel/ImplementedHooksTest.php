@@ -5,12 +5,14 @@ namespace Drupal\Tests\trpcultivate\Kernel;
 use Drupal\Core\Routing\RouteMatch;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests our implementation of specific hooks.
  *
  * @group Hooks
  */
+#[Group('Hooks')]
 class ImplementedHooksTest extends ChadoTestKernelBase {
 
   /**
@@ -107,6 +109,7 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideTestRoutes
    */
+  #[DataProvider('provideTestRoutes')]
   public function testPreprocessPage(string $route_name, array $expectations) {
 
     // Firs mock the RouteMatch object. This service is called by our preprocess

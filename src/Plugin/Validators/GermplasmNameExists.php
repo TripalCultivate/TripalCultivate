@@ -9,16 +9,17 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\Organism;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Validate the existance of a germplasm name in the database.
- *
- * @TripalCultivateValidator(
- *   id = "germplasm_name_exists",
- *   validator_name = @Translation("Germplasm Name Exists Validator"),
- *   input_types = {"data-row"},
- * )
  */
+#[TripalCultivateValidator(
+   id: 'germplasm_name_exists',
+   validator_name: new TranslatableMarkup('Germplasm Name Exists Validator'),
+   input_types: ["data-row"],
+ )]
 class GermplasmNameExists extends TripalCultivateValidatorBase implements ContainerFactoryPluginInterface {
   /**
    * Validator Traits required by this validator.

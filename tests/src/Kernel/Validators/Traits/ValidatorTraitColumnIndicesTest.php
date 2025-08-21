@@ -11,6 +11,8 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorColumnIn
  * @group trpcultivate
  * @group validator_traits
  */
+#[Group('trpcultivate')]
+#[Group('validator_traits')]
 class ValidatorTraitColumnIndicesTest extends ChadoTestKernelBase {
 
   /**

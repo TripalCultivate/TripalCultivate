@@ -3,6 +3,7 @@
 namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test any message process methods for the ValidHeaders validator.
@@ -10,6 +11,8 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group trpcultivate
  * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -246,6 +249,7 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideValidHeadersFailedCases
    */
+  #[DataProvider('provideValidHeadersFailedCases')]
   public function testProcessListWithDescribedTableFailures(array $validation_status, array $metadata, array $tokens, array $expectations) {
 
     // Call the process method on our validation result.
@@ -409,6 +413,7 @@ class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
+  #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_status, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.

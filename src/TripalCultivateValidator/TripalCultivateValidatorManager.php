@@ -33,6 +33,7 @@ class TripalCultivateValidatorManager extends DefaultPluginManager {
       $namespaces,
       $module_handler,
       'Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorInterface',
+      'Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator',
       'Drupal\trpcultivate\TripalCultivateValidator\Annotation\TripalCultivateValidator'
     );
 

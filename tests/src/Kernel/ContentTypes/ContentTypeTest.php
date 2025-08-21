@@ -11,6 +11,8 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  * @group ContentTypes
  * @group Fields
  */
+#[Group('ContentTypes')]
+#[Group('Fields')]
 class ContentTypeTest extends ChadoTestKernelBase {
 
   /**

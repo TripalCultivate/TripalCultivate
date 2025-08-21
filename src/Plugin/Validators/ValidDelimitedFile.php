@@ -2,20 +2,21 @@
 
 namespace Drupal\trpcultivate\Plugin\Validators;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnCount;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 
 /**
  * Validate that a line in a data file is properly delimited.
- *
- * @TripalCultivateValidator(
- *   id = "valid_delimited_file",
- *   validator_name = @Translation("Valid Delimited File Validator"),
- *   input_types = {"raw-row"}
- * )
  */
+#[TripalCultivateValidator(
+   id: 'valid_delimited_file',
+   validator_name: new TranslatableMarkup('Valid Delimited File Validator'),
+   input_types: ['raw-row']
+ )]
 class ValidDelimitedFile extends TripalCultivateValidatorBase {
 
   /**

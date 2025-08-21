@@ -12,6 +12,8 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group trpcultivate
  * @group templates
  */
+#[Group('trpcultivate')]
+#[Group('templates')]
 class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
 
   /**

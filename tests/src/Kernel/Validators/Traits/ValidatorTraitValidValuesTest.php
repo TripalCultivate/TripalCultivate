@@ -11,6 +11,8 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorValidVal
  * @group trpcultivate
  * @group validator_traits
  */
+#[Group('trpcultivate')]
+#[Group('validator_traits')]
 class ValidatorTraitValidValuesTest extends ChadoTestKernelBase {
 
   /**

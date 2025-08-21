@@ -2,20 +2,21 @@
 
 namespace Drupal\trpcultivate\Plugin\Validators;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnCount;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\Headers;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 
 /**
  * Validate that all expected column headers exist.
- *
- * @TripalCultivateValidator(
- *   id = "valid_headers",
- *   validator_name = @Translation("Header Row Validator"),
- *   input_types = {"header-row"}
- * )
  */
+#[TripalCultivateValidator(
+   id: 'valid_headers',
+   validator_name: new TranslatableMarkup('Header Row Validator'),
+   input_types: ['header-row']
+ )]
 class ValidHeaders extends TripalCultivateValidatorBase {
 
   /**

@@ -3,6 +3,7 @@
 namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test any message process methods for the ValueInList validator.
@@ -10,6 +11,8 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group trpcultivate
  * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -464,6 +467,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideValueInListFailedCases
    */
+  #[DataProvider('provideValueInListFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Process our test failures array for this scenario.
@@ -721,6 +725,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
+  #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.

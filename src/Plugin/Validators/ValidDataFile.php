@@ -4,20 +4,21 @@ namespace Drupal\trpcultivate\Plugin\Validators;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\FileTypes;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 
 /**
  * Validate data file.
- *
- * @TripalCultivateValidator(
- *   id = "valid_data_file",
- *   validator_name = @Translation("Valid Data File Validator"),
- *   input_types = {"file"}
- * )
  */
+#[TripalCultivateValidator(
+   id: 'valid_data_file',
+   validator_name: new TranslatableMarkup('Valid Data File Validator'),
+   input_types: ['file']
+)]
 class ValidDataFile extends TripalCultivateValidatorBase implements ContainerFactoryPluginInterface {
 
   /**

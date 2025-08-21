@@ -4,6 +4,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Tripal Cultivate Data File Delimited Validator Plugins.
@@ -11,6 +12,8 @@ use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
  * @group trpcultivate
  * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
@@ -267,6 +270,7 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideRawRowToDelimitedFileValidator
    */
+  #[DataProvider('provideRawRowToDelimitedFileValidator')]
   public function testDataFileRowIsDelimited(string $scenario, string $raw_row_input, $validator_config, $expected) {
     // Set validator configuration.
     $this->validator_instance->setExpectedColumns($validator_config['number_of_columns'], $validator_config['strict']);

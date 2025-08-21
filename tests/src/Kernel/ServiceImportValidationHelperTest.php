@@ -4,6 +4,7 @@ namespace Drupal\Tests\tripalcultivate\Kernel;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test import validation helper service.
@@ -11,6 +12,8 @@ use Drupal\trpcultivate\Service\ImportValidationHelper;
  * @group trpcultivate
  * @group validation_helper
  */
+#[Group('trpcultivate')]
+#[Group('validation_helper')]
 class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
 
   /**
@@ -125,6 +128,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideMimeTypesForFileDelimiterGetter
    */
+  #[DataProvider('provideMimeTypesForFileDelimiterGetter')]
   public function testFileDelimiterGetter(string $scenario, string $mime_type_input, bool $has_exception, string $exception_message, array|false $expected) {
 
     $exception_caught = FALSE;
@@ -194,6 +198,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideMimeTypeDelimiters
    */
+  #[DataProvider('provideMimeTypeDelimiters')]
   public function testSplitRowIntoColumns(string $expected_mime_type, string $expected_delimiter) {
 
     // Create a data row.
@@ -429,6 +434,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideFaultyValidationStatusArray
    */
+  #[DataProvider('provideFaultyValidationStatusArray')]
   public function testCheckValidationStatusArray(array $validation_result, array $expectations) {
 
     $validator_name = 'My Validator';
@@ -699,6 +705,7 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideTablesWithGaps
    */
+  #[DataProvider('provideTablesWithGaps')]
   public function testFillTableGaps(array $header, array $rows, array $expected_table) {
     ImportValidationHelper::fillTableGaps($header, $rows);
 

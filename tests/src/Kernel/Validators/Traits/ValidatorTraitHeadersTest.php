@@ -4,6 +4,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorHeaders;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests the Headers validator trait.
@@ -11,6 +12,8 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorHeaders;
  * @group trpcultivate
  * @group validator_traits
  */
+#[Group('trpcultivate')]
+#[Group('validator_traits')]
 class ValidatorTraitHeadersTest extends ChadoTestKernelBase {
 
   /**
@@ -454,6 +457,7 @@ class ValidatorTraitHeadersTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideHeadersForHeadersSetter
    */
+  #[DataProvider('provideHeadersForHeadersSetter')]
   public function testHeaderSetterAndGetters($scenario, $headers_input, $types_input, $has_exception, $exception_message, $expected) {
 
     // Test setter method.

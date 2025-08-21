@@ -13,6 +13,8 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  * @group TrpCultivate
  * @group Installation
  */
+#[Group('TrpCultivate')]
+#[Group('Installation')]
 class InstallTest extends ChadoTestBrowserBase {
 
   /**

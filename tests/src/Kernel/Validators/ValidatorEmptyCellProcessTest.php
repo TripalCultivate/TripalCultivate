@@ -3,6 +3,7 @@
 namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test any message process methods for the EmptyCell validator.
@@ -10,6 +11,8 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group trpcultivate
  * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -267,6 +270,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideEmptyCellFailedCases
    */
+  #[DataProvider('provideEmptyCellFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
@@ -426,6 +430,7 @@ class ValidatorEmptyCellProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
+  #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     // Test with a passed validation case string.

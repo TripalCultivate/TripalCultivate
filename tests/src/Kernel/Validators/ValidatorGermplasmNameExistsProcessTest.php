@@ -4,6 +4,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests any message processing methods for the GermplasmNameExists validator.
@@ -11,6 +12,8 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  * @group trpcultivate
  * @group validators
  */
+#[Group('trpcultivate')]
+#[Group('validators')]
 class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -451,6 +454,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideGermplasmNameExistsFailedCases
    */
+  #[DataProvider('provideGermplasmNameExistsFailedCases')]
   public function testProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
 
     // Call the process method on our validation result.
@@ -696,6 +700,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider provideGermplasmNameExistsEmptyCellCase
    */
+  #[DataProvider('provideGermplasmNameExistsEmptyCellCase')]
   public function testProcessListWithDescribedTableEmptyCell(array $validation_results, array $tokens, array $metadata, string $message) {
 
     // Call the process method on our validation result.
@@ -867,6 +872,7 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    *
    * @dataProvider providePassedAndUnrecognizableCases
    */
+  #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
 
     $exception_caught = FALSE;
