@@ -1,4 +1,4 @@
-ARG drupalversion=10.4.x-dev
+ARG drupalversion=11.2.x-dev
 ARG phpversion=8.3
 ARG pgsqlversion=16
 ARG installTheme
