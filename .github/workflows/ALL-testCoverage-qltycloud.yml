@@ -21,5 +21,5 @@ jobs:
           dockerfile: 'Dockerfile'
           php-version: 8.3
           pgsql-version: 16
-          drupal-version: 11.2.x-dev
+          drupal-version: 11.1.x-dev
           qltycloud-reporter-id: ${{ secrets.QLTY_COVERAGE_TOKEN }}
