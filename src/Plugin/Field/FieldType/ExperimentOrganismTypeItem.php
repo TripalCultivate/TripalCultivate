@@ -116,8 +116,6 @@ class ExperimentOrganismTypeItem extends ChadoFieldItemBase {
     // Use Tripal DBX to determine the primary key for this base table.
     $base_pkey_col = 'project_id';
 
-    // Get the property terms by using the Chado table columns they map to.
-    // $value_term = self::getColumnTermId($base_table, $base_column, 'NCIT:C25712');.
     return [
       // Add your chado property types here.
       // This is REQUIRED before you can test this field through the UI.

@@ -34,13 +34,12 @@ class ExperimentOrganismWidget extends ChadoWidgetBase {
 
     $options = [];
 
-    $options['select_limit'] = 10;
-    $options['match_operator'] = 'CONTAINS';
-    $options['match_limit'] = 10;
-    $options['size'] = 100;
-    $options['placeholder'] = 'Select Organism';
-
-    $element = [];
+    // Set some defaults to keep each of the fields simpler.
+    $options['select_limit'] = $this->getSelectLimit($options['select_limit'] ?? NULL);
+    $options['match_operator'] ??= $this->getSetting('match_operator') ?? 'CONTAINS';
+    $options['match_limit'] ??= $this->getSetting('match_limit') ?? 10;
+    $options['size'] ??= $this->getSetting('size');
+    $options['placeholder'] ??= $this->getSetting('placeholder');
 
     // Construct a query
     // A single wildcard indicates that all records are to be returned.
@@ -71,7 +70,7 @@ class ExperimentOrganismWidget extends ChadoWidgetBase {
           $default_value .= ' (' . $default_id . ')';
         }
       }
-      $element = [
+      $organism_element = [
         '#type' => 'textfield',
         '#default_value' => $default_value,
         '#autocomplete_route_name' => 'tripal_chado.organism_autocomplete',
@@ -81,7 +80,7 @@ class ExperimentOrganismWidget extends ChadoWidgetBase {
       ];
       unset($options['size']);
       unset($options['placeholder']);
-      $element['#autocomplete_route_parameters'] = $options;
+      $organism_element['#autocomplete_route_parameters'] = $options;
     }
 
     // For a small number of options, use a select.
@@ -95,17 +94,16 @@ class ExperimentOrganismWidget extends ChadoWidgetBase {
         $select_options[$record->pkey] = $organism;
       }
       natcasesort($select_options);
-      $element = [
+      $organism_element = [
         '#type' => 'select',
         '#options' => $select_options,
         '#default_value' => $default_id,
         '#empty_option' => $this->t('- Select -'),
       ];
     }
-    $element['#element_validate'] = [[static::class, 'validateAutocomplete']];
-    $element['#title'] = 'Species';
+    $organism_element['#element_validate'] = [[static::class, 'validateAutocomplete']];
 
-    return $element;
+    return $element + $organism_element;
   }
 
   /**
@@ -121,6 +119,27 @@ class ExperimentOrganismWidget extends ChadoWidgetBase {
     $values[0]['value'] = $values[0]['value'] . ' ' . $values[0]['suffix'];
 
     return $values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return self::defaultSelectSettings() + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    return $this->selectSettingsForm($form, $form_state) + parent::settingsForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    return $this->selectSettingsSummary() + parent::settingsSummary();
   }
 
 }
