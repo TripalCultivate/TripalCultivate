@@ -134,8 +134,7 @@ layouts:
         open: true
         children:
           - instruct_exp_germplasm
-          - exp_germgenus
-          - exp_germspecies
+          - exp_organism
           - exp_germcollection
       - id: exp-section-locations
         type: details
