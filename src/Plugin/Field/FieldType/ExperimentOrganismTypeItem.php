@@ -23,7 +23,7 @@ use Drupal\tripal_chado\TripalStorage\ChadoVarCharStoragePropertyType;
   description: new TranslatableMarkup('Germplasm species being observed in this experiment.'),
   default_widget: 'experiment_organism_widget',
   default_formatter: 'experiment_organism_formatter',
-  cardinality: 1,
+  cardinality: -1,
 )]
 class ExperimentOrganismTypeItem extends ChadoFieldItemBase {
 
