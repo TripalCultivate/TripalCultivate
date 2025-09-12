@@ -110,77 +110,57 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
       return;
     }
 
-    // Retrieve any additional settings.
-    // $max_length = $field_definition->getSetting('max_length');.
-    $max_length = 100;
-
-    // Use Tripal DBX to determine the primary key for this base table.
-    $schema = \Drupal::service('tripal_chado.database')->schema();
-    $base_schema_def = $schema->getTableDef($base_table, ['format' => 'Drupal']);
-    $base_pkey_col = $base_schema_def['primary key'];
-
     return [
-      // Add your chado property types here.
-      // This is REQUIRED before you can test this field through the UI.
-      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'record_id', self::$record_id_term, [
-        'action' => 'store_id',
-        'drupal_store' => TRUE,
-        'path' => $base_table . '.' . $base_pkey_col,
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_prop_id', self::$record_id_term, [
+        'action' => 'store_pkey',
+        'path' => 'project.project_id>genusprop.projectprop_id',
+        'table_alias_mapping' => ['genusprop' => 'projectprop'],
       ]),
-      new ChadoVarCharStoragePropertyType($entity_type_id, self::$id, 'value', self::$record_id_term, $max_length, [
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_prop_fkey', self::$record_id_term, [
+        'action' => 'store_link',
+        'path' => 'project.project_id>genusprop.project_id',
+        'table_alias_mapping' => ['genusprop' => 'projectprop'],
+      ]),
+      new ChadoVarCharStoragePropertyType($entity_type_id, self::$id, 'genus_value', 'NCIT:C25712', 100, [
         'action' => 'store',
-        'path' => $base_table . '.name',
+        'path' => 'project.project_id>genusprop.project_id;value',
+        'table_alias_mapping' => ['genusprop' => 'projectprop'],
       ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_prop_id', self::$record_id_term, [
-      //   'action' => 'store_pkey',
-      //   'path' => 'project.project_id>genusprop.projectprop_id',
-      //   'table_alias_mapping' => ['genusprop' => 'projectprop'],
-      // ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_prop_fkey', self::$record_id_term, [
-      //   'action' => 'store_link',
-      //   'path' => 'project.project_id>genusprop.project_id',
-      //   'table_alias_mapping' => ['genusprop' => 'projectprop'],
-      // ]),
-      // new ChadoVarCharStoragePropertyType($entity_type_id, self::$id, 'genus_value', 'NCIT:C25712', 100, [
-      //   'action' => 'store',
-      //   'path' => 'project.project_id>genusprop.project_id;value',
-      //   'table_alias_mapping' => ['genusprop' => 'projectprop'],
-      // ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_rank', 'OBCS:0000117', [
-      //   'action' => 'store',
-      //   'path' => 'project.project_id>genusprop.project_id;rank',
-      //   'table_alias_mapping' => ['genusprop' => 'projectprop'],
-      // ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_type_id', 'schema:additionalType', [
-      //   'action' => 'store',
-      //   'path' => 'project.project_id>genusprop.project_id;rank',
-      //   'table_alias_mapping' => ['genusprop' => 'projectprop'],
-      // ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_prop_id', self::$record_id_term, [
-      //   'action' => 'store_pkey',
-      //   'path' => 'project.project_id>scinameprop.projectprop_id',
-      //   'table_alias_mapping' => ['scinameprop' => 'projectprop'],
-      // ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_prop_fkey', self::$record_id_term, [
-      //   'action' => 'store_link',
-      //   'path' => 'project.project_id>scinameprop.project_id',
-      //   'table_alias_mapping' => ['scinameprop' => 'projectprop'],
-      // ]),
-      // new ChadoVarCharStoragePropertyType($entity_type_id, self::$id, 'sciname_value', 'NCIT:C25712', 100, [
-      //   'action' => 'store',
-      //   'path' => 'project.project_id>scinameprop.project_id;value',
-      //   'table_alias_mapping' => ['scinameprop' => 'projectprop'],
-      // ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_rank', 'OBCS:0000117', [
-      //   'action' => 'store',
-      //   'path' => 'project.project_id>scinameprop.project_id;rank',
-      //   'table_alias_mapping' => ['scinameprop' => 'projectprop'],
-      // ]),
-      // new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_type_id', 'schema:additionalType', [
-      //   'action' => 'store',
-      //   'path' => 'project.project_id>scinameprop.project_id;rank',
-      //   'table_alias_mapping' => ['scinameprop' => 'projectprop'],
-      // ]),
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_rank', 'OBCS:0000117', [
+        'action' => 'store',
+        'path' => 'project.project_id>genusprop.project_id;rank',
+        'table_alias_mapping' => ['genusprop' => 'projectprop'],
+      ]),
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_type_id', 'schema:additionalType', [
+        'action' => 'store',
+        'path' => 'project.project_id>genusprop.project_id;rank',
+        'table_alias_mapping' => ['genusprop' => 'projectprop'],
+      ]),
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_prop_id', self::$record_id_term, [
+        'action' => 'store_pkey',
+        'path' => 'project.project_id>scinameprop.projectprop_id',
+        'table_alias_mapping' => ['scinameprop' => 'projectprop'],
+      ]),
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_prop_fkey', self::$record_id_term, [
+        'action' => 'store_link',
+        'path' => 'project.project_id>scinameprop.project_id',
+        'table_alias_mapping' => ['scinameprop' => 'projectprop'],
+      ]),
+      new ChadoVarCharStoragePropertyType($entity_type_id, self::$id, 'sciname_value', 'NCIT:C25712', 100, [
+        'action' => 'store',
+        'path' => 'project.project_id>scinameprop.project_id;value',
+        'table_alias_mapping' => ['scinameprop' => 'projectprop'],
+      ]),
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_rank', 'OBCS:0000117', [
+        'action' => 'store',
+        'path' => 'project.project_id>scinameprop.project_id;rank',
+        'table_alias_mapping' => ['scinameprop' => 'projectprop'],
+      ]),
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_type_id', 'schema:additionalType', [
+        'action' => 'store',
+        'path' => 'project.project_id>scinameprop.project_id;rank',
+        'table_alias_mapping' => ['scinameprop' => 'projectprop'],
+      ]),
     ];
   }
 
@@ -197,7 +177,16 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     // Generate a random value to use as a sample.
     $random = new Random();
     $values['record_id'] = 1;
-    $values['value'] = $random->word(mt_rand(1, $max_length));
+    $values['genus_prop_id'] = 1;
+    $values['genus_prop_fkey'] = 1;
+    $values['genus_value'] = $random->word(mt_rand(1, $max_length));
+    $values['genus_rank'] = 1;
+    $values['genus_type_id'] = 1;
+    $values['sciname_prop_id'] = 1;
+    $values['sciname_prop_fkey'] = 1;
+    $values['sciname_value'] = $random->word(mt_rand(1, $max_length));
+    $values['sciname_rank'] = 1;
+    $values['sciname_type_id'] = 1;
 
     return $values;
   }

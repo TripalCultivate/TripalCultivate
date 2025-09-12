@@ -24,12 +24,13 @@ class ProjectGenusFormatter extends ChadoFormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
+    parent::viewElements($items, $langcode);
     $elements = [];
 
     // Use render arrays to generate markup for your field.
     foreach ($items as $delta => $item) {
       $elements[$delta] = [
-        "#markup" => $item->get("value")->getString(),
+        "#markup" => $item->get("genus_value")->getString(),
       ];
     }
 
