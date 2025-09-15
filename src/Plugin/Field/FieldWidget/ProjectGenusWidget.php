@@ -26,32 +26,18 @@ class ProjectGenusWidget extends ChadoWidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $linker_fkey_column = 'projectprop_id';
-    $property_definitions = $items[$delta]->getFieldDefinition()->getFieldStorageDefinition()->getPropertyDefinitions();
+
     // Get the field settings.
     $field_definition = $items[$delta]->getFieldDefinition();
-    $field_settings = $field_definition->getSettings();
     $field_name = $field_definition->get('field_name');
 
+    // Current Item Values:
     $item_vals = $items[$delta]->getValue();
     $record_id = $item_vals['record_id'] ?? 0;
-    $organism_id = $item_vals['organism_id'] ?? 0;
-    $genus_prop_id = $item_vals['genus_prop_id'] ?? 0;
-    $genus_prop_fkey = $item_vals['genus_prop_fkey'] ?? 0;
-    $sciname_prop_id = $item_vals['sciname_prop_id'] ?? 0;
-    $sciname_prop_fkey = $item_vals['sciname_prop_fkey'] ?? 0;
-    $genus_value = $item_vals['genus_value'] ?? 'Lens';
-    $sciname_value = $item_vals['sciname_value'] ?? 'Lens culinaris';
-    $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
-    $idSpace = $idSpace_manager->loadCollection('TAXRANK');
 
-    $term = $idSpace->getTerm('0000005');
-    $genus_term_id = $term->getInternalId();
+    // ID space manager to get the terms later.
     $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
-    $idSpace = $idSpace_manager->loadCollection('NCBITaxon');
 
-    $term = $idSpace->getTerm('scientific_name');
-    $sciname_term_id = $term->getInternalId();
 
     $elements = [];
     $elements['record_id'] = [
@@ -62,6 +48,15 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       '#type' => 'value',
       '#value' => $field_name,
     ];
+
+    // GENUS.
+    $genus_prop_id = $item_vals['genus_prop_id'] ?? 0;
+    $genus_prop_fkey = $item_vals['genus_prop_fkey'] ?? 0;
+    $genus_value = $item_vals['genus_value'] ?? '';
+    // -- get the term.
+    $idSpace_taxrank = $idSpace_manager->loadCollection('TAXRANK');
+    $genus_term_id = $idSpace_taxrank->getTerm('0000005')->getInternalId();
+    // -- now define the elements.
     $elements['genus_prop_id'] = [
       '#type' => 'value',
       '#default_value' => $genus_prop_id,
@@ -79,35 +74,53 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       '#value' => $delta,
     ];
     $elements['genus_value'] = [
-      '#type' => 'value',
-      '#value' => $genus_value,
+      '#type' => 'textfield',
+      '#label' => 'Genus',
+      '#default_value' => $genus_value,
     ];
+
+    // Scientific Name.
+    $sciname_prop_id = $item_vals['sciname_prop_id'] ?? 0;
+    $sciname_prop_fkey = $item_vals['sciname_prop_fkey'] ?? 0;
+    $sciname_value = $item_vals['sciname_value'] ?? '';
+    // -- get the term.
+    $idSpace_ncbitaxon = $idSpace_manager->loadCollection('NCBITaxon');
+    $sciname_term_id = $idSpace_ncbitaxon->getTerm('scientific_name')->getInternalId();
+    // -- now define the elements.
     $elements['sciname_prop_id'] = [
-      '#type' => 'value',
-      '#default_value' => $sciname_prop_id,
+    '#type' => 'value',
+    '#default_value' => $sciname_prop_id,
     ];
     $elements['sciname_prop_fkey'] = [
-      '#type' => 'value',
-      '#default_value' => $sciname_prop_fkey,
+    '#type' => 'value',
+    '#default_value' => $sciname_prop_fkey,
     ];
     $elements['sciname_type_id'] = [
-      '#type' => 'value',
-      '#value' => $sciname_term_id,
+    '#type' => 'value',
+    '#value' => $sciname_term_id,
     ];
     $elements['sciname_rank'] = [
-      '#type' => 'value',
-      '#value' => $delta,
+    '#type' => 'value',
+    '#value' => $delta,
     ];
     $elements['sciname_value'] = [
-      '#type' => 'value',
-      '#value' => $sciname_value,
+    '#type' => 'textfield',
+    '#label' => 'Scientific Name',
+    '#value' => $sciname_value,
     ];
+
 
     // Insert the select element, either a select or an autocomplete depending
     // on the number of options.
-    $options = [];
-    $select_element = $this->organismSelectElement($organism_id, $options);
-    $elements[$linker_fkey_column] = $element + $select_element;
+    // $options = [];
+    // $select_element = $this->organismSelectElement($organism_id, $options);
+    // $elements[$linker_fkey_column] = $element + $select_element;.
+
+
+    // Save some initial values to allow later handling of the "Remove" button.
+    // @todo check that TripalFields support two calls to saveInitialValues().
+    $this->saveInitialValues($delta, $field_name, $genus_prop_id, $form_state);
+    $this->saveInitialValues($delta, $field_name, $sciname_prop_id, $form_state);
 
     return $elements;
   }
@@ -210,20 +223,17 @@ class ProjectGenusWidget extends ChadoWidgetBase {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
 
-    // You may need to massage the values submitted by the widget before
-    // passing it on to the backend storage. The values will be passed on to
-    // the backend storage. For example, if you had a second element in the
-    // widget that indicated the suffix to attach to the value you could
-    // add it like this assuming a cardinality: 1.
-    // $values[0]['value'] = $values[0]['value'] . ' ' . $values[0]['suffix'];.
-    // foreach ($values as $key => $item) {
-    //   // Note: If the property is empty then the value key will not be present.
-    //   if (array_key_exists('value', $item)) {
-    //     $values[$key]['value'] = $item['value']['value'];
-    //   }
-    // }
-    // $values = $this->genericSelectMassageFormValues('organism_id', $values);.
-    // Return $this->massageLinkingFormValues('organism_id', $values, $form_state);.
+    // Look up the rank term.
+    $storage = \Drupal::entityTypeManager()->getStorage('chado_term_mapping');
+    $mapping = $storage->load('core_mapping');
+    $rank_term = $this->sanitizeKey($mapping->getColumnTermId('projectprop', 'rank'));
+
+    // Call parent massage helper function for properties.
+    // @todo check TripalFields support two calls to massagePropertyFormValues();
+    $values = $this->massagePropertyFormValues('genus_value', $values, $form_state, $rank_term, 'genus_prop_id');
+    $values = $this->massagePropertyFormValues('sciname_value', $values, $form_state, $rank_term, 'sciname_prop_id');
+
+    return $values;
   }
 
   /**

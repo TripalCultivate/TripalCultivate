@@ -2,7 +2,6 @@
 
 namespace Drupal\trpcultivate\Plugin\Field\FieldType;
 
-use Drupal\core\Field\FieldDefinitionInterface;
 use Drupal\core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal\TripalField\Attribute\TripalFieldType;
@@ -173,25 +172,41 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     ];
   }
 
-  // /**
-  //  * {@inheritdoc}
-  //  */
-  // public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
-  //   $values = [];
+  /**
+   * We need to set the type_id property value to match the cvterm_id.
+   *
+   * To do this we'll override the tripalValuesTemplate() and give the
+   * `type_id` property a default value.
+   *
+   * {@inheritDoc}
+   *
+   * @see \Drupal\tripal\TripalField\TripalFieldItemBase::tripalValuesTemplate()
+   */
+  public function tripalValuesTemplate($field_definition, $default_value = NULL) {
+    $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
 
-  //   // Use something like the following to retrieve storage settings.
-  //   // $max_length = $field_definition->getSetting('max_length')
-  //   $max_length = 100;
+    // Use the parent method to get a template values array.
+    $prop_values = parent::tripalValuesTemplate($field_definition, $default_value);
 
-  //   // Generate a random value to use as a sample.
-  //   $random = new Random();
-  //   $values['record_id'] = 1;
-  //   $values['prop_id'] = 1;
-  //   $values['value'] = 'fred';
-  //   $values['type_id'] = 4;
+    // Term: genus.
+    $idSpace = $idSpace_manager->loadCollection('TAXRANK');
+    $genus_term = $idSpace->getTerm('0000005');
+    // Term: scientific name.
+    $idSpace = $idSpace_manager->loadCollection('NCBITaxon');
+    $sciename_term = $idSpace->getTerm('scientific_name');
 
-  //   return $values;
-  // }
+    // FIX the type_id for both our properties using the terms above.
+    foreach ($prop_values as $index => $prop_value) {
+      if ($prop_value->getKey() == 'genus_type_id') {
+        $prop_values[$index]->setValue($genus_term->getInternalId());
+      }
+      elseif ($prop_value->getKey() == 'sciname_type_id') {
+        $prop_values[$index]->setValue($sciename_term->getInternalId());
+      }
+    }
+
+    return $prop_values;
+  }
 
   /**
    * {@inheritdoc}
