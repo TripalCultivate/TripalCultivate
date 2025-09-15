@@ -39,9 +39,11 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    $settings = [];
-
-    return $settings + parent::defaultFieldSettings();
+    $field_settings = parent::defaultFieldSettings();
+    // CV Term is 'Genus'.
+    $field_settings['termIdSpace'] = 'TAXRANK';
+    $field_settings['termAccession'] = '0000005';
+    return $field_settings;
   }
 
   /**
@@ -111,8 +113,14 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     }
 
     return [
+      new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'record_id', self::$record_id_term, [
+        'action' => 'store_id',
+        'drupal_store' => TRUE,
+        'path' => $base_table . '.project_id',
+      ]),
       new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_prop_id', self::$record_id_term, [
         'action' => 'store_pkey',
+        'drupal_store' => TRUE,
         'path' => 'project.project_id>genusprop.projectprop_id',
         'table_alias_mapping' => ['genusprop' => 'projectprop'],
       ]),
@@ -133,11 +141,12 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
       ]),
       new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_type_id', 'schema:additionalType', [
         'action' => 'store',
-        'path' => 'project.project_id>genusprop.project_id;rank',
+        'path' => 'project.project_id>genusprop.project_id;type_id',
         'table_alias_mapping' => ['genusprop' => 'projectprop'],
       ]),
       new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_prop_id', self::$record_id_term, [
         'action' => 'store_pkey',
+        'drupal_store' => TRUE,
         'path' => 'project.project_id>scinameprop.projectprop_id',
         'table_alias_mapping' => ['scinameprop' => 'projectprop'],
       ]),
@@ -158,38 +167,31 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
       ]),
       new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_type_id', 'schema:additionalType', [
         'action' => 'store',
-        'path' => 'project.project_id>scinameprop.project_id;rank',
+        'path' => 'project.project_id>scinameprop.project_id;type_id',
         'table_alias_mapping' => ['scinameprop' => 'projectprop'],
       ]),
     ];
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
-    $values = [];
+  // /**
+  //  * {@inheritdoc}
+  //  */
+  // public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
+  //   $values = [];
 
-    // Use something like the following to retrieve storage settings.
-    // $max_length = $field_definition->getSetting('max_length')
-    $max_length = 100;
+  //   // Use something like the following to retrieve storage settings.
+  //   // $max_length = $field_definition->getSetting('max_length')
+  //   $max_length = 100;
 
-    // Generate a random value to use as a sample.
-    $random = new Random();
-    $values['record_id'] = 1;
-    $values['genus_prop_id'] = 1;
-    $values['genus_prop_fkey'] = 1;
-    $values['genus_value'] = $random->word(mt_rand(1, $max_length));
-    $values['genus_rank'] = 1;
-    $values['genus_type_id'] = 1;
-    $values['sciname_prop_id'] = 1;
-    $values['sciname_prop_fkey'] = 1;
-    $values['sciname_value'] = $random->word(mt_rand(1, $max_length));
-    $values['sciname_rank'] = 1;
-    $values['sciname_type_id'] = 1;
+  //   // Generate a random value to use as a sample.
+  //   $random = new Random();
+  //   $values['record_id'] = 1;
+  //   $values['prop_id'] = 1;
+  //   $values['value'] = 'fred';
+  //   $values['type_id'] = 4;
 
-    return $values;
-  }
+  //   return $values;
+  // }
 
   /**
    * {@inheritdoc}

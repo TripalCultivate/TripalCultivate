@@ -28,20 +28,79 @@ class ProjectGenusWidget extends ChadoWidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $linker_fkey_column = 'projectprop_id';
     $property_definitions = $items[$delta]->getFieldDefinition()->getFieldStorageDefinition()->getPropertyDefinitions();
-    $field_name = $items->getFieldDefinition()->get('field_name');
+    // Get the field settings.
+    $field_definition = $items[$delta]->getFieldDefinition();
+    $field_settings = $field_definition->getSettings();
+    $field_name = $field_definition->get('field_name');
 
     $item_vals = $items[$delta]->getValue();
     $record_id = $item_vals['record_id'] ?? 0;
+    $organism_id = $item_vals['organism_id'] ?? 0;
+    $genus_prop_id = $item_vals['genus_prop_id'] ?? 0;
+    $genus_prop_fkey = $item_vals['genus_prop_fkey'] ?? 0;
+    $sciname_prop_id = $item_vals['sciname_prop_id'] ?? 0;
+    $sciname_prop_fkey = $item_vals['sciname_prop_fkey'] ?? 0;
+    $genus_value = $item_vals['genus_value'] ?? 'Lens';
+    $sciname_value = $item_vals['sciname_value'] ?? 'Lens culinaris';
+    $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
+    $idSpace = $idSpace_manager->loadCollection('TAXRANK');
+
+    $term = $idSpace->getTerm('0000005');
+    $genus_term_id = $term->getInternalId();
+    $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
+    $idSpace = $idSpace_manager->loadCollection('NCBITaxon');
+
+    $term = $idSpace->getTerm('scientific_name');
+    $sciname_term_id = $term->getInternalId();
 
     $elements = [];
     $elements['record_id'] = [
       '#type' => 'value',
-      '#default_value' => $record_id,
+      '#value' => $record_id,
     ];
-    // Pass the field machine name through the form for massageFormValues()
     $elements['field_name'] = [
       '#type' => 'value',
-      '#default_value' => $field_name,
+      '#value' => $field_name,
+    ];
+    $elements['genus_prop_id'] = [
+      '#type' => 'value',
+      '#default_value' => $genus_prop_id,
+    ];
+    $elements['genus_prop_fkey'] = [
+      '#type' => 'value',
+      '#default_value' => $genus_prop_fkey,
+    ];
+    $elements['genus_type_id'] = [
+      '#type' => 'value',
+      '#value' => $genus_term_id,
+    ];
+    $elements['genus_rank'] = [
+      '#type' => 'value',
+      '#value' => $delta,
+    ];
+    $elements['genus_value'] = [
+      '#type' => 'value',
+      '#value' => $genus_value,
+    ];
+    $elements['sciname_prop_id'] = [
+      '#type' => 'value',
+      '#default_value' => $sciname_prop_id,
+    ];
+    $elements['sciname_prop_fkey'] = [
+      '#type' => 'value',
+      '#default_value' => $sciname_prop_fkey,
+    ];
+    $elements['sciname_type_id'] = [
+      '#type' => 'value',
+      '#value' => $sciname_term_id,
+    ];
+    $elements['sciname_rank'] = [
+      '#type' => 'value',
+      '#value' => $delta,
+    ];
+    $elements['sciname_value'] = [
+      '#type' => 'value',
+      '#value' => $sciname_value,
     ];
 
     // Insert the select element, either a select or an autocomplete depending
@@ -49,17 +108,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $options = [];
     $select_element = $this->organismSelectElement($organism_id, $options);
     $elements[$linker_fkey_column] = $element + $select_element;
-
-    foreach ($property_definitions as $property => $definition) {
-      $default_value = $item_vals[$property] ?? 1;
-      $elements[$property] = [
-        '#type' => 'value',
-        '#default_value' => $default_value,
-      ];
-    }
-
-    // Save some initial values to allow later handling of the "Remove" button.
-    $this->saveInitialValues($delta, $field_name, $record_id, $form_state);
 
     return $elements;
   }
@@ -124,7 +172,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       }
       $element = [
         '#type' => 'textfield',
-        '#default_value' => $default_value,
+        '#value' => $default_value,
         '#autocomplete_route_name' => 'tripal_chado.organism_autocomplete',
         '#autocomplete_route_parameters' => ['match_limit' => $options['match_limit']],
         '#size' => $options['size'],
@@ -149,7 +197,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       $element = [
         '#type' => 'select',
         '#options' => $select_options,
-        '#default_value' => $default_id,
+        '#value' => $default_id,
         '#empty_option' => $this->t('- Select -'),
       ];
     }
@@ -168,13 +216,35 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // widget that indicated the suffix to attach to the value you could
     // add it like this assuming a cardinality: 1.
     // $values[0]['value'] = $values[0]['value'] . ' ' . $values[0]['suffix'];.
-    foreach ($values as $key => $item) {
-      // Note: If the property is empty then the value key will not be present.
-      if (array_key_exists('value', $item)) {
-        $values[$key]['value'] = $item['value']['value'];
-      }
-    }
-    return $values;
+    // foreach ($values as $key => $item) {
+    //   // Note: If the property is empty then the value key will not be present.
+    //   if (array_key_exists('value', $item)) {
+    //     $values[$key]['value'] = $item['value']['value'];
+    //   }
+    // }
+    // $values = $this->genericSelectMassageFormValues('organism_id', $values);.
+    // Return $this->massageLinkingFormValues('organism_id', $values, $form_state);.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return self::defaultSelectSettings() + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    return $this->selectSettingsForm($form, $form_state) + parent::settingsForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    return $this->selectSettingsSummary() + parent::settingsSummary();
   }
 
 }
