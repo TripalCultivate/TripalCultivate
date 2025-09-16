@@ -38,7 +38,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // ID space manager to get the terms later.
     $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
 
-
     $elements = [];
     $elements['record_id'] = [
       '#type' => 'value',
@@ -75,7 +74,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     ];
     $elements['genus_value'] = [
       '#type' => 'textfield',
-      '#label' => 'Genus',
+      '#title' => 'Genus',
       '#default_value' => $genus_value,
     ];
 
@@ -88,27 +87,26 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $sciname_term_id = $idSpace_ncbitaxon->getTerm('scientific_name')->getInternalId();
     // -- now define the elements.
     $elements['sciname_prop_id'] = [
-    '#type' => 'value',
-    '#default_value' => $sciname_prop_id,
+      '#type' => 'value',
+      '#default_value' => $sciname_prop_id,
     ];
     $elements['sciname_prop_fkey'] = [
-    '#type' => 'value',
-    '#default_value' => $sciname_prop_fkey,
+      '#type' => 'value',
+      '#default_value' => $sciname_prop_fkey,
     ];
     $elements['sciname_type_id'] = [
-    '#type' => 'value',
-    '#value' => $sciname_term_id,
+      '#type' => 'value',
+      '#value' => $sciname_term_id,
     ];
     $elements['sciname_rank'] = [
-    '#type' => 'value',
-    '#value' => $delta,
+      '#type' => 'value',
+      '#value' => $delta,
     ];
     $elements['sciname_value'] = [
-    '#type' => 'textfield',
-    '#label' => 'Scientific Name',
-    '#value' => $sciname_value,
+      '#type' => 'textfield',
+      '#title' => 'Scientific Name',
+      '#default_value' => $sciname_value,
     ];
-
 
     // Insert the select element, either a select or an autocomplete depending
     // on the number of options.
@@ -116,18 +114,27 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // $select_element = $this->organismSelectElement($organism_id, $options);
     // $elements[$linker_fkey_column] = $element + $select_element;.
 
-
     // Save some initial values to allow later handling of the "Remove" button.
-    // @todo check that TripalFields support two calls to saveInitialValues().
-    $this->saveInitialValues($delta, $field_name, $genus_prop_id, $form_state);
-    $this->saveInitialValues($delta, $field_name, $sciname_prop_id, $form_state);
+    // Note: We do this manually instead of using saveInitialValues() because
+    // we have two properties in a single item.
+    // We want the initial values, so never update them once saved.
+    $storage = $form_state->getStorage();
+    if (!($storage['initial_values'][$field_name][$delta] ?? FALSE)) {
+      $storage['initial_values'][$field_name][$delta] = [
+        'genus_prop_id' => $genus_prop_id,
+        'sciname_linker_id' => $sciname_prop_id,
+      ];
+      $form_state->setStorage($storage);
+    }
 
     return $elements;
   }
 
   /**
-   * Select form element generator. For a small number of values
-   * this creates a select, for many values this creates an autocomplete.
+   * Select form element generator.
+   *
+   * Note: For a small number of values this creates a select, for many values
+   * this creates an autocomplete.
    *
    * @param int|null $default_id
    *   The pkey_id value of the default, if one exists.
@@ -162,7 +169,8 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $count_options['match_limit'] = $options['select_limit'] + 1;
     $query = ChadoOrganismAutocompleteController::getQuery($string, $count_options);
 
-    // Get a count of the number of possible values, unless forcing always autocomplete.
+    // Get a count of the number of possible values,
+    // unless forcing always autocomplete.
     $count = 1;
     if ($options['select_limit'] > 0) {
       $count = $query->countQuery()->execute()->fetchField();
@@ -223,16 +231,17 @@ class ProjectGenusWidget extends ChadoWidgetBase {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
 
-    // Look up the rank term.
-    $storage = \Drupal::entityTypeManager()->getStorage('chado_term_mapping');
-    $mapping = $storage->load('core_mapping');
-    $rank_term = $this->sanitizeKey($mapping->getColumnTermId('projectprop', 'rank'));
+    // If there are no values to massage then move on.
+    if (!$values) {
+      return $values;
+    }
 
-    // Call parent massage helper function for properties.
-    // @todo check TripalFields support two calls to massagePropertyFormValues();
-    $values = $this->massagePropertyFormValues('genus_value', $values, $form_state, $rank_term, 'genus_prop_id');
-    $values = $this->massagePropertyFormValues('sciname_value', $values, $form_state, $rank_term, 'sciname_prop_id');
-
+    // Note: I think that massaging to remove empty or deleted properties
+    // will be much easier and less error prone once we get the select list in
+    // place. We still cannot use the massagePropertyFormValues() parent method
+    // but we can follow the same logic but looking at the organism_id
+    // property and the genus_prop_id property.
+    // @todo implement handling of remove empty values after select.
     return $values;
   }
 
