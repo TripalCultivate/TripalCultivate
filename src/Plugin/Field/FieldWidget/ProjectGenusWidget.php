@@ -34,6 +34,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // Current Item Values:
     $item_vals = $items[$delta]->getValue();
     $record_id = $item_vals['record_id'] ?? 0;
+    $organism_id = $item_vals['organism_id'] ?? 0;
 
     // ID space manager to get the terms later.
     $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
@@ -73,7 +74,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       '#value' => $delta,
     ];
     $elements['genus_value'] = [
-      '#type' => 'textfield',
+      '#type' => 'value',
       '#title' => 'Genus',
       '#default_value' => $genus_value,
     ];
@@ -103,16 +104,15 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       '#value' => $delta,
     ];
     $elements['sciname_value'] = [
-      '#type' => 'textfield',
+      '#type' => 'value',
       '#title' => 'Scientific Name',
       '#default_value' => $sciname_value,
     ];
 
     // Insert the select element, either a select or an autocomplete depending
     // on the number of options.
-    // $options = [];
-    // $select_element = $this->organismSelectElement($organism_id, $options);
-    // $elements[$linker_fkey_column] = $element + $select_element;.
+    $options = [];
+    $elements['organism_id'] = $this->organismSelectElement($organism_id, $options);
 
     // Save some initial values to allow later handling of the "Remove" button.
     // Note: We do this manually instead of using saveInitialValues() because
@@ -193,7 +193,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       }
       $element = [
         '#type' => 'textfield',
-        '#value' => $default_value,
+        '#default_value' => $default_value,
         '#autocomplete_route_name' => 'tripal_chado.organism_autocomplete',
         '#autocomplete_route_parameters' => ['match_limit' => $options['match_limit']],
         '#size' => $options['size'],
@@ -218,7 +218,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       $element = [
         '#type' => 'select',
         '#options' => $select_options,
-        '#value' => $default_id,
+        '#default_value' => $default_id,
         '#empty_option' => $this->t('- Select -'),
       ];
     }
@@ -234,6 +234,20 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // If there are no values to massage then move on.
     if (!$values) {
       return $values;
+    }
+    $values = $this->genericSelectMassageFormValues('organism_id', $values);
+    $chado = \Drupal::service('tripal_chado.database');
+
+    foreach ($values as $key => $info) {
+      if (array_key_exists('organism_id', $info)) {
+        $query = $chado->select('1:organism', 'o')
+          ->fields('o', ['genus', 'species'])
+          ->condition('o.organism_id', $info['organism_id'], '=')
+          ->execute()
+          ->fetchAll();
+        $values[$key]['genus_value'] = $query[0]->genus;
+        $values[$key]['sciname_value'] = $query[0]->genus . ' ' . $query[0]->species;
+      }
     }
 
     // Note: I think that massaging to remove empty or deleted properties
