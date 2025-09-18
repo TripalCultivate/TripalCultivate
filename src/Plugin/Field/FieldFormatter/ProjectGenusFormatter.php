@@ -26,13 +26,32 @@ class ProjectGenusFormatter extends ChadoFormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     parent::viewElements($items, $langcode);
     $elements = [];
+    $genus_arr = [];
+    $sciname_arr = [];
 
     // Use render arrays to generate markup for your field.
     foreach ($items as $delta => $item) {
-      $elements[$delta] = [
-        "#markup" => $item->get("genus_value")->getString(),
-      ];
+      $genus_arr[$delta] = $item->get('genus_value')->getString();
+      $sciname_arr[$delta] = $item->get('sciname_value')->getString();
     }
+    $elements[0] = [
+      '#markup' => 'Genus',
+    ];
+    $elements[1] = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ul',
+      '#items' => $genus_arr,
+      '#wrapper_attributes' => ['class' => 'container'],
+    ];
+    $elements[2] = [
+      '#markup' => 'Scientific Name',
+    ];
+    $elements[3] = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ul',
+      '#items' => $sciname_arr,
+      '#wrapper_attributes' => ['class' => 'container'],
+    ];
 
     return $elements;
   }
