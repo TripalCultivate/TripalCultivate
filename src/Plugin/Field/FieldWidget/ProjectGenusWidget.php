@@ -112,7 +112,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // Insert the select element, either a select or an autocomplete depending
     // on the number of options.
     $options = [];
-    $elements['organism_id'] = $this->organismSelectElement($organism_id, $options);
+    $elements['organism_id'] = $element + $this->organismSelectElement($organism_id, $options);
 
     // Save some initial values to allow later handling of the "Remove" button.
     // Note: We do this manually instead of using saveInitialValues() because
@@ -123,6 +123,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       $storage['initial_values'][$field_name][$delta] = [
         'genus_prop_id' => $genus_prop_id,
         'sciname_linker_id' => $sciname_prop_id,
+        'organism_id' => $organism_id,
       ];
       $form_state->setStorage($storage);
     }
@@ -235,20 +236,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     if (!$values) {
       return $values;
     }
-    $values = $this->genericSelectMassageFormValues('organism_id', $values);
-    $chado = \Drupal::service('tripal_chado.database');
-
-    foreach ($values as $key => $info) {
-      if (array_key_exists('organism_id', $info)) {
-        $query = $chado->select('1:organism', 'o')
-          ->fields('o', ['genus', 'species'])
-          ->condition('o.organism_id', $info['organism_id'], '=')
-          ->execute()
-          ->fetchAll();
-        $values[$key]['genus_value'] = $query[0]->genus;
-        $values[$key]['sciname_value'] = $query[0]->genus . ' ' . $query[0]->species;
-      }
-    }
 
     // Note: I think that massaging to remove empty or deleted properties
     // will be much easier and less error prone once we get the select list in
@@ -256,7 +243,111 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // but we can follow the same logic but looking at the organism_id
     // property and the genus_prop_id property.
     // @todo implement handling of remove empty values after select.
+
+
+    // The field name for the field. There are usually multiple
+    // copies of a property field, so this distinguishes them.
+    $first_delta = array_key_first($values);
+    $field_name = $values[$first_delta]['field_name'];
+
+    // Look up the rank term
+    $storage = \Drupal::entityTypeManager()->getStorage('chado_term_mapping');
+    $mapping = $storage->load('core_mapping');
+    $rank_term = $this->sanitizeKey($mapping->getColumnTermId('projectprop', 'rank'));
+    // Convert the widget fields into an updated $values array
+    // with the items expected by the field type
+    $this->preMassageFormValues($values);
+
+    $val = 'organism_id';
+    $linker_key = 'organism_id';
+
+    // Handle any empty values so that chado storage properly
+    // deletes the linking record in chado. This happens when an
+    // existing record is changed to "- Select -"
+    $retained_records = [];
+    foreach ($values as $val_key => $value) {
+      if ($value[$linker_key]) {
+        $retained_records[$val_key] = $value[$linker_key];
+      }
+      if ($value[$val] == '') {
+        if ($value['record_id']) {
+          // If there is a record_id, but no value, this
+          // means we need to pass in this record to chado storage
+          // to have the linker record be deleted there. Here,
+          // the empty string is the correct primitive type,
+          // so nothing to change.
+        }
+        else {
+          // If there is no record_id, then it is the empty
+          // field at the end of the list, and can be ignored.
+          unset($values[$val_key]);
+        }
+      }
+    }
+
+    // If there were any values in the initial values that are not
+    // present in the current form state, then an existing record
+    // was deleted by clicking the "Remove" button. Similarly to
+    // the code above, we need to include these in the values array
+    // so that chado storage is informed to delete the linking record.
+    $next_delta = $values ? array_key_last($values) + 1 : 0;
+    $storage_values = $form_state->getStorage();
+    $initial_values = $storage_values['initial_values'][$field_name];
+    foreach ($initial_values as $initial_value) {
+      // For initial values, the key is always 'linker_id', regardless of $linker_key value.
+      $organism_id = $initial_value['organism_id'];
+      if ($organism_id and !in_array($organism_id, $retained_records)) {
+        // This item was removed from the form. Add back a value
+        // so that chado storage knows to remove the chado record.
+        $values[$next_delta][$linker_key] = $organism_id;
+        $values[$next_delta][$val] = '';
+        $next_delta++;
+      }
+    }
+
+    // Reset the weights
+    $i = 0;
+    foreach ($values as $val_key => $value) {
+      if ($values[$val_key][$val]) {
+        $values[$val_key]['_weight'] = $i;
+        if ($rank_term) {
+          $values[$val_key][$rank_term] = $i;
+        }
+        $i++;
+      }
+    }
     return $values;
+  }
+
+  /**
+   * Convert the values from the widget form fields into an updated
+   * array containing the items that are expected by the field type.
+   *
+   * @param array &$values
+   *   The values array passed to massageFormValues
+   * @return void
+   */
+  protected function preMassageFormValues(array &$values): void {
+    $chado = \Drupal::service('tripal_chado.database');
+    $values = $this->genericSelectMassageFormValues('organism_id', $values);
+    foreach ($values as $delta => $value) {
+      $new_value = $value;
+      $new_value['genus_value'] = '';
+      $new_value['sciname_value'] = '';
+
+      if ($value['organism_id']) {
+        if ($value['organism_id'] !=  '') {
+          $query = $chado->select('1:organism', 'o')
+            ->fields('o', ['genus', 'species'])
+            ->condition('o.organism_id', $value['organism_id'], '=')
+            ->execute()
+            ->fetchAll();
+          $new_value['genus_value'] = $query[0]->genus;
+          $new_value['sciname_value'] = $query[0]->genus . ' ' . $query[0]->species;
+        }
+      }
+      $values[$delta] = $new_value;
+    }
   }
 
   /**
