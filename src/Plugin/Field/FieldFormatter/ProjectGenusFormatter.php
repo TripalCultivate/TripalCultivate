@@ -31,8 +31,16 @@ class ProjectGenusFormatter extends ChadoFormatterBase {
 
     // Use render arrays to generate markup for your field.
     foreach ($items as $delta => $item) {
-      $genus_arr[$delta] = $item->get('genus_value')->getString();
-      $sciname_arr[$delta] = $item->get('sciname_value')->getString();
+      $genus = $item->get('genus_value')->getString();
+      $sciname = $item->get('sciname_value')->getString();
+
+      if ($genus and $genus != '') {
+        $genus_arr[$delta] = $genus;
+      }
+
+      if ($sciname and $sciname != '') {
+        $sciname_arr[$delta] = $sciname;
+      }
     }
     $elements[0] = [
       '#markup' => 'Genus',
