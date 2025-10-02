@@ -49,8 +49,9 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // Determine the current organism_id based on the scientific name value.
     $organism_id = 0;
     if (array_key_exists('sciname_value', $item_vals) and $item_vals['sciname_value'] != '') {
+      $sciname_string = ChadoOrganismFormElementController::getQuery($item_vals['sciname_value'], [])->execute()->fetchAll()[0]->organism;
       foreach ($select_options as $id => $sciname) {
-        if ($sciname == $item_vals['sciname_value'] . ' ') {
+        if ($sciname == $sciname_string) {
           $organism_id = $id ?? 0;
         }
       }
@@ -255,7 +256,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
    *   The values array passed to massageFormValues.
    */
   protected function preMassageFormValues(array &$values): void {
-    $chado = \Drupal::service('tripal_chado.database');
     $values = $this->genericSelectMassageFormValues('organism_id', $values);
     foreach ($values as $delta => $value) {
       $new_value = $value;
@@ -264,13 +264,13 @@ class ProjectGenusWidget extends ChadoWidgetBase {
 
       if ($value['organism_id']) {
         if ($value['organism_id'] != '') {
-          $query = $chado->select('1:organism', 'o')
-            ->fields('o', ['genus', 'species'])
-            ->condition('o.organism_id', $value['organism_id'], '=')
-            ->execute()
-            ->fetchAll();
-          $new_value['genus_value'] = $query[0]->genus;
-          $new_value['sciname_value'] = $query[0]->genus . ' ' . $query[0]->species;
+          $query = ChadoOrganismFormElementController::getQuery('%', []);
+          $query->condition('organism_id', $value['organism_id'], '=');
+          $result = $query->execute()->fetchAll();
+          $new_value['sciname_value'] = $result[0]->organism;
+          if (preg_match('/^(.*?)\s+(.*)$/', $new_value['sciname_value'], $matches)) {
+            $new_value['genus_value'] = $matches[1];
+          }
         }
       }
       $values[$delta] = $new_value;
