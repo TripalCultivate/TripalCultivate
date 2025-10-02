@@ -302,7 +302,7 @@ fields:
     -   name: exp_organism
         content_type: research_experiment
         label: Germplasm Species
-        type: experiment_organism
+        type: project_genus
         description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species then each species should be its own entry.
         cardinality: -1
         required: false
