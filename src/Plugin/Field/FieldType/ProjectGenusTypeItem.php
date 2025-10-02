@@ -72,6 +72,16 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public static function mainPropertyName() {
+    // Note: this could be either sciname_value or genus_value so we just
+    // randomly picked one. This is currently used by core Tripal when checking
+    // if this field is empty.
+    return 'sciname_value';
+  }
+
+  /**
    * Form element validation handler.
    *
    * @param array $form
