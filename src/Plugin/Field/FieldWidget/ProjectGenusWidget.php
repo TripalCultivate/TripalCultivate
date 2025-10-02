@@ -137,14 +137,21 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // Note: We do this manually instead of using saveInitialValues() because
     // we have two properties in a single item.
     // We want the initial values, so never update them once saved.
+    $messenger = \Drupal::messenger();
     $storage = $form_state->getStorage();
     if (!($storage['initial_values'][$field_name][$delta] ?? FALSE)) {
-      $storage['initial_values'][$field_name][$delta] = [
-        'genus_prop_id' => $genus_prop_id,
-        'sciname_linker_id' => $sciname_prop_id,
-        'organism_id' => $organism_id,
-      ];
-      $form_state->setStorage($storage);
+      if (($organism_id == 0) and ($sciname_prop_id != 0 or ($genus_prop_id != 0))) {
+        // Add an error message.
+        $messenger->addError('The project entity has invalid content and cannot be deleted. Please contact the site administrator.');
+      }
+      else {
+        $storage['initial_values'][$field_name][$delta] = [
+          'genus_prop_id' => $genus_prop_id,
+          'sciname_linker_id' => $sciname_prop_id,
+          'organism_id' => $organism_id,
+        ];
+        $form_state->setStorage($storage);
+      }
     }
 
     return $elements;
@@ -160,12 +167,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       return $values;
     }
 
-    // Note: I think that massaging to remove empty or deleted properties
-    // will be much easier and less error prone once we get the select list in
-    // place. We still cannot use the massagePropertyFormValues() parent method
-    // but we can follow the same logic but looking at the organism_id
-    // property and the genus_prop_id property.
-    // @todo implement handling of remove empty values after select.
     // The field name for the field. There are usually multiple
     // copies of a property field, so this distinguishes them.
     $first_delta = array_key_first($values);
