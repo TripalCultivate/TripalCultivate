@@ -180,7 +180,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $this->preMassageFormValues($values);
 
     $val = 'organism_id';
-    $linker_key = 'organism_id';
+    $linker_key = 'sciname_prop_id';
 
     // Handle any empty values so that chado storage properly
     // deletes the linking record in chado. This happens when an
@@ -190,7 +190,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       if ($value[$linker_key]) {
         $retained_records[$val_key] = $value[$linker_key];
       }
-      if ($value[$val] == '') {
+      if (array_key_exists($val, $value) and ($value[$val] == '')) {
         if ($value['record_id']) {
           // If there is a record_id, but no value, this
           // means we need to pass in this record to chado storage
@@ -217,12 +217,16 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     foreach ($initial_values as $initial_value) {
       // For initial values, the key is always 'linker_id', regardless of
       // $linker_key value.
-      $organism_id = $initial_value['organism_id'];
-      if ($organism_id and !in_array($organism_id, $retained_records)) {
+      $sciname_prop_id = $initial_value['sciname_linker_id'];
+      $genus_prop_id = $initial_value['genus_prop_id'];
+      if ($sciname_prop_id and !in_array($sciname_prop_id, $retained_records)) {
         // This item was removed from the form. Add back a value
         // so that chado storage knows to remove the chado record.
-        $values[$next_delta][$linker_key] = $organism_id;
+        $values[$next_delta][$linker_key] = $sciname_prop_id;
+        $values[$next_delta]['genus_prop_id'] = $genus_prop_id;
         $values[$next_delta][$val] = '';
+        $values[$next_delta]['genus_value'] = '';
+        $values[$next_delta]['sciname_value'] = '';
         $next_delta++;
       }
     }

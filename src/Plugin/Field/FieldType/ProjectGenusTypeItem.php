@@ -132,6 +132,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
         'action' => 'store',
         'path' => 'project.project_id>genusprop.project_id;value',
         'table_alias_mapping' => ['genusprop' => 'projectprop'],
+        'delete_if_empty' => TRUE,
       ]),
       new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'genus_rank', 'OBCS:0000117', [
         'action' => 'store',
@@ -158,6 +159,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
         'action' => 'store',
         'path' => 'project.project_id>scinameprop.project_id;value',
         'table_alias_mapping' => ['scinameprop' => 'projectprop'],
+        'delete_if_empty' => TRUE,
       ]),
       new ChadoIntStoragePropertyType($entity_type_id, self::$id, 'sciname_rank', 'OBCS:0000117', [
         'action' => 'store',
