@@ -60,7 +60,7 @@ class ContentTypeTest extends ChadoTestKernelBase {
       'research_grant' => 11,
       'grant_section' => 7,
       'research_study' => 17,
-      'research_experiment' => 38,
+      'research_experiment' => 37,
     ],
   ];
 
