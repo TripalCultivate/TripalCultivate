@@ -21,3 +21,10 @@ validation-result-window:
   dependencies:
     - core/jquery
     - core/once
+
+# Font Awesome CDN library.
+cdn-font-awesome:
+  version: v7.0.1
+  css:
+    theme:
+      https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css: {}
