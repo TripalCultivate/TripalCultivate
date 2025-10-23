@@ -228,7 +228,7 @@ class ImportValidationHelper {
    *   - The value for 'failedItems' is not an array.
    *   - The value for 'failedItems' is an empty array.
    */
-  public static function checkValidationStatusArray(array $validation_result, string $validator_name, int|null $line_no = NULL) {
+  public static function checkValidationStatusArray(array $validation_result, string $validator_name, ?int $line_no = NULL) {
 
     $error_message = '';
     $errors_found = 0;
