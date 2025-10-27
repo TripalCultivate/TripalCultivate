@@ -38,6 +38,7 @@ jobs:
           - "10.5.x-dev"
           - "11.1.x-dev"
           - "11.2.x-dev"
+          - "11.x-dev"
         exclude:
           # Only Drupal 11.x supports PHP 8.4.
           - php-version: '8.4'
@@ -57,6 +58,12 @@ jobs:
           - php-version: '8.4'
             pgsql-version: '13'
             drupal-version: '11.2.x-dev'
+          - php-version: '8.3'
+            pgsql-version: '13'
+            drupal-version: '11.x-dev'
+          - php-version: '8.4'
+            pgsql-version: '13'
+            drupal-version: '11.x-dev'
           # Drupal 11+ requires at least php 8.3.
           - php-version: "8.1"
             drupal-version: "11.1.x-dev"
@@ -66,6 +73,10 @@ jobs:
             drupal-version: "11.2.x-dev"
           - php-version: "8.2"
             drupal-version: "11.2.x-dev"
+          - php-version: "8.1"
+            drupal-version: "11.x-dev"
+          - php-version: "8.2"
+            drupal-version: "11.x-dev"
 
     steps:
       # Check out the repo
