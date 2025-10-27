@@ -143,7 +143,7 @@ class ImportValidationHelper {
     // If there is only one supported delimiter then simply split the row!
     if (count($supported_delimiters) === 1) {
       $delimiter = end($supported_delimiters);
-      $columns = str_getcsv($row, $delimiter);
+      $columns = str_getcsv($row, separator: $delimiter, escape: "\\");
     }
 
     // @todo Address in issue #118.
