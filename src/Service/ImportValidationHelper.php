@@ -143,7 +143,7 @@ class ImportValidationHelper {
     // If there is only one supported delimiter then simply split the row!
     if (count($supported_delimiters) === 1) {
       $delimiter = end($supported_delimiters);
-      $columns = str_getcsv($row, $delimiter);
+      $columns = str_getcsv($row, separator: $delimiter, escape: "\\");
     }
 
     // @todo Address in issue #118.
@@ -228,7 +228,7 @@ class ImportValidationHelper {
    *   - The value for 'failedItems' is not an array.
    *   - The value for 'failedItems' is an empty array.
    */
-  public static function checkValidationStatusArray(array $validation_result, string $validator_name, int|null $line_no = NULL) {
+  public static function checkValidationStatusArray(array $validation_result, string $validator_name, ?int $line_no = NULL) {
 
     $error_message = '';
     $errors_found = 0;
