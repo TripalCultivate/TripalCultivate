@@ -119,7 +119,7 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
       ->getMock();
     $routeMatchMock->expects($this->any())
       ->method('getRouteName')
-      ->will($this->returnValue($route_name));
+      ->willReturn($route_name);
     $this->container->set('current_route_match', $routeMatchMock);
 
     // Now call our preprocess hook.

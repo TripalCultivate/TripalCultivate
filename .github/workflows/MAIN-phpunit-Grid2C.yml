@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - 4.x
-      - g0.81-support11.2
+      - g0.88-updateTestingMatrix
   # Allows us to manually trigger this workflow.
   # This is great if there is a change made to Tripal core that we want to test our modules on ASAP.
   workflow_dispatch:
@@ -15,15 +15,16 @@ on:
 
 ## UPDATES
 ## Update the version numbers in the job name and the action parameters
-## |  Drupal     |  10.4.x         |  10.5.x         |  11.0.x         | 11.1.x          | 11.2.x          |
-## |-------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-## | **PHP 8.1** | ![Grid1A-Badge] | ![Grid2A-Badge] |                 |                 |                 |
-## | **PHP 8.2** | ![Grid1B-Badge] | ![Grid2B-Badge] |                 |                 |                 |
-## | **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] | ![Grid4C-Badge] | ![Grid5C-Badge] |
+## |  Drupal     |  10.4.x         |  10.5.x         |  11.1.x         | 11.2.x          |
+## |-------------|-----------------|-----------------|-----------------|-----------------|
+## | **PHP 8.1** | ![Grid1A-Badge] | ![Grid2A-Badge] |                 |                 |
+## | **PHP 8.2** | ![Grid1B-Badge] | ![Grid2B-Badge] |                 |                 |
+## | **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] | ![Grid4C-Badge] |
+## | **PHP 8.4** |                 |                 | ![Grid3D-Badge] | ![Grid4D-Badge] |
 
 jobs:
   grid-2C:
-    name: "Drupal 10.5.x-dev - PHP 8.3 - PostgreSQL 16"
+    name: "Drupal 10.5.x-dev - PHP 8.3 - PostgreSQL 17"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -36,5 +37,5 @@ jobs:
           build-image: TRUE
           dockerfile: 'Dockerfile'
           php-version: '8.3'
-          pgsql-version: '16'
+          pgsql-version: '17'
           drupal-version: '10.5.x-dev'

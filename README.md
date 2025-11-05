@@ -48,11 +48,12 @@ maintainability issues and test coverage.
 
 The following compatibility is proven via automated testing workflows.
 
-|  Drupal     |  10.4.x         |  10.5.x         | 11.0.x          | 11.1.x          |  11.2.x
-|-------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| **PHP 8.1** | ![Grid1A-Badge] | ![Grid2A-Badge] |                 |                 |                 |
-| **PHP 8.2** | ![Grid1B-Badge] | ![Grid2B-Badge] |                 |                 |                 |
-| **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] | ![Grid4C-Badge] | ![Grid5C-Badge] |
+|  Drupal     |  10.4.x         |  10.5.x         |  11.1.x         | 11.2.x          |
+|-------------|-----------------|-----------------|-----------------|-----------------|
+| **PHP 8.1** | ![Grid1A-Badge] | ![Grid2A-Badge] |                 |                 |
+| **PHP 8.2** | ![Grid1B-Badge] | ![Grid2B-Badge] |                 |                 |
+| **PHP 8.3** | ![Grid1C-Badge] | ![Grid2C-Badge] | ![Grid3C-Badge] | ![Grid4C-Badge] |
+| **PHP 8.4** |                 |                 | ![Grid3D-Badge] | ![Grid4D-Badge] |
 
 
 [our QLTY Cloud project page]: https://qlty.sh/gh/TripalCultivate/projects/TripalCultivate
@@ -66,7 +67,7 @@ The following compatibility is proven via automated testing workflows.
 [Grid2C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid2C.yml/badge.svg
 
 [Grid3C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid3C.yml/badge.svg
+[Grid3D-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid3D.yml/badge.svg
 
 [Grid4C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid4C.yml/badge.svg
-
-[Grid5C-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid5C.yml/badge.svg
+[Grid4D-Badge]: https://github.com/TripalCultivate/TripalCultivate/actions/workflows/MAIN-phpunit-Grid4D.yml/badge.svg
