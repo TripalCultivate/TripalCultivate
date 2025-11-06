@@ -201,8 +201,12 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     $prop_values = parent::tripalValuesTemplate($field_definition, $default_value);
 
     // Term: genus.
-    $idSpace = $idSpace_manager->loadCollection('TAXRANK');
-    $genus_term = $idSpace->getTerm('0000005');
+    $idSpace = $idSpace_manager->loadCollection(
+      $this->getSetting('termIdSpace')
+    );
+    $genus_term = $idSpace->getTerm(
+      $this->getSetting('termAccession')
+    );
     // Term: scientific name.
     $idSpace = $idSpace_manager->loadCollection('NCBITaxon');
     $sciename_term = $idSpace->getTerm('scientific_name');
@@ -225,29 +229,6 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
    */
   public function getConstraints() {
     $constraints = parent::getConstraints();
-
-    /**
-     * Ensure that the value entered is not larger then the max length.
-     * @code
-     * if ($max_length = $this->getSetting('max_length')) {
-     *   $constraint_manager = \Drupal::typedDataManager()->getValidationConstraintManager();
-     *   $constraints[] = $constraint_manager->create('ComplexData', [
-     *     'value' => [
-     *       'Length' => [
-     *         'max' => $max_length,
-     *         'maxMessage' => t('%name: may not be longer than @max characters.', [
-     *           '%name' => $this
-     *           ->getFieldDefinition()
-     *           ->getLabel(),
-     *           '@max' => $max_length,
-     *         ]),
-     *       ],
-     *     ],
-     *   ]);
-     * }
-     * @endcode
-     */
-
     return $constraints;
   }
 
