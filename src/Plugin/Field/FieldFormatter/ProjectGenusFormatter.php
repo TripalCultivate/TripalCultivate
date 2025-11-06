@@ -43,22 +43,22 @@ class ProjectGenusFormatter extends ChadoFormatterBase {
       }
     }
     $elements[0] = [
-      '#markup' => 'Genus',
-    ];
-    $elements[1] = [
       '#theme' => 'item_list',
+      '#title' => 'Genus',
       '#list_type' => 'ul',
       '#items' => $genus_arr,
       '#wrapper_attributes' => ['class' => 'container'],
+      '#prefix' => '<div class="field-genus-list">',
+      '#suffix' => '</div>',
     ];
-    $elements[2] = [
-      '#markup' => 'Scientific Name',
-    ];
-    $elements[3] = [
+    $elements[1] = [
       '#theme' => 'item_list',
+      '#title' => 'Scientific Name',
       '#list_type' => 'ul',
       '#items' => $sciname_arr,
       '#wrapper_attributes' => ['class' => 'container'],
+      '#prefix' => '<div class="field-sciname-list">',
+      '#suffix' => '</div>',
     ];
 
     return $elements;
