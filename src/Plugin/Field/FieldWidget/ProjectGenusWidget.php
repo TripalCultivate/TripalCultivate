@@ -29,6 +29,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
 
     // Get the field settings.
     $field_definition = $items[$delta]->getFieldDefinition();
+    $field_settings = $field_definition->getSettings();
     $field_name = $field_definition->get('field_name');
 
     $options = [];
@@ -75,8 +76,9 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $genus_prop_fkey = $item_vals['genus_prop_fkey'] ?? 0;
     $genus_value = $item_vals['genus_value'] ?? '';
     // -- get the term.
-    $idSpace_taxrank = $idSpace_manager->loadCollection('TAXRANK');
-    $genus_term_id = $idSpace_taxrank->getTerm('0000005')->getInternalId();
+    $idSpace_taxrank = $idSpace_manager->loadCollection($field_settings['termIdSpace']);
+    $genus_term = $idSpace_taxrank->getTerm($field_settings['termAccession']);
+    $genus_term_id = $genus_term->getInternalId();
     // -- now define the elements.
     $elements['genus_prop_id'] = [
       '#type' => 'value',
