@@ -76,8 +76,8 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $genus_prop_fkey = $item_vals['genus_prop_fkey'] ?? 0;
     $genus_value = $item_vals['genus_value'] ?? '';
     // -- get the term.
-    $idSpace_taxrank = $idSpace_manager->loadCollection($field_settings['termIdSpace']);
-    $genus_term = $idSpace_taxrank->getTerm($field_settings['termAccession']);
+    $idSpace_taxrank = $idSpace_manager->loadCollection($field_settings['genus_termIdSpace']);
+    $genus_term = $idSpace_taxrank->getTerm($field_settings['genus_termAccession']);
     $genus_term_id = $genus_term->getInternalId();
     // -- now define the elements.
     $elements['genus_prop_id'] = [
@@ -107,8 +107,9 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $sciname_prop_fkey = $item_vals['sciname_prop_fkey'] ?? 0;
     $sciname_value = $item_vals['sciname_value'] ?? '';
     // -- get the term.
-    $idSpace_ncbitaxon = $idSpace_manager->loadCollection('NCBITaxon');
-    $sciname_term_id = $idSpace_ncbitaxon->getTerm('scientific_name')->getInternalId();
+    $idSpace_ncbitaxon = $idSpace_manager->loadCollection($field_settings['sciname_termIdSpace']);
+    $sciname_term = $idSpace_ncbitaxon->getTerm($field_settings['sciname_termAccession']);
+    $sciname_term_id = $sciname_term->getInternalId();
     // -- now define the elements.
     $elements['sciname_prop_id'] = [
       '#type' => 'value',
