@@ -314,6 +314,10 @@ fields:
         settings:
             termIdSpace: TAXRANK
             termAccession: '0000005'
+            genus_termIdSpace: TAXRANK
+            genus_termAccession: '0000005'
+            sciname_termIdSpace: NCBITaxon
+            sciname_termAccession: 'scientific_name'
         display:
           view:
             default:

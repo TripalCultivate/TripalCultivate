@@ -112,6 +112,46 @@ function trpcultivate_config_schema_info_alter(&$definitions) {
     'label' => 'Term Accession',
     'nullable' => TRUE,
   ];
+  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['genus_termIdSpace'] = [
+    'type' => 'string',
+    'label' => 'Genus Term Id Space',
+    'nullable' => FALSE,
+  ];
+  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['genus_termAccession'] = [
+    'type' => 'string',
+    'label' => 'Genus Term Accession',
+    'nullable' => FALSE,
+  ];
+  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['sciname_termIdSpace'] = [
+    'type' => 'string',
+    'label' => 'Scientific name Term Id Space',
+    'nullable' => FALSE,
+  ];
+  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['sciname_termAccession'] = [
+    'type' => 'string',
+    'label' => 'Scientific name Term Accession',
+    'nullable' => FALSE,
+  ];
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['genus_termIdSpace'] = [
+    'type' => 'string',
+    'label' => 'Genus Term Id Space',
+    'nullable' => FALSE,
+  ];
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['genus_termAccession'] = [
+    'type' => 'string',
+    'label' => 'Genus Term Accession',
+    'nullable' => FALSE,
+  ];
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['sciname_termIdSpace'] = [
+    'type' => 'string',
+    'label' => 'Scientific name Term Id Space',
+    'nullable' => FALSE,
+  ];
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['sciname_termAccession'] = [
+    'type' => 'string',
+    'label' => 'Scientific name Term Accession',
+    'nullable' => FALSE,
+  ];
 }
 
 /**
