@@ -90,7 +90,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
       '#disabled' => FALSE,
       '#autocomplete_route_name' => 'tripal.cvterm_autocomplete',
       '#autocomplete_route_parameters' => ['count' => 10],
-      '#element_validate' => [[static::class, 'validateAutocomplete']],
+      '#element_validate' => [[static::class, 'validateGenusAutocomplete']],
     ];
 
     $sciname_idSpace = $idSpace_manager->loadCollection($this->getSetting('sciname_termIdSpace'));
@@ -106,7 +106,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
       '#disabled' => FALSE,
       '#autocomplete_route_name' => 'tripal.cvterm_autocomplete',
       '#autocomplete_route_parameters' => ['count' => 10],
-      '#element_validate' => [[static::class, 'validateAutocomplete']],
+      '#element_validate' => [[static::class, 'validateScinameAutocomplete']],
     ];
     $elements['storage_plugin_settings']['base_table']['#element_validate'] = [
       [static::class, 'storageSettingsFormValidate'],
@@ -296,14 +296,14 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
   }
 
   /**
-   * Form element validation handler for the CV term field.
+   * Form element validation handler for the Genus term field.
    *
    * @param array $element
    *   The form element being validated.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state of the (entire) configuration form.
    */
-  public static function validateAutocomplete($element, FormStateInterface $form_state) {
+  public static function validateGenusAutocomplete($element, FormStateInterface $form_state) {
     $element_parents = $element['#parents'];
     $element_value = $element['#value'];
     if ($element_value != '') {
@@ -312,6 +312,41 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
       if (!$cvterm_id) {
         $form_state->setErrorByName(implode('][', $element_parents),
             t('The Controlled Vocabulary Term "@term" is not a valid term', ['@term' => $element_value]));
+      }
+      else {
+        preg_match('/\(([^:()]+):([^()]+)\)/', $element_value, $matches);
+        $db = $matches[1];
+        $accession = $matches[2];
+        $form_state->setValue(['settings', 'genus_termIdSpace'], $db);
+        $form_state->setValue(['settings', 'genus_termAccession'], $accession);
+      }
+    }
+  }
+
+  /**
+   * Form element validation handler for the Scientific name term field.
+   *
+   * @param array $element
+   *   The form element being validated.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state of the (entire) configuration form.
+   */
+  public static function validateScinameAutocomplete($element, FormStateInterface $form_state) {
+    $element_parents = $element['#parents'];
+    $element_value = $element['#value'];
+    if ($element_value != '') {
+      $cv_autocomplete = new ChadoCVTermAutocompleteController();
+      $cvterm_id = $cv_autocomplete->getCVtermId($element_value);
+      if (!$cvterm_id) {
+        $form_state->setErrorByName(implode('][', $element_parents),
+            t('The Controlled Vocabulary Term "@term" is not a valid term', ['@term' => $element_value]));
+      }
+      else {
+        preg_match('/\(([^:()]+):([^()]+)\)/', $element_value, $matches);
+        $db = $matches[1];
+        $accession = $matches[2];
+        $form_state->setValue(['settings', 'sciname_termIdSpace'], $db);
+        $form_state->setValue(['settings', 'sciname_termAccession'], $accession);
       }
     }
   }
