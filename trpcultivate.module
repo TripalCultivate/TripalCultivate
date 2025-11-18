@@ -112,44 +112,24 @@ function trpcultivate_config_schema_info_alter(&$definitions) {
     'label' => 'Term Accession',
     'nullable' => TRUE,
   ];
-  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['genus_termIdSpace'] = [
+  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['genus_term'] = [
     'type' => 'string',
-    'label' => 'Genus Term Id Space',
+    'label' => 'Genus Term',
     'nullable' => TRUE,
   ];
-  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['genus_termAccession'] = [
+  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['sciname_term'] = [
     'type' => 'string',
-    'label' => 'Genus Term Accession',
+    'label' => 'Scientific name Term',
     'nullable' => TRUE,
   ];
-  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['sciname_termIdSpace'] = [
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['genus_term'] = [
     'type' => 'string',
-    'label' => 'Scientific name Term Id Space',
-    'nullable' => TRUE,
-  ];
-  $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['sciname_termAccession'] = [
-    'type' => 'string',
-    'label' => 'Scientific name Term Accession',
-    'nullable' => TRUE,
-  ];
-  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['genus_termIdSpace'] = [
-    'type' => 'string',
-    'label' => 'Genus Term Id Space',
+    'label' => 'Genus Term',
     'nullable' => FALSE,
   ];
-  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['genus_termAccession'] = [
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['sciname_term'] = [
     'type' => 'string',
-    'label' => 'Genus Term Accession',
-    'nullable' => FALSE,
-  ];
-  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['sciname_termIdSpace'] = [
-    'type' => 'string',
-    'label' => 'Scientific name Term Id Space',
-    'nullable' => FALSE,
-  ];
-  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['sciname_termAccession'] = [
-    'type' => 'string',
-    'label' => 'Scientific name Term Accession',
+    'label' => 'Scientific name Term',
     'nullable' => FALSE,
   ];
 }

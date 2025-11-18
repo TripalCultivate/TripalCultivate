@@ -6,6 +6,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal\TripalField\Attribute\TripalFieldWidget;
+use Drupal\tripal_chado\Controller\ChadoCVTermAutocompleteController;
 use Drupal\tripal_chado\TripalField\ChadoWidgetBase;
 use Drupal\tripal_chado\Controller\ChadoOrganismFormElementController;
 
@@ -58,8 +59,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       }
     }
 
-    // ID space manager to get the terms later.
-    $idSpace_manager = \Drupal::service('tripal.collection_plugin_manager.idspace');
+    $cv_autocomplete = new ChadoCVTermAutocompleteController();
 
     $elements = [];
     $elements['record_id'] = [
@@ -76,9 +76,8 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $genus_prop_fkey = $item_vals['genus_prop_fkey'] ?? 0;
     $genus_value = $item_vals['genus_value'] ?? '';
     // -- get the term.
-    $idSpace_taxrank = $idSpace_manager->loadCollection($field_settings['genus_termIdSpace']);
-    $genus_term = $idSpace_taxrank->getTerm($field_settings['genus_termAccession']);
-    $genus_term_id = $genus_term->getInternalId();
+    $genus_term = $field_settings['genus_term'];
+    $genus_term_id = $cv_autocomplete->getCVtermId($genus_term);
     // -- now define the elements.
     $elements['genus_prop_id'] = [
       '#type' => 'value',
@@ -107,9 +106,8 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $sciname_prop_fkey = $item_vals['sciname_prop_fkey'] ?? 0;
     $sciname_value = $item_vals['sciname_value'] ?? '';
     // -- get the term.
-    $idSpace_ncbitaxon = $idSpace_manager->loadCollection($field_settings['sciname_termIdSpace']);
-    $sciname_term = $idSpace_ncbitaxon->getTerm($field_settings['sciname_termAccession']);
-    $sciname_term_id = $sciname_term->getInternalId();
+    $sciname_term = $field_settings['sciname_term'];
+    $sciname_term_id = $cv_autocomplete->getCVtermId($sciname_term);
     // -- now define the elements.
     $elements['sciname_prop_id'] = [
       '#type' => 'value',
