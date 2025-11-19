@@ -39,21 +39,10 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    $field_settings = parent::defaultFieldSettings();
+    $settings = parent::defaultFieldSettings();
     // CV Term is 'Genus'.
-    $field_settings['termIdSpace'] = 'TAXRANK';
-    $field_settings['termAccession'] = '0000005';
-
-    return $field_settings;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultStorageSettings() {
-    $settings = parent::defaultStorageSettings();
-    $settings['storage_plugin_id'] = 'chado_storage';
-    $settings['storage_plugin_settings']['prop_table'] = 'projectprop';
+    $settings['termIdSpace'] = 'TAXRANK';
+    $settings['termAccession'] = '0000005';
 
     $settings['genus_term'] = 'genus (TAXRANK:0000005)';
     $settings['sciname_term'] = 'scientific name (NCBITaxon:scientific_name)';
@@ -64,38 +53,12 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
-    $elements = [];
-    // We need to set the prop table for this field but we need to know
-    // the base table to do that. So we'll add a new validation function so
-    // we can get it and set the proper storage settings.
-    $elements = parent::storageSettingsForm($form, $form_state, $has_data);
-    $elements['storage_plugin_settings']['base_table']['#element_validate'] = [
-      [static::class, 'storageSettingsFormValidate'],
-    ];
+  public static function defaultStorageSettings() {
+    $settings = parent::defaultStorageSettings();
+    $settings['storage_plugin_id'] = 'chado_storage';
+    $settings['storage_plugin_settings']['prop_table'] = 'projectprop';
 
-    $elements['genus_term'] = [
-      '#type' => 'textfield',
-      '#title' => 'Genus',
-      '#required' => FALSE,
-      '#default_value' => $this->getSetting('genus_term'),
-      '#disabled' => FALSE,
-      '#autocomplete_route_name' => 'tripal.cvterm_autocomplete',
-      '#autocomplete_route_parameters' => ['count' => 10],
-      '#element_validate' => [[static::class, 'validateGenusAutocomplete']],
-    ];
-
-    $elements['sciname_term'] = [
-      '#type' => 'textfield',
-      '#title' => 'Scientific Name',
-      '#required' => FALSE,
-      '#default_value' => $this->getSetting('sciname_term'),
-      '#disabled' => FALSE,
-      '#autocomplete_route_name' => 'tripal.cvterm_autocomplete',
-      '#autocomplete_route_parameters' => ['count' => 10],
-      '#element_validate' => [[static::class, 'validateScinameAutocomplete']],
-    ];
-    return $elements;
+    return $settings;
   }
 
   /**
@@ -106,33 +69,6 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     // randomly picked one. This is currently used by core Tripal when checking
     // if this field is empty.
     return 'sciname_value';
-  }
-
-  /**
-   * Form element validation handler.
-   *
-   * @param array $form
-   *   The form where the settings form is being included in.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state of the (entire) configuration form.
-   */
-  public static function storageSettingsFormValidate(array $form, FormStateInterface $form_state) {
-    $settings = self::getFormStateSettings($form_state);
-    if (!array_key_exists('storage_plugin_settings', $settings)) {
-      return;
-    }
-    $base_table = $settings['storage_plugin_settings']['base_table'];
-    $prop_table = $base_table . 'prop';
-
-    $chado = \Drupal::service('tripal_chado.database');
-    $schema = $chado->schema();
-    if ($schema->tableExists($prop_table)) {
-      $form_state->setValue(['settings', 'storage_plugin_settings', 'prop_table'], $prop_table);
-    }
-    else {
-      $form_state->setErrorByName('storage_plugin_settings][base_table',
-          'The selected base table does not have an associated property table.');
-    }
   }
 
   /**
@@ -270,6 +206,39 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::fieldSettingsForm($form, $form_state);
+
+    $elements['genus_term'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Genus'),
+      '#required' => FALSE,
+      '#default_value' => $this->getSetting('genus_term'),
+      '#disabled' => FALSE,
+      '#autocomplete_route_name' => 'tripal.cvterm_autocomplete',
+      '#autocomplete_route_parameters' => ['count' => 10],
+      '#element_validate' => [[static::class, 'validateGenusAutocomplete']],
+      '#description' => $this->t('The term to use as the type_id for the project property describing the genus saved by this field.'),
+    ];
+
+    $elements['sciname_term'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Scientific Name'),
+      '#required' => FALSE,
+      '#default_value' => $this->getSetting('sciname_term'),
+      '#disabled' => FALSE,
+      '#autocomplete_route_name' => 'tripal.cvterm_autocomplete',
+      '#autocomplete_route_parameters' => ['count' => 10],
+      '#element_validate' => [[static::class, 'validateScinameAutocomplete']],
+      '#description' => $this->t('The term to use as the type_id for the project property describing the scientific name saved by this field.'),
+    ];
+
+    return $elements;
+  }
+
+  /**
    * Form element validation handler for the Genus term field.
    *
    * @param array $form
@@ -281,7 +250,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     $element_parents = $form['#parents'];
     $element_value = $form['#value'];
 
-    if ($element_value != '') {
+    if ($element_value) {
       $cv_autocomplete = new ChadoCVTermAutocompleteController();
       $cvterm_id = $cv_autocomplete->getCVtermId($element_value);
       if (!$cvterm_id) {
@@ -302,7 +271,8 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
   public static function validateScinameAutocomplete($form, FormStateInterface $form_state) {
     $element_parents = $form['#parents'];
     $element_value = $form['#value'];
-    if ($element_value != '') {
+
+    if ($element_value) {
       $cv_autocomplete = new ChadoCVTermAutocompleteController();
       $cvterm_id = $cv_autocomplete->getCVtermId($element_value);
       if (!$cvterm_id) {
