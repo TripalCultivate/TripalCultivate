@@ -15,7 +15,7 @@ use Drupal\tripal_chado\Controller\ChadoOrganismFormElementController;
  */
 #[TripalFieldWidget(
   id: 'project_genus_widget',
-  label: new TranslatableMarkup('Project Genus Select List'),
+  label: new TranslatableMarkup('Organism Select List'),
   description: new TranslatableMarkup('Provides a select list of organisms in this site.'),
   field_types: [
     'project_genus',
