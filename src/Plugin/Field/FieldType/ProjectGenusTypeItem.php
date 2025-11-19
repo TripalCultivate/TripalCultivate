@@ -19,7 +19,7 @@ use Drupal\tripal_chado\TripalStorage\ChadoVarCharStoragePropertyType;
 #[TripalFieldType(
   id: 'project_genus',
   category: 'tripal_chado',
-  label: new TranslatableMarkup('Project Genus'),
+  label: new TranslatableMarkup('Project Organism'),
   description: new TranslatableMarkup('Allows you to associate an organism with a project through properties since there is no linking table in chado.'),
   default_widget: 'project_genus_widget',
   default_formatter: 'project_genus_formatter',
