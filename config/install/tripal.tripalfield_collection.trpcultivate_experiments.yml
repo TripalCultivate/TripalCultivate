@@ -311,11 +311,11 @@ fields:
             storage_plugin_settings:
                 base_table: project
                 prop_table: projectprop
-            genus_term: genus (TAXRANK:0000005)
-            sciname_term: scientific name (NCBITaxon:scientific_name)
         settings:
             termIdSpace: TAXRANK
             termAccession: '0000005'
+            genus_term: genus (TAXRANK:0000005)
+            sciname_term: scientific name (NCBITaxon:scientific_name)
         display:
           view:
             default:

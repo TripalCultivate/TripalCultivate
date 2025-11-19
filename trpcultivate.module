@@ -122,12 +122,12 @@ function trpcultivate_config_schema_info_alter(&$definitions) {
     'label' => 'Scientific name Term',
     'nullable' => TRUE,
   ];
-  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['genus_term'] = [
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['genus_term'] = [
     'type' => 'string',
     'label' => 'Genus Term',
     'nullable' => FALSE,
   ];
-  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['storage_settings']['mapping']['sciname_term'] = [
+  $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['sciname_term'] = [
     'type' => 'string',
     'label' => 'Scientific name Term',
     'nullable' => FALSE,
