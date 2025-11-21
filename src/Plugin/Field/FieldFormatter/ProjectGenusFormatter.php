@@ -25,6 +25,11 @@ class ProjectGenusFormatter extends ChadoFormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     parent::viewElements($items, $langcode);
+
+    if ($items->isEmpty()) {
+      return [];
+    }
+
     $elements = [];
     $genus_arr = [];
     $sciname_arr = [];
