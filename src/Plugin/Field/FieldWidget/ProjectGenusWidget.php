@@ -51,9 +51,11 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // Determine the current organism_id based on the scientific name value.
     $organism_id = 0;
     if (array_key_exists('sciname_value', $item_vals) and $item_vals['sciname_value'] != '') {
-      $sciname_string = ChadoOrganismFormElementController::getQuery($item_vals['sciname_value'], [])->execute()->fetchAll()[0]->organism;
-      foreach ($select_options as $id => $sciname) {
-        if ($sciname == $sciname_string) {
+      $query = ChadoOrganismFormElementController::getQuery($item_vals['sciname_value'], [])->execute()->fetchAll();
+      $sciname_string = $query[0]->organism;
+      $abbreviation = $query[0]->abbreviation;
+      foreach ($select_options as $id => $option) {
+        if ($option == $sciname_string or $option == $abbreviation) {
           $organism_id = $id ?? 0;
         }
       }
@@ -269,9 +271,10 @@ class ProjectGenusWidget extends ChadoWidgetBase {
           $query->condition('organism_id', $value['organism_id'], '=');
           $result = $query->execute()->fetchAll();
           $new_value['sciname_value'] = $result[0]->organism;
-          if (preg_match('/^(.*?)\s+(.*)$/', $new_value['sciname_value'], $matches)) {
-            $new_value['genus_value'] = $matches[1];
-          }
+          $chado = \Drupal::service('tripal_chado.database');
+          $sql = 'SELECT genus FROM {1:organism} WHERE organism_id=' . $value['organism_id'];
+          $genus = $chado->query($sql)->fetchField();
+          $new_value['genus_value'] = $genus;
         }
       }
       $values[$delta] = $new_value;
