@@ -4,11 +4,11 @@
     "dockerfile": "Dockerfile",
     "args": {
       "drupalversion": "11.x-dev",
-      "phpversion": "8.4",
+      "phpversion": "8.5",
       "pgsqlversion": "17"
     }
   },
-  "initializeCommand": "docker pull knowpulse/tripalcultivate-tripal:drupal11.x-dev-php8.4-pgsql17",
+  "initializeCommand": "docker pull knowpulse/tripalcultivate-tripal:drupal11.x-dev-php8.5-pgsql17",
   "workspaceMount": "source=${localWorkspaceFolder},target=/var/www/drupal/web/modules/contrib/TripalCultivate,type=bind",
   "workspaceFolder": "/var/www/drupal/web/modules/contrib/TripalCultivate",
   "customizations": {
