@@ -1,6 +1,6 @@
 ARG drupalversion=11.3.x-dev
 ARG phpversion=8.5
-ARG pgsqlversion=17
+ARG pgsqlversion=18
 FROM tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql${pgsqlversion}-noChado
 
 ARG chadoschema='testchado'
