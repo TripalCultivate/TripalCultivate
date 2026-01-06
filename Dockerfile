@@ -1,6 +1,6 @@
 ARG drupalversion=11.3.x-dev
 ARG phpversion=8.5
-ARG pgsqlversion=17
+ARG pgsqlversion=18
 ARG installTheme
 FROM knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${pgsqlversion}
 
