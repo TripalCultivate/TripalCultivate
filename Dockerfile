@@ -14,6 +14,9 @@ RUN composer config --no-plugins allow-plugins.cweagans/composer-patches true \
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
 WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 
+RUN rm ./phpunit.xml
+RUN bash /var/www/drupal/web/modules/contrib/tripal/set_phpunit_config.sh
+
 RUN service postgresql start \
   && drush en trpcultivate markup --yes \
   && drush tripal:trp-run-jobs --username=drupaladmin \
