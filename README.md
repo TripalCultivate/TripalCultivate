@@ -53,7 +53,7 @@ The following compatibility is proven via automated testing workflows.
 | **PHP8.1** | ![Grid81-105-Badge] |                     |                     |                     |
 | **PHP8.2** | ![Grid82-105-Badge] | ![Grid82-106-Badge] |                     |                     |
 | **PHP8.3** | ![Grid83-105-Badge] | ![Grid83-106-Badge] | ![Grid83-112-Badge] | ![Grid83-113-Badge] |
-| **PHP8.4** |                     |                     | ![Grid84-112-Badge] | ![Grid84-113-Badge] |
+| **PHP8.4** | ![Grid84-105-Badge] | ![Grid84-106-Badge] | ![Grid84-112-Badge] | ![Grid84-113-Badge] |
 | **PHP8.5** |                     |                     |                     | ![Grid85-113-Badge] |
 
 
@@ -66,6 +66,8 @@ The following compatibility is proven via automated testing workflows.
 [Grid83-106-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.3_D10_6x.yml/badge.svg
 [Grid83-112-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.3_D11_2x.yml/badge.svg
 [Grid83-113-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.3_D11_3x.yml/badge.svg
+[Grid84-105-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.4_D10_5x.yml/badge.svg
+[Grid84-106-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.4_D10_6x.yml/badge.svg
 [Grid84-112-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.4_D11_2x.yml/badge.svg
 [Grid84-113-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.4_D11_3x.yml/badge.svg
 [Grid85-113-Badge]: https://github.com/trpcultivate/trpcultivate/actions/workflows/MAIN-phpunit-php8.5_D11_3x.yml/badge.svg
