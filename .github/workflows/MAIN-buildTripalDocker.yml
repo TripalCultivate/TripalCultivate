@@ -79,7 +79,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           dockerfile: tripal.Dockerfile
-          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},pgsqlversion=${{ matrix.pgsql-version }}"
+          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},postgresqlversion=${{ matrix.pgsql-version }}"
           labels: 'drupal.version.label="${{ matrix.drupal-version }}", php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}", tripal.version="4.x", theme="TripalCultivateTheme"'
       - uses: mr-smithers-excellent/docker-build-push@v6.3
         name: Build & push Full matrix of Docker images WITHOUT THEME
@@ -90,7 +90,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           dockerfile: tripal.Dockerfile
-          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},pgsqlversion=${{ matrix.pgsql-version }},installTheme=FALSE"
+          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},postgresqlversion=${{ matrix.pgsql-version }},installTheme=FALSE"
           labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}", tripal.version="4.x", theme="Olivero"'
       - uses: mr-smithers-excellent/docker-build-push@v6.3
         name: Build latest using 11.3.x-dev, PHP 8.5, PgSQL 18
@@ -102,5 +102,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           dockerfile: tripal.Dockerfile
-          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},pgsqlversion=${{ matrix.pgsql-version }}"
+          buildArgs: "drupalversion=${{ matrix.drupal-version }},phpversion=${{ matrix.php-version }},postgresqlversion=${{ matrix.pgsql-version }}"
           labels: 'drupal.version.label="${{ matrix.drupal-version }}",php.version.label="${{ matrix.php-version }}", postgresql.version.label="${{ matrix.pgsql-version }}", tripal.version="4.x", theme="TripalCultivateTheme"'
