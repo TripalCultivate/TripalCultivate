@@ -2,7 +2,7 @@ name: "Base API"
 type: module
 description: Provides basic functionality shared by the entire Tripal Cultivate package of modules.
 package: "Tripal Cultivate"
-core_version_requirement: ^10.4 | ^11.1
+core_version_requirement: ^10.5 | ^11.2
 dependencies:
   - "markup:markup"
   - "tripal:tripal"
