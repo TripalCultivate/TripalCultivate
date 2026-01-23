@@ -1,8 +1,8 @@
-ARG drupalversion=11.2.x-dev
-ARG phpversion=8.4
-ARG pgsqlversion=17
+ARG drupalversion=11.3.x-dev
+ARG phpversion=8.5
+ARG postgresqlversion=18
 ARG installTheme
-FROM knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${pgsqlversion}
+FROM knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}
 
 COPY docker/* /var/www/drupal
 WORKDIR /var/www/drupal/
@@ -13,6 +13,9 @@ RUN composer config --no-plugins allow-plugins.cweagans/composer-patches true \
 
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
 WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
+
+RUN rm ./phpunit.xml
+RUN bash /var/www/drupal/web/modules/contrib/tripal/set_phpunit_config.sh
 
 RUN service postgresql start \
   && drush en trpcultivate markup --yes \
