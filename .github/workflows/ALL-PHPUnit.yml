@@ -1,7 +1,6 @@
 
 name: PHPUnit Full Test Suite
 on:
-  pull_request:
   push:
     branches-ignore:
       - 4.x
