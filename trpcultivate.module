@@ -42,6 +42,9 @@ function trpcultivate_preprocess_page(&$variables) {
   if (in_array($route_name, $tripal_entity_type_routes)) {
     $variables['#attached']['library'][] = 'trpcultivate/tripal_entity_type';
   }
+
+  // Make Font Awesome library available.
+  $variables['#attached']['library'][] = 'trpcultivate/cdn-font-awesome';
 }
 
 /**
