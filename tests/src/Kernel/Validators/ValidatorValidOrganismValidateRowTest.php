@@ -272,10 +272,10 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
       if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {
         // Check for expected missing columns.
         if (array_key_exists($index, $expectations['expected_failedItems']['missing_cells'])) {
-          $expected_germplasm_name = $expectations['expected_failedItems']['missing_cells'][$index]['germplasm_name'];
+          $expected_organism = $expectations['expected_failedItems']['missing_cells'][$index]['organism'];
           $this->assertEquals(
-            $expected_germplasm_name,
-            $validation_status['failedItems']['missing_cells'][$index]['germplasm_name'],
+            $expected_organism,
+            $validation_status['failedItems']['missing_cells'][$index]['organism'],
             'Valid Organism validation did not return the expected missing cells for this scenario.',
           );
         }
