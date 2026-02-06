@@ -190,7 +190,6 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   - 'valid': TRUE if the provided organism data is valid, FALSE otherwise.
    *   - 'failedItems': an array of items that failed with the following keys.
    *     This is an empty array if the row input was valid.
-   *     - 'organism_ids': The organism IDs that were being looked up.
    *     - 'empty_cells': An array of indices for cells that were empty.
    *     - 'missing_cells': An array of indices and organism names for cells
    *       where the organism name was not found in the database.
@@ -204,20 +203,14 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     // Grab our indices.
     $indices = $this->getIndices();
 
-    // Chack the indices provided are valid in the context of the row.
+    // Check the indices provided are valid in the context of the row.
     // Will throw an exception if there's a problem.
     $this->checkIndices($row_values, $indices);
-
-    // Grab our list of organism IDs.
-    $organism_ids = $this->getOrganismIDs();
 
     // Initialize our flags for keeping track of validation status.
     $empty = FALSE;
     $missing = FALSE;
     $failedItems = [];
-
-    // Add our array of organism IDs to failedItems for our failed cases.
-    $failedItems['organism_ids'] = $organism_ids;
 
     // Iterate through our array of row values.
     foreach ($row_values as $index => $cell) {
@@ -235,7 +228,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
           if (array_key_exists(0, $organism_id_array)) {
             $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
           }
-          $this->organism_ids[$cell] = $organism_id;
+
           // Check for missing organism.
           if ($organism_id <= 0 || empty($organism_id)) {
             $missing = TRUE;
