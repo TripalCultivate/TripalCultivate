@@ -7,24 +7,19 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\tripal_chado\ChadoBuddy\PluginManagers\ChadoBuddyPluginManager;
 use Drupal\tripal_chado\Plugin\ChadoBuddy\ChadoOrganismBuddy;
-use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidator;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
+use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
+use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
+use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\Organism;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Validates organism data.
- *
- * @TripalCultivateValidator(
- *   id = "valid_organism",
- *   label = @Translation("Valid Organism  Validator"),
- *   description = @Translation("Validates that the organism data is correct."),
- *   input_types = {"metadata", "data-row"},
- * )
  */
 #[TripalCultivateValidator(
-  id : "valid_organism",
-  label : new TranslatableMarkup("Valid Organism"),
-  description : new TranslatableMarkup("Validates that the organism data is correct."),
-  input_types: ['metadata', 'data-row'],
+   id: 'valid_organism',
+   validator_name: new TranslatableMarkup('Valid Organism Validator'),
+   input_types: ['metadata', 'data-row']
  )]
 class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFactoryPluginInterface {
 
