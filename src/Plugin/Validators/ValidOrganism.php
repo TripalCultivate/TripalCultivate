@@ -5,6 +5,7 @@ namespace Drupal\trpcultivate\Plugin\Validators;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\tripal_chado\ChadoBuddy\PluginManagers\ChadoBuddyPluginManager;
 use Drupal\tripal_chado\Plugin\ChadoBuddy\ChadoOrganismBuddy;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
@@ -57,24 +58,45 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
   protected ChadoOrganismBuddy $organism_buddy;
 
   /**
-   * Mapping of validation cases to tokens and messages.
+   * A mapping of all of the tokens supported by this validator.
    *
    * @var array
+   *   An associative array mapping tokens to their details, such as the
+   *   developer case string and the default message to substitute the token.
+   *   The following tokens are implemented for this mapping, with the following
+   *   descriptions for their 'default-msg' values:
+   *   - 'contact-admin': the phrase to use when the user needs a privileged
+   *     administrator to fix the problem.
+   *   - 'case-empty-organism': the message when a cell that should contain a
+   *     organism is empty.
+   *   - 'case-missing-organism': the message when a organism is missing
+   *     in the database.
+   *   Tokens below cannot be overriden as their value is determined at runtime:
+   *   - 'column-headers': The column header names for organism columns.
+   *
+   * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
   protected static array $mapping = [
     'case-empty-organism' => [
       'token' => 'case-empty-organism',
       'dev-case' => 'Unable to lookup organism with empty values',
-      'default-msg' => 'One or more cells which are required to contain organism names were empty. Please ensure that you have entered existing organism names for all cells in the following columns: [column-headers]',
+      'default-msg' => 'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: [column-headers]',
     ],
     'case-missing-organism' => [
       'token' => 'case-missing-organism',
-      'dev-case' => 'Missing organism name(s) in the database',
-      'default-msg' => 'The following organism names do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the organism pages or [contact-admin] to have them added if they do not yet exist.',
+      'dev-case' => 'Missing organism(s) in the database',
+      'default-msg' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the organism pages or [contact-admin] to have them added if they do not yet exist.',
     ],
     'case-valid' => [
       'token' => 'case-valid',
-      'dev-case' => 'Organism name(s) exist(s) in the database',
+      'dev-case' => 'Organism(s) exist(s) in the database',
+    ],
+    'contact-admin' => [
+      'token' => 'contact-admin',
+      'default-msg' => 'contact your administrator',
+    ],
+    'column-headers' => [
+      'token' => 'column_headers',
     ],
   ];
 
@@ -191,8 +213,8 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   - 'failedItems': an array of items that failed with the following keys.
    *     This is an empty array if the row input was valid.
    *     - 'empty_cells': An array of indices for cells that were empty.
-   *     - 'missing_cells': An array of indices and organism names for cells
-   *       where the organism name was not found in the database.
+   *     - 'missing_cells': An array of indices and organisms for cells
+   *       where the organism was not found in the database.
    *
    * @throws \Exception
    *   - If the specified indices are not valid for the provided row values.
@@ -238,7 +260,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       }
     }
 
-    // If any organism name columns were empty for this row, return only this
+    // If any organism columns were empty for this row, return only this
     // case in the message, but failedItems will have all failed cells.
     if ($empty) {
       return [
@@ -251,7 +273,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       $case_message = 'Missing organism(s) in the database';
     }
     else {
-      // Return the case when a single organism name has been found (ie.
+      // Return the case when a single organism has been found (ie.
       // validation has passed.)
       return [
         'case' => 'Organism(s) exist(s) in the database',
@@ -297,9 +319,9 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   The following token keys will substitute the entire existing case message
    *   to the user with the value of that token.
    *   - 'case-empty-organism': the message to show when the failure is due to
-   *     empty cells in organism name columns.
+   *     empty cells in organism columns.
    *   - 'case-missing-organism': the message to show when the failure is due to
-   *     organism names not being found in the database.
+   *     organisms not being found in the database.
    *
    * @return array
    *   A render array of type "unordered list" used to display feedback to the
@@ -337,14 +359,18 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     // will overwrite values in the first array with values from the second
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
-    // Add a token for the column header names of the organisn columns.
+    // Add a token for the column header names of the organism columns.
     $combined_tokens['column-headers'] = implode(', ', $metadata['column_headers']);
+
+    // For this validator there can be only one table:
+    // - 'table'->'missing_cells': Organism not found in the database.
+    $table = [];
 
     // Loop through each row in the $failures array and piece apart the
     // different cases into different tables.
     foreach ($validation_results as $line_no => $validation_status) {
       // Check the format of this line's validation status.
-      ImporterValidationHelper::checkValidationStatusArray($validation_status, 'ValidOrganism', $line_no);
+      ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidOrganism', $line_no);
 
       // If any cells were found to be empty, this case takes presendence over
       // any other cases, and we return a warning message right away.
@@ -358,17 +384,11 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
           ['case-message', 'tc-valid-organism-empty'],
         );
       }
-
+      // Keeps track of which table this one line's validation result gets added
+      // to based on the case it triggered.
+      $table_case = [];
       if ($validation_status['case'] == 'Missing organism(s) in the database') {
-        $table['message'] = $combined_tokens['case-missing-organism'];
-        $table['rows'][$line_no][-1] = $line_no;
-        foreach ($validation_status['failedItems'][$case] as $index => $organism) {
-          $column_name = $metadata['column_headers'][$index];
-          if (!array_key_exists($column_name, $table['header'])) {
-            $table['header'][$column_name] = $column_name;
-          }
-          $table['rows'][$line_no][$index] = $organism['organism'];
-        }
+        $table_case = ['missing_cells'];
       }
       elseif ($validation_status['case'] == 'Organism(s) exist(s) in the database') {
         throw new \Exception("The case string returned by the ValidOrganism validator at line #$line_no implies validation passed, but valid is set to FALSE.");
@@ -376,35 +396,73 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       else {
         throw new \Exception("The case string returned by the ValidOrganism validator at line #$line_no is not recognized as a potential case.");
       }
+      // Now set values that should appear for this row in the table(s) for this
+      // particular case.
+      foreach ($table_case as $case) {
+        // Declare the array storing content for this table, if not already.
+        if (!array_key_exists($case, $table)) {
+          // Set the first column to hold the line number of the failure.
+          // Use -1 to ensure it is the first column and doesn't conflict with
+          // column indices in the input file.
+          $table[$case]['header'][-1] = 'Line Number';
+          $table[$case]['rows'] = [];
+        }
+        // Define a new row in our table for this line number.
+        $table[$case]['rows'][$line_no][-1] = $line_no;
+        // For each index with an failed organism, grab the column name from
+        // $metadata and add it to our table header.
+        foreach ($validation_status['failedItems'][$case] as $index => $organism) {
+          // Grab the column name based on the index of the organism
+          // and add it to this table header if it's not already there.
+          $column_name = $metadata['column_headers'][$index];
+          if (!array_key_exists($column_name, $table[$case]['header'])) {
+            $table[$case]['header'][$index] = $column_name;
+          }
+          // Now add a cell to the table to indicate this organism.
+          // We reuse the index from the original file as the key to preserve
+          // the same order of the columns. We also key the row with the line
+          // number to ensure that a line with more then one failure is
+          // compiled into a single row.
+          $table[$case]['rows'][$line_no][$index] = $organism['organism'];
+        }
+      }
     }
-    $tables = [];
-    ImportValidationHelper::fillTableGaps($table['header'],
-        $table['rows']);
-    array_push($tables, [
-      [
-        '#prefix' => '<div class="case-message case-missing-organism">',
-        // Replace any tokens that are in our table message.
-        '#markup' => $service_TripalTokensParser->replaceTokens($table['message'], $combined_tokens),
-        '#suffix' => '</div>',
-      ],
-      [
-        '#type' => 'table',
-        '#header' => $table['header'],
-        '#attributes' => [
-          'class' => [
-            'table-case-missing-organism',
-          ],
-        ],
-        '#rows' => $table['rows'],
-      ],
-    ]);
+    // Check which tables were created, and assign the correct message.
+    if (array_key_exists('missing_cells', $table)) {
+      $table['missing_cells']['message'] = $combined_tokens['case-missing-organism'];
+    }
 
+    // Finally, loop through our tables and build our render array.
+    $tables = [];
+    foreach ($table as $table_key => &$table_case) {
+      // If our table(s) have more than 2 columns with failed values, then
+      // iterate through and pad each table with empty strings where necessary.
+      ImportValidationHelper::fillTableGaps($table_case['header'], $table_case['rows']);
+      array_push($tables, [
+        [
+          '#prefix' => '<div class="case-message case-' . $table_key . '">',
+          // Replace any tokens that are in our table message.
+          '#markup' => $service_TripalTokensParser->replaceTokens($table_case['message'], $combined_tokens),
+          '#suffix' => '</div>',
+        ],
+        [
+          '#type' => 'table',
+          '#header' => $table_case['header'],
+          '#attributes' => [
+            'class' => [
+              'table-case-' . $table_key,
+            ],
+          ],
+          '#rows' => $table_case['rows'],
+        ],
+      ]);
+    }
     $render_array = [
       '#theme' => 'item_list',
       '#type' => 'ul',
       '#attributes' => [
         'class' => [
-          'tc-valid-organism-failures',
+          'tc-organism-name-exists-failures',
         ],
       ],
       '#items' => $tables,
