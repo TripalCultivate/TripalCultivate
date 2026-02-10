@@ -33,13 +33,6 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
   protected ChadoConnection $chado_connection;
 
   /**
-   * An array of organisms for testing.
-   *
-   * @var array
-   */
-  protected array $test_organisms;
-
-  /**
    * Modules to enable.
    *
    * @var array
@@ -105,7 +98,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    *     maps to a column index and each value is the content of that column.
    *   - An array of the expected contents of the returned validation result:
    *     - 'expected_valid': The expected validation status (TRUE if pass,
-   *       FLASE if fail)
+   *       FALSE if fail)
    *     - 'expected_case': The expected case message.
    *     - 'expected_failedItems': The expected contents of the 'failedItems'
    *       array with the following keys. This should be an empty array if
@@ -212,7 +205,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    *
    * @param array $indices
    *   An array where each value is the key of the column validator instance
-   *   should act on. Each jey must be either an integer or string.
+   *   should act on. Each key must be either an integer or string.
    * @param array $row_values
    *   An array of values from a single row/line in the file where each key maps
    *   to a column index (see @param $indices above) and each value is the
@@ -220,7 +213,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    * @param array $expectations
    *   - An array of the expected contents of the returned validation result:
    *     - 'expected_valid': The expected validation status (TRUE if pass,
-   *       FLASE if fail)
+   *       FALSE if fail)
    *     - 'expected_case': The expected case message.
    *     - 'expected_failedItems': The expected contents of the 'failedItems'
    *       array with the following keys. This should be an empty array if
@@ -266,7 +259,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
         $this->assertEquals(
           $expectations['expected_failedItems']['empty_cells'],
           $validation_status['failedItems']['empty_cells'],
-          'Valid Organism failed validation did not return the expected list of empty cells for this scenario.',
+          'Valid Organism validation did not return the expected list of empty cells for this scenario.',
         );
       }
       if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {

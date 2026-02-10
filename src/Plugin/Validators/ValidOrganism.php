@@ -11,7 +11,6 @@ use Drupal\tripal_chado\Plugin\ChadoBuddy\ChadoOrganismBuddy;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
-use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\Organism;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -29,12 +28,8 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *
    * - ColumnIndices: Gets an array of indices corresponding to the cells in
    *   $row_values to validate.
-   * - ColumnIndices: Gets an array of indices corresponding to the cells in
-   *   $row_values to validate.
-   * - Organism: Gets an array of organism IDs.
   */
   use ColumnIndices;
-  use Organism;
 
   /**
    * A Database query interface for querying Chado using Tripal DBX.
@@ -146,7 +141,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
   }
 
   /**
-   * Validates that the organism data is correct.
+   * Validates that the organism metadata is correct.
    *
    * @param array $form_values
    *   An array of values from the submitted form where each key maps to a form
@@ -218,7 +213,6 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *
    * @throws \Exception
    *   - If the specified indices are not valid for the provided row values.
-   *   - If no organism IDs were set via setOrganismID() or setGenus().
    */
   public function validateRow(array $row_values) {
 
@@ -312,7 +306,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    * @param array $tokens
    *   [OPTIONAL] An array of values to use for token replacement.
    *   @see $mapping
-   *   The following tokens can be specfied as keys, with value as the
+   *   The following tokens can be specified as keys, with value as the
    *   replacement value for the token. These apply to all failure cases.
    *   - 'contact-admin': the phrase to use when the user needs a privileged
    *     administrator to fix the problem.
@@ -409,7 +403,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
         }
         // Define a new row in our table for this line number.
         $table[$case]['rows'][$line_no][-1] = $line_no;
-        // For each index with an failed organism, grab the column name from
+        // For each index with a failed organism, grab the column name from
         // $metadata and add it to our table header.
         foreach ($validation_status['failedItems'][$case] as $index => $organism) {
           // Grab the column name based on the index of the organism
@@ -462,7 +456,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       '#type' => 'ul',
       '#attributes' => [
         'class' => [
-          'tc-organism-name-exists-failures',
+          'tc-valid-organism-failures',
         ],
       ],
       '#items' => $tables,
