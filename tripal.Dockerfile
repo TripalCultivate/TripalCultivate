@@ -1,7 +1,7 @@
 ARG drupalversion=11.3.x-dev
 ARG phpversion=8.5
 ARG postgresqlversion=18
-FROM tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}-noChado
+FROM  --platform=amd64 tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}-noChado
 
 ARG chadoschema='testchado'
 ARG installTheme=TRUE
