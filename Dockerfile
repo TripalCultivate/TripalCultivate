@@ -2,7 +2,8 @@ ARG drupalversion=11.3.x-dev
 ARG phpversion=8.5
 ARG postgresqlversion=18
 ARG installTheme
-FROM knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}
+ARG buildplatform='linux/amd64'
+FROM --platform=${buildplatform} knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}
 
 COPY docker/* /var/www/drupal
 WORKDIR /var/www/drupal/
