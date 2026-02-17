@@ -169,7 +169,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       throw new \Exception('Failed to locate organism field element. ValidOrganism validator expects a form field element name organism.');
     }
 
-    $case = 'case-valid';
+    $case = 'Organism exists in the database';
     $valid = TRUE;
     $failed_items = [];
 
@@ -182,7 +182,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     }
 
     if ($organism_id <= 0 || empty($organism_id)) {
-      $case = 'case-missing-organism';
+      $case = 'Missing organism in the database';
       $valid = FALSE;
       $failed_items = ['organism_provided' => $organism_input];
     }
@@ -192,6 +192,67 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       'valid' => $valid,
       'failedItems' => $failed_items,
     ];
+  }
+
+  /**
+   * Processes failed validation from validMetadata into a render array.
+   *
+   * @param array $validation_result
+   *   An associative array that was returned by the validMetadata method in
+   *   the event of failed validation. It contains the following keys:
+   *   - 'case': a developer-focused string describing the case checked.
+   *   - 'valid': FALSE to indicate that validation failed.
+   *   - 'failedItems': an array of items that failed with the following keys.
+   *     - 'organism_provided': The name of the organism provided.
+   *   @see validateMetadata()
+   *
+   * @return array
+   *   A render array of type unordered list which is used to display feedback
+   *   to the user about the case that failed and the failed items from the
+   *   input file. Each item in the list contains the organism that was selected
+   *   in the form which failed validation.
+   *
+   * @throws \Exception
+   *   - If the validation_result parameter was not formatted properly.
+   *   - If the case string returned by the validator implied validation passed.
+   *   - If the case string returned by the validator is not recognized.
+   */
+  public static function processListWithDescribedTableMetadata(array $validation_result) {
+    // Check the format of the validation_result parameter.
+    ImportValidationHelper::checkValidationStatusArray($validation_result, 'ValidOrganism');
+
+    // Check for one of the expected cases.
+    if ($validation_result['case'] == 'Missing organism in the database') {
+      $message = 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on the organism pages or contact your administrator to have it added if it does not yet exist.';
+    }
+    elseif ($validation_result['case'] == 'Organism exists in the database') {
+      throw new \Exception('The case string returned by the ValidOrganism validator implies validation passed, but valid is set to FALSE.');
+    }
+    else {
+      throw new \Exception('The case string returned by the ValidOrganism validator is not recognized as a potential case.');
+    }
+
+    // Build the render array.
+    $render_array = [
+      '#type' => 'item',
+      '#title' => $message,
+      '#wrapper_attributes' => [
+        'class' => [
+          'tc-valid-organism-failures',
+        ],
+      ],
+      'items' => [
+        '#theme' => 'item_list',
+        '#type' => 'ul',
+        '#items' => [
+          [
+            '#markup' => $validation_result['failedItems']['organism_provided'],
+          ],
+        ],
+      ],
+    ];
+
+    return $render_array;
   }
 
   /**
