@@ -436,7 +436,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
     // Check the rendered output.
     $selected_message = $this->cssSelect('div.case-message');
     $provided_message = (string) $selected_message[0];
-    $this->assertStringContainsString($message, $provided_message, 'The message expected from processing VlaidOrganism failures with empty cells for this scenario did not match the one in the rendered output.');
+    $this->assertStringContainsString($message, $provided_message, 'The message expected from processing ValidOrganism failures with empty cells for this scenario did not match the one in the rendered output.');
 
     // Make sure we don't have any tables in rendered output.
     $select_tables = $this->cssSelect('table');
@@ -598,6 +598,83 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       $expectations['expected_message'],
       $exception_message,
       'We expected the exception message to indicate that case ' . $validation_results[$line]['case'] . ', but it does not match what was expected.',
+    );
+  }
+
+  /**
+   * Data Provider for validateMetadata processor for ValidOrganism()
+   *
+   * @return array
+   *   Each scenario is an array with following:
+   *   - An array of validation status arrays that get passed to the process
+   *   method. It keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *     is the following:
+   *     - 'organism_provided' => the oragnism provided by the user.
+   *   - An array of expectations that we want to find in the resulting rendered
+   *     output. Each array has the following keys:
+   *     -'expected message': The message expected in the return value of the
+   *     process method for this scenario.
+   */
+  public static function provideValidOrganismMetadataFailedCases() {
+    $scenarios = [];
+
+    $scenarios[] = [
+      [
+        'case' => 'Missing organism in the database',
+        'valid' => FALSE,
+        'failedItems' => [
+          'organism_provided' => 'Tripalus databasica',
+        ],
+      ],
+      [
+        'expected_message' => 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on the organism pages or contact your administrator to have it added if it does not yet exist.',
+      ],
+    ];
+
+    return $scenarios;
+
+  }
+
+  /**
+   * Tests the message processor method for the validateMetadata validator.
+   *
+   * @param array $validation_results
+   *   - An array of validation status arrays that get passed to the process
+   *   method. It keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *     is the following:
+   *     - 'organism_provided' => the oragnism provided by the user.
+   * @param array $expectations
+   *   - An array of expectations that we want to find in the resulting rendered
+   *     output. Each array has the following keys:
+   *     -'expected message': The message expected in the return value of the
+   *     process method for this scenario.
+   *
+   * @dataProvider provideValidOrganismMetadataFailedCases
+   */
+  #[DataProvider('provideValidOrganismMetadataFailedCases')]
+  public function testProcessListWithDescribedTableMetadata(array $validation_results, array $expectations) {
+    // Call the process method on our validation result.
+    $render_array = $this->validator_instance::processListWithDescribedTableMetadata($validation_results);
+
+    // Render the array we were returned.
+    $rendered_markup = $this->renderer->renderRoot($render_array);
+
+    $this->assertStringContainsString(
+      $expectations['expected_message'],
+      $rendered_markup,
+      'The message expected from processing ValidOrganism failures for this scenario did not match the message in the render array.'
+    );
+
+    $this->assertStringContainsString(
+      $validation_results['failedItems']['organism_provided'],
+      $rendered_markup,
+      'The organism expected from processing ValidOrganism failures for this scenario did not match the message in the render array.'
     );
   }
 
