@@ -195,7 +195,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
   }
 
   /**
-   * Processes failed validation from validMetadata into a render array.
+   * Processes failed validation from validateMetadata into a render array.
    *
    * @param array $validation_result
    *   An associative array that was returned by the validMetadata method in
