@@ -328,7 +328,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       $case_message = 'Missing organism(s) in the database';
     }
     else {
-      // Return the case when a single organism has been found (ie.
+      // Return the case when all organisms in this row have been found (ie.
       // validation has passed.)
       return [
         'case' => 'Organism(s) exist(s) in the database',
