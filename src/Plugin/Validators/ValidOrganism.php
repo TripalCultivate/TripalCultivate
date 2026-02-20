@@ -223,7 +223,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
 
     // Check for one of the expected cases.
     if ($validation_result['case'] == 'Missing organism in the database') {
-      $message = 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on the organism pages or contact your administrator to have it added if it does not yet exist.';
+      $message = 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on its organism page, or contact your administrator to have it added if it does not yet exist.';
     }
     elseif ($validation_result['case'] == 'Organism exists in the database') {
       throw new \Exception('The case string returned by the ValidOrganism validator implies validation passed, but valid is set to FALSE.');
