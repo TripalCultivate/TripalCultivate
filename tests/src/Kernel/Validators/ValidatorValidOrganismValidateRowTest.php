@@ -106,8 +106,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    *       - 'missing_cells' (OPTIONAL): Present if an organism is missing
    *         from the databse.
    *         - 1+ arrays keyed by the column number (first column = 1) in the
-   *           input row that contains a missing organism, further keyed by:
-   *           - 'organism': The name of the missing organism.
+   *           input row that contains a missing organism.
    *       - 'empty_cells' (OPTIONAL): Present if a cell index is empty and thus
    *         cannot be looked up in the database.
    *         - A list containing the indices of the empty cells (This can only
@@ -129,9 +128,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
         'expected_case' => 'Missing organism(s) in the database',
         'expected_failedItems' => [
           'missing_cells' => [
-            1 => [
-              'organism' => 'Organism1',
-            ],
+            1 => 'Organism1',
           ],
         ],
       ],
@@ -167,12 +164,8 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
         'expected_case' => 'Missing organism(s) in the database',
         'expected_failedItems' => [
           'missing_cells' => [
-            1 => [
-              'organism' => 'Organism1',
-            ],
-            5 => [
-              'organism' => 'Organism3',
-            ],
+            1 => 'Organism1',
+            5 => 'Organism3',
           ],
         ],
       ],
@@ -222,8 +215,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    *       - 'missing_cells' (OPTIONAL): Present if an organism is missing
    *         from the databse.
    *         - 1+ arrays keyed by the column number (first column = 1) in the
-   *           input row that contains a missing organism, further keyed by:
-   *           - 'organism': The name of the missing organism.
+   *           input row that contains a missing organism.
    *       - 'empty_cells' (OPTIONAL): Present if a cell index is empty and thus
    *         cannot be looked up in the database.
    *         - A list containing the indices of the empty cells (This can only
@@ -266,7 +258,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
       if (array_key_exists('missing_cells', $expectations['expected_failedItems'])) {
         // Check for expected missing columns.
         if (array_key_exists($index, $expectations['expected_failedItems']['missing_cells'])) {
-          $expected_organism = $expectations['expected_failedItems']['missing_cells'][$index]['organism'];
+          $expected_organism = $expectations['expected_failedItems']['missing_cells'][$index];
           $this->assertEquals(
             $expected_organism,
             $validation_status['failedItems']['missing_cells'][$index],

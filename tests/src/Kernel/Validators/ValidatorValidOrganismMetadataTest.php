@@ -109,14 +109,14 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
     $scenarios = [];
     // #0: No organism field provided.
     $scenarios[] = [
-      'No organism field provided',
+      'no organism field provided',
       ['not_organism' => 'Tripulas databasica'],
       'Failed to locate organism field element. ValidOrganism validator expects a form field element name organism.',
     ];
 
     // #1: Passing a string instead of an array.
     $scenarios[] = [
-      'Passing a string instead of an array',
+      'passing a string instead of an array',
       'INVALID ORGANISM',
       'Argument #1 ($form_values) must be of type array, string given',
     ];
@@ -125,7 +125,7 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
     $form_state = new FormState();
     $form_state->setValues(['organism' => uniqid()]);
     $scenarios[] = [
-      'Passing a Drupal $form_state object instead of an array',
+      'passing a Drupal $form_state object instead of an array',
       $form_state,
       'Argument #1 ($form_values) must be of type array, Drupal\Core\Form\FormState given',
     ];
@@ -166,11 +166,11 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
       $exception_message = $e->getMessage();
     }
 
-    $this->assertTrue($exception_caught, 'Failed to catch exception when no organism field is provided in the form values for Valid Organism validator.');
+    $this->assertTrue($exception_caught, 'Failed to catch exception when '  . $scenario . ' in the form values for Valid Organism validator.');
     $this->assertStringContainsString(
       $expected_exception_message,
       $exception_message,
-      'Expected exception message does not match message when no organism field is provided in the form values for Valid Organism validator.');
+      'Expected exception message does not match message when '  . $scenario . ' in the form values for Valid Organism validator.');
   }
 
   /**

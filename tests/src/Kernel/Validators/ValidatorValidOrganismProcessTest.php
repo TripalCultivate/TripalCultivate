@@ -82,7 +82,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *     - 'failedItems': an array of items that failed, where the key => value
    *       pairs map to the index => cell value(s) that failed validation.
    *   - An array of tokens to use for altering the messages that get displayed
-   *     to the user. The key is the token, (ex. 'project'), and the value is
+   *     to the user. The key is the token, (ex. 'organism'), and the value is
    *     the new value to be shown for that token.
    *   - An array of metadata needed by the process method. The method supports
    *     the following keys:
@@ -267,7 +267,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *     - 'failedItems': an array of items that failed with the following key:
    *       - 'empty_cells': an array of indices which are empty in the row.
    *   - An array of tokens to use for altering the messages that get displayed
-   *     to the user. The key is the token, (ex. 'project'), and the value is
+   *     to the user. The key is the token, (ex. 'organism'), and the value is
    *     the new value to be shown for that token.
    *   - An array of metadata needed by the process method. The method supports
    *     the following keys:
@@ -400,7 +400,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *       - 'empty_cells': an array of indices which are empty in the row.
    * @param array $tokens
    *   An array of tokens to use for altering the messages that get displayed
-   *   to the user. The key is the token, (ex. 'project'), and the value is
+   *   to the user. The key is the token, (ex. 'organism'), and the value is
    *   the new value to be shown for that token.
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
