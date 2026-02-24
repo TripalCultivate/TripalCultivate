@@ -5,6 +5,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Importer;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests window templates used in importer.

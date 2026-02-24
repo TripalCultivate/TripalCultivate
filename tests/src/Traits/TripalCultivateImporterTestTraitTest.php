@@ -5,6 +5,7 @@ namespace Drupal\Tests\tripalcultivate\Traits;
 use Drupal\file\Entity\File;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Test importer test trait.

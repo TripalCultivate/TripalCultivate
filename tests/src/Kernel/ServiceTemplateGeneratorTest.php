@@ -5,6 +5,7 @@ namespace Drupal\Tests\tripalcultivate\Kernel;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Test file template generator service.

@@ -5,6 +5,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests Tripal Cultivate Headers Validator Plugin.
