@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorValidHeadersTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;

@@ -15,6 +15,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  */
 #[Group('TrpCultivate')]
 #[Group('Installation')]
+#[RunTestsInSeparateProcesses]
 class InstallTest extends ChadoTestBrowserBase {
 
   /**

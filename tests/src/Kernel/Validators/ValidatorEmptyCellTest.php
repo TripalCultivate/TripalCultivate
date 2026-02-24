@@ -16,6 +16,7 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
 #[Group('trpcultivate')]
 #[Group('validators')]
 #[Group('row_validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorEmptyCellTest extends ChadoTestKernelBase {
 
   /**

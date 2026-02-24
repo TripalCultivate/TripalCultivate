@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorValidHeadersProcessTest extends ChadoTestKernelBase {
 
   /**

@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('displays')]
+#[RunTestsInSeparateProcesses]
 class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
 
   use AssertContentTrait;

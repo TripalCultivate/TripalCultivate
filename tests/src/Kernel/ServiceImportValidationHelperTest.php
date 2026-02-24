@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validation_helper')]
+#[RunTestsInSeparateProcesses]
 class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
 
   /**

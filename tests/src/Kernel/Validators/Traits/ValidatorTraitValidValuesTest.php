@@ -13,6 +13,7 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorValidVal
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]
+#[RunTestsInSeparateProcesses]
 class ValidatorTraitValidValuesTest extends ChadoTestKernelBase {
 
   /**

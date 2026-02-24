@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * @group Hooks
  */
 #[Group('Hooks')]
+#[RunTestsInSeparateProcesses]
 class ImplementedHooksTest extends ChadoTestKernelBase {
 
   /**

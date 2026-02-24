@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[Group('trpcultivate')]
 #[Group('validators')]
 #[Group('row_validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorGermplasmNameExistsTest extends ChadoTestKernelBase {
 
   /**

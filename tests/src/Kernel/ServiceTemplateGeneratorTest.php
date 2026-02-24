@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('template_generate')]
+#[RunTestsInSeparateProcesses]
 class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
 
   /**

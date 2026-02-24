@@ -15,6 +15,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]
+#[RunTestsInSeparateProcesses]
 class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
 
   /**
