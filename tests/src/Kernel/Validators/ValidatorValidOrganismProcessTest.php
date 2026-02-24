@@ -121,9 +121,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'missing_cells' => [
-              1 => [
-                'organism' => 'Non-existant Organism',
-              ],
+              1 => 'Non-existant Organism',
             ],
           ],
         ],
@@ -131,13 +129,11 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       [],
       $basic_column_headers,
       [
-        'missing_cells' => [
-          'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on the organism pages or contact your administrator to have them added if they do not yet exist.',
-          'expected_column_count' => 2,
-          'expected_rows' => [
-            3 => [
-              'Organism' => 'Non-existant Organism',
-            ],
+        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
+        'expected_column_count' => 2,
+        'expected_table_rows' => [
+          3 => [
+            'Organism' => 'Non-existant Organism',
           ],
         ],
       ],
@@ -193,72 +189,69 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
     $rendered_markup = $this->renderer->renderRoot($render_array);
     $this->setRawContent($rendered_markup);
 
-    // Check the rendered output.
-    // Loop through expectations one table at a time.
-    foreach ($expectations as $table_case => $table) {
-      // Check the message above this table is correct.
-      $selected_message_markup = $this->cssSelect("ul li div.case-message.case-$table_case");
-      $table_message = (string) $selected_message_markup[0];
-      $this->assertStringContainsString(
-        $table['expected_message'],
-        $table_message,
-        'The message expected from processing ValidOrganism failures for this scenario did not match the message in the render array.'
+    // Check the message above this table is correct.
+    $selected_message_markup = $this->cssSelect("ul li div.case-message");
+    $table_message = (string) $selected_message_markup[0];
+    $this->assertStringContainsString(
+      $expectations['expected_message'],
+      $table_message,
+      'The message expected from processing ValidOrganism failures for this scenario did not match the message in the render array.'
+    );
+
+    // Select and save the table header.
+    $selected_table_header = $this->cssSelect("thead tr");
+    $select_column_headers = (array) $selected_table_header[0]->th;
+    // Assert that the number of columns matches the number of we expect.
+    $this->assertCount(
+      $expectations['expected_column_count'],
+      $select_column_headers,
+      'We expected ' . $expectations['expected_column_count'] . ' columns to be in the rendered table for ValidOrganism failures for this scenario, but instead there are ' . count($select_column_headers) . '.'
+    );
+
+    // Pull out the table rows for this table case.
+    $selected_rows = $this->cssSelect("tbody tr");
+    // Assert that the number of rows matches what we expect.
+    $expected_row_count = (count($expectations['expected_table_rows']));
+    $this->assertCount(
+      $expected_row_count,
+      $selected_rows,
+      'We expected ' . $expected_row_count . 'rows in the rendered table for ValidOrganism failures for this scenario, but there are ' . count($selected_rows) . '.'
+    );
+
+    $current_row_index = 0;
+    // Loop through expectations for each row of this table.
+    foreach ($expectations['expected_table_rows'] as $expected_line_no => $expected_values) {
+      $select_row_cells = (array) $selected_rows[$current_row_index]->td;
+
+      // 1st Column: Line Number.
+      $line_number = $select_row_cells[0];
+      $this->assertEquals(
+      $expected_line_no,
+      $line_number,
+      "Did not get the expected line number in the rendered table from processing ValidOrganism failures."
       );
-
-      // Select and save the table header.
-      $selected_table_header = $this->cssSelect("table.table-case-$table_case thead tr");
-      $select_column_headers = (array) $selected_table_header[0]->th;
-      // Assert that the number of columns matches the number of we expect.
-      $this->assertCount(
-        $table['expected_column_count'],
-        $select_column_headers,
-        'We expected ' . $table['expected_column_count'] . 'columns to be in the rendered table for ValidOrganism failures for this scenario, but instead there are ' . count($select_column_headers) . '.'
-      );
-
-      // Pull out the table rows for this table case.
-      $selected_rows = $this->cssSelect("table.table-case-$table_case tbody tr");
-      // Assert that the number of rows matches what we expect.
-      $expected_row_count = (count($table['expected_rows']));
-      $this->assertCount(
-        $expected_row_count,
-        $selected_rows,
-        'We expected ' . $expected_row_count . 'rows in the rendered table for ValidOrganism failures for this scenario, but there are ' . count($selected_rows) . '.'
-      );
-
-      $current_row_index = 0;
-      // Loop through expectations for each row of this table.
-      foreach ($table['expected_rows'] as $expected_line_no => $expected_values) {
-        $select_row_cells = (array) $selected_rows[$current_row_index]->td;
-
-        // 1st Column: Line Number.
-        $line_number = $select_row_cells[0];
+      // 2nd Column and up: Column(s) with invalid value
+      $current_column_index = 1;
+      foreach ($expected_values as $column_header => $invalid_value) {
+        // Check that the invalid value is under the correct column header.
         $this->assertEquals(
-        $expected_line_no,
-        $line_number,
-        "Did not get the expected line number in the rendered table from processing ValidOrganism failures."
+          $column_header,
+          $select_column_headers[$current_column_index],
+          "We expected the column header \"$column_header\" to be present in the rendered table's header for ValidOrganism failures at index $current_column_index but it was not."
         );
-        // 2nd Column and up: Column(s) with invalid value
-        $current_column_index = 1;
-        foreach ($expected_values as $column_header => $invalid_value) {
-          // Check that the invalid value is under the correct column header.
-          $this->assertEquals(
-            $column_header,
-            $select_column_headers[$current_column_index],
-            "We expected the column header \"$column_header\" to be present in the rendered table's header for ValidOrganism failures at index $current_column_index but it was not."
-          );
-          // Check that the invalid value in the table matches what we expect.
-          $this->assertEquals(
-          $invalid_value,
-          (string) $select_row_cells[$current_column_index],
-          "We expected an invalid value to be listed for \"$column_header\" at line #$expected_line_no in the rendered table for ValidOrganism failures."
-          );
-          $current_column_index++;
-        }
-
-        // Move onto the next row.
-        $current_row_index++;
+        // Check that the invalid value in the table matches what we expect.
+        $this->assertEquals(
+        $invalid_value,
+        (string) $select_row_cells[$current_column_index],
+        "We expected an invalid value to be listed for \"$column_header\" at line #$expected_line_no in the rendered table for ValidOrganism failures."
+        );
+        $current_column_index++;
       }
+
+      // Move onto the next row.
+      $current_row_index++;
     }
+
   }
 
   /**
@@ -340,9 +333,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'missing_cells' => [
-              2 => [
-                'organism' => 'Non-existant Orgsnism',
-              ],
+              2 => 'Non-existant Orgsnism',
             ],
           ],
         ],
@@ -538,6 +529,24 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #3: Metadata array is empty.
+    $scenarios[] = [
+      [
+        8 => [
+          'case' => 'Organism(s) exist(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'empty_cells' => [2, 4],
+          ],
+        ],
+      ],
+      [],
+      $tokens,
+      [
+        'expected_message' => "Expected metadata to contain 'column_headers' when processing failures from ValidOrganism, but it does not.",
+      ],
+    ];
+
     return $scenarios;
   }
 
@@ -602,6 +611,100 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   }
 
   /**
+   * Data Provider for exceptions in processListWithDescribedTableMetadata() for ValidOrganism()
+   *
+   * @return array
+   *  Each scenario is an array with the following:
+   *  - An array of validation status arrays that get passed to the process
+   *    method. It is keyed by the line number that triggered this failed
+   *    validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   *  - An array of expectations in the rendered output which has the following
+   *    keys:
+   *    - 'expected_message': The exception message that is expected to be
+   *      triggered.
+   */
+  public static function provideDescribedTableMetadataExceptions() {
+    $scenarios = [];
+
+    // #0: Validation passed, but valid is set to FALSE.
+    $scenarios[] = [
+      [
+        'case' => 'Organism exists in the database',
+        'valid' => FALSE,
+        'failedItems' => [
+          'organism_provided' => 'Existing Organism',
+        ],
+      ],
+      [
+        'expected_message' => 'The case string returned by the ValidOrganism validator implies validation passed, but valid is set to FALSE.',
+      ],
+    ];
+
+    // #1: Unrecognizable case string.
+    $scenarios[] = [
+      [
+        'case' => 'unrecognizable case',
+        'valid' => FALSE,
+        'failedItems' => [
+          'organism_provided' => 'Existing Organism',
+        ],
+      ],
+      [
+        'expected_message' => 'The case string returned by the ValidOrganism validator is not recognized as a potential case.',
+      ],
+    ];
+
+    return $scenarios;
+  }
+
+  /**
+   * Tests for exceptions thrown in processListWithDescribedTableMetadata() for ValidOrganism() when there are issues with the metadata passed in.
+   *
+   * @param array $validation_results
+   *   An array of validation status arrays that get passed to the process   method. It is keyed by the line number that triggered this failed
+   *   validation status, further keyed by:
+   *     - 'case': a developer-focused string describing the case checked.
+   *     - 'valid': FALSE to indicate that validation failed.
+   *     - 'failedItems': an array of items that failed, where the key => value
+   *       pairs map to the index => cell value(s) that failed validation.
+   * @param array $expectations
+   *   An array of expectations in the rendered output which has the following
+   *   keys:
+   *   - 'expected_message': The exception message that is expected to be
+   *     triggered.
+   * @dataProvider provideDescribedTableMetadataExceptions
+   */
+  #[DataProvider('provideDescribedTableMetadataExceptions')]
+  public function testProcessListWithDescribedTableMetadataExceptions(array $validation_results, array $expectations) {
+    $exception_caught = FALSE;
+    $exception_message = '';
+
+    try {
+      // Call the process method on our validation result.
+      $render_array = $this->validator_instance::processListWithDescribedTableMetadata($validation_results);
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+
+    $this->assertTrue(
+      $exception_caught,
+      'We expected an exception to be caught for missing metadata in processListWithDescribedTableMetadata(), but one was not thrown.'
+    );
+    $this->assertEquals(
+      $expectations['expected_message'],
+      $exception_message,
+      'We expected the exception message to indicate missing metadata in processListWithDescribedTableMetadata(), but it does not match what was expected.',
+    );
+
+  }
+
+  /**
    * Data Provider for validateMetadata processor for ValidOrganism()
    *
    * @return array
@@ -630,12 +733,11 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         ],
       ],
       [
-        'expected_message' => 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on the organism pages or contact your administrator to have it added if it does not yet exist.',
+        'expected_message' => 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on its organism page, or contact your administrator to have it added if it does not yet exist.',
       ],
     ];
 
     return $scenarios;
-
   }
 
   /**

@@ -76,8 +76,8 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
     $this->plugin_manager = \Drupal::service('plugin.manager.trpcultivate_validator');
 
     // Insert an organism into chado.organism.
-    $genus = 'Tripalus';
-    $species = 'databasica';
+    $genus = 'Lens';
+    $species = 'culinaris';
     $this->organism_id = $this->chado_connection->insert('1:organism')
       ->fields([
         'genus' => $genus,
@@ -146,8 +146,8 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
         3 => 'Column3',
       ],
       [
-        'expected_valid' => FALSE,
-        'expected_case' => 'Missing organism(s) in the database',
+        'expected_valid' => TRUE,
+        'expected_case' => 'Organism(s) exist(s) in the database',
         'expected_failedItems' => [],
       ],
     ];
@@ -181,8 +181,8 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
     // #3: A row with two empty cells where organisms should be.
     // All other cases are also present, but we expect to only be told about the
     // empty cells.
-    $scenarios[] = [
-      [1, 2, 3, 4, 5],
+    $scenario[] = [
+      [1, 2, 3, 4],
       [
         1 => 'Lens culinaris',
         2 => '',
@@ -197,6 +197,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
         ],
       ],
     ];
+
     return $scenario;
   }
 
@@ -268,7 +269,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
           $expected_organism = $expectations['expected_failedItems']['missing_cells'][$index]['organism'];
           $this->assertEquals(
             $expected_organism,
-            $validation_status['failedItems']['missing_cells'][$index]['organism'],
+            $validation_status['failedItems']['missing_cells'][$index],
             'Valid Organism validation did not return the expected missing cells for this scenario.',
           );
         }

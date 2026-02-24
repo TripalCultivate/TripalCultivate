@@ -97,51 +97,80 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Test exceptions thrown by valid organism metadata validation.
+   * Provide data for testValidOrganismMetadataExceptions.
+   *
+   * @return array
+   *   Each scenario is an array with the following values:
+   *   - A human-readable short description of the test scenario.
+   *   - The form values to pass to the validator that will cause an exception.
+   *   - The expected exception message or a string contained in the expected exception message.
    */
-  public function testValidOrganismMetadataExceptions() {
+  public static function provideInvalidFormValuesForValidOrganismValidator() {
+    $scenarios = [];
+    // #0: No organism field provided.
+    $scenarios[] = [
+      'No organism field provided',
+      ['not_organism' => 'Tripulas databasica'],
+      'Failed to locate organism field element. ValidOrganism validator expects a form field element name organism.',
+    ];
+
+    // #1: Passing a string instead of an array.
+    $scenarios[] = [
+      'Passing a string instead of an array',
+      'INVALID ORGANISM',
+      'Argument #1 ($form_values) must be of type array, string given',
+    ];
+
+    // #2: Passing a Drupal $form_state object instead of an array.
+    $form_state = new FormState();
+    $form_state->setValues(['organism' => uniqid()]);
+    $scenarios[] = [
+      'Passing a Drupal $form_state object instead of an array',
+      $form_state,
+      'Argument #1 ($form_values) must be of type array, Drupal\Core\Form\FormState given',
+    ];
+
+    return $scenarios;
+  }
+
+  /**
+   * Test exceptions thrown by valid organism metadata validation.
+   *
+   * @param string $scenario
+   *   A human-readable short description of the test scenario.
+   * @param mixed $form_values
+   *   The form values to pass to the validator that will cause an exception.
+   * @param string $expected_exception_message
+   *   The expected exception message or a string contained in the expected exception message.
+   *
+   * @dataProvider provideInvalidFormValuesForValidOrganismValidator
+   *
+   */
+  #[DataProvider('provideInvalidFormValuesForValidOrganismValidator')]
+  public function testValidOrganismMetadataExceptions($scenario, $form_values, $expected_exception_message) {
     // Create a plugin instance for this validator.
     $validator_id = 'valid_organism';
     $instance = $this->plugin_manager->createInstance($validator_id);
-
-    $form_values = 'INVALID ORGANISM';
 
     $exception_caught  = FALSE;
     $exception_message = '';
     try {
       $instance->validateMetadata($form_values);
     }
-    catch (\TypeError $e) {
+    catch (\Exception $e) {
       $exception_caught  = TRUE;
       $exception_message = $e->getMessage();
-    }
-
-    $this->assertTrue($exception_caught, 'Failed to catch exception when passing a string to Valid Organism validator.');
-    $this->assertStringContainsString(
-      'Argument #1 ($form_values) must be of type array, string given',
-      $exception_message,
-      'Expected exception message does not match message when passing string to Valid Organism validator.');
-
-    // A Drupal $form_state object.
-    $form_state = new FormState();
-    // A random field.
-    $form_state->setValues(['organism' => uniqid()]);
-
-    $exception_caught  = FALSE;
-    $exception_message = '';
-    try {
-      $instance->validateMetadata($form_state);
     }
     catch (\TypeError $e) {
       $exception_caught  = TRUE;
       $exception_message = $e->getMessage();
     }
 
-    $this->assertTrue($exception_caught, 'Failed to catch exception when passing a $form_state to Valid Organism validator.');
+    $this->assertTrue($exception_caught, 'Failed to catch exception when no organism field is provided in the form values for Valid Organism validator.');
     $this->assertStringContainsString(
-      'Argument #1 ($form_values) must be of type array, Drupal\Core\Form\FormState given',
+      $expected_exception_message,
       $exception_message,
-      'Expected exception message does not match message when passing $form_state to Valid Organism validator.');
+      'Expected exception message does not match message when no organism field is provided in the form values for Valid Organism validator.');
   }
 
   /**
