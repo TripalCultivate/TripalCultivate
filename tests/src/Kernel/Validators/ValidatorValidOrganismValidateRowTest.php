@@ -78,13 +78,13 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
     // Insert an organism into chado.organism.
     $genus = 'Lens';
     $species = 'culinaris';
-    $this->organism_id = $this->chado_connection->insert('1:organism')
+    $organism_id = $this->chado_connection->insert('1:organism')
       ->fields([
         'genus' => $genus,
         'species' => $species,
       ])
       ->execute();
-    $this->assertIsNumeric($this->organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
+    $this->assertIsNumeric($organism_id, 'We were not able to create the organism ' . $genus . ' ' . $species . ' in Chado for testing.');
   }
 
   /**
