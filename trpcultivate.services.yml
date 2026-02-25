@@ -12,3 +12,9 @@ services:
     class: 'Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager'
     parent: default_plugin_manager
     arguments: ['@tripal_chado.database']
+
+  trpcultivate.hooks:
+    class: 'Drupal\trpcultivate\Hook\TripalCultivateHooks'
+
+  trpcultivate.theme_hooks:
+    class: 'Drupal\trpcultivate\Hook\TripalCultivateThemeHooks'

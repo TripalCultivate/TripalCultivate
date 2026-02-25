@@ -9,109 +9,40 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\tripal_layout\Controller\TripalEntityUILayoutController;
+use Drupal\Core\Hook\Attribute\LegacyHook;
 
 /**
  * Implements hook_help().
+ *
+ * This legacy hook is only run for Drupal < 11, and is replaced by class
+ * Drupal\trpcultivate\Hook\TripalCultivateHooks in trpcultivate/src/Hook/TripalCultivateHooks.php.
  */
+#[LegacyHook]
 function trpcultivate_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Provides the module overview in the help tab.
-    case 'help.page.trpcultivate':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-
-      $output .= '<p>' . t('This module provides basic functionality shared by the entire Tripal Cultivate package of modules.') . '</p>';
-
-      return $output;
-
-    default:
-  }
+  return \Drupal::service('trpcultivate.hooks')->help($route_name, $route_match);
 }
 
 /**
  * Implements hook_preprocess_page().
+ *
+ * This legacy hook is only run for Drupal < 11, and is replaced by class
+ * Drupal\trpcultivate\Hook\TripalCultivateThemeHooks in
+ * trpcultivate/src/Hook/TripalCultivateThemeHooks.php.
  */
+#[LegacyHook]
 function trpcultivate_preprocess_page(&$variables) {
-
-  // Get the route for the current page.
-  $route_name = \Drupal::routeMatch()->getRouteName();
-
-  // If this is a page related to listing of TripalEntityTypes then we want
-  // to add the following CSS library.
-  $tripal_entity_type_routes = ['entity.tripal_entity.add_page', 'entity.tripal_entity_type.collection'];
-  if (in_array($route_name, $tripal_entity_type_routes)) {
-    $variables['#attached']['library'][] = 'trpcultivate/tripal_entity_type';
-  }
-
-  // Make Font Awesome library available.
-  $variables['#attached']['library'][] = 'trpcultivate/cdn-font-awesome';
+  \Drupal::service('trpcultivate.theme_hooks')->preprocessPage($variables);
 }
 
 /**
  * Implements hook_config_schema_info_alter().
  *
- * Update the schema to support markup fields.
+ * This legacy hook is only run for Drupal < 11, and is replaced by class
+ * Drupal\trpcultivate\Hook\TripalCultivateHooks in trpcultivate/src/Hook/TripalCultivateHooks.php.
  */
+#[LegacyHook]
 function trpcultivate_config_schema_info_alter(&$definitions) {
-
-  // Support for the Markup Field being used on a TripalEntity.
-  // -- field settings.
-  // If you see the following error in tests, then add 'markup' to the $modules
-  // array for your test:
-  // 'Warning: Undefined array key "field.field_settings.markup"'.
-  if (array_key_exists('field.field_settings.markup', $definitions)) {
-    foreach ($definitions['field.field_settings.markup']['mapping'] as $setting_key => $settings) {
-      $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
-    }
-  }
-  else {
-    \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Markup module for it's content types but it seems to be missing as the 'field.field_settings.markup' schema definition is unavailable.");
-  }
-
-  // Support for the Entity Reference Field being used on a TripalEntity.
-  // -- field settings.
-  if (array_key_exists('field.field_settings.entity_reference', $definitions)) {
-    foreach ($definitions['field.field_settings.entity_reference']['mapping'] as $setting_key => $settings) {
-      $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
-    }
-  }
-  else {
-    \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.field_settings.entity_reference' schema definition is unavailable.");
-  }
-  // -- field storage settings.
-  if (array_key_exists('field.storage_settings.entity_reference', $definitions)) {
-    foreach ($definitions['field.storage_settings.entity_reference']['mapping'] as $setting_key => $settings) {
-      $definitions['field.storage.tripal_entity.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
-    }
-  }
-  else {
-    \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.storage_settings.entity_reference' schema definition is unavailable.");
-  }
-
-  // Support for Third Party Tripal field settings being used on TripalEntity.
-  // @todo this should likely be in tripal core.
-  if (!array_key_exists('third_party_settings', $definitions['field.field.tripal_entity.*.*']['mapping'])) {
-    $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings'] = [
-      'type' => 'mapping',
-      'mapping' => [],
-    ];
-  }
-  if (!array_key_exists('tripal', $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping'])) {
-    $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping']['tripal'] = [
-      'type' => 'mapping',
-      'mapping' => [],
-    ];
-  }
-  $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping']['tripal']['mapping']['termIdSpace'] = [
-    'type' => 'string',
-    'label' => 'Term ID Space',
-    'nullable' => TRUE,
-  ];
-  $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping']['tripal']['mapping']['termAccession'] = [
-    'type' => 'string',
-    'label' => 'Term Accession',
-    'nullable' => TRUE,
-  ];
+  \Drupal::service('trpcultivate.hooks')->configSchemaInfoAlter($definitions);
 }
 
 /**
@@ -395,27 +326,11 @@ function trpcultivate_apply_layout() {
 /**
  * Implements hook_theme().
  *
- * @see /templates/importer
+ * This legacy hook is only run for Drupal < 11, and is replaced by class
+ * Drupal\trpcultivate\Hook\TripalCultivateThemeHooks in
+ * trpcultivate/src/Hook/TripalCultivateThemeHooks.
  */
+#[LegacyHook]
 function trpcultivate_theme($existing, $type, $theme, $path) {
-  return [
-    // Theme importer describe header window.
-    'describe_header_window' => [
-      'variables' => [
-        'data' => [
-          'headers' => [],
-          'template_file' => '#',
-        ],
-      ],
-      'template' => 'importer/describe-header-window',
-    ],
-
-    // Theme importer validation result window.
-    'validation_result_window' => [
-      'variables' => [
-        'data' => [],
-      ],
-      'template' => 'importer/validation-result-window',
-    ],
-  ];
+  return \Drupal::service('trpcultivate.theme_hooks')->theme($existing, $type, $theme, $path);
 }
