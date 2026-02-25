@@ -5,6 +5,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorValidValues;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the ValidValues validator trait.

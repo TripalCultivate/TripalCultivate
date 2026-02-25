@@ -7,6 +7,7 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorOrganism
 use Drupal\tripal\Services\TripalLogger;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Organism validator trait.

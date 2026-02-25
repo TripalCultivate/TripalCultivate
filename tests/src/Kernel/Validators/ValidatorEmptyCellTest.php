@@ -6,6 +6,7 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Empty Cell validator.

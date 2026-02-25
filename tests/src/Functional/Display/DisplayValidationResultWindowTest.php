@@ -8,6 +8,7 @@ use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
 use Drupal\KernelTests\AssertContentTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Tripal Cultivate Validation Result Window.

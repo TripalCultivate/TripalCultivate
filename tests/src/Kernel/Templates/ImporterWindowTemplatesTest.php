@@ -6,6 +6,7 @@ use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests window templates used in importer.

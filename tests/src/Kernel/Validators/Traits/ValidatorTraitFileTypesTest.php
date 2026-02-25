@@ -8,6 +8,7 @@ use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
 use Drupal\tripal\Services\TripalLogger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the FileTypes validator trait.

@@ -8,6 +8,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Tripal Cultivate Validator Base functions.

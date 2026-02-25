@@ -6,6 +6,7 @@ use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests any message processing methods for the GermplasmNameExists validator.
