@@ -4,13 +4,31 @@ namespace Drupal\trpcultivate\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\tripal_layout\Controller\TripalEntityUILayoutController;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\tripal\Services\TripalLogger;
 
+/**
+ * Implements hooks for Tripal Cultivate.
+ */
 class TripalCultivateHooks {
   use StringTranslationTrait;
+
+  /**
+   * The TripalLogger service.
+   *
+   * @var Drupal\tripal\Services\TripalLogger
+   */
+  protected $logger;
+
+  /**
+   * Constructs a TripalCultivateHooks object.
+   *
+   * @param Drupal\tripal\Services\TripalLogger $logger
+   *   The TripalLogger service.
+   */
+  public function __construct(TripalLogger $logger) {
+    $this->logger = $logger;
+  }
 
   /**
    * Implements hook_help().
@@ -21,9 +39,9 @@ class TripalCultivateHooks {
       // Provides the module overview in the help tab.
       case 'help.page.trpcultivate':
         $output = '';
-        $output .= '<h3>' . t('About') . '</h3>';
+        $output .= '<h3>' . $this->t('About') . '</h3>';
 
-        $output .= '<p>' . t('This module provides basic functionality shared by the entire Tripal Cultivate package of modules.') . '</p>';
+        $output .= '<p>' . $this->t('This module provides basic functionality shared by the entire Tripal Cultivate package of modules.') . '</p>';
 
         return $output;
 
@@ -40,8 +58,8 @@ class TripalCultivateHooks {
   public function configSchemaInfoAlter(&$definitions) {
     // Support for the Markup Field being used on a TripalEntity.
     // -- field settings.
-    // If you see the following error in tests, then add 'markup' to the $modules
-    // array for your test:
+    // If you see the following error in tests, then add 'markup' to the
+    // $modules array for your test:
     // 'Warning: Undefined array key "field.field_settings.markup"'.
     if (array_key_exists('field.field_settings.markup', $definitions)) {
       foreach ($definitions['field.field_settings.markup']['mapping'] as $setting_key => $settings) {
@@ -49,7 +67,7 @@ class TripalCultivateHooks {
       }
     }
     else {
-      \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Markup module for it's content types but it seems to be missing as the 'field.field_settings.markup' schema definition is unavailable.");
+      $this->logger->error("Tripal Cultivate requires the Markup module for it's content types but it seems to be missing as the 'field.field_settings.markup' schema definition is unavailable.");
     }
 
     // Support for the Entity Reference Field being used on a TripalEntity.
@@ -60,7 +78,7 @@ class TripalCultivateHooks {
       }
     }
     else {
-      \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.field_settings.entity_reference' schema definition is unavailable.");
+      $this->logger->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.field_settings.entity_reference' schema definition is unavailable.");
     }
     // -- field storage settings.
     if (array_key_exists('field.storage_settings.entity_reference', $definitions)) {
@@ -69,7 +87,7 @@ class TripalCultivateHooks {
       }
     }
     else {
-      \Drupal::logger('trpcultivate')->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.storage_settings.entity_reference' schema definition is unavailable.");
+      $this->logger->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.storage_settings.entity_reference' schema definition is unavailable.");
     }
 
     // Support for Third Party Tripal field settings being used on TripalEntity.

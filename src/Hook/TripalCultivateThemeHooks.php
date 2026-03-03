@@ -4,7 +4,11 @@ namespace Drupal\trpcultivate\Hook;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ * Implements Theme hooks for Tripal Cultivate.
+ */
 class TripalCultivateThemeHooks {
   use StringTranslationTrait;
 
@@ -55,4 +59,5 @@ class TripalCultivateThemeHooks {
     // Make Font Awesome library available.
     $variables['#attached']['library'][] = 'trpcultivate/cdn-font-awesome';
   }
+
 }
