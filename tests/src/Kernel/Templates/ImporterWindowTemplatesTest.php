@@ -32,6 +32,10 @@ class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
    * @var array
    */
   protected static $modules = [
+    'field',
+    'field_ui',
+    'markup',
+    'field_group',
     'tripal',
     'tripal_chado',
     'tripal_layout',

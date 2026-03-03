@@ -13,6 +13,23 @@ class TripalCultivateThemeHooks {
   use StringTranslationTrait;
 
   /**
+   * The current route match.
+   *
+   * @var Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $route_match;
+
+  /**
+   * Constructs a TripalCultivateThemeHooks object.
+   *
+   * @param Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The current route match.
+   */
+  public function __construct(RouteMatchInterface $route_match) {
+    $this->route_match = $route_match;
+  }
+
+  /**
    * Implements hook_theme().
    *
    *  @see /templates/importer
@@ -47,7 +64,7 @@ class TripalCultivateThemeHooks {
   #[Hook('preprocess_page')]
   public function preprocessPage(&$variables) {
     // Get the route for the current page.
-    $route_name = \Drupal::routeMatch()->getRouteName();
+    $route_name = $this->route_match->getRouteName();
 
     // If this is a page related to listing of TripalEntityTypes then we want
     // to add the following CSS library.

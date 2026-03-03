@@ -13,9 +13,14 @@ services:
     parent: default_plugin_manager
     arguments: ['@tripal_chado.database']
 
+  Drupal\tripal\Services\TripalLogger:
+    alias: 'tripal.logger'
+
   trpcultivate.hooks:
     class: 'Drupal\trpcultivate\Hook\TripalCultivateHooks'
-    arguments: ['@tripal.logger']
+    arguments:
+      - '@tripal.logger'
 
   trpcultivate.theme_hooks:
     class: 'Drupal\trpcultivate\Hook\TripalCultivateThemeHooks'
+    arguments: ['@current_route_match']

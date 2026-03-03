@@ -46,9 +46,16 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    * @var array
    */
   protected static $modules = [
+    'file',
     'system',
     'user',
-    'file',
+    'path',
+    'path_alias',
+    'views',
+    'field',
+    'field_ui',
+    'markup',
+    'field_group',
     'tripal',
     'tripal_chado',
     'tripal_layout',
