@@ -4,6 +4,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\ContentTypes;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests that the content types and fields associated with them are created.
@@ -13,6 +15,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  */
 #[Group('ContentTypes')]
 #[Group('Fields')]
+#[RunTestsInSeparateProcesses]
 class ContentTypeTest extends ChadoTestKernelBase {
 
   /**
