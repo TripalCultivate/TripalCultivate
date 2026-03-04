@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\tripalcultivate\Traits;
+namespace Drupal\Tests\tripalcultivate\Kernel;
 
 use Drupal\file\Entity\File;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
