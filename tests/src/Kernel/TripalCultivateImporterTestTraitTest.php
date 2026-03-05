@@ -1,10 +1,12 @@
 <?php
 
-namespace Drupal\Tests\tripalcultivate\Traits;
+namespace Drupal\Tests\tripalcultivate\Kernel;
 
 use Drupal\file\Entity\File;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Test importer test trait.
@@ -12,6 +14,7 @@ use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
  * @group trpcultivate_test_trait
  */
 #[Group('trpcultivate_test_trait')]
+#[RunTestsInSeparateProcesses]
 class TripalCultivateImporterTestTraitTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
