@@ -12,6 +12,9 @@ RUN composer config --no-plugins allow-plugins.cweagans/composer-patches true \
   && composer config extra.patches-file composer.patches.json \
   && composer install
 
+WORKDIR /var/www/drupal/web/modules/contrib
+RUN rm -rf tripal && git clone --branch=tv4g1-2437-tripalMarkupField --depth=1 https://github.com/tripal/tripal.git
+
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
 WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 
