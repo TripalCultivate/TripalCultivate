@@ -279,8 +279,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_addtmetadata'
         display:
           view:
             default:
@@ -300,8 +300,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_expdesign'
         display:
           view:
             default:
@@ -321,8 +321,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_funding'
         display:
           view:
             default:
@@ -342,8 +342,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_germplasm'
         display:
           view:
             default:
@@ -363,8 +363,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_methods'
         display:
           view:
             default:
@@ -384,8 +384,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_name'
         display:
           view:
             default:
@@ -405,8 +405,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_overview'
         display:
           view:
             default:
@@ -426,8 +426,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_people'
         display:
           view:
             default:
@@ -447,8 +447,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_references'
         display:
           view:
             default:
@@ -468,8 +468,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_sitelocations'
         display:
           view:
             default:
@@ -489,8 +489,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_timepoints'
         display:
           view:
             default:
@@ -510,8 +510,8 @@ fields:
         storage_settings:
             storage_plugin_id: 'drupal_sql_storage'
         settings:
-            termIdSpace: 'NCIT'
-            termAccession: 'C63615'
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_why'
         display:
           view:
             default:
