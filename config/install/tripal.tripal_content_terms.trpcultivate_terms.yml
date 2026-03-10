@@ -258,11 +258,11 @@ vocabularies:
 
     -   name: 'local-instruct'
         label: 'Provides local terms for markup fields providing instructions of Tripal Content pages.'
-        url: ''
+        url: 'cv/lookup/local-instruct'
         idSpaces:
             -   name: 'local-instruct'
                 description: 'Provides local terms for markup fields providing instructions of Tripal Content pages.'
-                urlPrefix: ""
+                urlPrefix: 'cv/lookup/{db}/{accession}'
         terms:
             -   id: 'local-instruct:exp_addtmetadata'
                 name: 'exp_addtmetadata'
