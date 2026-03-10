@@ -1,7 +1,0 @@
-{
-  "patches": {
-    "drupal/markup": {
-      "Issue #3473518: Markup data is lost": "markup-3473518-3.patch"
-    }
-  }
-}

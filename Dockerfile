@@ -5,13 +5,6 @@ ARG installTheme
 ARG buildplatform='linux/amd64'
 FROM --platform=${buildplatform} knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}
 
-COPY docker/* /var/www/drupal
-WORKDIR /var/www/drupal/
-RUN composer config --no-plugins allow-plugins.cweagans/composer-patches true \
-  && composer require 'drupal/markup:^2.0' 'cweagans/composer-patches' \
-  && composer config extra.patches-file composer.patches.json \
-  && composer install
-
 WORKDIR /var/www/drupal/web/modules/contrib
 RUN rm -rf tripal && git clone --branch=tv4g1-2437-tripalMarkupField --depth=1 https://github.com/tripal/tripal.git
 
@@ -22,7 +15,7 @@ RUN rm ./phpunit.xml
 RUN bash /var/www/drupal/web/modules/contrib/tripal/set_phpunit_config.sh
 
 RUN service postgresql start \
-  && drush en trpcultivate markup --yes \
+  && drush en trpcultivate --yes \
   && drush tripal:trp-run-jobs --username=drupaladmin \
   && drush cr \
   && service postgresql stop
