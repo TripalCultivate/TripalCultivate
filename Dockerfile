@@ -5,9 +5,6 @@ ARG installTheme
 ARG buildplatform='linux/amd64'
 FROM --platform=${buildplatform} knowpulse/tripalcultivate-tripal:${installTheme}drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}
 
-WORKDIR /var/www/drupal/web/modules/contrib
-RUN rm -rf tripal && git clone --branch=tv4g1-2437-tripalMarkupField --depth=1 https://github.com/tripal/tripal.git
-
 COPY . /var/www/drupal/web/modules/contrib/TripalCultivate
 WORKDIR /var/www/drupal/web/modules/contrib/TripalCultivate
 
