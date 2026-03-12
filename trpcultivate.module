@@ -75,7 +75,8 @@ function trpcultivate_import_contenttypes() {
   $fields = \Drupal::service('tripal.tripalfield_collection');
   $fields->install($collections);
 
-  // Create Markup fields based on the twig files in /templates/markup_field.
+  // Set the content for the Markup fields based on the twig files.
+  // @see templates/markup_field
   trpcultivate_create_markup_fields();
 
   // Create Drupal Reference (i.e. relationship) fields.
@@ -108,47 +109,16 @@ function trpcultivate_create_markup_fields() {
           'value' => file_get_contents($full_file_path),
           'format' => 'full_html',
         ];
-        $field_storage = FieldStorageConfig::loadByName('tripal_entity', $field_id);
-        if (empty($field_storage)) {
-          $field_storage = FieldStorageConfig::create([
-            'field_name' => $field_id,
-            'entity_type' => 'tripal_entity',
-            'type' => 'markup',
-            'cardinality' => 1,
-            'revisionable' => FALSE,
-            'provider' => 'trpcultivate',
-            'settings' => [],
-          ]);
-          $field_storage->save();
-        }
-
+        // Load the field for this file based on the naming pattern.
+        // It should exist already by including it in the tripalfieldcollection.
         $field = FieldConfig::loadByName('tripal_entity', $content_type, $field_id);
         if (empty($field)) {
-          $field = FieldConfig::create([
-            'field_storage' => $field_storage,
-            'bundle' => $content_type,
-            'label' => $field_id,
-            'settings' => [
-              'markup' => $markup_value,
-            ],
-          ]);
+          throw new \Exception("Expected field with id $field_id on content type $content_type to already exist. Please ensure it is included in the tripalfieldcollection.");
         }
         else {
           $field->setSetting('markup', $markup_value);
+          $field->save();
         }
-
-        // Set the cvterm.
-        $field->setThirdPartySetting('tripal', 'termIdSpace', 'NCIT');
-        $field->setThirdPartySetting('tripal', 'termAccession', 'C63615');
-        $field->save();
-
-        // Assign widget settings for the default form mode.
-        $display_repository = \Drupal::service('entity_display.repository');
-        $display_repository->getFormDisplay('tripal_entity', $content_type)
-          ->setComponent($field_id, [
-            'type' => 'markup',
-          ])
-          ->save();
       }
     }
   }

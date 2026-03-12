@@ -68,15 +68,15 @@ layouts:
         children:
           - instruct_exp_references
           - exp_pub ## Focus on support types
-      # - id: exp-tab-outputs
-      #   type: tab
-      #   label: "Research Outputs"
-      #   weight: 6
-      #   show_empty: false
-      #   open: false
-      #   children:
-      #     - exp_datalicenses
-      #     - exp_pub ## Focus on result types
+      - id: exp-tab-outputs
+        type: tab
+        label: "Research Outputs"
+        weight: 6
+        show_empty: false
+        open: false
+        children:
+          - exp_research_outputs
+          - exp_dataset
 ## -- Sections
       - id: exp-section-name
         label: "Name Guidelines"
