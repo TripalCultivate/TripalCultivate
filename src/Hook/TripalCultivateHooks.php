@@ -56,19 +56,6 @@ class TripalCultivateHooks {
    */
   #[Hook('config_schema_info_alter')]
   public function configSchemaInfoAlter(&$definitions) {
-    // Support for the Markup Field being used on a TripalEntity.
-    // -- field settings.
-    // If you see the following error in tests, then add 'markup' to the
-    // $modules array for your test:
-    // 'Warning: Undefined array key "field.field_settings.markup"'.
-    if (array_key_exists('field.field_settings.markup', $definitions)) {
-      foreach ($definitions['field.field_settings.markup']['mapping'] as $setting_key => $settings) {
-        $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
-      }
-    }
-    else {
-      $this->logger->error("Tripal Cultivate requires the Markup module for it's content types but it seems to be missing as the 'field.field_settings.markup' schema definition is unavailable.");
-    }
 
     // Support for the Entity Reference Field being used on a TripalEntity.
     // -- field settings.
