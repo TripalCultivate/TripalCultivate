@@ -56,7 +56,6 @@ class ValidatorEmptyCellTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',
