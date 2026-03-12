@@ -639,7 +639,7 @@ fields:
             default:
               region: content
 
-    -   name: exp_bchem_assayprotocal
+    -   name: exp_bchem_assayprotocol
         content_type: research_experiment
         label: Assay Protocol
         type: chado_property_type_default

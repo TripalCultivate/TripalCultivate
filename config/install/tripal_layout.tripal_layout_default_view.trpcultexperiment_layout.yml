@@ -52,7 +52,7 @@ layouts:
         children:
           - "exp_featureofinterest"
           - "exp_pheno_method"
-          - "exp_bchem_assayprotocal"
+          - "exp_bchem_assayprotocol"
       - id: experiment_design
         type: details
         label: "Experimental Design"
