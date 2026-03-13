@@ -6,6 +6,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests Row Validation for Valid Organism Validator.
@@ -17,6 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[Group('trpcultivate')]
 #[Group('validators')]
 #[Group('row_validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
   /**
    * Plugin Manager service.
@@ -46,7 +48,6 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

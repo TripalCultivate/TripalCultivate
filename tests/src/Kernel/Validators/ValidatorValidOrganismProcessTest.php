@@ -5,6 +5,7 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests any message processing methods for the ValidOrganism validator.
@@ -14,6 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   /**
    * An instance of the validator.
@@ -611,18 +613,18 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Data Provider for exceptions in processListWithDescribedTableMetadata() for ValidOrganism()
+   * Data Provider for exceptions in processListWithDescribedTableMetadata().
    *
    * @return array
-   *  Each scenario is an array with the following:
-   *  - An array of validation status arrays that get passed to the process
+   *   Each scenario is an array with the following:
+   *   - An array of validation status arrays that get passed to the process
    *    method. It is keyed by the line number that triggered this failed
    *    validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed, where the key => value
    *       pairs map to the index => cell value(s) that failed validation.
-   *  - An array of expectations in the rendered output which has the following
+   *   - An array of expectations in the rendered output which has the following
    *    keys:
    *    - 'expected_message': The exception message that is expected to be
    *      triggered.
@@ -662,10 +664,11 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Tests for exceptions thrown in processListWithDescribedTableMetadata() for ValidOrganism() when there are issues with the metadata passed in.
+   * Tests for exceptions thrown in processListWithDescribedTableMetadata().
    *
    * @param array $validation_results
-   *   An array of validation status arrays that get passed to the process   method. It is keyed by the line number that triggered this failed
+   *   An array of validation status arrays that get passed to the process
+   *   method. It is keyed by the line number that triggered this failed
    *   validation status, further keyed by:
    *     - 'case': a developer-focused string describing the case checked.
    *     - 'valid': FALSE to indicate that validation failed.
@@ -676,6 +679,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *   keys:
    *   - 'expected_message': The exception message that is expected to be
    *     triggered.
+   *
    * @dataProvider provideDescribedTableMetadataExceptions
    */
   #[DataProvider('provideDescribedTableMetadataExceptions')]
@@ -685,7 +689,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
 
     try {
       // Call the process method on our validation result.
-      $render_array = $this->validator_instance::processListWithDescribedTableMetadata($validation_results);
+      $this->validator_instance::processListWithDescribedTableMetadata($validation_results);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;

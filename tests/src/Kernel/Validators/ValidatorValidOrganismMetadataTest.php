@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormState;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests Metadata Validation for TripalCultivate Valid Organism Validator.
@@ -15,6 +16,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
   /**
    * The Validators plugin manager for creating new validator instances.
@@ -44,7 +46,6 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',
@@ -103,7 +104,8 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
    *   Each scenario is an array with the following values:
    *   - A human-readable short description of the test scenario.
    *   - The form values to pass to the validator that will cause an exception.
-   *   - The expected exception message or a string contained in the expected exception message.
+   *   - The expected exception message or a string contained in the expected
+   *     exception message.
    */
   public static function provideInvalidFormValuesForValidOrganismValidator() {
     $scenarios = [];
@@ -141,10 +143,10 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
    * @param mixed $form_values
    *   The form values to pass to the validator that will cause an exception.
    * @param string $expected_exception_message
-   *   The expected exception message or a string contained in the expected exception message.
+   *   The expected exception message or a string contained in the expected
+   *   exception message.
    *
    * @dataProvider provideInvalidFormValuesForValidOrganismValidator
-   *
    */
   #[DataProvider('provideInvalidFormValuesForValidOrganismValidator')]
   public function testValidOrganismMetadataExceptions($scenario, $form_values, $expected_exception_message) {
@@ -166,11 +168,11 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
       $exception_message = $e->getMessage();
     }
 
-    $this->assertTrue($exception_caught, 'Failed to catch exception when '  . $scenario . ' in the form values for Valid Organism validator.');
+    $this->assertTrue($exception_caught, 'Failed to catch exception when ' . $scenario . ' in the form values for Valid Organism validator.');
     $this->assertStringContainsString(
       $expected_exception_message,
       $exception_message,
-      'Expected exception message does not match message when '  . $scenario . ' in the form values for Valid Organism validator.');
+      'Expected exception message does not match message when ' . $scenario . ' in the form values for Valid Organism validator.');
   }
 
   /**
