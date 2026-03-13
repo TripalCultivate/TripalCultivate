@@ -4,6 +4,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test any message process methods for the ValueInList validator.
@@ -13,6 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -28,6 +31,7 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
    * @var array
    */
   protected static $modules = [
+    'file',
     'system',
     'user',
     'path',
@@ -35,7 +39,6 @@ class ValidatorValueInListProcessTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

@@ -6,6 +6,8 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorOrganism;
 use Drupal\tripal\Services\TripalLogger;
 use Drupal\tripal_chado\Database\ChadoConnection;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Organism validator trait.
@@ -15,6 +17,7 @@ use Drupal\tripal_chado\Database\ChadoConnection;
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]
+#[RunTestsInSeparateProcesses]
 class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
 
   /**
@@ -31,7 +34,6 @@ class ValidatorTraitOrganismTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

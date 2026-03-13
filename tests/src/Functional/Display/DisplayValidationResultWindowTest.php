@@ -7,6 +7,8 @@ use Drupal\Component\Utility\Html;
 use Drupal\Tests\tripal_chado\Functional\ChadoTestBrowserBase;
 use Drupal\KernelTests\AssertContentTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Tripal Cultivate Validation Result Window.
@@ -16,6 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('displays')]
+#[RunTestsInSeparateProcesses]
 class DisplayValidationResultWindowTest extends ChadoTestBrowserBase {
 
   use AssertContentTrait;

@@ -5,6 +5,8 @@ namespace Drupal\Tests\tripalcultivate\Kernel;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test file template generator service.
@@ -14,6 +16,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('template_generate')]
+#[RunTestsInSeparateProcesses]
 class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
 
   /**
@@ -30,7 +33,6 @@ class ServiceTemplateGeneratorTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

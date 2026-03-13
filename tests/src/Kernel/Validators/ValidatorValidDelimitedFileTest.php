@@ -5,6 +5,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Tripal Cultivate Data File Delimited Validator Plugins.
@@ -14,6 +16,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
@@ -39,7 +42,6 @@ class ValidatorValidDelimitedFileTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

@@ -5,6 +5,8 @@ namespace Drupal\Tests\tripalcultivate\Kernel;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\Service\ImportValidationHelper;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test import validation helper service.
@@ -14,6 +16,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validation_helper')]
+#[RunTestsInSeparateProcesses]
 class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
 
   /**
@@ -30,7 +33,6 @@ class ServiceImportValidationHelperTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

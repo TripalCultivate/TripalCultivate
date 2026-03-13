@@ -5,6 +5,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests any message processing methods for the GermplasmNameExists validator.
@@ -14,6 +16,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
 
   /**
@@ -43,9 +46,15 @@ class ValidatorGermplasmNameExistsProcessTest extends ChadoTestKernelBase {
    * @var array
    */
   protected static $modules = [
+    'file',
     'system',
     'user',
-    'file',
+    'path',
+    'path_alias',
+    'views',
+    'field',
+    'field_ui',
+    'field_group',
     'tripal',
     'tripal_chado',
     'tripal_layout',

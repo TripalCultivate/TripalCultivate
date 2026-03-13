@@ -4,6 +4,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorColumnIndices;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the ColumnIndices validator trait.
@@ -13,6 +15,7 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorColumnIn
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]
+#[RunTestsInSeparateProcesses]
 class ValidatorTraitColumnIndicesTest extends ChadoTestKernelBase {
 
   /**
@@ -29,7 +32,6 @@ class ValidatorTraitColumnIndicesTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

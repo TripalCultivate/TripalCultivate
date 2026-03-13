@@ -7,6 +7,8 @@ use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorFileType
 use Drupal\Tests\trpcultivate\Traits\TripalCultivateImporterTestTrait;
 use Drupal\tripal\Services\TripalLogger;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the FileTypes validator trait.
@@ -16,6 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]
+#[RunTestsInSeparateProcesses]
 class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
 
   use TripalCultivateImporterTestTrait;
@@ -34,7 +37,6 @@ class ValidatorTraitFileTypesTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

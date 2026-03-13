@@ -39,9 +39,9 @@ RUN service postgresql start \
 
 RUN service postgresql start \
   && drush trp-prep-chado --schema-name=${chadoschema} \
-  && drush tripal:trp-import-types --username=drupaladmin --collection_id=general_chado \
-  && drush tripal:trp-import-types --username=drupaladmin --collection_id=germplasm_chado \
-  && drush tripal:trp-import-types --username=drupaladmin --collection_id=genomic_chado \
-  && drush tripal:trp-import-types --username=drupaladmin --collection_id=genetic_chado \
+  && drush tripal:trp-import-types --collection_id=general_chado \
+  && drush tripal:trp-import-types --collection_id=germplasm_chado \
+  && drush tripal:trp-import-types --collection_id=genomic_chado \
+  && drush tripal:trp-import-types --collection_id=genetic_chado \
   && drush cr \
   && service postgresql stop

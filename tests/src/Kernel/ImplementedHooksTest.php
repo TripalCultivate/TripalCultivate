@@ -6,6 +6,8 @@ use Drupal\Core\Routing\RouteMatch;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests our implementation of specific hooks.
@@ -13,6 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * @group Hooks
  */
 #[Group('Hooks')]
+#[RunTestsInSeparateProcesses]
 class ImplementedHooksTest extends ChadoTestKernelBase {
 
   /**
@@ -35,7 +38,6 @@ class ImplementedHooksTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

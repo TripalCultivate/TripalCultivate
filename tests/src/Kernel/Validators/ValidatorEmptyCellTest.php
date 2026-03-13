@@ -5,6 +5,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Empty Cell validator.
@@ -16,6 +18,7 @@ use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager
 #[Group('trpcultivate')]
 #[Group('validators')]
 #[Group('row_validators')]
+#[RunTestsInSeparateProcesses]
 class ValidatorEmptyCellTest extends ChadoTestKernelBase {
 
   /**
@@ -53,7 +56,6 @@ class ValidatorEmptyCellTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',

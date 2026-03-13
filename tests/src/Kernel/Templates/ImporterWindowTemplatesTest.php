@@ -5,6 +5,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\Importer;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests window templates used in importer.
@@ -14,6 +16,7 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
  */
 #[Group('trpcultivate')]
 #[Group('templates')]
+#[RunTestsInSeparateProcesses]
 class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
 
   /**
@@ -29,6 +32,9 @@ class ImporterWindowTemplatesTest extends ChadoTestKernelBase {
    * @var array
    */
   protected static $modules = [
+    'field',
+    'field_ui',
+    'field_group',
     'tripal',
     'tripal_chado',
     'tripal_layout',

@@ -266,6 +266,262 @@ fields:
               region: content
 
 ### -------------------------------------------------------------------------
+## MARKUP
+###
+
+    -   name: 'instruct_exp_addtmetadata'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Additiona Metadata'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_addtmetadata'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_expdesign'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Experiment Design'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_expdesign'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_funding'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Funding'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_funding'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_germplasm'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Germplasm'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_germplasm'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_methods'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Methods'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_methods'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_name'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Name'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_name'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_overview'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Overview'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_overview'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_people'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS People'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_people'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_references'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS References'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_references'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_sitelocations'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Site Locations'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_sitelocations'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_timepoints'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Timepoints'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_timepoints'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+    -   name: 'instruct_exp_why'
+        content_type: 'research_experiment'
+        label: 'INSTRUCTIONS Why'
+        type: 'tripal_markup'
+        description: 'Provides instruction text for the add/edit form.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'drupal_sql_storage'
+        settings:
+            termIdSpace: 'local-instruct'
+            termAccession: 'exp_why'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+### -------------------------------------------------------------------------
 ## STATIC
 ###
 
@@ -617,7 +873,7 @@ fields:
             default:
               region: content
 
-    -   name: exp_bchem_assayprotocal
+    -   name: exp_bchem_assayprotocol
         content_type: research_experiment
         label: Assay Protocol
         type: chado_property_type_default

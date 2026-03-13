@@ -5,6 +5,8 @@ namespace Drupal\Tests\trpcultivate\Kernel\Validators;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\trpcultivate\Kernel\Validators\FakeValidators\ValidatorColumnCount;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the ColumnCount validator trait.
@@ -14,6 +16,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 #[Group('trpcultivate')]
 #[Group('validator_traits')]
+#[RunTestsInSeparateProcesses]
 class ValidatorTraitColumnCountTest extends ChadoTestKernelBase {
 
   /**
@@ -30,7 +33,6 @@ class ValidatorTraitColumnCountTest extends ChadoTestKernelBase {
     'views',
     'field',
     'field_ui',
-    'markup',
     'field_group',
     'tripal',
     'tripal_chado',
