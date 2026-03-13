@@ -101,6 +101,70 @@ class TripalCultivateHooks {
       'label' => 'Term Accession',
       'nullable' => TRUE,
     ];
+    // Support for the Entity Reference Field being used on a TripalEntity.
+    // -- field settings.
+    if (array_key_exists('field.field_settings.entity_reference', $definitions)) {
+      foreach ($definitions['field.field_settings.entity_reference']['mapping'] as $setting_key => $settings) {
+        $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+      }
+    }
+    else {
+      $this->logger->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.field_settings.entity_reference' schema definition is unavailable.");
+    }
+    // -- field storage settings.
+    if (array_key_exists('field.storage_settings.entity_reference', $definitions)) {
+      foreach ($definitions['field.storage_settings.entity_reference']['mapping'] as $setting_key => $settings) {
+        $definitions['field.storage.tripal_entity.*']['mapping']['settings']['mapping'][$setting_key] = $settings;
+      }
+    }
+    else {
+      $this->logger->error("Tripal Cultivate requires the Entity Reference Field for it's content types but it seems to be missing as the 'field.storage_settings.entity_reference' schema definition is unavailable.");
+    }
+
+    // Support for Third Party Tripal field settings being used on TripalEntity.
+    // @todo this should likely be in tripal core.
+    if (!array_key_exists('third_party_settings', $definitions['field.field.tripal_entity.*.*']['mapping'])) {
+      $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings'] = [
+        'type' => 'mapping',
+        'mapping' => [],
+      ];
+    }
+    if (!array_key_exists('tripal', $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping'])) {
+      $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping']['tripal'] = [
+        'type' => 'mapping',
+        'mapping' => [],
+      ];
+    }
+    $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping']['tripal']['mapping']['termIdSpace'] = [
+      'type' => 'string',
+      'label' => 'Term ID Space',
+      'nullable' => TRUE,
+    ];
+    $definitions['field.field.tripal_entity.*.*']['mapping']['third_party_settings']['mapping']['tripal']['mapping']['termAccession'] = [
+      'type' => 'string',
+      'label' => 'Term Accession',
+      'nullable' => TRUE,
+    ];
+    $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['genus_term'] = [
+      'type' => 'string',
+      'label' => 'Genus Term',
+      'nullable' => TRUE,
+    ];
+    $definitions['field.field.tripal_entity.*.*']['mapping']['settings']['mapping']['sciname_term'] = [
+      'type' => 'string',
+      'label' => 'Scientific name Term',
+      'nullable' => TRUE,
+    ];
+    $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['genus_term'] = [
+      'type' => 'string',
+      'label' => 'Genus Term',
+      'nullable' => FALSE,
+    ];
+    $definitions['tripal.tripalfield_collection.*']['mapping']['fields']['sequence']['mapping']['settings']['mapping']['sciname_term'] = [
+      'type' => 'string',
+      'label' => 'Scientific name Term',
+      'nullable' => FALSE,
+    ];
   }
 
 }
