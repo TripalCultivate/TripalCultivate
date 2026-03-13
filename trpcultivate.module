@@ -275,7 +275,7 @@ function trpcultivate_apply_layout() {
   }
 
   // -- Expand rows for a few longer description fields.
-  $fields = ['exp_design', 'exp_pheno_method', 'exp_bchem_assayprotocal'];
+  $fields = ['exp_design', 'exp_pheno_method', 'exp_bchem_assayprotocol'];
   foreach ($fields as $component_name) {
     $options = $display->getComponent($component_name);
     $options['settings']['num_rows'] = 6;
