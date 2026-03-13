@@ -56,7 +56,7 @@ layouts:
         children:
           - instruct_exp_methods
           - exp_pheno_method
-          - exp_bchem_assayprotocal
+          - exp_bchem_assayprotocol
           # - exp_protocols
           # - exp_analysis_method
       - id: exp-tab-references
