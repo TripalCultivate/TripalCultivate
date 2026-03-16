@@ -1041,7 +1041,7 @@ fields:
         settings:
             termIdSpace: rdfs
             termAccession: type
-            fixed_value: "SIO:001066"
+            fixed_value: "SEPIO:0000125"
         display:
           view:
             default:
