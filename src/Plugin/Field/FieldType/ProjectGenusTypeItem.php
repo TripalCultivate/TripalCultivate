@@ -166,7 +166,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     // Term: genus.
     $genus_term = $this->getSetting('genus_term');
     // Term: scientific name.
-    $sciename_term = $this->getSetting('sciname_term');
+    $sciname_term = $this->getSetting('sciname_term');
 
     // FIX the type_id for both our properties using the terms above.
     foreach ($prop_values as $index => $prop_value) {
@@ -174,7 +174,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
         $prop_values[$index]->setValue($cv_autocomplete->getCVtermId($genus_term));
       }
       elseif ($prop_value->getKey() == 'sciname_type_id') {
-        $prop_values[$index]->setValue($cv_autocomplete->getCVtermId($sciename_term));
+        $prop_values[$index]->setValue($cv_autocomplete->getCVtermId($sciname_term));
       }
     }
 
