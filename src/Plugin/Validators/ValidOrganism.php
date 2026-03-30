@@ -379,17 +379,16 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *     organisms not being found in the database.
    *
    * @return array
-   *   A render array of type "unordered list" used to display feedback to the
-   *   user about the validation failure, where each item is a markup block
-   *   containing:
-   *   - A message describing the case triggered
-   *   - A table that lists the row and column combinations with failures for
-   *     this case.
-   *   Each case triggered will have its own markup block. The table headers for
-   *   each case are:
-   *     - Organism is empty: 'Row Number', 'Column Header'
-   *     - Missing organism from the database:
-   *       'Row Number', 'Column Header', 'Organism'
+   *   A render array depending on the cases triggered the validation results:
+   *   - A simple warning message is returned if any row had empty cells for
+   *     organism columns.
+   *   - An "unordered list" is returned when the organism is missing from the
+   *     database to informing the user about the validation failure, where
+   *     each item is a markup block containing:
+   *     - A message describing the case triggered
+   *     - A table that lists the row and column combinations with failures for
+   *       this case. The table has the following structure:
+   *       - 'Line Number', 'Column Header'
    *
    * @throws \Exception
    *   - If key 'column_headers' is missing from $metadata
@@ -417,7 +416,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     // Add a token for the column header names of the organism columns.
     $combined_tokens['column-headers'] = implode(', ', $metadata['column_headers']);
 
-   // Define our table header.
+    // Define our table header.
     // We will start with the line number and build the header from there as we
     // go through the failures. There will be a column for each column checked
     // by this validator instance and the column header will be the same as it
@@ -425,15 +424,15 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     $table_header = [-1 => 'Line Number'];
     $table['rows'] = [];
 
-    // Loop through each row in the $failures array and piece apart the
-    // different cases into different tables.
+    // Loop through each row in the $failures array and check for our 2
+    // different cases.
     foreach ($validation_results as $line_no => $validation_result) {
       // Check the format of this line's validation status.
       ImportValidationHelper::checkValidationStatusArray($validation_result, 'ValidOrganism', $line_no);
 
       // If any cells were found to be empty, this case takes presendence over
       // any other cases, and we return a warning message right away.
-      if ($validation_result['case'] == 'Unable to lookup organism with empty values') {
+      if ($validation_result['case'] == self::$mapping['case-empty-organism']['dev-case']) {
         $message = $service_TripalTokensParser->replaceTokens(
           $combined_tokens['case-empty-organism'],
           $combined_tokens
@@ -443,8 +442,8 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
           ['case-message', 'tc-valid-organism-empty'],
         );
       }
-      // Keeps track of which table this one line's validation result gets added
-      // to based on the case it triggered.
+      // If this file row is missing one or more organisms in the database, then
+      // add a new row to our table of missing organisms.
       if ($validation_result['case'] == self::$mapping['case-missing-organism']['dev-case']) {
 
         // Define a new row in our table for this line number.
@@ -470,7 +469,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
           $table['rows'][$line_no][$index] = $failed_value;
         }
       }
-      elseif ($validation_result['case'] == 'Organism(s) exist(s) in the database') {
+      elseif ($validation_result['case'] == self::$mapping['case-valid']['dev-case']) {
         throw new \Exception("The case string returned by the ValidOrganism validator at line #$line_no implies validation passed, but valid is set to FALSE.");
       }
       else {
