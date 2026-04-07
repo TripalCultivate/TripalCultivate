@@ -141,6 +141,36 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       ],
     ];
 
+    // #1: An organism is missing from the database and the token for
+    // the message is passed in with a custom message.
+    $scenarios[] = [
+      [
+        3 => [
+          'case' => 'Missing organism(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => [
+            'missing_cells' => [
+              1 => 'Non-existant Organism',
+            ],
+          ],
+        ],
+      ],
+      [
+        'case-missing-organism' => 'The following organisms do not match any existing in this site. [contact-admin]',
+        'contact-admin' => 'Please contact your administrator to have them added to the database.',
+      ],
+      $basic_column_headers,
+      [
+        'expected_message' => 'The following organisms do not match any existing in this site. Please contact your administrator to have them added to the database.',
+        'expected_column_count' => 2,
+        'expected_table_rows' => [
+          3 => [
+            'Organism' => 'Non-existant Organism',
+          ],
+        ],
+      ],
+    ];
+
     return $scenarios;
   }
 
@@ -613,7 +643,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Data Provider for exceptions in processListWithDescribedTableMetadata().
+   * Data Provider for exceptions in processItemWithSimpleList().
    *
    * @return array
    *   Each scenario is an array with the following:
@@ -629,13 +659,13 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *    - 'expected_message': The exception message that is expected to be
    *      triggered.
    */
-  public static function provideDescribedTableMetadataExceptions() {
+  public static function provideItemWithSimpleListExceptions() {
     $scenarios = [];
 
     // #0: Validation passed, but valid is set to FALSE.
     $scenarios[] = [
       [
-        'case' => 'Organism exists in the database',
+        'case' => 'Organism(s) exist(s) in the database',
         'valid' => FALSE,
         'failedItems' => [
           'organism_provided' => 'Existing Organism',
@@ -664,7 +694,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Tests for exceptions thrown in processListWithDescribedTableMetadata().
+   * Tests for exceptions thrown in processItemWithSimpleList().
    *
    * @param array $validation_results
    *   An array of validation status arrays that get passed to the process
@@ -680,16 +710,16 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *   - 'expected_message': The exception message that is expected to be
    *     triggered.
    *
-   * @dataProvider provideDescribedTableMetadataExceptions
+   * @dataProvider provideItemWithSimpleListExceptions
    */
-  #[DataProvider('provideDescribedTableMetadataExceptions')]
-  public function testProcessListWithDescribedTableMetadataExceptions(array $validation_results, array $expectations) {
+  #[DataProvider('provideItemWithSimpleListExceptions')]
+  public function testProcessItemWithSimpleListExceptions(array $validation_results, array $expectations) {
     $exception_caught = FALSE;
     $exception_message = '';
 
     try {
       // Call the process method on our validation result.
-      $this->validator_instance::processListWithDescribedTableMetadata($validation_results);
+      $this->validator_instance::processItemWithSimpleList($validation_results);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -698,12 +728,12 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
 
     $this->assertTrue(
       $exception_caught,
-      'We expected an exception to be caught for missing metadata in processListWithDescribedTableMetadata(), but one was not thrown.'
+      'We expected an exception to be caught for missing metadata in processItemWithSimpleList(), but one was not thrown.'
     );
     $this->assertEquals(
       $expectations['expected_message'],
       $exception_message,
-      'We expected the exception message to indicate missing metadata in processListWithDescribedTableMetadata(), but it does not match what was expected.',
+      'We expected the exception message to indicate missing metadata in processItemWithSimpleList(), but it does not match what was expected.',
     );
 
   }
@@ -728,16 +758,50 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   public static function provideValidOrganismMetadataFailedCases() {
     $scenarios = [];
 
+    // #0: Missing organism(s) in the database with no tokens passed in.
     $scenarios[] = [
       [
-        'case' => 'Missing organism in the database',
+        'case' => 'Missing organism(s) in the database',
         'valid' => FALSE,
         'failedItems' => [
           'organism_provided' => 'Tripalus databasica',
         ],
       ],
+      [],
       [
-        'expected_message' => 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on its organism page, or contact your administrator to have it added if it does not yet exist.',
+        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
+      ],
+    ];
+
+    // #1: Missing organism(s) in the database with a token passed in for the
+    // contact admin part of the message.
+    $scenarios[] = [
+      [
+        'case' => 'Missing organism(s) in the database',
+        'valid' => FALSE,
+        'failedItems' => [
+          'organism_provided' => 'Tripalus databasica',
+        ],
+      ],
+      ['contact-admin' => 'CONTACT ADMIN'],
+      [
+        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or CONTACT ADMIN to have them added if they do not yet exist.',
+      ],
+    ];
+
+    // #2: Missing organism(s) in the database with a token passed in for the
+    // case-missing-organism.
+    $scenarios[] = [
+      [
+        'case' => 'Missing organism(s) in the database',
+        'valid' => FALSE,
+        'failedItems' => [
+          'organism_provided' => 'Tripalus databasica',
+        ],
+      ],
+      ['case-missing-organism' => 'Please contact your admin as the following organisms do not exist in the database.'],
+      [
+        'expected_message' => 'Please contact your admin as the following organisms do not exist in the database.',
       ],
     ];
 
@@ -755,6 +819,10 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *     - 'failedItems': an array of items that failed, where the key => value
    *     is the following:
    *     - 'organism_provided' => the oragnism provided by the user.
+   * @param array $tokens
+   *   - An array of tokens that can be used in the message. The key is the
+   *     token, (ex. 'contact-admin'), and the value is the new value to be
+   *     shown for that token.
    * @param array $expectations
    *   - An array of expectations that we want to find in the resulting rendered
    *     output. Each array has the following keys:
@@ -764,9 +832,9 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    * @dataProvider provideValidOrganismMetadataFailedCases
    */
   #[DataProvider('provideValidOrganismMetadataFailedCases')]
-  public function testProcessListWithDescribedTableMetadata(array $validation_results, array $expectations) {
+  public function testProcessItemWithSimpleList(array $validation_results, array $tokens, array $expectations) {
     // Call the process method on our validation result.
-    $render_array = $this->validator_instance::processListWithDescribedTableMetadata($validation_results);
+    $render_array = $this->validator_instance::processItemWithSimpleList($validation_results, $tokens);
 
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);

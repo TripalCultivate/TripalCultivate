@@ -169,7 +169,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       throw new \Exception('Failed to locate organism field element. ValidOrganism validator expects a form field element name organism.');
     }
 
-    $case = 'Organism exists in the database';
+    $case = 'Organism(s) exist(s) in the database';
     $valid = TRUE;
     $failed_items = [];
 
@@ -182,7 +182,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     }
 
     if ($organism_id <= 0 || empty($organism_id)) {
-      $case = 'Missing organism in the database';
+      $case = 'Missing organism(s) in the database';
       $valid = FALSE;
       $failed_items = ['organism_provided' => $organism_input];
     }
@@ -205,6 +205,8 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   - 'failedItems': an array of items that failed with the following keys.
    *     - 'organism_provided': The name of the organism provided.
    *   @see validateMetadata()
+   * @param array $tokens
+   *   An array of tokens to be used in the render array.
    *
    * @return array
    *   A render array of type unordered list which is used to display feedback
@@ -217,25 +219,39 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processListWithDescribedTableMetadata(array $validation_status) {
+  public static function processItemWithSimpleList(array $validation_status, array $tokens = []) {
+    // We use the Tripal Token Parser service to ensure that more complicated
+    // tokens are supported.
+    // NOTE: Dependency injection is NOT used since this is a static method.
+    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
+    // Grab the default messages for all of our tokens (ones with default-msg).
+    $default_tokens = array_column(self::$mapping, 'default-msg', 'token');
+    // Combine our provided and our default token arrays. Because array_merge
+    // will overwrite values in the first array with values from the second
+    // array for the same keys, we provide our default tokens first.
+    $combined_tokens = array_merge($default_tokens, $tokens);
+
     // Check the format of the validation_result parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidOrganism');
 
     // Check for one of the expected cases.
-    if ($validation_status['case'] == 'Missing organism in the database') {
-      $message = 'The following organism does not match any existing in this site. Please make sure you have entered it exactly as it appears on its organism page, or contact your administrator to have it added if it does not yet exist.';
+    if ($validation_status['case'] == self::$mapping['case-missing-organism']['dev-case']) {
+      $message = $combined_tokens['case-missing-organism'];
     }
-    elseif ($validation_status['case'] == 'Organism exists in the database') {
+    elseif ($validation_status['case'] == self::$mapping['case-valid']['dev-case']) {
       throw new \Exception('The case string returned by the ValidOrganism validator implies validation passed, but valid is set to FALSE.');
     }
     else {
       throw new \Exception('The case string returned by the ValidOrganism validator is not recognized as a potential case.');
     }
 
+    $service_TripalTokensParser = \Drupal::service('tripal.token_parser');
+    $replaced_message = $service_TripalTokensParser->replaceTokens($message, $combined_tokens);
+
     // Build the render array.
     $render_array = [
       '#type' => 'item',
-      '#title' => $message,
+      '#title' => $replaced_message,
       '#wrapper_attributes' => [
         'class' => [
           'tc-valid-organism-failures',
