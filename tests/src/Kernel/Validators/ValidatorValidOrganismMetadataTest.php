@@ -196,7 +196,7 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
         'Valid organism',
         'valid_organism',
         [
-          'case' => 'Organism exists in the database',
+          'case' => 'Organism(s) exist(s) in the database',
           'valid' => TRUE,
           'failedItems' => [],
         ],
@@ -205,7 +205,7 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
         'Invalid organism',
         'invalid_organism',
         [
-          'case' => 'Missing organism in the database',
+          'case' => 'Missing organism(s) in the database',
           'valid' => FALSE,
           'failedItems' => ['organism_provided' => 'Tripulas databasica'],
         ],
