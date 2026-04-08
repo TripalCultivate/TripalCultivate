@@ -6,12 +6,10 @@ use Drupal\Core\Render\Renderer;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests any message processing methods for the ValidOrganism validator.
- *
- * @group trpcultivate
- * @group validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
@@ -209,8 +207,6 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *       column header name of a cell in this row and its value is the
    *       problematic organism. For example:
    *        '2' => [ 'Organism' => 'Invalid Value' ].
-   *
-   * @dataProvider provideValidOrganismFailedCases
    */
   #[DataProvider('provideValidOrganismFailedCases')]
   public function testValidOrganismProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
@@ -443,8 +439,6 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    * @param string $message
    *   - The expected message to be displayed in the returned render array for
    *     this scenario.
-   *
-   * @dataProvider provideValidOrganismEmptyCellCase
    */
   #[DataProvider('provideValidOrganismEmptyCellCase')]
   public function testValidOrganismProcessEmptyCell(array $validation_results, array $tokens, array $metadata, string $message) {
@@ -611,8 +605,6 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *   keys:
    *   - 'expected_message': The exception message that is expected to be
    *     triggered.
-   *
-   * @dataProvider providePassedAndUnrecognizableCases
    */
   #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
@@ -709,8 +701,6 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *   keys:
    *   - 'expected_message': The exception message that is expected to be
    *     triggered.
-   *
-   * @dataProvider provideItemWithSimpleListExceptions
    */
   #[DataProvider('provideItemWithSimpleListExceptions')]
   public function testProcessItemWithSimpleListExceptions(array $validation_results, array $expectations) {
@@ -828,8 +818,6 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *     output. Each array has the following keys:
    *     -'expected message': The message expected in the return value of the
    *     process method for this scenario.
-   *
-   * @dataProvider provideValidOrganismMetadataFailedCases
    */
   #[DataProvider('provideValidOrganismMetadataFailedCases')]
   public function testProcessItemWithSimpleList(array $validation_results, array $tokens, array $expectations) {

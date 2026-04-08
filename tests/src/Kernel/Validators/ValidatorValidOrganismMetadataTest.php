@@ -7,12 +7,11 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Metadata Validation for TripalCultivate Valid Organism Validator.
- *
- * @group trpcultivate
- * @group validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
@@ -145,14 +144,14 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
    * @param string $expected_exception_message
    *   The expected exception message or a string contained in the expected
    *   exception message.
-   *
-   * @dataProvider provideInvalidFormValuesForValidOrganismValidator
    */
   #[DataProvider('provideInvalidFormValuesForValidOrganismValidator')]
   public function testValidOrganismMetadataExceptions($scenario, $form_values, $expected_exception_message) {
     // Create a plugin instance for this validator.
     $validator_id = 'valid_organism';
     $instance = $this->plugin_manager->createInstance($validator_id);
+
+    $instance->setInputType('metadata');
 
     $exception_caught  = FALSE;
     $exception_message = '';
@@ -228,8 +227,6 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
    *      validator if it returned a failed status. This key has the following
    *      sub-key:
    *      -'organism_provided': The organism provided that failed validation.
-   *
-   * @dataProvider provideOrganismToValidateOrganism
    */
   #[DataProvider('provideOrganismToValidateOrganism')]
   public function testMetadataOrganismExists(
@@ -240,6 +237,8 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
     // Create a plugin instance for this valiator.
     $validator_id = 'valid_organism';
     $instance = $this->plugin_manager->createInstance($validator_id);
+
+    $instance->setInputType('metadata');
 
     $form_values = ['organism' => $this->test_organisms[$test_key]];
     $validation_status = $instance->validateMetadata($form_values);

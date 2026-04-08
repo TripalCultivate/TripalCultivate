@@ -11,6 +11,7 @@ use Drupal\tripal_chado\Plugin\ChadoBuddy\ChadoOrganismBuddy;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
+use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\InputTypeTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,8 +29,12 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *
    * - ColumnIndices: Gets an array of indices corresponding to the cells in
    *   $row_values to validate.
+   * - InputTypeTrait: Manages the input type (metadata or data-row) that this
+   *   instance of the validator is set to validate, and ensures that it is
+   *   only set to validate a single input type.
   */
   use ColumnIndices;
+  use InputTypeTrait;
 
   /**
    * A Database query interface for querying Chado using Tripal DBX.
@@ -169,6 +174,13 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       throw new \Exception('Failed to locate organism field element. ValidOrganism validator expects a form field element name organism.');
     }
 
+    // Get the input type.
+    $input_type = $this->getInputType();
+
+    if ($input_type != 'metadata') {
+      throw new \Exception("ValidOrganism validator instance is set to validate input type $input_type, but validateMetadata was called. This method should only be called for instances set to validate 'metadata' input type.");
+    }
+
     $case = 'Organism(s) exist(s) in the database';
     $valid = TRUE;
     $failed_items = [];
@@ -295,6 +307,13 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
 
     // Grab our indices.
     $indices = $this->getIndices();
+
+    // Get the input type.
+    $input_type = $this->getInputType();
+
+    if ($input_type != 'data-row') {
+      throw new \Exception("ValidOrganism validator instance is set to validate input type $input_type, but validateRow was called. This method should only be called for instances set to validate 'data-row' input type.");
+    }
 
     // Check the indices provided are valid in the context of the row.
     // Will throw an exception if there's a problem.

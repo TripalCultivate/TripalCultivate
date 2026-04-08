@@ -7,13 +7,10 @@ use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorManager;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Row Validation for Valid Organism Validator.
- *
- * @group trpcultivate
- * @group validators
- * @group row_validators
  */
 #[Group('trpcultivate')]
 #[Group('validators')]
@@ -221,8 +218,6 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    *         cannot be looked up in the database.
    *         - A list containing the indices of the empty cells (This can only
    *           be a subset of $indices).
-   *
-   * @dataProvider provideRowToValidOrganism
    */
   #[DataProvider('provideRowToValidOrganism')]
   public function testValidatorValidOrganismRow(
@@ -235,6 +230,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
     $instance = $this->plugin_manager->createInstance($validator_id);
 
     $instance->setIndices($indices);
+    $instance->setInputType('data-row');
     $validation_status = $instance->validateRow($row_values);
 
     $this->assertEquals(
