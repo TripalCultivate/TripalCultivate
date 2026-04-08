@@ -218,6 +218,8 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    *         cannot be looked up in the database.
    *         - A list containing the indices of the empty cells (This can only
    *           be a subset of $indices).
+   *
+   * @dataProvider provideRowToValidOrganism
    */
   #[DataProvider('provideRowToValidOrganism')]
   public function testValidatorValidOrganismRow(

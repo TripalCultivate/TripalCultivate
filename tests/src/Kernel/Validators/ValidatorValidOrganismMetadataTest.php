@@ -144,6 +144,8 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
    * @param string $expected_exception_message
    *   The expected exception message or a string contained in the expected
    *   exception message.
+   *
+   * @dataProvider provideInvalidFormValuesForValidOrganismValidator
    */
   #[DataProvider('provideInvalidFormValuesForValidOrganismValidator')]
   public function testValidOrganismMetadataExceptions($scenario, $form_values, $expected_exception_message) {
@@ -227,6 +229,8 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
    *      validator if it returned a failed status. This key has the following
    *      sub-key:
    *      -'organism_provided': The organism provided that failed validation.
+   *
+   * @dataProvider provideOrganismToValidateOrganism
    */
   #[DataProvider('provideOrganismToValidateOrganism')]
   public function testMetadataOrganismExists(
