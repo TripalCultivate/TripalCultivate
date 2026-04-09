@@ -71,14 +71,14 @@ class ValidatorTraitInputTypeTest extends ChadoTestKernelBase {
     // Install module configuration.
     $this->installConfig(['trpcultivate']);
 
-    // Setup our invalid indices array.
+    // Setup our invalid input types array.
     $invalid_input_types = [
       'invalid value',
       123,
     ];
     $this->invalid_input_types = $invalid_input_types;
 
-    // Setup our valid indices array.
+    // Setup our valid input types array.
     $valid_input_types = [
       'data-row',
       'metadata',
@@ -110,7 +110,7 @@ class ValidatorTraitInputTypeTest extends ChadoTestKernelBase {
    * Tests InputTypeTrait::setInputType() and InputTypeTrait::getInputType().
    */
   public function testInputTypeSetterGetter() {
-    // Try to get indices before any have been set.
+    // Try to get input type before any have been set.
     // Exception message should trigger.
     $expected_message = 'Input type has not yet been set for this instance of the validator.';
 
@@ -154,30 +154,50 @@ class ValidatorTraitInputTypeTest extends ChadoTestKernelBase {
       );
     }
 
-    // Set valid input types and then check that they've been set.
-    foreach ($this->valid_input_types as $input_type) {
-      $exception_caught = FALSE;
-      $exception_message = 'NONE';
-      try {
-        $this->instance->setInputType($input_type);
-      }
-      catch (\Exception $e) {
-        $exception_caught = TRUE;
-        $exception_message = $e->getMessage();
-      }
-      $this->assertFalse(
-        $exception_caught,
-        "Calling setInputType() with a valid input type should not have thrown an exception but it threw '$exception_message'"
-      );
-
-      // Check that we can get the input type we just set.
-      $grabbed_input_type = $this->instance->getInputType();
-      $this->assertEquals(
-        $input_type,
-        $grabbed_input_type,
-        'Could not grab the set input type using getInputType() despite having called setInputType() on it.'
-      );
+    // Set a valid input type and then check that they've been set.
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      $this->instance->setInputType($this->valid_input_types[0]);
     }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+    $this->assertFalse(
+      $exception_caught,
+      "Calling setInputType() with a valid input type should not have thrown an exception but it threw '$exception_message'"
+    );
+
+    // Check that we can get the input type we just set.
+    $grabbed_input_type = $this->instance->getInputType();
+    $this->assertEquals(
+      $this->valid_input_types[0],
+      $grabbed_input_type,
+      'Could not grab the set input type using getInputType() despite having called setInputType() on it.'
+    );
+
+    // Try to set a second input type after already setting one.
+    // Exception message should trigger.
+    $expected_message = 'Input type has already been set for this instance of the validator. Each instance can only validate a single input type.';
+
+    $exception_caught = FALSE;
+    $exception_message = 'NONE';
+    try {
+      $this->instance->setInputType($this->valid_input_types[1]);
+    }
+    catch (\Exception $e) {
+      $exception_caught = TRUE;
+      $exception_message = $e->getMessage();
+    }
+
+    $this->assertTrue($exception_caught, 'Calling setInputType() after already setting an input type should have thrown an exception but did not.');
+    $this->assertStringContainsString(
+      $expected_message,
+      $exception_message,
+      'The exception thrown does not have the message we expected when trying to set input type a second time.'
+    );
+
   }
 
 }

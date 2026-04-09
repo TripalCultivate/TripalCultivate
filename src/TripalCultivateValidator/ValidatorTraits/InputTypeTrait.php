@@ -29,7 +29,7 @@ trait InputTypeTrait {
       throw new \Exception("Input type $input_type is not supported by this validator.");
     }
     // Check protected variable is not already set.
-    if (isset($this->input_type)) {
+    if (isset($this->context[$context_key])) {
       throw new \Exception('Input type has already been set for this instance of the validator. Each instance can only validate a single input type.');
     }
     // Set protected variable.
