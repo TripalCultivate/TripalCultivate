@@ -47,17 +47,18 @@ class ValidatorTraitInputTypeTest extends ChadoTestKernelBase {
   protected ValidatorInputType $instance;
 
   /**
-   * An array of indices which are invalid.
+   * An array of input types which are invalid.
    *
    * @var array
    */
-  protected array $invalid_indices;
+  protected array $invalid_input_types;
 
   /**
-   * An array of indices which are valid.
+   * An array of input types which are valid.
    *
    * @var array
    */
+  protected array $valid_input_types;
 
   /**
    * {@inheritdoc}
