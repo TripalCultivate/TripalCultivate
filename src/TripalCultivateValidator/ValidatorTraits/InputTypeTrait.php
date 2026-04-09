@@ -25,7 +25,7 @@ trait InputTypeTrait {
 
     $context_key = 'input_type';
     // Check if $input_type is one of those in the attributes.
-    if (!in_array($input_type, ['metadata', 'data-row'])) {
+    if (!in_array($input_type, $this->getSupportedInputTypes())) {
       throw new \Exception("Input type $input_type is not supported by this validator.");
     }
     // Check protected variable is not already set.

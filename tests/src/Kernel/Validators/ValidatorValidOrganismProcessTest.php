@@ -106,7 +106,8 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   public static function provideValidOrganismFailedCases() {
     $scenarios = [];
 
-    $basic_column_headers = [
+    $metadata = [
+      'input_type' => 'data-row',
       'column_headers' => [
         1 => 'Organism',
       ],
@@ -127,7 +128,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         ],
       ],
       [],
-      $basic_column_headers,
+      $metadata,
       [
         'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
         'expected_column_count' => 2,
@@ -157,7 +158,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         'case-missing-organism' => 'The following organisms do not match any existing in this site. [contact-admin]',
         'contact-admin' => 'Please contact your administrator to have them added to the database.',
       ],
-      $basic_column_headers,
+      $metadata,
       [
         'expected_message' => 'The following organisms do not match any existing in this site. Please contact your administrator to have them added to the database.',
         'expected_column_count' => 2,
@@ -190,6 +191,8 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
+   *   - 'input_type': The type of input that was validated (should be
+   *     'data-row' or 'metadata').
    *   - 'column_headers': This contains an array of headers for columns that
    *     are expected to contain organisms. The index in this array MUST
    *     match the position (starting with 0) of the column in the input file.
@@ -212,6 +215,11 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    */
   #[DataProvider('provideValidOrganismFailedCases')]
   public function testValidOrganismProcessListWithDescribedTable(array $validation_results, array $tokens, array $metadata, array $expectations) {
+    // Set the input type for this validator instance to data-row since
+    // this process method is only meant to be called for data-row
+    // validation results.
+    $this->validator_instance->setInputType('data-row');
+
     // Call the process method on our validation result.
     $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
 
@@ -310,13 +318,15 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   public static function provideValidOrganismEmptyCellCase() {
     $scenarios = [];
 
-    $basic_column_headers = [
+    $metadata_basic_column_headers = [
+      'input_type' => 'data-row',
       'column_headers' => [
         1 => 'Organism',
       ],
     ];
 
-    $additional_column_headers = [
+    $metadata_additional_column_headers = [
+      'input_type' => 'data-row',
       'column_headers' => [
         2 => 'This Organism',
         4 => 'That Organism',
@@ -335,7 +345,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         ],
       ],
       [],
-      $basic_column_headers,
+      $metadata_basic_column_headers,
       'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: Organism',
     ];
 
@@ -351,7 +361,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         ],
       ],
       [],
-      $additional_column_headers,
+      $metadata_additional_column_headers,
       'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: This Organism, That Organism',
     ];
 
@@ -376,7 +386,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         ],
       ],
       [],
-      $additional_column_headers,
+      $metadata_additional_column_headers,
       'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: This Organism, That Organism',
     ];
 
@@ -392,7 +402,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         ],
       ],
       ['case-empty-organism' => 'Oh no! You left one or more cells empty in column(s) "[column-headers]" but there should be a organism!'],
-      $basic_column_headers,
+      $metadata_basic_column_headers,
       'Oh no! You left one or more cells empty in column(s) "Organism" but there should be a organism!',
     ];
 
@@ -410,7 +420,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         ],
       ],
       ['column-headers' => 'Column 1'],
-      $basic_column_headers,
+      $metadata_basic_column_headers,
       'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: Organism',
     ];
 
@@ -435,6 +445,8 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
+   *   - 'input_type': The type of input that was validated (should be
+   *     'data-row' for this process method).
    *   - 'column_headers': This contains an array of headers for columns that
    *     are expected to contain organisms. The index in this array MUST
    *     match the position (starting with 0) of the column in the input file.
@@ -446,6 +458,11 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    */
   #[DataProvider('provideValidOrganismEmptyCellCase')]
   public function testValidOrganismProcessEmptyCell(array $validation_results, array $tokens, array $metadata, string $message) {
+
+    // Set the input type for this validator instance to data-row since
+    // this process method is only meant to be called for data-row
+    // validation results.
+    $this->validator_instance->setInputType('data-row');
 
     // Call the process method on our validation result.
     $render_array = $this->validator_instance::processListWithDescribedTable($validation_results, $metadata, $tokens);
@@ -498,6 +515,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
 
     $tokens = [];
     $metadata = [
+      'input_type' => 'data-row',
       'column_headers' => [
         2 => 'Organism1',
         4 => 'Organism2',
@@ -570,7 +588,9 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           ],
         ],
       ],
-      [],
+      [
+        'input_type' => 'data-row',
+      ],
       $tokens,
       [
         'expected_message' => "Expected metadata to contain 'column_headers' when processing failures from ValidOrganism, but it does not.",
@@ -594,6 +614,8 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
+   *    - 'input_type': The type of input that was validated (should be
+   *      'data-row' for this process method).
    *     - 'column_headers': This contains an array of headers for columns that
    *     are expected to contain organisms. The index in this array MUST
    *     match the position (starting with 0) of the column in the input file.
@@ -614,6 +636,10 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    */
   #[DataProvider('providePassedAndUnrecognizableCases')]
   public function testProcessListWithDescribedTableExceptions(array $validation_results, array $metadata, array $tokens, array $expectations) {
+    // Set the input type for this validator instance to data-row since
+    // this process method is only meant to be called for data-row
+    // validation results.
+    $this->validator_instance->setInputType('data-row');
 
     $exception_caught = FALSE;
     $exception_message = 'NONE';
@@ -660,6 +686,10 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   public static function provideItemWithSimpleListExceptions() {
     $scenarios = [];
 
+    $metadata = [
+      'input_type' => 'metadata',
+    ];
+
     // #0: Validation passed, but valid is set to FALSE.
     $scenarios[] = [
       [
@@ -669,6 +699,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'organism_provided' => 'Existing Organism',
         ],
       ],
+      $metadata,
       [
         'expected_message' => 'The case string returned by the ValidOrganism validator implies validation passed, but valid is set to FALSE.',
       ],
@@ -683,6 +714,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'organism_provided' => 'Existing Organism',
         ],
       ],
+      $metadata,
       [
         'expected_message' => 'The case string returned by the ValidOrganism validator is not recognized as a potential case.',
       ],
@@ -702,6 +734,11 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *     - 'valid': FALSE to indicate that validation failed.
    *     - 'failedItems': an array of items that failed, where the key => value
    *       pairs map to the index => cell value(s) that failed validation.
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following key is expected:
+   *   - 'input_type': The type of input that was validated (should be
+   *     'metadata' for this process method).
    * @param array $expectations
    *   An array of expectations in the rendered output which has the following
    *   keys:
@@ -711,13 +748,18 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    * @dataProvider provideItemWithSimpleListExceptions
    */
   #[DataProvider('provideItemWithSimpleListExceptions')]
-  public function testProcessItemWithSimpleListExceptions(array $validation_results, array $expectations) {
+  public function testProcessItemWithSimpleListExceptions(array $validation_results, array $metadata, array $expectations) {
+    // Set the input type for this validator instance to metadata since
+    // this process method is only meant to be called for metadata
+    // validation results.
+    $this->validator_instance->setInputType('metadata');
+
     $exception_caught = FALSE;
     $exception_message = '';
 
     try {
       // Call the process method on our validation result.
-      $this->validator_instance::processItemWithSimpleList($validation_results);
+      $this->validator_instance::processItemWithSimpleList($validation_results, $metadata);
     }
     catch (\Exception $e) {
       $exception_caught = TRUE;
@@ -756,6 +798,10 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
   public static function provideValidOrganismMetadataFailedCases() {
     $scenarios = [];
 
+    $metadata = [
+      'input_type' => 'metadata',
+    ];
+
     // #0: Missing organism(s) in the database with no tokens passed in.
     $scenarios[] = [
       [
@@ -765,6 +811,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'organism_provided' => 'Tripalus databasica',
         ],
       ],
+      $metadata,
       [],
       [
         'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
@@ -781,6 +828,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'organism_provided' => 'Tripalus databasica',
         ],
       ],
+      $metadata,
       ['contact-admin' => 'CONTACT ADMIN'],
       [
         'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or CONTACT ADMIN to have them added if they do not yet exist.',
@@ -797,6 +845,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'organism_provided' => 'Tripalus databasica',
         ],
       ],
+      $metadata,
       ['case-missing-organism' => 'Please contact your admin as the following organisms do not exist in the database.'],
       [
         'expected_message' => 'Please contact your admin as the following organisms do not exist in the database.',
@@ -817,6 +866,11 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    *     - 'failedItems': an array of items that failed, where the key => value
    *     is the following:
    *     - 'organism_provided' => the oragnism provided by the user.
+   * @param array $metadata
+   *   - An array of additional metadata (or contextual information)
+   *   needed by the process method. Here, the following key is expected:
+   *   - 'input_type': The type of input that was validated (should be
+   *     'metadata' for this process method).
    * @param array $tokens
    *   - An array of tokens that can be used in the message. The key is the
    *     token, (ex. 'contact-admin'), and the value is the new value to be
@@ -830,9 +884,14 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
    * @dataProvider provideValidOrganismMetadataFailedCases
    */
   #[DataProvider('provideValidOrganismMetadataFailedCases')]
-  public function testProcessItemWithSimpleList(array $validation_results, array $tokens, array $expectations) {
+  public function testProcessItemWithSimpleList(array $validation_results, array $metadata, array $tokens, array $expectations) {
+    // Set the input type for this validator instance to metadata since
+    // this process method is only meant to be called for metadata
+    // validation results.
+    $this->validator_instance->setInputType('metadata');
+
     // Call the process method on our validation result.
-    $render_array = $this->validator_instance::processItemWithSimpleList($validation_results, $tokens);
+    $render_array = $this->validator_instance::processItemWithSimpleList($validation_results, $metadata, $tokens);
 
     // Render the array we were returned.
     $rendered_markup = $this->renderer->renderRoot($render_array);

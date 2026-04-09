@@ -217,6 +217,14 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   - 'failedItems': an array of items that failed with the following keys.
    *     - 'organism_provided': The name of the organism provided.
    *   @see validateMetadata()
+   * @param array $metadata
+   *   An array of additional metadata (or contextual information) needed by the
+   *   process method. Here, the following keys are expected:
+   *   - 'input_type': $validator->getInputType() The type of input that was
+   *      validated (should be 'metadata' for this process method). This is used
+   *      to ensure that this process method is being called in the correct
+   *      context since this method is only meant to be called for metadata
+   *      validation results.
    * @param array $tokens
    *   An array of tokens to be used in the render array.
    *
@@ -231,7 +239,17 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
-  public static function processItemWithSimpleList(array $validation_status, array $tokens = []) {
+  public static function processItemWithSimpleList(array $validation_status, array $metadata, array $tokens = []) {
+    // Validate that metadata contains the expected keys.
+    if (!array_key_exists('input_type', $metadata)) {
+      throw new \Exception("Expected metadata to contain 'input_type' when processing failures from ValidOrganism, but it does not.");
+    }
+
+    // Check if the method was called with the correct validation method.
+    if ($metadata['input_type'] != 'metadata') {
+      throw new \Exception("ValidOrganism::processItemWithSimpleList is expected to be called with 'metadata' input type, but input type is " . $metadata['input_type']);
+    }
+
     // We use the Tripal Token Parser service to ensure that more complicated
     // tokens are supported.
     // NOTE: Dependency injection is NOT used since this is a static method.
@@ -396,6 +414,11 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    * @param array $metadata
    *   An array of additional metadata (or contextual information) needed by the
    *   process method. Here, the following keys are expected:
+   *   - 'input_type': $validator->getInputType();
+   *      The type of input that was validated (should be 'data-row' for this
+   *      process method). This is used to ensure that this process method is
+   *      being called in the correct context since this method is only meant
+   *      to be called for data-row validation results.
    *   - 'column_headers': This contains an array of headers for columns that
    *     are expected to contain organisms. The index in this array MUST
    *     match the position (starting with 0) of the column in the input file.
@@ -434,8 +457,16 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    */
   public static function processListWithDescribedTable(array $validation_results, array $metadata, array $tokens = []) {
     // Validate that metadata contains the expected keys.
+    if (!array_key_exists('input_type', $metadata)) {
+      throw new \Exception("Expected metadata to contain 'input_type' when processing failures from ValidOrganism, but it does not.");
+    }
     if (!array_key_exists('column_headers', $metadata)) {
       throw new \Exception("Expected metadata to contain 'column_headers' when processing failures from ValidOrganism, but it does not.");
+    }
+
+    // Check if the method was called with the correct validation method.
+    if ($metadata['input_type'] != 'data-row') {
+      throw new \Exception("ValidOrganism::processListWithDescribedTable is expected to be called with 'data-row' input type, but input type is " . $metadata['input_type']);
     }
 
     // We use the Tripal Token Parser service to ensure that more complicated
