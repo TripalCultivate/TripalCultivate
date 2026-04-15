@@ -222,11 +222,7 @@ class ValidatorValidOrganismValidateRowTest extends ChadoTestKernelBase {
    * @dataProvider provideRowToValidOrganism
    */
   #[DataProvider('provideRowToValidOrganism')]
-  public function testValidatorValidOrganismRow(
-    array $indices,
-    array $row_values,
-    array $expectations,
-  ) {
+  public function testValidatorValidOrganismRow(array $indices, array $row_values, array $expectations) {
     // Create a plugin instance for this validator.
     $validator_id = 'valid_organism';
     $instance = $this->plugin_manager->createInstance($validator_id);

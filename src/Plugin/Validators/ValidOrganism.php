@@ -3,7 +3,6 @@
 namespace Drupal\trpcultivate\Plugin\Validators;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal_chado\ChadoBuddy\PluginManagers\ChadoBuddyPluginManager;
 use Drupal\tripal_chado\Database\ChadoConnection;
@@ -12,6 +11,7 @@ use Drupal\trpcultivate\Service\ImportValidationHelper;
 use Drupal\trpcultivate\TripalCultivateValidator\TripalCultivateValidatorBase;
 use Drupal\trpcultivate\TripalCultivateValidator\Attribute\TripalCultivateValidator;
 use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\ColumnIndices;
+use Drupal\trpcultivate\TripalCultivateValidator\ValidatorTraits\InputTypeTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -189,7 +189,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
 
     $organism_id_array = $this->organism_buddy->getOrganismFromScientificName($organism_input);
     $organism_id = 0;
-    if (array_key_exists(0, $organism_id_array)) {
+    if (isset($organism_id_array[0])) {
       $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
     }
 
@@ -235,7 +235,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *   in the form which failed validation.
    *
    * @throws \Exception
-   *   - If the validation_result parameter was not formatted properly.
+   *   - If the validation_status parameter was not formatted properly.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.
    */
@@ -261,7 +261,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     // array for the same keys, we provide our default tokens first.
     $combined_tokens = array_merge($default_tokens, $tokens);
 
-    // Check the format of the validation_result parameter.
+    // Check the format of the validation_status parameter.
     ImportValidationHelper::checkValidationStatusArray($validation_status, 'ValidOrganism');
 
     // Check for one of the expected cases.
@@ -323,15 +323,15 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    */
   public function validateRow(array $row_values) {
 
-    // Grab our indices.
-    $indices = $this->getIndices();
-
     // Get the input type.
     $input_type = $this->getInputType();
 
     if ($input_type != 'data-row') {
       throw new \Exception("ValidOrganism validator instance is set to validate input type $input_type, but validateRow was called. This method should only be called for instances set to validate 'data-row' input type.");
     }
+
+    // Grab our indices.
+    $indices = $this->getIndices();
 
     // Check the indices provided are valid in the context of the row.
     // Will throw an exception if there's a problem.
@@ -345,25 +345,26 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     // Iterate through our array of row values.
     foreach ($row_values as $index => $cell) {
       // Only validate the cells at the specified indices.
-      if (in_array($index, $indices)) {
-        $cell = trim($cell);
-        // Check for empty cells.
-        if (!isset($cell) || empty($cell)) {
-          $empty = TRUE;
-          $failedItems['empty_cells'][] = $index;
+      if (!in_array($index, $indices)) {
+        continue;
+      }
+      $cell = trim($cell);
+      // Check for empty cells.
+      if (!isset($cell) || empty($cell)) {
+        $empty = TRUE;
+        $failedItems['empty_cells'][] = $index;
+      }
+      else {
+        $organism_id_array = $this->organism_buddy->getOrganismFromScientificName($cell);
+        $organism_id = 0;
+        if (isset($organism_id_array[0])) {
+          $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
         }
-        else {
-          $organism_id_array = $this->organism_buddy->getOrganismFromScientificName($cell);
-          $organism_id = 0;
-          if (array_key_exists(0, $organism_id_array)) {
-            $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
-          }
 
-          // Check for missing organism.
-          if ($organism_id <= 0 || empty($organism_id)) {
-            $missing = TRUE;
-            $failedItems['missing_cells'][$index] = $cell;
-          }
+        // Check for missing organism.
+        if ($organism_id <= 0 || empty($organism_id)) {
+          $missing = TRUE;
+          $failedItems['missing_cells'][$index] = $cell;
         }
       }
     }
@@ -377,6 +378,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
         'failedItems' => $failedItems,
       ];
     }
+
     if ($missing) {
       $case_message = 'Missing organism(s) in the database';
     }
@@ -450,7 +452,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    *
    * @throws \Exception
    *   - If key 'column_headers' is missing from $metadata
-   *   - If a validation status array was not formatted properly.
+   *   - If a validation result array was not formatted properly.
    *   - If the message for token 'case-empty-organism' is an empty string.
    *   - If the case string returned by the validator implied validation passed.
    *   - If the case string returned by the validator is not recognized.

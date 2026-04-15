@@ -122,7 +122,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'missing_cells' => [
-              1 => 'Non-existant Organism',
+              1 => 'Non-existent Organism',
             ],
           ],
         ],
@@ -134,7 +134,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         'expected_column_count' => 2,
         'expected_table_rows' => [
           3 => [
-            'Organism' => 'Non-existant Organism',
+            'Organism' => 'Non-existent Organism',
           ],
         ],
       ],
@@ -149,7 +149,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'missing_cells' => [
-              1 => 'Non-existant Organism',
+              1 => 'Non-existent Organism',
             ],
           ],
         ],
@@ -164,7 +164,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         'expected_column_count' => 2,
         'expected_table_rows' => [
           3 => [
-            'Organism' => 'Non-existant Organism',
+            'Organism' => 'Non-existent Organism',
           ],
         ],
       ],
@@ -264,9 +264,9 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       // 1st Column: Line Number.
       $line_number = $select_row_cells[0];
       $this->assertEquals(
-      $expected_line_no,
-      $line_number,
-      "Did not get the expected line number in the rendered table from processing ValidOrganism failures."
+        $expected_line_no,
+        $line_number,
+        "Did not get the expected line number in the rendered table from processing ValidOrganism failures."
       );
       // 2nd Column and up: Column(s) with invalid value
       $current_column_index = 1;
@@ -279,9 +279,9 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
         );
         // Check that the invalid value in the table matches what we expect.
         $this->assertEquals(
-        $invalid_value,
-        (string) $select_row_cells[$current_column_index],
-        "We expected an invalid value to be listed for \"$column_header\" at line #$expected_line_no in the rendered table for ValidOrganism failures."
+          $invalid_value,
+          (string) $select_row_cells[$current_column_index],
+          "We expected an invalid value to be listed for \"$column_header\" at line #$expected_line_no in the rendered table for ValidOrganism failures."
         );
         $current_column_index++;
       }
@@ -373,7 +373,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
           'valid' => FALSE,
           'failedItems' => [
             'missing_cells' => [
-              2 => 'Non-existant Orgsnism',
+              2 => 'Non-existent Orgsnism',
             ],
           ],
         ],

@@ -233,11 +233,7 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
    * @dataProvider provideOrganismToValidateOrganism
    */
   #[DataProvider('provideOrganismToValidateOrganism')]
-  public function testMetadataOrganismExists(
-    string $scenario,
-    string $test_key,
-    array $expected,
-  ) {
+  public function testMetadataOrganismExists(string $scenario, string $test_key, array $expected) {
     // Create a plugin instance for this valiator.
     $validator_id = 'valid_organism';
     $instance = $this->plugin_manager->createInstance($validator_id);
