@@ -322,7 +322,7 @@ class SetupModuleService {
     // -- Finally save it.
     $display->save();
 
-    // Setup field funder in research study content type.
+    // Load Tripal Entity Type research_study bundle.
     $bundle = 'research_study';
     $research_study = $this->entityTypeManager->getStorage('tripal_entity_type')->load($bundle);
 
