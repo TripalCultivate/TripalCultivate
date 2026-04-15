@@ -22,7 +22,7 @@ class SetupModuleService {
    *
    * @var Drupal\Core\File\FileSystem
    */
-  protected $file_system;
+  protected FileSystem $file_system;
 
   /**
    * The entity type manager.
