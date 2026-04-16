@@ -44,13 +44,6 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
   protected ChadoConnection $chado_connection;
 
   /**
-   * The Chado Buddy service manager.
-   *
-   * @var Drupal\tripal_chado\ChadoBuddy\PluginManagers\ChadoBuddyPluginManager
-   */
-  protected ChadoBuddyPluginManager $buddy_manager;
-
-  /**
    * The Chado Buddy organism.
    *
    * @var \Drupal\tripal_chado\Plugin\ChadoBuddy\ChadoOrganismBuddy
@@ -123,8 +116,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->chado_connection = $chado_connection;
-    $this->buddy_manager = $buddy_manager;
-    $this->organism_buddy = $this->buddy_manager->createInstance('chado_organism_buddy', []);
+    $this->organism_buddy = $buddy_manager->createInstance('chado_organism_buddy', []);
   }
 
   /**
