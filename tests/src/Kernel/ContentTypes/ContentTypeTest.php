@@ -53,6 +53,13 @@ class ContentTypeTest extends ChadoTestKernelBase {
   protected ChadoConnection $chado_connection;
 
   /**
+   * The setup module service.
+   *
+   * @var \Drupal\trpcultivate\Service\SetupModuleService
+   */
+  protected $setupService;
+
+  /**
    * The expected content types imported by this module.
    *
    * @var array
@@ -88,6 +95,9 @@ class ContentTypeTest extends ChadoTestKernelBase {
     // Initialize the chado instance with all the records
     // that would be present after running prepare.
     $this->chado_connection = $this->getTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
+
+    // ... we need our own modules config.
+    $this->setupService = \Drupal::service('trpcultivate.setup_module_service');
   }
 
   /**
@@ -99,13 +109,14 @@ class ContentTypeTest extends ChadoTestKernelBase {
   public function testImportContentTypeCallback() {
 
     // First import the needed terms.
-    \trpcultivate_install_terms();
+    $this->setupService->installTerms();
+
     // -- And create the terms added by core.
     $terms_setup = \Drupal::service('tripal_chado.terms_init');
     $terms_setup->installTerms();
 
     // Then import the content types and their fields.
-    \trpcultivate_import_contenttypes();
+    $this->setupService->importContenttypes();
 
     // Now select all content types by category
     // and see if they match expectations.
