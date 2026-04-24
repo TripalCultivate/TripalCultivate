@@ -9,23 +9,12 @@
  * Implements hook_install().
  */
 function trpcultivate_install(): void {
-
-  // Submit job to install terms needed by this module.
+  // Submit job to run the setup of the module.
   $current_user = \Drupal::currentUser();
   \Drupal::service('tripal.job')->create([
-    'job_name' => t("Insert terms used by the Tripal Cultivate package"),
+    'job_name' => t("Setup Tripal Cultivate Terms and Content Types"),
     'modulename' => 'trpcultivate',
-    'callback' => 'trpcultivate_install_terms',
-    'arguments' => [],
-    'uid' => $current_user->id(),
-  ]);
-
-  // Submit job to install content types and fields.
-  $current_user = \Drupal::currentUser();
-  \Drupal::service('tripal.job')->create([
-    'job_name' => t("Import content type collections used by the Tripal Cultivate package"),
-    'modulename' => 'trpcultivate',
-    'callback' => 'trpcultivate_import_contenttypes',
+    'callback' => ['Drupal\trpcultivate\Service\SetupModuleService', 'runSetupModuleTripalJob'],
     'arguments' => [],
     'uid' => $current_user->id(),
   ]);

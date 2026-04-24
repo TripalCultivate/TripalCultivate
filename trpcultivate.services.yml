@@ -24,3 +24,14 @@ services:
   trpcultivate.theme_hooks:
     class: 'Drupal\trpcultivate\Hook\TripalCultivateThemeHooks'
     arguments: ['@current_route_match']
+
+  trpcultivate.setup_module_service:
+    class: 'Drupal\trpcultivate\Service\SetupModuleService'
+    arguments: [
+      '@entity_type.manager',
+      '@tripal_chado.terms_init',
+      '@tripal.tripalentitytype_collection',
+      '@tripal.tripalfield_collection',
+      '@file_system',
+      '@extension.list.module',
+    ]
