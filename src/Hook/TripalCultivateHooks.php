@@ -103,4 +103,23 @@ class TripalCultivateHooks {
     ];
   }
 
+  /**
+   * Implements hook_views_data().
+   */
+  #[Hook('views_data')]
+  public function viewsData() {
+    $data = [];
+
+    $data['views']['species_filter'] = [
+      'title' => $this->t('Species Filter'),
+      'filter' => [
+        'title' => $this->t('Species Filter'),
+        'field' => 'id',
+        'id' => 'species_filter',
+      ],
+    ];
+
+    return $data;
+  }
+
 }
