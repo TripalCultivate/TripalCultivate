@@ -34,64 +34,10 @@ class SpeciesFilter extends FilterPluginBase {
         'species' => ['default' => ''],
       ],
     ];
+    $options['organism_field'] = ['default' => ''];
 
     return $options;
   }
-
-  // /**
-  //  * {@inheritdoc}
-  //  */
-  // public function buildExposedForm(&$form, FormStateInterface $form_state) {
-  //   $entity_type_manager = \Drupal::service('entity_type.manager');
-  // $bundle_key = $entity_type_manager
-  //     ->getDefinition('tripal_entity')
-  //     ->getKey('bundle');
-  // // $crop_options = $this->getCropOptions();
-  //   // $form['crop'] = [
-  //   //   '#type' => 'radios',
-  //   //   '#title' => $this->t('Crop'),
-  //   //   '#options' => $crop_options,
-  //   // ];
-  //   $genus_options = ['' => $this->t('- Select genus -')];
-  // $genus_results = $entity_type_manager
-  //     ->getStorage('tripal_entity')
-  //     ->getAggregateQuery()
-  //     ->accessCheck(FALSE)
-  //     ->condition($bundle_key, 'organism')
-  //     ->condition('organism_genus.value', '', '<>')
-  //     ->groupBy('organism_genus.value')
-  //     ->execute();
-  // foreach ($genus_results as $row) {
-  //     $genus = $row['organism_genus_value'];
-  //     $genus_options[$genus] = $genus;
-  //   }.
-  // $form['genus'] = [
-  //     '#type' => 'select',
-  //     '#title' => $this->t('Genus'),
-  //     '#options' => $genus_options,
-  //     '#default_value' => $this->value,
-  //   ];
-  // // Species options (from genus).
-  //   $species_options = ['' => $this->t('- Select species -')];
-  // $species_results = $entity_type_manager
-  //     ->getStorage('tripal_entity')
-  //     ->getAggregateQuery()
-  //     ->accessCheck(FALSE)
-  //     ->condition($bundle_key, 'organism')
-  //     ->condition('organism_species.value', '', '<>')
-  //     ->groupBy('organism_species.value')
-  //     ->execute();
-  // foreach ($species_results as $row) {
-  //     $species = $row['organism_species_value'];
-  //     $species_options[$species] = $species;
-  //   }.
-  // $form['species'] = [
-  //     '#type' => 'select',
-  //     '#title' => $this->t('Species'),
-  //     '#options' => $species_options,
-  //     '#default_value' => $this->value,
-  //   ];
-  // }
 
   /**
    * {@inheritdoc}
@@ -114,13 +60,14 @@ class SpeciesFilter extends FilterPluginBase {
       '#type' => 'select',
       '#title' => $this->t('Organism field'),
       '#options' => $fields,
+      '#default_value' => $this->options['organism_field'],
     ];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function valueForm(&$form, FormStateInterface $form_state) {
+  public function buildExposedForm(&$form, FormStateInterface $form_state) {
     $entity_type_manager = \Drupal::service('entity_type.manager');
     $bundle_key = $entity_type_manager
       ->getDefinition('tripal_entity')
@@ -144,7 +91,7 @@ class SpeciesFilter extends FilterPluginBase {
       $genus = $row['organism_genus_value'];
       $genus_options[$genus] = $genus;
     }
-    $form['value']['genus'] = [
+    $form['genus'] = [
       '#type' => 'select',
       '#title' => $this->t('Genus'),
       '#options' => $genus_options,
@@ -164,7 +111,7 @@ class SpeciesFilter extends FilterPluginBase {
       $species = $row['organism_species_value'];
       $species_options[$species] = $species;
     }
-    $form['value']['species'] = [
+    $form['species'] = [
       '#type' => 'select',
       '#title' => $this->t('Species'),
       '#options' => $species_options,
@@ -180,10 +127,9 @@ class SpeciesFilter extends FilterPluginBase {
   //   return $options;
 
   /**
-   * }
+   * {@inheritDoc}
    */
   public function adminSummary() {
-    dpm($this->value, "Values:");
     return $this->value['genus'] . ' ' . $this->value['species'];
   }
 
@@ -193,31 +139,26 @@ class SpeciesFilter extends FilterPluginBase {
    * Apply species filter to the View query.
    */
   public function query() {
-    // 1. Ensure the base table (tripal_entity) is initialized.
+    // Ensure the base table (tripal_entity) is initialized.
     $this->ensureMyTable();
 
-    // // 2. Define the join from tripal_entity__germplasm_organism back to tripal_entity.
-    // $configuration = [
-    //   'table' => 'tripal_entity__germplasm_organism', // The field base table
-    //   'field' => 'entity_id',                       // Field table column
-    //   'left_table' => $this->tableAlias,             // Main table (tripal_entity)
-    //   'left_field' => 'id',                          // Main table PK (check if it is 'id' or 'entity_id')
-    //   'operator' => '=',
-    // ];
-    // $join = \Drupal::service('plugin.manager.views.join')
-    //   ->createInstance('standard', $configuration);
-    // // 3. Add the table to the query and get its alias.
-    // // This ensures the join is performed correctly even if the table is used elsewhere.
-    // $alias = $this->query->addTable('tripal_entity__germplasm_organism', $this->relationship, $join);
-    $field_table_alias = $this->query->ensureTable('tripal_entity__germplasm_organism', $this->relationship);
-
-    // 4. Use the alias to add your specific genus/species conditions.
-    if (!empty($this->value['genus'])) {
-      $this->query->addWhere($this->options['group'], "$field_table_alias.germplasm_organism_organism_genus", $this->value['genus'], 'IN');
+    // Get the selected field.
+    $field = '';
+    if ($this->options['organism_field'] !== '') {
+      $field = $this->options['organism_field'];
     }
+    // Build the query according to the selected field.
+    if ($field) {
+      $field_table_alias = $this->query->ensureTable("tripal_entity__$field", $this->relationship);
 
-    if (!empty($this->value['species'])) {
-      $this->query->addWhere($this->options['group'], "$field_table_alias.germplasm_organism_organism_species", $this->value['species'], 'IN');
+      // Use the alias to add your specific genus/species conditions.
+      if (!empty($this->value['genus'])) {
+        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_genus", $this->value['genus'], '=');
+      }
+
+      if (!empty($this->value['species'])) {
+        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_species", $this->value['species'], '=');
+      }
     }
   }
 
