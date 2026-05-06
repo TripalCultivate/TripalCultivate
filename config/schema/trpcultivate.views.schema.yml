@@ -1,0 +1,15 @@
+views.filter.species_filter:
+  type: views_filter
+  label: 'Species Filter'
+  mapping:
+    value:
+      type: mapping
+      mapping:
+        genus:
+          type: sequence
+          sequence:
+            type: string
+        species:
+          type: sequence
+          sequence:
+            type: string
