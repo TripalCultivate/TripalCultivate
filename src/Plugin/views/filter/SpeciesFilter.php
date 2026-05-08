@@ -67,7 +67,7 @@ class SpeciesFilter extends FilterPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function buildExposedForm(&$form, FormStateInterface $form_state) {
+  public function valueForm(&$form, FormStateInterface $form_state) {
     $entity_type_manager = \Drupal::service('entity_type.manager');
     $bundle_key = $entity_type_manager
       ->getDefinition('tripal_entity')
@@ -91,7 +91,7 @@ class SpeciesFilter extends FilterPluginBase {
       $genus = $row['organism_genus_value'];
       $genus_options[$genus] = $genus;
     }
-    $form['genus'] = [
+    $form['value']['genus'] = [
       '#type' => 'select',
       '#title' => $this->t('Genus'),
       '#options' => $genus_options,
@@ -111,7 +111,7 @@ class SpeciesFilter extends FilterPluginBase {
       $species = $row['organism_species_value'];
       $species_options[$species] = $species;
     }
-    $form['species'] = [
+    $form['value']['species'] = [
       '#type' => 'select',
       '#title' => $this->t('Species'),
       '#options' => $species_options,
@@ -127,10 +127,21 @@ class SpeciesFilter extends FilterPluginBase {
   //   return $options;
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function adminSummary() {
     return $this->value['genus'] . ' ' . $this->value['species'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function acceptExposedInput($input) {
+    $this->value['genus'] = $input['genus'];
+
+    $this->value['species'] = $input['species'];
+
+    return TRUE;
   }
 
   /**
@@ -153,11 +164,11 @@ class SpeciesFilter extends FilterPluginBase {
 
       // Use the alias to add your specific genus/species conditions.
       if (!empty($this->value['genus'])) {
-        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_genus", $this->value['genus'], '=');
+        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_genus", $this->value['genus'], 'IN');
       }
 
       if (!empty($this->value['species'])) {
-        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_species", $this->value['species'], '=');
+        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_species", $this->value['species'], 'IN');
       }
     }
   }
