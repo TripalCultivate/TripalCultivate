@@ -95,7 +95,7 @@ class SpeciesFilter extends FilterPluginBase {
       '#type' => 'select',
       '#title' => $this->t('Genus'),
       '#options' => $genus_options,
-      '#default_value' => $this->value,
+      '#default_value' => '',
     ];
     // Species options (from genus).
     $species_options = ['' => $this->t('- Select species -')];
@@ -115,7 +115,7 @@ class SpeciesFilter extends FilterPluginBase {
       '#type' => 'select',
       '#title' => $this->t('Species'),
       '#options' => $species_options,
-      '#default_value' => $this->value,
+      '#default_value' => '',
     ];
   }
 
@@ -137,8 +137,11 @@ class SpeciesFilter extends FilterPluginBase {
    * {@inheritdoc}
    */
   public function acceptExposedInput($input) {
-    $this->value['genus'] = $input['genus'];
 
+    if (empty($input['genus']) && empty($input['species'])) {
+      return;
+    }
+    $this->value['genus'] = $input['genus'];
     $this->value['species'] = $input['species'];
 
     return TRUE;
@@ -150,26 +153,27 @@ class SpeciesFilter extends FilterPluginBase {
    * Apply species filter to the View query.
    */
   public function query() {
+
     // Ensure the base table (tripal_entity) is initialized.
     $this->ensureMyTable();
 
-    // Get the selected field.
-    $field = '';
-    if ($this->options['organism_field'] !== '') {
-      $field = $this->options['organism_field'];
+    if (empty($this->options['organism_field'])) {
+      return;
     }
+
+    // Get the selected field.
+    $field = $this->options['organism_field'];
+
     // Build the query according to the selected field.
-    if ($field) {
-      $field_table_alias = $this->query->ensureTable("tripal_entity__$field", $this->relationship);
+    $field_table_alias = $this->query->ensureTable("tripal_entity__$field", $this->relationship);
 
-      // Use the alias to add your specific genus/species conditions.
-      if (!empty($this->value['genus'])) {
-        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_genus", $this->value['genus'], 'IN');
-      }
+    // Use the alias to add your specific genus/species conditions.
+    if (!empty($this->value['genus'])) {
+      $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_genus", $this->value['genus'], 'IN');
+    }
 
-      if (!empty($this->value['species'])) {
-        $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_species", $this->value['species'], 'IN');
-      }
+    if (!empty($this->value['species'])) {
+      $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_species", $this->value['species'], 'IN');
     }
   }
 
