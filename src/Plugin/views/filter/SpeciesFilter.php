@@ -3,6 +3,7 @@
 namespace Drupal\trpcultivate\Plugin\views\filter;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\views\Attribute\ViewsFilter;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 
@@ -29,7 +30,7 @@ class SpeciesFilter extends FilterPluginBase {
 
     $options['value'] = [
       'contains' => [
-        // 'crop' => ['default' => ''],
+        'crop' => ['default' => ''],
         'genus' => ['default' => ''],
         'species' => ['default' => ''],
       ],
@@ -72,12 +73,15 @@ class SpeciesFilter extends FilterPluginBase {
     $bundle_key = $entity_type_manager
       ->getDefinition('tripal_entity')
       ->getKey('bundle');
-    // $crop_options = $this->getCropOptions();
-    // $form['crop'] = [
-    //   '#type' => 'radios',
-    //   '#title' => $this->t('Crop'),
-    //   '#options' => $crop_options,
-    // ];
+    $crop_options = $this->buildCropImageOptions();
+
+    $form['value']['crop'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Crop'),
+      '#options' => $crop_options,
+      '#default_value' => $this->value['crop'] ?? '',
+    ];
+
     $genus_options = ['' => $this->t('- Select genus -')];
     $genus_results = $entity_type_manager
       ->getStorage('tripal_entity')
@@ -117,14 +121,79 @@ class SpeciesFilter extends FilterPluginBase {
       '#options' => $species_options,
       '#default_value' => '',
     ];
+
   }
 
-  // /**
-  //  * Build crop options.
-  //  */
-  // protected function getCropOptions() {
-  //   $options = [];
-  //   return $options;
+  /**
+   * Get the crop options.
+   */
+  protected function getCropOptions() {
+
+    $crop_options = [
+      'Cicer' => [
+        'title' => 'Chickpea',
+        'genus' => 'Cicer',
+        'crop-species' => 'arietinum',
+        'image' => 'images/crops/chickpea.jpg',
+      ],
+      'Lens' => [
+        'title' => 'Lentil',
+        'genus' => 'Lens',
+        'crop-species' => 'culinaris',
+        'image' => 'images/crops/lentil.jpg',
+      ],
+      'Phaseolus' => [
+        'title' => 'Dry Bean',
+        'genus' => 'Phaseolus',
+        'crop-species' => 'vulgaris',
+        'image' => 'images/crops/drybean.jpg',
+      ],
+      'Vicia' => [
+        'title' => 'Faba Bean',
+        'genus' => 'Vicia',
+        'crop-species' => 'faba',
+        'image' => 'images/crops/faba.jpg',
+      ],
+      'Pisum' => [
+        'title' => 'Field Pea',
+        'genus' => 'Pisum',
+        'crop-species' => 'sativum',
+        'image' => 'images/crops/pea.jpg',
+      ],
+    ];
+
+    return $crop_options;
+  }
+
+  /**
+   * Build crop options.
+   */
+  protected function buildCropImageOptions() {
+    $options = [];
+
+    foreach ($this->getCropOptions() as $key => $crop) {
+      $image_markup = '';
+
+      if (!empty($crop['image'])) {
+        $relative_path = 'modules/contrib/TripalCultivate/' . $crop['image'];
+        $absolute_path = '/var/www/drupal/web/' . $relative_path;
+
+        if (file_exists($absolute_path)) {
+          $image_markup = '<img src="' . base_path() . $relative_path . '" alt="' . $crop['title'] . '" />';
+        }
+      }
+
+      $options[$key] = Markup::create(
+      '<div class="crop-option">
+        ' . $image_markup . '
+        <div class="crop-title">' . $crop['title'] . '</div>
+       </div>'
+      );
+    }
+
+    return $options;
+
+  }
 
   /**
    * {@inheritdoc}
@@ -137,14 +206,23 @@ class SpeciesFilter extends FilterPluginBase {
    * {@inheritdoc}
    */
   public function acceptExposedInput($input) {
+    $this->value['genus'] = '';
+    $this->value['species'] = '';
 
-    if (empty($input['genus']) && empty($input['species'])) {
-      return;
+    if (!empty($input['crop'])) {
+      $crop_options = $this->getCropOptions();
+
+      if (isset($crop_options[$input['crop']])) {
+        $this->value['genus'] = $crop_options[$input['crop']]['genus'];
+        $this->value['species'] = $crop_options[$input['crop']]['crop-species'];
+      }
     }
-    $this->value['genus'] = $input['genus'];
-    $this->value['species'] = $input['species'];
+    else {
+      $this->value['genus'] = $input['genus'] ?? '';
+      $this->value['species'] = $input['species'] ?? '';
+    }
 
-    return TRUE;
+    return !empty($this->value['genus']) || !empty($this->value['species']);
   }
 
   /**
