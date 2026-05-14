@@ -28,3 +28,9 @@ cdn-font-awesome:
   css:
     theme:
       https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css: {}
+
+# Species filter styling.
+species_filter:
+  css:
+    theme:
+      css/species-filter.css: {}

@@ -28,6 +28,8 @@ class SpeciesFilter extends FilterPluginBase {
   protected function defineOptions() {
     $options = parent::defineOptions();
 
+    $options['organism_field'] = ['default' => ''];
+
     $options['value'] = [
       'contains' => [
         'crop' => ['default' => ''],
@@ -35,7 +37,6 @@ class SpeciesFilter extends FilterPluginBase {
         'species' => ['default' => ''],
       ],
     ];
-    $options['organism_field'] = ['default' => ''];
 
     return $options;
   }
@@ -45,6 +46,11 @@ class SpeciesFilter extends FilterPluginBase {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
+
+    // Hide the value form in the Views admin UI.
+    if (isset($form['value'])) {
+      $form['value']['#access'] = FALSE;
+    }
 
     $entity_field_manager = \Drupal::service('entity_field.manager');
     $fields_defs = $entity_field_manager->getFieldStorageDefinitions('tripal_entity');
@@ -68,8 +74,10 @@ class SpeciesFilter extends FilterPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function valueForm(&$form, FormStateInterface $form_state) {
+  public function buildExposedForm(&$form, FormStateInterface $form_state) {
     $entity_type_manager = \Drupal::service('entity_type.manager');
+
+    $form['#attached']['library'][] = 'trpcultivate/species_filter';
     $bundle_key = $entity_type_manager
       ->getDefinition('tripal_entity')
       ->getKey('bundle');
@@ -79,7 +87,8 @@ class SpeciesFilter extends FilterPluginBase {
       '#type' => 'radios',
       '#title' => $this->t('Crop'),
       '#options' => $crop_options,
-      '#default_value' => $this->value['crop'] ?? '',
+      '#default_value' => '',
+      '#attributes' => ['class' => ['crop-radios']],
     ];
 
     $genus_options = ['' => $this->t('- Select genus -')];
@@ -185,10 +194,11 @@ class SpeciesFilter extends FilterPluginBase {
 
       $options[$key] = Markup::create(
       '<div class="crop-option">
-        ' . $image_markup . '
+        <div class="crop-image">' . $image_markup . '</div>
         <div class="crop-title">' . $crop['title'] . '</div>
        </div>'
       );
+
     }
 
     return $options;

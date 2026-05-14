@@ -1,0 +1,73 @@
+/* TARGET the wrapper */
+.crop-radios .form-radios {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Each option */
+.crop-radios .form-radios .form-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+}
+
+/* Hide radio button */
+.crop-radios input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Make label clickable */
+.crop-radios label {
+  cursor: pointer;
+}
+
+/* Card UI */
+.crop-option {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fff;
+  transition: 0.2s;
+}
+
+/* Image */
+.crop-option img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  opacity: 0.4;
+}
+
+/* Hover */
+.crop-option:hover {
+  border-color: #ccc;
+}
+
+.crop-option:hover img {
+  opacity: 0.8;
+}
+
+.crop-option span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Selected */
+.crop-radios input[type="radio"]:checked+label .crop-option {
+  border-color: green;
+}
+
+.crop-radios input[type="radio"]:checked+label img {
+  opacity: 1;
+}
+
+.crop-radios input[type="radio"]:checked+label span {
+  color: green;
+  font-weight: 600;
+}
