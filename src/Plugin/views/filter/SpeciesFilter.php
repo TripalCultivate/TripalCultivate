@@ -83,14 +83,20 @@ class SpeciesFilter extends FilterPluginBase {
       ->getKey('bundle');
     $crop_options = $this->buildCropImageOptions();
 
+    // Hidden element to keep track of the selection type.
+    $form['value']['crop_used'] = [
+      '#type' => 'hidden',
+      '#value' => '0',
+    ];
+
     $form['value']['crop'] = [
       '#type' => 'radios',
       '#title' => $this->t('Crop'),
       '#options' => $crop_options,
-      '#default_value' => '',
+      '#default_value' => NULL,
       '#attributes' => [
         'class' => ['crop-radios'],
-        'onchange' => 'this.form.submit();',
+        'onchange' => 'this.form.crop_used.value = 1; this.form.submit();',
       ],
     ];
 
@@ -108,33 +114,6 @@ class SpeciesFilter extends FilterPluginBase {
       $genus_options[$genus] = $genus;
     }
 
-    $input = $form_state->getUserInput();
-    $selected_crop = $input['crop'] ?? '';
-
-    $selected_genus = '';
-
-    if (!empty($selected_crop)) {
-      $crop_options = $this->getCropOptions();
-
-      if (isset($crop_options[$selected_crop])) {
-        $selected_genus = $crop_options[$selected_crop]['genus'];
-      }
-    }
-
-    if (!empty($selected_genus)) {
-      $input = $form_state->getUserInput();
-      $input['genus'] = $selected_genus;
-      if (in_array($selected_genus, $genus_options)) {
-        $form_state->setUserInput($input);
-      }
-    }
-
-    $form['value']['genus'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Genus'),
-      '#options' => $genus_options,
-      '#default_value' => $selected_genus,
-    ];
     // Species options (from genus).
     $species_options = ['' => $this->t('- Select species -')];
     $species_results = $entity_type_manager
@@ -149,13 +128,52 @@ class SpeciesFilter extends FilterPluginBase {
       $species = $row['organism_species_value'];
       $species_options[$species] = $species;
     }
+
+    $crop_options = $this->getCropOptions();
+    $input = $form_state->getUserInput();
+
+    $selected_crop = $input['crop'] ?? NULL;
+    $selected_genus = $input['genus'] ?? '';
+    $selected_species = $input['species'] ?? '';
+    $crop_used = $input['crop_used'] ?? '0';
+
+    if (!empty($selected_crop) && $crop_used == '1') {
+
+      if (isset($crop_options[$selected_crop])) {
+        $selected_genus = $crop_options[$selected_crop]['genus'];
+        $selected_species = $crop_options[$selected_crop]['crop-species'];
+
+        $input['genus'] = $selected_genus;
+        $input['species'] = $selected_species;
+        if (!in_array($selected_genus, $genus_options)) {
+          $input['genus'] = '';
+        }
+        if (!in_array($selected_species, $species_options)) {
+          $input['species'] = '';
+        }
+      }
+    }
+
+    // Unset the existing crop image selection when dropdown is used to select
+    // the species.
+    elseif ($crop_used == '0') {
+      unset($input['crop']);
+    }
+
+    $form_state->setUserInput($input);
+
+    $form['value']['genus'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Genus'),
+      '#options' => $genus_options,
+      '#default_value' => $selected_genus,
+    ];
     $form['value']['species'] = [
       '#type' => 'select',
       '#title' => $this->t('Species'),
       '#options' => $species_options,
-      '#default_value' => '',
+      '#default_value' => $selected_species,
     ];
-
   }
 
   /**
