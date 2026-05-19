@@ -88,7 +88,10 @@ class SpeciesFilter extends FilterPluginBase {
       '#title' => $this->t('Crop'),
       '#options' => $crop_options,
       '#default_value' => '',
-      '#attributes' => ['class' => ['crop-radios']],
+      '#attributes' => [
+        'class' => ['crop-radios'],
+        'onchange' => 'this.form.submit();',
+      ],
     ];
 
     $genus_options = ['' => $this->t('- Select genus -')];
@@ -104,11 +107,33 @@ class SpeciesFilter extends FilterPluginBase {
       $genus = $row['organism_genus_value'];
       $genus_options[$genus] = $genus;
     }
+
+    $input = $form_state->getUserInput();
+    $selected_crop = $input['crop'] ?? '';
+
+    $selected_genus = '';
+
+    if (!empty($selected_crop)) {
+      $crop_options = $this->getCropOptions();
+
+      if (isset($crop_options[$selected_crop])) {
+        $selected_genus = $crop_options[$selected_crop]['genus'];
+      }
+    }
+
+    if (!empty($selected_genus)) {
+      $input = $form_state->getUserInput();
+      $input['genus'] = $selected_genus;
+      if (in_array($selected_genus, $genus_options)) {
+        $form_state->setUserInput($input);
+      }
+    }
+
     $form['value']['genus'] = [
       '#type' => 'select',
       '#title' => $this->t('Genus'),
       '#options' => $genus_options,
-      '#default_value' => '',
+      '#default_value' => $selected_genus,
     ];
     // Species options (from genus).
     $species_options = ['' => $this->t('- Select species -')];

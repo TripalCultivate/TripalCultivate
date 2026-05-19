@@ -1,17 +1,8 @@
-/* TARGET the wrapper */
-.crop-radios .form-radios {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-/* Each option */
-.crop-radios .form-radios .form-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Override Views inline form behavior */
+.crop-radios .form-item {
   width: auto;
+  display: inline-block ;
+  margin-top: 0;
 }
 
 /* Hide radio button */
