@@ -1,0 +1,10 @@
+name: 'Tripal Cultivate test views'
+type: 'module'
+description: 'Provides default views for views trpcultivate tests.'
+package: "Tripal Cultivate"
+core_version_requirement: ^10.5 | ^11.2
+dependencies:
+  - "tripal:tripal"
+  - "tripal:tripal_chado"
+  - "tripal:tripal_layout"
+  - trpcultivate:trpcultivate

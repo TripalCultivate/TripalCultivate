@@ -32,7 +32,7 @@ class SpeciesFilter extends FilterPluginBase {
 
     $options['value'] = [
       'contains' => [
-        'crop' => ['default' => ''],
+        'crop' => ['default' => NULL],
         'genus' => ['default' => ''],
         'species' => ['default' => ''],
       ],
@@ -130,7 +130,7 @@ class SpeciesFilter extends FilterPluginBase {
     }
 
     $crop_options = $this->getCropOptions();
-    $input = $form_state->getUserInput();
+    $input = $form_state->getUserInput() ?? [];
 
     $selected_crop = $input['crop'] ?? NULL;
     $selected_genus = $input['genus'] ?? '';

@@ -2,14 +2,15 @@ views.filter.species_filter:
   type: views_filter
   label: 'Species Filter'
   mapping:
+    organism_field:
+      type: string
+      label: 'Organism field'
     value:
       type: mapping
       mapping:
         genus:
-          type: sequence
-          sequence:
-            type: string
+          type: string
         species:
-          type: sequence
-          sequence:
-            type: string
+          type: string
+        crop:
+          type: string
