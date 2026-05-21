@@ -10,6 +10,7 @@ use Drupal\views\Tests\ViewResultAssertionTrait;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\tripal\Entity\TripalEntityType;
+use Drupal\tripal_chado\Controller\ChadoCVTermAutocompleteController;
 
 /**
  * Tests the views species filter.
