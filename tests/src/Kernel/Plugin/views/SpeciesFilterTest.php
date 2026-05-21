@@ -117,6 +117,17 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
       $insert->execute();
     }
 
+    $type_id = ChadoCVTermAutocompleteController::getCVtermId('germplasm (EFO:0007059)');
+
+    $this->chado_connection->insert('1:stock')
+      ->fields([
+        'name' => 'my_stock_1',
+        'organism_id' => 4,
+        'uniquename' => 'UNIQUENAME1',
+        'type_id' => $type_id,
+      ])
+      ->execute();
+
     // Create the terms for the field property storage types.
     $idsmanager = \Drupal::service('tripal.collection_plugin_manager.idspace');
     foreach (
@@ -187,7 +198,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $view = Views::getView('test_species_search');
     $this->assertNotNull($view);
 
-    $view->setDisplay();
+    $view->setDisplay('default');
     $view->initHandlers();
 
     $this->assertArrayHasKey('species_filter', $view->filter);
@@ -208,6 +219,44 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $this->assertArrayHasKey('genus', $form['value'], "The exposed form's value field does not have the expected genus field.");
     $this->assertArrayHasKey('species', $form['value'], "The exposed form's value field does not have the expected species field.");
 
+    $input_one = [
+      'crop' => 'Lens',
+    ];
+
+    $form_state->setUserInput($input_one);
+    $filter->buildExposedForm($form, $form_state);
+    $filter->acceptExposedInput($input_one);
+
+    $this->assertEquals('Lens', $filter->value['genus'], "The genus was not set correctly by the filter exposed form");
+    $this->assertEquals('culinaris', $filter->value['species'], "The species was not set correctly by the filter exposed form");
+
+    $input_two = [
+      'crop' => 'Cicer',
+      'genus' => 'Cicer',
+      'species' => 'arietinum',
+      'crop_used' => '1',
+    ];
+
+    $form_state->setUserInput($input_two);
+    $filter->buildExposedForm($form, $form_state);
+    $filter->acceptExposedInput($input_two);
+
+    $this->assertEquals('Cicer', $filter->value['genus'], "The genus was not set correctly by the filter exposed form");
+    $this->assertEquals('arietinum', $filter->value['species'], "The species was not set correctly by the filter exposed form");
+
+    $input_three = [
+      'genus' => 'Tripalus',
+      'species' => 'databasica',
+    ];
+
+    $form_state->setUserInput($input_three);
+    $filter->buildExposedForm($form, $form_state);
+    $filter->acceptExposedInput($input_three);
+
+    $this->assertEquals('Tripalus', $filter->value['genus'], "The genus was not set correctly by the filter exposed form");
+    $this->assertEquals('databasica', $filter->value['species'], "The species was not set correctly by the filter exposed form");
+
+    $this->assertEquals('Tripalus databasica', $filter->adminSummary(), "The admin summary method did not return the correct string with the organism name.");
   }
 
 }

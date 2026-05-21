@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.tripal_entity.germplasm_organism
+    - tripal.content_type.germplasm
   module:
     - tripal
     - tripal_chado
@@ -125,6 +126,15 @@ display:
       sorts: {  }
       arguments: {  }
       filters:
+        type:
+          id: type
+          table: tripal_entity
+          field: type
+          entity_type: tripal_entity
+          entity_field: type
+          plugin_id: bundle
+          value:
+            germplasm: germplasm
         species_filter:
           id: species_filter
           table: views
