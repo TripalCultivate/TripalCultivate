@@ -34,6 +34,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     'tripal_chado',
     'tripal_layout',
     'views',
+    'filter',
     'field',
     'trpcultivate',
     'trpcultivate_test_views',
@@ -66,7 +67,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $this->prepareEnvironment(['TripalTerm', 'TripalEntity']);
     // -- additionally we need tripal_chado config to access the yaml files.
     // Install module configuration.
-    $this->installConfig(['tripal_chado', 'trpcultivate']);
+    $this->installConfig(['tripal', 'tripal_chado', 'trpcultivate']);
     $this->installConfig(['trpcultivate_test_views']);
 
     // Test Chado database.
@@ -181,8 +182,22 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     ];
     $this->createTripalTerm($term_details, 'chado_id_space', 'chado_vocabulary');
 
+    $term_details = [
+      'vocab_name' => 'efo',
+      'id_space_name' => 'EFO',
+      'term' => [
+        'name' => 'germplasm',
+        'definition' => 'A germplasm is a collection of genetic resources for an organism. It can be a seed, a plant cutting, or any other material that can be used to propagate the organism. Germplasm collections are important for preserving genetic diversity and for breeding programs.',
+        'accession' => '0007059',
+      ],
+    ];
+
+    $this->createTripalTerm($term_details, 'chado_id_space', 'chado_vocabulary');
+
     // Create the content types + fields that we need.
     $this->createContentTypeFromConfig('general_chado', 'organism', TRUE);
+
+    $this->createContentTypeFromConfig('germplasm_chado', 'germplasm', TRUE);
 
     $publish_service = \Drupal::service('tripal.backend_publish');
     $chado_publish = $publish_service->createInstance('chado_storage', []);
@@ -191,6 +206,12 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
 
     $organism_bundle = TripalEntityType::load('organism');
     $organism_bundle->save();
+
+    $publish_options = ['bundle' => 'germplasm', 'datastore' => 'chado_storage', 'schema_name' => $this->testSchemaName];
+    $chado_publish->publish($publish_options);
+
+    $germplasm_bundle = TripalEntityType::load('germplasm');
+    $germplasm_bundle->save();
   }
 
   /**
@@ -239,6 +260,8 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
    *   The input similar to exposed form user input.
    * @param array $expected
    *   The expected values to be set on the filter after processing the input.
+   *
+   * @dataProvider provideDataForTestBuildExposedForm
    */
   #[DataProvider('provideDataForTestBuildExposedForm')]
   public function testBuildExposedForm(array $input, array $expected) {
@@ -273,6 +296,21 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $this->assertEquals($expected['genus'], $filter->value['genus'], "The genus was not set correctly by the filter exposed form");
     $this->assertEquals($expected['species'], $filter->value['species'], "The species was not set correctly by the filter exposed form");
     $this->assertEquals("{$expected['genus']} {$expected['species']}", $filter->adminSummary(), "The adminSummary method did not return the correct string with the organism name.");
+  }
+
+  /**
+   * Tests that the query is correctly modified by the filter.
+   */
+  public function testQueryMethod() {
+    $view = Views::getView('test_species_search');
+    $view->initHandlers();
+
+    $view->setExposedInput([
+      'genus' => 'Lens',
+      'species' => 'culinaris',
+    ]);
+
+    $view->execute();
   }
 
 }
