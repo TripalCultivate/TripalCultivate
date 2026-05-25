@@ -112,19 +112,13 @@ class TripalCultivateHooks {
 
     $data['views']['species_filter'] = [
       'title' => $this->t('Species Filter'),
+      'help' => $this->t('Filters content using the given genus/species.'),
       'filter' => [
         'title' => $this->t('Species Filter'),
         'field' => 'id',
         'id' => 'species_filter',
       ],
     ];
-    // $data['tripal_entity']['germplasm_accession_organism'] = [
-    //   'title' => $this->t('Graphical Organism Filter'),
-    //   'real field' => 'organism_id',
-    //   'filter' => [
-    //     'id' => 'species_filter',
-    //   ],
-    // ];
     return $data;
   }
 
