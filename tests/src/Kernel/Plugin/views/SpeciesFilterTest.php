@@ -4,14 +4,15 @@ namespace Drupal\Tests\trpcultivate\Kernel\Plugin\views;
 
 use Drupal\Core\Form\FormState;
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
-use Drupal\views\Views;
 use Drupal\Tests\user\Traits\UserCreationTrait;
-use Drupal\views\Tests\ViewResultAssertionTrait;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
-use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\tripal\Entity\TripalEntityType;
+use Drupal\tripal_chado\Database\ChadoConnection;
 use Drupal\tripal_chado\Controller\ChadoCVTermAutocompleteController;
+use Drupal\user\Entity\Role;
+use Drupal\views\Tests\ViewResultAssertionTrait;
+use Drupal\views\Views;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the views species filter.
@@ -76,6 +77,18 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $this->chado_connection = $this->createTestSchema(ChadoTestKernelBase::PREPARE_TEST_CHADO);
     $this->container->set('tripal_chado.database', $this->chado_connection);
 
+    // Create a user with permissions to view the content we will create.
+    $role = Role::create([
+      'id' => 'test_role',
+      'label' => 'Test Role',
+    ]);
+    $role->grantPermission('view all organism content');
+    $role->grantPermission('view all germplasm content');
+    $role->save();
+
+    $account = $this->createUser([], NULL, FALSE, ['test_role']);
+    $this->container->get('current_user')->setAccount($account);
+
     // Create some test organisms.
     $this->organisms = [
       1 => [
@@ -127,6 +140,15 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
         'name' => 'my_stock_1',
         'organism_id' => 4,
         'uniquename' => 'UNIQUENAME1',
+        'type_id' => $type_id,
+      ])
+      ->execute();
+
+    $this->chado_connection->insert('1:stock')
+      ->fields([
+        'name' => 'my_stock_2',
+        'organism_id' => 5,
+        'uniquename' => 'UNIQUENAME2',
         'type_id' => $type_id,
       ])
       ->execute();
@@ -299,18 +321,76 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
   }
 
   /**
-   * Tests that the query is correctly modified by the filter.
+   * Provides data for testing the query method.
    */
-  public function testQueryMethod() {
+  public static function provideDataForTestQueryMethod() {
+    return [
+      'filter by Lens genus' => [
+        'scenario' => 'filter by Lens genus',
+        'input' => [
+          'genus' => 'Lens',
+        ],
+        'expected' => ['my_stock_1', 'my_stock_2'],
+      ],
+      'filter by Tripalus genus' => [
+        'scenario' => 'filter by Tripalus genus',
+        'input' => [
+          'genus' => 'Tripalus',
+        ],
+        'expected' => [],
+      ],
+      'filter by Lens culinaris species' => [
+        'scenario' => 'filter by Lens culinaris species',
+        'input' => [
+          'genus' => 'Lens',
+          'species' => 'culinaris',
+        ],
+        'expected' => ['my_stock_1'],
+      ],
+      'filter by Lens with crop field' => [
+        'scenario' => 'filter by Lens with crop field',
+        'input' => [
+          'crop' => 'Lens',
+          'genus' => 'Lens',
+          'species' => 'culinaris',
+        ],
+        'expected' => ['my_stock_1'],
+      ],
+      'filter by species only' => [
+        'scenario' => 'filter by species only',
+        'input' => [
+          'species' => 'culinaris',
+        ],
+        'expected' => ['my_stock_1'],
+      ],
+    ];
+  }
+
+  /**
+   * Tests that the query is correctly modified by the filter.
+   *
+   * @param string $scenario
+     *   A description of the test scenario for better readability of results.
+   * @param array $input
+   *   The input similar to exposed form user input.
+   * @param array $expected
+   *   The expected array of stock names that should be returned by the view
+   *   after applying the filter with the given input.
+   *
+   * @dataProvider provideDataForTestQueryMethod
+   */
+  #[DataProvider('provideDataForTestQueryMethod')]
+  public function testQueryMethod(string $scenario, array $input, array $expected) {
     $view = Views::getView('test_species_search');
     $view->initHandlers();
-
-    $view->setExposedInput([
-      'genus' => 'Lens',
-      'species' => 'culinaris',
-    ]);
-
+    $view->setExposedInput($input);
     $view->execute();
+
+    $labels = array_map(function ($row) {
+      return (string) $row->_entity->label();
+    }, $view->result);
+
+    $this->assertEquals($expected, $labels, 'The array resulted does not match the expected array in scenario' . " $scenario.");
   }
 
 }
