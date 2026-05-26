@@ -307,9 +307,9 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $filter->buildExposedForm($form, $form_state);
     $this->assertArrayHasKey('value', $form, "The exposed form does not have the expected value field.");
 
-    $this->assertArrayHasKey('crop', $form['value'], "The exposed form's value field does not have the expected crop field.");
-    $this->assertArrayHasKey('genus', $form['value'], "The exposed form's value field does not have the expected genus field.");
-    $this->assertArrayHasKey('species', $form['value'], "The exposed form's value field does not have the expected species field.");
+    $this->assertArrayHasKey('crop', $form, "The exposed form does not have the expected crop field.");
+    $this->assertArrayHasKey('genus', $form, "The exposed form does not have the expected genus field.");
+    $this->assertArrayHasKey('species', $form, "The exposed form does not have the expected species field.");
 
     $form_state->setUserInput($input);
     $filter->buildExposedForm($form, $form_state);

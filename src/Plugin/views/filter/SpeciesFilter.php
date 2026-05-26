@@ -84,12 +84,12 @@ class SpeciesFilter extends FilterPluginBase {
     $crop_options = $this->buildCropImageOptions();
 
     // Hidden element to keep track of the selection type.
-    $form['value']['crop_used'] = [
+    $form['crop_used'] = [
       '#type' => 'hidden',
       '#value' => '0',
     ];
 
-    $form['value']['crop'] = [
+    $form['crop'] = [
       '#type' => 'radios',
       '#title' => $this->t('Crop'),
       '#options' => $crop_options,
@@ -164,13 +164,13 @@ class SpeciesFilter extends FilterPluginBase {
 
     $form_state->setUserInput($input);
 
-    $form['value']['genus'] = [
+    $form['genus'] = [
       '#type' => 'select',
       '#title' => $this->t('Genus'),
       '#options' => $genus_options,
       '#default_value' => $selected_genus,
     ];
-    $form['value']['species'] = [
+    $form['species'] = [
       '#type' => 'select',
       '#title' => $this->t('Species'),
       '#options' => $species_options,
