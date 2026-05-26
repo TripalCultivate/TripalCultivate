@@ -1,45 +1,53 @@
 /* Remove the border and spacing in the feildset wrapper */
 .crop-radios .fieldset__wrapper {
-  border: none !important;
-  box-shadow: none !important;
-  background: none !important;
   padding: 0 !important;
-  margin: 0 0 0 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: fit-content;
 }
 
 /* Make the fieldset legend with no background and no border */
 .crop-radios .fieldset__legend {
   background: none;
   padding: 0;
-  margin: 0 0 0 0;
+  margin: 0;
   border: none;
 }
 
 /* Format the Crop label as desired */
 .crop-radios .fieldset__label {
   padding: 0;
-  margin: 0 0 0 0;
+  margin: 0;
   color: #000;
-  font-size: larger;
+  font-size: 14px;
 }
 
 /* Override Views inline form behavior */
 .crop-radios .form-item {
-  width: auto;
   display: inline-block ;
-  margin-top: 0;
+  margin: 5px 0 0 5px;
+  padding-top: 0;
+  flex: 0 0 auto;
+}
+
+.crop-radios .form-item__label {
+  margin: 0;
+  padding: 0;
 }
 
 /* Hide radio button */
 .crop-radios input[type="radio"] {
   position: absolute;
-  opacity: 0;
+  display: none;
 }
 
 /* Make label clickable and large*/
 .crop-radios label {
   cursor: pointer;
   font-size: large;
+  align-content: center;
 }
 
 /* Card UI */
@@ -49,6 +57,7 @@
   padding: 10px;
   background: #fff;
   transition: 0.2s;
+  position: relative;
 }
 
 /* Image */
@@ -70,20 +79,32 @@
   display: block;
   margin-top: 6px;
   font-size: 14px;
-  color: #666;
+  color: #717070;
+}
+
+.crop-title {
+  display: none;
+}
+
+.crop-option:hover .crop-title,
+.crop-radios input[type="radio"]:checked+label .crop-title {
+  display: flex;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  align-self: flex-end;
+  padding: 10px 0 10px 0;
+  justify-content: center;
+  width: 95%;
+  font-size: larger;
+  font-weight: bold;
 }
 
 /* Selected */
 .crop-radios input[type="radio"]:checked+label .crop-option {
   border-color: green;
-  color: green;
 }
 
 .crop-radios input[type="radio"]:checked+label img {
   opacity: 1;
-}
-
-.crop-radios input[type="radio"]:checked+label span {
-  color: green;
-  font-weight: 600;
 }
