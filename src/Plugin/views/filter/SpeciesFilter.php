@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\views\Attribute\ViewsFilter;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
+use Drupal\file\Entity\File;
 
 /**
  * Crop Search Views Filter.
@@ -29,6 +30,7 @@ class SpeciesFilter extends FilterPluginBase {
     $options = parent::defineOptions();
 
     $options['organism_field'] = ['default' => ''];
+    $options['organism_image'] = ['default' => ''];
 
     $options['value'] = [
       'contains' => [
@@ -55,20 +57,38 @@ class SpeciesFilter extends FilterPluginBase {
     $entity_field_manager = \Drupal::service('entity_field.manager');
     $fields_defs = $entity_field_manager->getFieldStorageDefinitions('tripal_entity');
 
-    $fields = [];
+    // Get organism fields for the dropdown.
+    $organism_fields = [];
 
     foreach ($fields_defs as $field_name => $definition) {
       if ($definition->getType() === 'chado_organism_type_default') {
-        $fields[$field_name] = $field_name;
+        $organism_fields[$field_name] = $field_name;
       }
     }
 
     $form['organism_field'] = [
       '#type' => 'select',
       '#title' => $this->t('Organism field'),
-      '#options' => $fields,
+      '#options' => $organism_fields,
       '#default_value' => $this->options['organism_field'],
     ];
+
+    // Get image fields for the image dropdown.
+    $image_fields = [];
+
+    foreach ($fields_defs as $field_name => $definition) {
+      if ($definition->getType() === 'image') {
+        $image_fields[$field_name] = $field_name;
+      }
+    }
+
+    $form['organism_image'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Organism Image'),
+      '#options' => $image_fields,
+      '#default_value' => $this->options['organism_image'],
+    ];
+
   }
 
   /**
@@ -183,39 +203,38 @@ class SpeciesFilter extends FilterPluginBase {
    */
   protected function getCropOptions() {
 
-    $crop_options = [
-      'Cicer' => [
-        'title' => 'Chickpea',
-        'genus' => 'Cicer',
-        'crop-species' => 'arietinum',
-        'image' => 'images/crops/chickpea.jpg',
-      ],
-      'Lens' => [
-        'title' => 'Lentil',
-        'genus' => 'Lens',
-        'crop-species' => 'culinaris',
-        'image' => 'images/crops/lentil.jpg',
-      ],
-      'Phaseolus' => [
-        'title' => 'Dry Bean',
-        'genus' => 'Phaseolus',
-        'crop-species' => 'vulgaris',
-        'image' => 'images/crops/drybean.jpg',
-      ],
-      'Vicia' => [
-        'title' => 'Faba Bean',
-        'genus' => 'Vicia',
-        'crop-species' => 'faba',
-        'image' => 'images/crops/faba.jpg',
-      ],
-      'Pisum' => [
-        'title' => 'Field Pea',
-        'genus' => 'Pisum',
-        'crop-species' => 'sativum',
-        'image' => 'images/crops/pea.jpg',
-      ],
-    ];
+    // If no image field is selected, erturn an emptly array.
+    if (empty($this->options['organism_image'])) {
+      return [];
+    }
 
+    // Get the selected image field and build the crop options based on that.
+    $image_field = $this->options['organism_image'];
+    $crop_options = [];
+    $ids = \Drupal::entityQuery('tripal_entity')
+      ->condition('type', 'organism')
+      ->exists('organism_common_name')
+      ->accessCheck(FALSE)->execute();
+
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('tripal_entity')
+      ->loadMultiple($ids);
+
+    foreach ($entities as $entity) {
+      if ($entity->hasField($image_field) && !$entity->get($image_field)->isEmpty()) {
+        $items = $entity->get($image_field)->getValue();
+        $crop_options[$entity->get('organism_common_name')->value] = [
+          'title' => $entity->get('organism_common_name')->value,
+          'genus' => $entity->get('organism_genus')->value,
+          'crop-species' => $entity->get('organism_species')->value,
+        ];
+        $file = File::load($items[0]['target_id']);
+        if ($file) {
+          $uri = $file->getFileUri();
+        }
+        $crop_options[$entity->get('organism_common_name')->value]['image'] = $uri ?? '';
+      }
+    }
     return $crop_options;
   }
 
@@ -228,13 +247,10 @@ class SpeciesFilter extends FilterPluginBase {
     foreach ($this->getCropOptions() as $key => $crop) {
       $image_markup = '';
 
-      if (!empty($crop['image'])) {
-        $relative_path = 'modules/contrib/TripalCultivate/' . $crop['image'];
-        $absolute_path = '/var/www/drupal/web/' . $relative_path;
-
-        if (file_exists($absolute_path)) {
-          $image_markup = '<img src="' . base_path() . $relative_path . '" alt="' . $crop['title'] . '" />';
-        }
+      if (!empty($crop['image']) && file_exists($crop['image'])) {
+        $url = \Drupal::service('file_url_generator')
+          ->generateString($crop['image']);
+        $image_markup = '<img src="' . $url . '" alt="' . $crop['title'] . '" />';
       }
 
       $options[$key] = Markup::create(
