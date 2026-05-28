@@ -221,13 +221,13 @@ class SpeciesFilter extends FilterPluginBase {
       ->loadMultiple($ids);
 
     foreach ($entities as $entity) {
+      $crop_options[$entity->get('organism_common_name')->value] = [
+        'title' => $entity->get('organism_common_name')->value,
+        'genus' => $entity->get('organism_genus')->value,
+        'crop-species' => $entity->get('organism_species')->value,
+      ];
       if ($entity->hasField($image_field) && !$entity->get($image_field)->isEmpty()) {
         $items = $entity->get($image_field)->getValue();
-        $crop_options[$entity->get('organism_common_name')->value] = [
-          'title' => $entity->get('organism_common_name')->value,
-          'genus' => $entity->get('organism_genus')->value,
-          'crop-species' => $entity->get('organism_species')->value,
-        ];
         $file = File::load($items[0]['target_id']);
         if ($file) {
           $uri = $file->getFileUri();

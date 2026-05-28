@@ -13,6 +13,8 @@ use Drupal\views\Tests\ViewResultAssertionTrait;
 use Drupal\views\Views;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Tests the views species filter.
@@ -29,6 +31,8 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
   protected static $modules = [
     'system',
     'user',
+    'file',
+    'image',
     'path',
     'path_alias',
     'tripal',
@@ -70,6 +74,9 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     // Install module configuration.
     $this->installConfig(['tripal', 'tripal_chado', 'trpcultivate']);
     $this->installConfig(['trpcultivate_test_views']);
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
+    $this->installConfig(['file', 'image']);
 
     // Test Chado database.
     // Create a test chado instance and then set it in the container for use by
@@ -110,6 +117,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
         'genus' => 'Lens',
         'species' => 'culinaris',
         'type_id' => NULL,
+        'common_name' => 'Lens',
       ],
       5 => [
         'genus' => 'Lens',
@@ -120,6 +128,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
         'genus' => 'Phaseolus',
         'species' => 'vulgaris',
         'type_id' => NULL,
+        'common_name' => 'Phaseolus',
       ],
     ];
 
@@ -129,6 +138,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
         'genus' => $organism['genus'],
         'species' => $organism['species'],
         'type_id' => $organism['type_id'] ?? NULL,
+        'common_name' => $organism['common_name'] ?? NULL,
       ]);
       $insert->execute();
     }
@@ -229,6 +239,41 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $organism_bundle = TripalEntityType::load('organism');
     $organism_bundle->save();
 
+    // Create field storage.
+    FieldStorageConfig::create([
+      'field_name' => 'field_crop_image',
+      'entity_type' => 'tripal_entity',
+      'type' => 'entity_reference',
+      'cardinality' => 1,
+      'settings' => [
+        'target_type' => 'tripal_entity',
+      ],
+    ])->save();
+
+    // Create the crop image field.
+    $field = FieldConfig::create([
+      'field_name' => 'field_crop_image',
+      'entity_type' => 'tripal_entity',
+      'bundle' => 'organism',
+      'label' => 'Crop Image',
+      'cardinality' => 1,
+      'settings' => [
+        'file_extensions' => 'png jpg jpeg',
+        'file_directory' => '',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'alt_field' => 1,
+        'alt_field_required' => 0,
+        'title_field' => 0,
+        'title_field_required' => 0,
+        'default_image' => [],
+      ],
+    ]);
+    $field->setThirdPartySetting('tripal', 'termIdSpace', 'TAXRANK');
+    $field->setThirdPartySetting('tripal', 'termAccession', '0000011');
+    $field->save();
+
     $publish_options = ['bundle' => 'germplasm', 'datastore' => 'chado_storage', 'schema_name' => $this->testSchemaName];
     $chado_publish->publish($publish_options);
 
@@ -252,14 +297,14 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
       ],
       'input with crop, genus, and species' => [
         'input' => [
-          'crop' => 'Cicer',
-          'genus' => 'Cicer',
-          'species' => 'arietinum',
+          'crop' => 'Phaseolus',
+          'genus' => 'Phaseolus',
+          'species' => 'vulgaris',
           'crop_used' => '1',
         ],
         'expected' => [
-          'genus' => 'Cicer',
-          'species' => 'arietinum',
+          'genus' => 'Phaseolus',
+          'species' => 'vulgaris',
         ],
       ],
       'input with genus and species only' => [

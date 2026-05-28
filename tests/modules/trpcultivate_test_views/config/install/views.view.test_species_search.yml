@@ -168,6 +168,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           organism_field: germplasm_organism
+          organism_image: field_crop_image
       style:
         type: default
       row:

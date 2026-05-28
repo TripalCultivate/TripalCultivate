@@ -5,6 +5,9 @@ views.filter.species_filter:
     organism_field:
       type: string
       label: 'Organism field'
+    organism_image:
+          type: string
+          label: 'Organism image'
     value:
       type: mapping
       mapping:
