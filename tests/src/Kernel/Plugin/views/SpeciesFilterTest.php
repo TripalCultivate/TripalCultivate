@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\file\Entity\File;
 
 /**
  * Tests the views species filter.
@@ -70,12 +71,12 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
 
     // Ensure we install the schema/modules we need.
     $this->prepareEnvironment(['TripalTerm', 'TripalEntity']);
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
     // -- additionally we need tripal_chado config to access the yaml files.
     // Install module configuration.
     $this->installConfig(['tripal', 'tripal_chado', 'trpcultivate']);
     $this->installConfig(['trpcultivate_test_views']);
-    $this->installEntitySchema('file');
-    $this->installSchema('file', ['file_usage']);
     $this->installConfig(['file', 'image']);
 
     // Test Chado database.
@@ -243,11 +244,8 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     FieldStorageConfig::create([
       'field_name' => 'field_crop_image',
       'entity_type' => 'tripal_entity',
-      'type' => 'entity_reference',
+      'type' => 'image',
       'cardinality' => 1,
-      'settings' => [
-        'target_type' => 'tripal_entity',
-      ],
     ])->save();
 
     // Create the crop image field.
@@ -258,22 +256,54 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
       'label' => 'Crop Image',
       'cardinality' => 1,
       'settings' => [
-        'file_extensions' => 'png jpg jpeg',
-        'file_directory' => '',
-        'max_filesize' => '',
-        'max_resolution' => '',
-        'min_resolution' => '',
-        'alt_field' => 1,
-        'alt_field_required' => 0,
-        'title_field' => 0,
-        'title_field_required' => 0,
-        'default_image' => [],
+        'termIdSpace' => 'TAXRANK',
+        'termAccession' => '0000011',
+        'uri_scheme' => 'public',
       ],
     ]);
-    $field->setThirdPartySetting('tripal', 'termIdSpace', 'TAXRANK');
-    $field->setThirdPartySetting('tripal', 'termAccession', '0000011');
+
     $field->save();
 
+    \Drupal::service('file_system')->copy(
+      $this->root . '/modules/contrib/TripalCultivate/tests/src/Fixtures/crop_images/lentil.jpg',
+      'public://lentil.jpg'
+    );
+    $lentil_image = File::create([
+      'uri' => 'public://lentil.jpg',
+    ]);
+    $lentil_image->save();
+    \Drupal::service('file_system')->copy(
+      $this->root . '/modules/contrib/TripalCultivate/tests/src/Fixtures/crop_images/drybean.jpg',
+      'public://drybean.jpg'
+    );
+    $drybean_image = File::create([
+      'uri' => 'public://drybean.jpg',
+    ]);
+    $drybean_image->save();
+    $storage = \Drupal::entityTypeManager()->getStorage('tripal_entity');
+    // Load organism entities.
+    $organisms = $storage->loadByProperties(['type' => 'organism']);
+    foreach ($organisms as $organism) {
+      if ($organism->get('organism_common_name')->value === 'Lens') {
+        $organism->set('field_crop_image', [
+          'target_id' => $lentil_image->id(),
+          'alt' => 'Lentil',
+          'title' => 'Lentil',
+          'width' => 100,
+          'height' => 100,
+        ]);
+      }
+      if ($organism->get('organism_common_name')->value === 'Phaseolus') {
+        $organism->set('field_crop_image', [
+          'target_id' => $drybean_image->id(),
+          'alt' => 'Dry Bean',
+          'title' => 'Dry Bean',
+          'width' => 100,
+          'height' => 100,
+        ]);
+      }
+      $organism->save();
+    }
     $publish_options = ['bundle' => 'germplasm', 'datastore' => 'chado_storage', 'schema_name' => $this->testSchemaName];
     $chado_publish->publish($publish_options);
 
