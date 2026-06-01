@@ -243,6 +243,8 @@ class SetupModuleService {
             'description' => $field_details['description'],
             'cardinality' => -1,
             'settings' => [
+              'termIdSpace' => $field_details['termIdSpace'],
+              'termAccession' => $field_details['termAccession'],
               'handler' => 'default:tripal_entity',
               'handler_settings' => [
                 'target_bundles' => $field_details['target'],
@@ -256,9 +258,7 @@ class SetupModuleService {
           ]);
         }
 
-        // Set the cvterm.
-        $field->setThirdPartySetting('tripal', 'termIdSpace', $field_details['termIdSpace']);
-        $field->setThirdPartySetting('tripal', 'termAccession', $field_details['termAccession']);
+        // Finally save the created field.
         $field->save();
       }
     }

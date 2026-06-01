@@ -32,17 +32,6 @@ function trpcultivate_preprocess_page(&$variables) {
 }
 
 /**
- * Implements hook_config_schema_info_alter().
- *
- * This legacy hook is only run for Drupal < 11, and is replaced by class
- * Drupal\trpcultivate\Hook\TripalCultivateHooks in trpcultivate/src/Hook/TripalCultivateHooks.php.
- */
-#[LegacyHook]
-function trpcultivate_config_schema_info_alter(&$definitions) {
-  \Drupal::service('trpcultivate.hooks')->configSchemaInfoAlter($definitions);
-}
-
-/**
  * Implements hook_theme().
  *
  * This legacy hook is only run for Drupal < 11, and is replaced by class
