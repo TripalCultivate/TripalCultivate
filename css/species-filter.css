@@ -64,6 +64,8 @@
 .crop-option img {
   object-fit: cover;
   opacity: 0.4;
+  width: 200px;
+  height: 200px;
 }
 
 /* Hover */
