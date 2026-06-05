@@ -73,7 +73,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     'case-empty-organism' => [
       'token' => 'case-empty-organism',
       'dev-case' => 'Unable to lookup organism with empty values',
-      'default-msg' => 'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: [column-headers]',
+      'default-msg' => 'One or more cells which are required to contain organisms were empty. Please ensure that you have entered the full scientific name of existing organisms for all cells in the following columns: [column-headers]',
     ],
     'case-missing-organism' => [
       'token' => 'case-missing-organism',
