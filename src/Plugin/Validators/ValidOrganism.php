@@ -70,6 +70,10 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
    * @see TripalCultivate/src/TripalCultivateValidator/TripalCultivateValidatorBase::$mapping
    */
   protected static array $mapping = [
+    'organism' => [
+      'token' => 'organism',
+      'default-msg' => 'organism',
+    ],
     'case-empty-organism' => [
       'token' => 'case-empty-organism',
       'dev-case' => 'Unable to lookup organism with empty values',
