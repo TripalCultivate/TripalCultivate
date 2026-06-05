@@ -130,7 +130,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       [],
       $metadata,
       [
-        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
+        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the full scientific names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
         'expected_column_count' => 2,
         'expected_table_rows' => [
           3 => [
@@ -346,7 +346,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       ],
       [],
       $metadata_basic_column_headers,
-      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: Organism',
+      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered the full scientific name of existing organisms for all cells in the following columns: Organism',
     ];
 
     // #1: Multiple empty organism cells
@@ -362,7 +362,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       ],
       [],
       $metadata_additional_column_headers,
-      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: This Organism, That Organism',
+      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered the full scientific name of existing organisms for all cells in the following columns: This Organism, That Organism',
     ];
 
     // #2: An empty organism cell and a missing organism.
@@ -387,7 +387,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       ],
       [],
       $metadata_additional_column_headers,
-      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: This Organism, That Organism',
+      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered the full scientific name of existing organisms for all cells in the following columns: This Organism, That Organism',
     ];
 
     // #3: An empty cell and a token to replace the entire displayed message.
@@ -421,7 +421,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       ],
       ['column-headers' => 'Column 1'],
       $metadata_basic_column_headers,
-      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered existing organisms for all cells in the following columns: Organism',
+      'One or more cells which are required to contain organisms were empty. Please ensure that you have entered the full scientific name of existing organisms for all cells in the following columns: Organism',
     ];
 
     return $scenarios;
@@ -814,7 +814,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       $metadata,
       [],
       [
-        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
+        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the full scientific names exactly as they appear on their organism pages, or contact your administrator to have them added if they do not yet exist.',
       ],
     ];
 
@@ -831,7 +831,7 @@ class ValidatorValidOrganismProcessTest extends ChadoTestKernelBase {
       $metadata,
       ['contact-admin' => 'CONTACT ADMIN'],
       [
-        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or CONTACT ADMIN to have them added if they do not yet exist.',
+        'expected_message' => 'The following organisms do not match any existing in this site. Please make sure you have entered the full scientific names exactly as they appear on their organism pages, or CONTACT ADMIN to have them added if they do not yet exist.',
       ],
     ];
 
