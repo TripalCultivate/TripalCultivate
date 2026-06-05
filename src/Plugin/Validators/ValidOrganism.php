@@ -78,7 +78,7 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     'case-missing-organism' => [
       'token' => 'case-missing-organism',
       'dev-case' => 'Missing organism(s) in the database',
-      'default-msg' => 'The following organisms do not match any existing in this site. Please make sure you have entered the names exactly as they appear on their organism pages, or [contact-admin] to have them added if they do not yet exist.',
+      'default-msg' => 'The following organisms do not match any existing in this site. Please make sure you have entered the full scientific names exactly as they appear on their organism pages, or [contact-admin] to have them added if they do not yet exist.',
     ],
     'case-valid' => [
       'token' => 'case-valid',
