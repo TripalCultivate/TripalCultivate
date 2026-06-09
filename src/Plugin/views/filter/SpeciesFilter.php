@@ -2,11 +2,15 @@
 
 namespace Drupal\trpcultivate\Plugin\views\filter;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\views\Attribute\ViewsFilter;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 use Drupal\file\Entity\File;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Crop Search Views Filter.
@@ -15,6 +19,71 @@ use Drupal\file\Entity\File;
  */
 #[ViewsFilter("species_filter")]
 class SpeciesFilter extends FilterPluginBase {
+
+  /**
+   * The Drupal entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * The Drupal entity field manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected EntityFieldManagerInterface $entityFieldManager;
+
+  /**
+   * The file URL generator.
+   *
+   * @var \Drupal\Core\File\FileUrlGeneratorInterface
+   */
+  protected $fileUrlGenerator;
+
+  /**
+   * Constructs a SpeciesFilter object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The Drupal entity type manager service.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
+   *   The Drupal entity field manager service.
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
+   *   The file URL generator.
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    EntityTypeManagerInterface $entity_type_manager,
+    EntityFieldManagerInterface $entity_field_manager,
+    FileUrlGeneratorInterface $file_url_generator,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entity_type_manager;
+    $this->entityFieldManager = $entity_field_manager;
+    $this->fileUrlGenerator = $file_url_generator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager'),
+      $container->get('entity_field.manager'),
+      $container->get('file_url_generator'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -54,15 +123,20 @@ class SpeciesFilter extends FilterPluginBase {
       $form['value']['#access'] = FALSE;
     }
 
-    $entity_field_manager = \Drupal::service('entity_field.manager');
-    $fields_defs = $entity_field_manager->getFieldStorageDefinitions('tripal_entity');
+    $fields_defs = $this->entityFieldManager->getFieldStorageDefinitions('tripal_entity');
 
-    // Get organism fields for the dropdown.
+    // Organism fields for the dropdown.
     $organism_fields = [];
+
+    // Image fields for the image dropdown.
+    $image_fields = [];
 
     foreach ($fields_defs as $field_name => $definition) {
       if ($definition->getType() === 'chado_organism_type_default') {
         $organism_fields[$field_name] = $field_name;
+      }
+      if ($definition->getType() === 'image') {
+        $image_fields[$field_name] = $field_name;
       }
     }
 
@@ -72,15 +146,6 @@ class SpeciesFilter extends FilterPluginBase {
       '#options' => $organism_fields,
       '#default_value' => $this->options['organism_field'],
     ];
-
-    // Get image fields for the image dropdown.
-    $image_fields = [];
-
-    foreach ($fields_defs as $field_name => $definition) {
-      if ($definition->getType() === 'image') {
-        $image_fields[$field_name] = $field_name;
-      }
-    }
 
     $form['organism_image'] = [
       '#type' => 'select',
@@ -95,10 +160,9 @@ class SpeciesFilter extends FilterPluginBase {
    * {@inheritdoc}
    */
   public function buildExposedForm(&$form, FormStateInterface $form_state) {
-    $entity_type_manager = \Drupal::service('entity_type.manager');
 
     $form['#attached']['library'][] = 'trpcultivate/species_filter';
-    $bundle_key = $entity_type_manager
+    $bundle_key = $this->entityTypeManager
       ->getDefinition('tripal_entity')
       ->getKey('bundle');
     $crop_options = $this->buildCropImageOptions();
@@ -120,8 +184,8 @@ class SpeciesFilter extends FilterPluginBase {
       ],
     ];
 
-    $genus_options = ['' => $this->t('- Select genus -')];
-    $genus_results = $entity_type_manager
+    $genus_options = [];
+    $genus_results = $this->entityTypeManager
       ->getStorage('tripal_entity')
       ->getAggregateQuery()
       ->accessCheck(FALSE)
@@ -136,8 +200,8 @@ class SpeciesFilter extends FilterPluginBase {
     }
 
     // Species options (from genus).
-    $species_options = ['' => $this->t('- Select species -')];
-    $species_results = $entity_type_manager
+    $species_options = [];
+    $species_results = $this->entityTypeManager
       ->getStorage('tripal_entity')
       ->getAggregateQuery()
       ->accessCheck(FALSE)
@@ -187,12 +251,16 @@ class SpeciesFilter extends FilterPluginBase {
     $form['genus'] = [
       '#type' => 'select',
       '#title' => $this->t('Genus'),
+      '#empty_value' => '',
+      '#empty_option' => $this->t('- Select genus -'),
       '#options' => $genus_options,
       '#default_value' => $selected_genus,
     ];
     $form['species'] = [
       '#type' => 'select',
       '#title' => $this->t('Species'),
+      '#empty_value' => '',
+      '#empty_option' => $this->t('- Select species -'),
       '#options' => $species_options,
       '#default_value' => $selected_species,
     ];
@@ -216,7 +284,7 @@ class SpeciesFilter extends FilterPluginBase {
       ->exists('organism_common_name')
       ->accessCheck(FALSE)->execute();
 
-    $entities = \Drupal::entityTypeManager()
+    $entities = $this->entityTypeManager
       ->getStorage('tripal_entity')
       ->loadMultiple($ids);
 
@@ -248,7 +316,7 @@ class SpeciesFilter extends FilterPluginBase {
       $image_markup = '';
 
       if (!empty($crop['image']) && file_exists($crop['image'])) {
-        $url = \Drupal::service('file_url_generator')
+        $url = $this->fileUrlGenerator
           ->generateString($crop['image']);
         $image_markup = '<img src="' . $url . '" alt="' . $crop['title'] . '" />';
       }
@@ -277,23 +345,26 @@ class SpeciesFilter extends FilterPluginBase {
    * {@inheritdoc}
    */
   public function acceptExposedInput($input) {
-    $this->value['genus'] = '';
-    $this->value['species'] = '';
+    $genus_key = 'genus';
+    $species_key = 'species';
+
+    $this->value[$genus_key] = '';
+    $this->value[$species_key] = '';
 
     if (!empty($input['crop'])) {
       $crop_options = $this->getCropOptions();
 
       if (isset($crop_options[$input['crop']])) {
-        $this->value['genus'] = $crop_options[$input['crop']]['genus'];
-        $this->value['species'] = $crop_options[$input['crop']]['crop-species'];
+        $this->value[$genus_key] = $crop_options[$input['crop']]['genus'];
+        $this->value[$species_key] = $crop_options[$input['crop']]['crop-species'];
       }
     }
     else {
-      $this->value['genus'] = $input['genus'] ?? '';
-      $this->value['species'] = $input['species'] ?? '';
+      $this->value[$genus_key] = $input[$genus_key] ?? '';
+      $this->value[$species_key] = $input[$species_key] ?? '';
     }
 
-    return !empty($this->value['genus']) || !empty($this->value['species']);
+    return !empty($this->value[$genus_key]) || !empty($this->value[$species_key]);
   }
 
   /**
@@ -319,9 +390,9 @@ class SpeciesFilter extends FilterPluginBase {
     // Use the alias to add your specific genus/species conditions.
     if (!empty($this->value['genus'])) {
       $this->query->addWhere(
-        $this->options['group'], 
-        "$field_table_alias.{$field}_organism_genus", 
-        $this->value['genus'], 
+        $this->options['group'],
+        "$field_table_alias.{$field}_organism_genus",
+        $this->value['genus'],
         'IN'
       );
     }

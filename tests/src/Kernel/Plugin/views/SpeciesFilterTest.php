@@ -54,13 +54,6 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
   protected ChadoConnection $chado_connection;
 
   /**
-   * An array of test organisms created.
-   *
-   * @var array
-   */
-  protected array $organisms;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -98,7 +91,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $this->container->get('current_user')->setAccount($account);
 
     // Create some test organisms.
-    $this->organisms = [
+    $organisms = [
       1 => [
         'genus' => 'Tripalus',
         'species' => 'bogusii',
@@ -133,7 +126,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
       ],
     ];
 
-    foreach ($this->organisms as $organism) {
+    foreach ($organisms as $organism) {
       $insert = $this->chado_connection->insert('1:organism');
       $insert->fields([
         'genus' => $organism['genus'],
@@ -264,43 +257,39 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
 
     $field->save();
 
-    \Drupal::service('file_system')->copy(
-      $this->root . '/modules/contrib/TripalCultivate/tests/src/Fixtures/crop_images/lentil.jpg',
-      'public://lentil.jpg'
-    );
-    $lentil_image = File::create([
-      'uri' => 'public://lentil.jpg',
-    ]);
-    $lentil_image->save();
-    \Drupal::service('file_system')->copy(
-      $this->root . '/modules/contrib/TripalCultivate/tests/src/Fixtures/crop_images/drybean.jpg',
-      'public://drybean.jpg'
-    );
-    $drybean_image = File::create([
-      'uri' => 'public://drybean.jpg',
-    ]);
-    $drybean_image->save();
+    $sample_crops = [
+      'lentil' => [
+        'title' => 'Lentil',
+        'common_name' => 'Lens',
+      ],
+      'drybean' => [
+        'title' => 'Dry Bean',
+        'common_name' => 'Phaseolus',
+      ],
+    ];
+
+    $crop_images = [];
+    foreach ($sample_crops as $crop => $crop_val) {
+      $img_uri = 'public://' . $crop . '.jpg';
+      $file_system_path = "$this->root/modules/contrib/TripalCultivate/tests/src/Fixtures/crop_images";
+      \Drupal::service('file_system')->copy("$file_system_path/$crop.jpg", $img_uri);
+      $crop_images[$crop] = File::create(['uri' => $img_uri]);
+      $crop_images[$crop]->save();
+    }
     $storage = \Drupal::entityTypeManager()->getStorage('tripal_entity');
     // Load organism entities.
     $organisms = $storage->loadByProperties(['type' => 'organism']);
     foreach ($organisms as $organism) {
-      if ($organism->get('organism_common_name')->value === 'Lens') {
-        $organism->set('field_crop_image', [
-          'target_id' => $lentil_image->id(),
-          'alt' => 'Lentil',
-          'title' => 'Lentil',
-          'width' => 100,
-          'height' => 100,
-        ]);
-      }
-      if ($organism->get('organism_common_name')->value === 'Phaseolus') {
-        $organism->set('field_crop_image', [
-          'target_id' => $drybean_image->id(),
-          'alt' => 'Dry Bean',
-          'title' => 'Dry Bean',
-          'width' => 100,
-          'height' => 100,
-        ]);
+      foreach ($sample_crops as $crop => $crop_val) {
+        if ($organism->get('organism_common_name')->value === $crop_val['common_name']) {
+          $organism->set('field_crop_image', [
+            'target_id' => $crop_images[$crop]->id(),
+            'alt' => $crop_val['title'],
+            'title' => $crop_val['title'],
+            'width' => 100,
+            'height' => 100,
+          ]);
+        }
       }
       $organism->save();
     }
