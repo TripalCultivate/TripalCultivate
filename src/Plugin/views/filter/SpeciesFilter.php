@@ -144,6 +144,7 @@ class SpeciesFilter extends FilterPluginBase {
       '#type' => 'select',
       '#title' => $this->t('Organism field'),
       '#options' => $organism_fields,
+      // NOTE: $this->options is inherited from the parent class.
       '#default_value' => $this->options['organism_field'],
     ];
 
