@@ -203,7 +203,7 @@ class SpeciesFilter extends FilterPluginBase {
    */
   protected function getCropOptions() {
 
-    // If no image field is selected, erturn an emptly array.
+    // If no image field is selected, return an empty array.
     if (empty($this->options['organism_image'])) {
       return [];
     }
