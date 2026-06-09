@@ -291,8 +291,7 @@ class SetupModuleService {
     }
 
     // -- Set a number of properties to use the "Short Text" widget.
-    $property_fields = ['exp_featureofinterest', 'exp_germgenus',
-      'exp_germspecies', 'exp_germcollection', 'exp_site_locations',
+    $property_fields = ['exp_featureofinterest', 'exp_germcollection', 'exp_site_locations',
       'exp_timepoints', 'exp_pot_growingmedia', 'exp_bchem_technique',
     ];
     foreach ($property_fields as $component_name) {

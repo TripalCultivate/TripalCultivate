@@ -40,8 +40,7 @@ layouts:
         show_empty: false
         open: true
         children:
-          - "exp_germgenus"
-          - "exp_germspecies"
+          - 'exp_organism'
           - "exp_germcollection"
       - id: experiment_phenomics
         type: details
