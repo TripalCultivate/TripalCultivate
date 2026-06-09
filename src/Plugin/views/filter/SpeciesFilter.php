@@ -212,7 +212,7 @@ class SpeciesFilter extends FilterPluginBase {
     $image_field = $this->options['organism_image'];
     $crop_options = [];
     $ids = \Drupal::entityQuery('tripal_entity')
-      ->condition('type', 'organism')
+      ->condition('type', 'organism', '=')
       ->exists('organism_common_name')
       ->accessCheck(FALSE)->execute();
 
