@@ -254,10 +254,10 @@ class SpeciesFilter extends FilterPluginBase {
       }
 
       $options[$key] = Markup::create(
-      '<div class="crop-option">
-        <div class="crop-image">' . $image_markup . '</div>
-        <div class="crop-title">' . $crop['title'] . '</div>
-       </div>'
+        '<div class="crop-option">
+          <div class="crop-image">' . $image_markup . '</div>
+          <div class="crop-title">' . $crop['title'] . '</div>
+        </div>'
       );
 
     }
