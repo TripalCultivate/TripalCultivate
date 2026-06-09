@@ -125,7 +125,7 @@ class SpeciesFilter extends FilterPluginBase {
       ->getStorage('tripal_entity')
       ->getAggregateQuery()
       ->accessCheck(FALSE)
-      ->condition($bundle_key, 'organism')
+      ->condition($bundle_key, 'organism', '=')
       ->condition('organism_genus.value', NULL, 'IS NOT NULL')
       ->condition('organism_genus.value', '', '<>')
       ->groupBy('organism_genus.value')
