@@ -318,7 +318,12 @@ class SpeciesFilter extends FilterPluginBase {
 
     // Use the alias to add your specific genus/species conditions.
     if (!empty($this->value['genus'])) {
-      $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_genus", $this->value['genus'], 'IN');
+      $this->query->addWhere(
+        $this->options['group'], 
+        "$field_table_alias.{$field}_organism_genus", 
+        $this->value['genus'], 
+        'IN'
+      );
     }
 
     if (!empty($this->value['species'])) {
