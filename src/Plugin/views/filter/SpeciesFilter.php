@@ -327,7 +327,12 @@ class SpeciesFilter extends FilterPluginBase {
     }
 
     if (!empty($this->value['species'])) {
-      $this->query->addWhere($this->options['group'], "$field_table_alias.{$field}_organism_species", $this->value['species'], 'IN');
+      $this->query->addWhere(
+        $this->options['group'],
+        "$field_table_alias.{$field}_organism_species",
+        $this->value['species'],
+        'IN'
+      );
     }
   }
 
