@@ -465,7 +465,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
       return (string) $row->_entity->label();
     }, $view->result);
 
-    $this->assertEquals($expected, $labels, 'The array resulted does not match the expected array in scenario' . " $scenario.");
+    $this->assertEquals($expected, $labels, 'The array result does not match the expected array in scenario' . " $scenario.");
   }
 
 }
