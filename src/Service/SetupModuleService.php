@@ -321,6 +321,21 @@ class SetupModuleService {
     // -- Finally save it.
     $display->save();
 
+    // Now modify the page display.
+    $config_entity_storage = $this->entityTypeManager->getStorage('entity_view_display');
+    $display = $config_entity_storage->load('tripal_entity.' . $bundle . '.default');
+
+    // -- Hide a few labels.
+    $labels_to_hide = ['exp_description', 'exp_dataset', 'exp_research_outputs', 'exp_organism'];
+    foreach ($labels_to_hide as $component_name) {
+      $options = $display->getComponent($component_name);
+      $options['label'] = 'hidden';
+      $display->setComponent($component_name, $options);
+    }
+
+    // -- Finally save it.
+    $display->save();
+
     // Load Tripal Entity Type research_study bundle.
     $bundle = 'research_study';
     $research_study = $this->entityTypeManager->getStorage('tripal_entity_type')->load($bundle);

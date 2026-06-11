@@ -576,7 +576,7 @@ fields:
           view:
             default:
               region: content
-              label: inline
+              label: hidden
           form:
             default:
               region: content
