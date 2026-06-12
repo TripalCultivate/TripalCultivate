@@ -260,6 +260,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
    */
   protected function preMassageFormValues(array &$values): void {
     $values = $this->genericSelectMassageFormValues('organism_id', $values);
+    $chado = \Drupal::service('tripal_chado.database');
     foreach ($values as $delta => $value) {
       $new_value = $value;
       $new_value['genus_value'] = '';
@@ -271,7 +272,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
           $query->condition('organism_id', $value['organism_id'], '=');
           $result = $query->execute()->fetchAll();
           $new_value['sciname_value'] = $result[0]->organism;
-          $chado = \Drupal::service('tripal_chado.database');
           $sql = 'SELECT genus FROM {1:organism} WHERE organism_id=' . $value['organism_id'];
           $genus = $chado->query($sql)->fetchField();
           $new_value['genus_value'] = $genus;

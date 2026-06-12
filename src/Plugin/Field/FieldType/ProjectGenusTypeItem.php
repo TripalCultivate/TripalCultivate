@@ -44,7 +44,7 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     $settings['termIdSpace'] = 'TAXRANK';
     $settings['termAccession'] = '0000005';
 
-    $settings['genus_term'] = 'genus (TAXRANK:0000005)';
+    $settings['genus_term'] = 'genus (' . $settings['termIdSpace'] . ':' . $settings['termAccession'] . ')';
     $settings['sciname_term'] = 'scientific name (NCBITaxon:scientific_name)';
 
     return $settings;
