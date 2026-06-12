@@ -133,7 +133,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       '#default_value' => $sciname_value,
     ];
 
-    // Get the orgaism select element or auto-complete element.
+    // Get the organism select element or auto-complete element.
     $select_element = ChadoOrganismFormElementController::getFormElement($elements, $organism_id, $options);
     $elements['organism_id'] = $element + $select_element;
 
