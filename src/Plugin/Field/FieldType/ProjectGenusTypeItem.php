@@ -2,7 +2,9 @@
 
 namespace Drupal\trpcultivate\Plugin\Field\FieldType;
 
+use Drupal\Component\Utility\Random;
 use Drupal\core\Form\FormStateInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\tripal\TripalField\Attribute\TripalFieldType;
 use Drupal\tripal\Entity\TripalEntityType;
@@ -69,6 +71,31 @@ class ProjectGenusTypeItem extends ChadoFieldItemBase {
     // randomly picked one. This is currently used by core Tripal when checking
     // if this field is empty.
     return 'sciname_value';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
+    $value = [];
+
+    $random = new Random();
+    $genus_cvterm_id = mt_rand(1, 500);
+    $value['record_id'] = 0;
+    $value['genus_prop_id'] = 0;
+    $value['genus_prop_fkey'] = 0;
+    $value['genus_value'] = $random->sentences(3, TRUE);
+    $value['genus_type_id'] = $genus_cvterm_id;
+    $value['genus_rank'] = 0;
+
+    $sciname_cvterm_id = mt_rand(1, 500);
+    $value['sciname_prop_id'] = 1;
+    $value['sciname_prop_fkey'] = 0;
+    $value['sciname_value'] = $random->sentences(3, TRUE);
+    $value['genus_type_id'] = $sciname_cvterm_id;
+    $value['sciname_rank'] = 0;
+
+    return [$value];
   }
 
   /**
