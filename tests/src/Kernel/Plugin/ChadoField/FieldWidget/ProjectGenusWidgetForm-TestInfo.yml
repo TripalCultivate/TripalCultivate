@@ -34,7 +34,7 @@ system-under-test:
     settings:
       sciname_term: 'scientific name (NCBITaxon:scientific_name)'
       genus_term: 'genus (TAXRANK:0000005)'
-      termIdSpace: TAXRANK
+      termIdSpace: 'TAXRANK'
       termAccession: '0000005'
       debug: false
       storage_plugin_settings:
