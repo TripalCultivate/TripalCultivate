@@ -555,11 +555,11 @@ fields:
 ## GERMPLASM
 ###
 
-    -   name: exp_germgenus
+    -   name: exp_organism
         content_type: research_experiment
-        label: Germplasm Genus
-        type: chado_property_type_default
-        description: The genus of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple genuses then each genus should be its own entry.
+        label: Germplasm Species
+        type: project_genus
+        description: The species of the germplasm that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species then each species should be its own entry.
         cardinality: -1
         required: false
         storage_settings:
@@ -570,35 +570,13 @@ fields:
         settings:
             termIdSpace: TAXRANK
             termAccession: '0000005'
+            genus_term: genus (TAXRANK:0000005)
+            sciname_term: scientific name (NCBITaxon:scientific_name)
         display:
           view:
             default:
               region: content
-              label: inline
-          form:
-            default:
-              region: content
-
-    -   name: exp_germspecies
-        content_type: research_experiment
-        label: Germplasm Scientific Name
-        type: chado_property_type_default
-        description: The scientific name of the germplasm species (e.g. Lens culinaris) that data was collected for (i.e. that the experiment was done on). If data was collected for multiple species, then each species should be added as its own entry.
-        cardinality: -1
-        required: false
-        storage_settings:
-            storage_plugin_id: chado_storage
-            storage_plugin_settings:
-                base_table: project
-                prop_table: projectprop
-        settings:
-            termIdSpace: TAXRANK
-            termAccession: '0000006'
-        display:
-          view:
-            default:
-              region: content
-              label: inline
+              label: hidden
           form:
             default:
               region: content

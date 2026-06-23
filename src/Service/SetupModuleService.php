@@ -291,8 +291,7 @@ class SetupModuleService {
     }
 
     // -- Set a number of properties to use the "Short Text" widget.
-    $property_fields = ['exp_featureofinterest', 'exp_germgenus',
-      'exp_germspecies', 'exp_germcollection', 'exp_site_locations',
+    $property_fields = ['exp_featureofinterest', 'exp_germcollection', 'exp_site_locations',
       'exp_timepoints', 'exp_pot_growingmedia', 'exp_bchem_technique',
     ];
     foreach ($property_fields as $component_name) {
@@ -316,6 +315,21 @@ class SetupModuleService {
     foreach ($fields as $component_name) {
       $options = $display->getComponent($component_name);
       $options['settings']['num_rows'] = 6;
+      $display->setComponent($component_name, $options);
+    }
+
+    // -- Finally save it.
+    $display->save();
+
+    // Now modify the page display.
+    $config_entity_storage = $this->entityTypeManager->getStorage('entity_view_display');
+    $display = $config_entity_storage->load('tripal_entity.' . $bundle . '.default');
+
+    // -- Hide a few labels.
+    $labels_to_hide = ['exp_description', 'exp_dataset', 'exp_research_outputs', 'exp_organism'];
+    foreach ($labels_to_hide as $component_name) {
+      $options = $display->getComponent($component_name);
+      $options['label'] = 'hidden';
       $display->setComponent($component_name, $options);
     }
 
