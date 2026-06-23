@@ -355,10 +355,15 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
         $failedItems['empty_cells'][] = $index;
       }
       else {
-        $organism_id_array = $this->organism_buddy->getOrganismFromScientificName($cell);
         $organism_id = 0;
-        if (isset($organism_id_array[0])) {
-          $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
+        if (is_int($cell)) {
+          $organism_id = $cell;
+        }
+        else {
+          $organism_id_array = $this->organism_buddy->getOrganismFromScientificName($cell);
+          if (isset($organism_id_array[0])) {
+            $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
+          }
         }
 
         // Check for missing organism.
