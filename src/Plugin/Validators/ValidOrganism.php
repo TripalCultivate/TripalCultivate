@@ -187,9 +187,9 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
       $organism_obj = $this->organism_buddy->getOrganism(['organism.organism_id' => $organism_input]);
     }
     else {
-      $organism_input = trim($form_values[$expected_field_key]);
       $organism_obj = $this->organism_buddy->getOrganismFromScientificName($organism_input);
     }
+
     if (isset($organism_obj[0])) {
       $organism_id = $organism_obj[0]->getValue('organism.organism_id');
     }
