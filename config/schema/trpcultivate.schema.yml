@@ -10,3 +10,34 @@ trpcultivate.settings:
         template_file:
           type: path
           label: 'Directory: data collection template file'
+
+## Schema for the ProjectGenusTypeItem (project_genus) field.
+field.field_settings.project_genus:
+  type: mapping
+  mapping:
+    sciname_term:
+      type: string
+      label: 'Scientific Name Property Term. Default: scientific name (NCBITaxon:scientific_name)'
+    genus_term:
+      type: string
+      label: 'Genus Property Term. Default: genus (TAXRANK:0000005)'
+
+field.storage_settings.project_genus:
+  type: mapping
+  mapping:
+    storage_plugin_settings:
+      type: mapping
+      label: 'Tripal Storage-specific Settings'
+      mapping:
+        prop_table:
+          type: 'string'
+          label: 'Table containing property columns'
+          nullable: FALSE
+
+field.widget.settings.project_genus_widget:
+  type: mapping
+  mapping: {}
+
+field.formatter.settings.project_genus_formatter:
+  type: mapping
+  mapping: {}
