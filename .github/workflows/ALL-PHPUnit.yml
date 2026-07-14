@@ -29,19 +29,14 @@ jobs:
           - "14"
           - "18"
         drupal-version:
-          - "10.5.x"
           - "10.6.x"
-          - "11.2.x"
           - "11.3.x"
+          - "11.4.x"
           - "11.x-dev"
         exclude:
           # Only Drupal 11.3+ supports PHP 8.5.
           - php-version: "8.5"
-            drupal-version: "10.5.x"
-          - php-version: "8.5"
             drupal-version: "10.6.x"
-          - php-version: "8.5"
-            drupal-version: "11.2.x"
           # Drupal 11.x is the bleeding edge so only run it on the latest php.
           - php-version: "8.2"
             drupal-version: "11.x-dev"
@@ -51,9 +46,9 @@ jobs:
             drupal-version: "11.x-dev"
           # Drupal 11+ requires at least Postgresql 16.
           - pgsql-version: "14"
-            drupal-version: "11.2.x"
-          - pgsql-version: "14"
             drupal-version: "11.3.x"
+          - pgsql-version: "14"
+            drupal-version: "11.4.x"
           - pgsql-version: "14"
             drupal-version: "11.x-dev"
           # Drupal 11.x is the bleeding edge so only run it on the latest postgreSQL.
@@ -68,9 +63,9 @@ jobs:
             drupal-version: "10.6.x"
           # Drupal 11+ requires at least php 8.3.
           - php-version: "8.2"
-            drupal-version: "11.2.x"
-          - php-version: "8.2"
             drupal-version: "11.3.x"
+          - php-version: "8.2"
+            drupal-version: "11.4.x"
 
     steps:
       # Check out the repo
