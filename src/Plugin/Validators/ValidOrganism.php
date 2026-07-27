@@ -181,12 +181,17 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
     $valid = TRUE;
     $failed_items = [];
 
-    $organism_input = trim($form_values[$expected_field_key]);
-
-    $organism_id_array = $this->organism_buddy->getOrganismFromScientificName($organism_input);
     $organism_id = 0;
-    if (isset($organism_id_array[0])) {
-      $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
+    $organism_input = trim($form_values[$expected_field_key]);
+    if (is_numeric($organism_input)) {
+      $org_buddy_records = $this->organism_buddy->getOrganism(['organism.organism_id' => $organism_input]);
+    }
+    else {
+      $org_buddy_records = $this->organism_buddy->getOrganismFromScientificName($organism_input);
+    }
+
+    if (isset($org_buddy_records[0])) {
+      $organism_id = $org_buddy_records[0]->getValue('organism.organism_id');
     }
 
     if ($organism_id <= 0 || empty($organism_id)) {
@@ -351,10 +356,10 @@ class ValidOrganism extends TripalCultivateValidatorBase implements ContainerFac
         $failedItems['empty_cells'][] = $index;
       }
       else {
-        $organism_id_array = $this->organism_buddy->getOrganismFromScientificName($cell);
+        $org_buddy_records = $this->organism_buddy->getOrganismFromScientificName($cell);
         $organism_id = 0;
-        if (isset($organism_id_array[0])) {
-          $organism_id = $organism_id_array[0]->getValue('organism.organism_id');
+        if (isset($org_buddy_records[0])) {
+          $organism_id = $org_buddy_records[0]->getValue('organism.organism_id');
         }
 
         // Check for missing organism.

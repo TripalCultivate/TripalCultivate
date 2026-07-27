@@ -93,6 +93,8 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
     $this->test_organisms = [
       'valid_organism' => 'Lens culinaris',
       'invalid_organism' => 'Tripulas databasica',
+      'valid_organism_id' => 1,
+      'invalid_organism_id' => 100,
     ];
   }
 
@@ -209,6 +211,24 @@ class ValidatorValidOrganismMetadataTest extends ChadoTestKernelBase {
           'case' => 'Missing organism(s) in the database',
           'valid' => FALSE,
           'failedItems' => ['organism_provided' => 'Tripulas databasica'],
+        ],
+      ],
+      [
+        'Valid organismID',
+        'valid_organism_id',
+        [
+          'case' => 'Organism(s) exist(s) in the database',
+          'valid' => TRUE,
+          'failedItems' => [],
+        ],
+      ],
+      [
+        'Invalid organismID',
+        'invalid_organism_id',
+        [
+          'case' => 'Missing organism(s) in the database',
+          'valid' => FALSE,
+          'failedItems' => ['organism_provided' => 100],
         ],
       ],
     ];
