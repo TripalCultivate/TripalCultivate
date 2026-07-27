@@ -1,0 +1,19 @@
+views.filter.species_filter:
+  type: views_filter
+  label: 'Species Filter'
+  mapping:
+    organism_field:
+      type: string
+      label: 'Organism field'
+    organism_image:
+          type: string
+          label: 'Organism image'
+    value:
+      type: mapping
+      mapping:
+        genus:
+          type: string
+        species:
+          type: string
+        crop:
+          type: string
