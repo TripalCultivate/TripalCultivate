@@ -24,6 +24,13 @@ use Drupal\tripal_chado\Controller\ChadoOrganismFormElementController;
 class ProjectGenusWidget extends ChadoWidgetBase {
 
   /**
+   * Flag if all genus has been used up.
+   *
+   * @var bool
+   */
+  protected bool $all_genus_used = FALSE;
+
+  /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
@@ -135,6 +142,26 @@ class ProjectGenusWidget extends ChadoWidgetBase {
 
     // Get the organism select element or auto-complete element.
     $select_element = ChadoOrganismFormElementController::getFormElement($elements, $organism_id, $options);
+    $storage = $form_state->getStorage();
+
+    // Do not suggest already selected genus and disable add more item.
+    if ($item_vals === [] && $storage) {
+      $selected_organism = array_column(
+        $form_state->getStorage()['initial_values'][$field_name],
+        'organism_id'
+      );
+
+      $genus_used_ctr = 0;
+      foreach ($select_element['#options'] as $organism_id => $_) {
+        if (is_array($selected_organism) && in_array($organism_id, $selected_organism)) {
+          unset($select_element['#options'][$organism_id]);
+          $genus_used_ctr++;
+        }
+      }
+
+      $this->all_genus_used = ($genus_used_ctr == count($selected_organism)) ? TRUE : FALSE;
+    }
+
     $elements['organism_id'] = $element + $select_element;
 
     // Save some initial values to allow later handling of the "Remove" button.
@@ -142,7 +169,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // we have two properties in a single item.
     // We want the initial values, so never update them once saved.
     $messenger = \Drupal::messenger();
-    $storage = $form_state->getStorage();
     if (!($storage['initial_values'][$field_name][$delta] ?? FALSE)) {
       if (($organism_id == 0) and ($sciname_prop_id != 0 or ($genus_prop_id != 0))) {
         // Add an error message.
@@ -154,6 +180,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
           'sciname_linker_id' => $sciname_prop_id,
           'organism_id' => $organism_id,
         ];
+
         $form_state->setStorage($storage);
       }
     }
@@ -300,6 +327,22 @@ class ProjectGenusWidget extends ChadoWidgetBase {
    */
   public function settingsSummary() {
     return $this->selectSettingsSummary() + parent::settingsSummary();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
+
+    $elements = parent::formMultipleElements($items, $form, $form_state);
+
+    if ($this->all_genus_used) {
+      $elements['add_more']['#disabled'] = TRUE;
+
+      $elements['#max_delta'] -= 1;
+      unset($elements[$elements['#max_delta'] + 1]);
+    }
+    return $elements;
   }
 
 }
