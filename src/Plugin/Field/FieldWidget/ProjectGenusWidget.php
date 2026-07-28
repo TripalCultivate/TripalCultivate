@@ -24,13 +24,6 @@ use Drupal\tripal_chado\Controller\ChadoOrganismFormElementController;
 class ProjectGenusWidget extends ChadoWidgetBase {
 
   /**
-   * Flag if all genus has been used up.
-   *
-   * @var bool
-   */
-  protected bool $all_genus_used = FALSE;
-
-  /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
@@ -143,24 +136,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // Get the organism select element or auto-complete element.
     $select_element = ChadoOrganismFormElementController::getFormElement($elements, $organism_id, $options);
     $storage = $form_state->getStorage();
-
-    // Do not suggest already selected genus and disable add more item.
-    if ($item_vals === [] && $storage) {
-      $selected_organism = array_column(
-        $form_state->getStorage()['initial_values'][$field_name],
-        'organism_id'
-      );
-
-      $genus_used_ctr = 0;
-      foreach ($select_element['#options'] as $organism_id => $_) {
-        if (is_array($selected_organism) && in_array($organism_id, $selected_organism)) {
-          unset($select_element['#options'][$organism_id]);
-          $genus_used_ctr++;
-        }
-      }
-
-      $this->all_genus_used = ($genus_used_ctr == count($selected_organism)) ? TRUE : FALSE;
-    }
 
     $elements['organism_id'] = $element + $select_element;
 
@@ -336,12 +311,41 @@ class ProjectGenusWidget extends ChadoWidgetBase {
 
     $elements = parent::formMultipleElements($items, $form, $form_state);
 
-    if ($this->all_genus_used) {
-      $elements['add_more']['#disabled'] = TRUE;
+    $max_field_delta = $elements['#max_delta'];
 
-      $elements['#max_delta'] -= 1;
-      unset($elements[$elements['#max_delta'] + 1]);
+    if (($storage_initial_values = $form_state->getStorage()['initial_values']) != NULL) {
+      $genus_field_name = $items->getName();
+
+      // Filter all organism id that are > than 0 (not the value of select
+      // placeholder text).
+      $genus_field_values = array_filter(
+        array_column($storage_initial_values[$genus_field_name], 'organism_id'),
+        function ($organism_id) { return (int) $organism_id > 0; }
+      );
     }
+
+    // Disable already filled in organism field.
+    for ($i = 0; $i <= $max_field_delta; $i++) {
+
+      if ($i != $max_field_delta) {
+        $elements[$i]['organism_id']['#disabled'] = TRUE;
+      }
+    }
+
+    // Remove from select box already used organism - the last select box.
+    foreach ($genus_field_values as $organism_id) {
+      unset($elements[$max_field_delta]['organism_id']['#options'][$organism_id]);
+    }
+
+    // If all organism have been used up, do not provide any more select field
+    // and disable the add another item.
+    if (count($elements[$max_field_delta]['organism_id']['#options']) == 0) {
+      unset($elements[$max_field_delta]);
+      $elements['#max_delta'] -= 1;
+
+      $elements['add_more']['#disabled'] = TRUE;
+    }
+
     return $elements;
   }
 
