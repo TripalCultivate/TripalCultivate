@@ -336,6 +336,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       foreach ($current_values as $delta => $values) {
         if ($values['organism_id'] != '') {
           $elements[$delta]['organism_id']['#attributes'] = [
+            'readonly' => 'readonly',
             'style' => 'pointer-events: none; background-color: #F0F0F0',
           ];
 
@@ -349,6 +350,30 @@ class ProjectGenusWidget extends ChadoWidgetBase {
         unset($elements[$max_field_delta]['organism_id']['#options'][$organism_id]);
       }
     }
+
+
+    // Disable organism select field with organism already set on page load.
+    if (($storage_initial_values = $form_state->getStorage()['initial_values']) != NULL) {
+
+      $used_organism = [];
+      foreach ($storage_initial_values[$genus_field_name] as $delta => $values) {
+        if ($values['organism_id'] > 0) {
+          $elements[$delta]['organism_id']['#attributes'] = [
+            'readonly' => 'readonly',
+            'style' => 'pointer-events: none; background-color: #F0F0F0',
+          ];
+
+          $used_organism[] = $values['organism_id'];
+        }
+      }
+
+      // Update the the available organism for selection in added select
+      // organism field.
+      foreach($used_organism as $organism_id) {
+        unset($elements[$max_field_delta]['organism_id']['#options'][$organism_id]);
+      }
+    }
+
 
     return $elements;
   }
