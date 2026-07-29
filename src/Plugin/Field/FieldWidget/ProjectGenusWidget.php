@@ -310,8 +310,10 @@ class ProjectGenusWidget extends ChadoWidgetBase {
   protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
 
     $elements = parent::formMultipleElements($items, $form, $form_state);
+
     $genus_field_name = $items->getName();
     $max_field_delta = $elements['#max_delta'];
+    $id_key = 'organism_id';
 
     // Ensure only one organism at a time by appying field states property to
     // add more button to disable itself if an organism select field has not
@@ -326,54 +328,47 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       ]
     ];
 
-    // Before adding another select field, disable already set organism - no
-    // more alteration at this point.
-    $trigger_el = $form_state->getTriggeringElement() ?? 0;
-    if ($trigger_el && $trigger_el['#name'] == 'exp_organism_add_more') {
+    $set_organism = [];
+
+    // Listen for events - which button is clicked and if storage has saved
+    // organism values.
+    $trigger_el_value = $form_state->getTriggeringElement()['#value'] ?? 0;
+
+    if ($trigger_el_value == (string) $elements['add_more']['#value'] || $trigger_el_value == 'Remove') {
+      // Add another item or remove button trigger.
       $current_values = $form_state->getUserInput()[$genus_field_name] ?? [];
 
-      $used_organism = [];
       foreach ($current_values as $delta => $values) {
-        if ($values['organism_id'] != '') {
-          $elements[$delta]['organism_id']['#attributes'] = [
-            'readonly' => 'readonly',
-            'style' => 'pointer-events: none; background-color: #F0F0F0',
-          ];
-
-          $used_organism[] = $values['organism_id'];
+        if ($values[$id_key] != '') {
+          $set_organism[$delta] = $values[$id_key];
         }
       }
-
-      // Update the available organism for selection in the newly added
-      // select organism field.
-      foreach($used_organism as $organism_id) {
-        unset($elements[$max_field_delta]['organism_id']['#options'][$organism_id]);
-      }
     }
-
-
-    // Disable organism select field with organism already set on page load.
-    if (($storage_initial_values = $form_state->getStorage()['initial_values']) != NULL) {
-
-      $used_organism = [];
+    elseif (($storage_initial_values = $form_state->getStorage()['initial_values']) != NULL) {
+      // On page load.
       foreach ($storage_initial_values[$genus_field_name] as $delta => $values) {
-        if ($values['organism_id'] > 0) {
-          $elements[$delta]['organism_id']['#attributes'] = [
-            'readonly' => 'readonly',
-            'style' => 'pointer-events: none; background-color: #F0F0F0',
-          ];
-
-          $used_organism[] = $values['organism_id'];
+        if ($values[$id_key] != '' && $values[$id_key] != 0) {
+          $set_organism[] = $values[$id_key];
         }
-      }
-
-      // Update the the available organism for selection in added select
-      // organism field.
-      foreach($used_organism as $organism_id) {
-        unset($elements[$max_field_delta]['organism_id']['#options'][$organism_id]);
       }
     }
 
+    if ($set_organism) {
+      // Modify behaviour of elements.
+
+      foreach ($set_organism as $delta => $organism_id) {
+        // Before adding another select field, disable already set organism - no
+        // more alteration at this point.
+        $elements[$delta][$id_key]['#attributes'] = [
+          'readonly' => 'readonly',
+          'style' => 'pointer-events: none; background-color: #F0F0F0',
+        ];
+
+        // Update the available organism for selection in the remaining select
+        // organism field by removing in used organism - no duplicate allowed.
+        unset($elements[$max_field_delta][$id_key]['#options'][$organism_id]);
+      }
+    }
 
     return $elements;
   }
