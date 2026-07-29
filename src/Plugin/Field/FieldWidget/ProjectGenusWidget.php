@@ -310,40 +310,44 @@ class ProjectGenusWidget extends ChadoWidgetBase {
   protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
 
     $elements = parent::formMultipleElements($items, $form, $form_state);
-
+    $genus_field_name = $items->getName();
     $max_field_delta = $elements['#max_delta'];
 
-    if (($storage_initial_values = $form_state->getStorage()['initial_values']) != NULL) {
-      $genus_field_name = $items->getName();
+    // Ensure only one organism at a time by appying field states property to
+    // add more button to disable itself if an organism select field has not
+    // been set a value.
+    $item_el = $genus_field_name . '[' . $max_field_delta . '][organism_id]';
+    $elements['add_more']['#states'] = [
+      'disabled' => [
+        ':input[name="' . $item_el . '"]' => ['value' => '']
+      ],
+      'enabled' => [
+        ':input[name="' . $item_el . '"]' => ['filled' => TRUE]
+      ]
+    ];
 
-      // Filter all organism id that are > than 0 (not the value of select
-      // placeholder text).
-      $genus_field_values = array_filter(
-        array_column($storage_initial_values[$genus_field_name], 'organism_id'),
-        function ($organism_id) { return (int) $organism_id > 0; }
-      );
-    }
+    // Before adding another select field, disable already set organism - no
+    // more alteration at this point.
+    $trigger_el = $form_state->getTriggeringElement() ?? 0;
+    if ($trigger_el && $trigger_el['#name'] == 'exp_organism_add_more') {
+      $current_values = $form_state->getUserInput()[$genus_field_name] ?? [];
 
-    // Disable already filled in organism field.
-    for ($i = 0; $i <= $max_field_delta; $i++) {
+      $used_organism = [];
+      foreach ($current_values as $delta => $values) {
+        if ($values['organism_id'] != '') {
+          $elements[$delta]['organism_id']['#attributes'] = [
+            'style' => 'pointer-events: none; background-color: #F0F0F0',
+          ];
 
-      if ($i != $max_field_delta) {
-        $elements[$i]['organism_id']['#disabled'] = TRUE;
+          $used_organism[] = $values['organism_id'];
+        }
       }
-    }
 
-    // Remove from select box already used organism - the last select box.
-    foreach ($genus_field_values as $organism_id) {
-      unset($elements[$max_field_delta]['organism_id']['#options'][$organism_id]);
-    }
-
-    // If all organism have been used up, do not provide any more select field
-    // and disable the add another item.
-    if (count($elements[$max_field_delta]['organism_id']['#options']) == 0) {
-      unset($elements[$max_field_delta]);
-      $elements['#max_delta'] -= 1;
-
-      $elements['add_more']['#disabled'] = TRUE;
+      // Update the available organism for selection in the newly added
+      // select organism field.
+      foreach($used_organism as $organism_id) {
+        unset($elements[$max_field_delta]['organism_id']['#options'][$organism_id]);
+      }
     }
 
     return $elements;
