@@ -330,8 +330,8 @@ class ProjectGenusWidget extends ChadoWidgetBase {
 
     $set_organism = [];
 
-    // Listen for events - which button is clicked and if storage has saved
-    // organism values.
+    // Listen for events - which button is clicked and if storage has organism
+    // values stored.
     $trigger_el_value = $form_state->getTriggeringElement()['#value'] ?? 0;
 
     if ($trigger_el_value == (string) $elements['add_more']['#value'] || $trigger_el_value == 'Remove') {
