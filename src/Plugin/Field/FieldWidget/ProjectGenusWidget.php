@@ -312,13 +312,13 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     $elements = parent::formMultipleElements($items, $form, $form_state);
 
     $genus_field_name = $items->getName();
-    $max_field_delta = $elements['#max_delta'];
-    $id_key = 'organism_id';
+    $last_delta = $elements['#max_delta'];
+    $organism_id_key = 'organism_id';
 
-    // Ensure only one organism at a time by appying field states property to
+    // Ensure only one organism at a time by appying field #states property to
     // add more button to disable itself if an organism select field has not
     // been set a value.
-    $item_el = $genus_field_name . '[' . $max_field_delta . '][organism_id]';
+    $item_el = $genus_field_name . '[' . $last_delta . '][organism_id]';
     $elements['add_more']['#states'] = [
       'disabled' => [
         ':input[name="' . $item_el . '"]' => ['value' => '']
@@ -328,47 +328,36 @@ class ProjectGenusWidget extends ChadoWidgetBase {
       ]
     ];
 
-    $set_organism = [];
-
-    // Listen for events - which button is clicked and if storage has organism
-    // values stored.
-    $trigger_el_value = $form_state->getTriggeringElement()['#value'] ?? 0;
-
-    if ($trigger_el_value == (string) $elements['add_more']['#value'] || $trigger_el_value == 'Remove') {
-      // Add another item or remove button trigger.
-      $current_values = $form_state->getUserInput()[$genus_field_name] ?? [];
-
-      foreach ($current_values as $delta => $values) {
-        if ($values[$id_key] != '') {
-          $set_organism[$delta] = $values[$id_key];
-        }
+    foreach ($items as $delta => $_) {
+      if ($delta == $last_delta) {
+        break;
       }
-    }
-    elseif (($storage_initial_values = $form_state->getStorage()['initial_values']) != NULL) {
-      // On page load.
-      foreach ($storage_initial_values[$genus_field_name] as $delta => $values) {
-        if ($values[$id_key] != '' && $values[$id_key] != 0) {
-          $set_organism[] = $values[$id_key];
-        }
-      }
-    }
 
-    if ($set_organism) {
-      // Modify behaviour of elements.
+      $organism_default_val = $elements[$delta][$organism_id_key]['#default_value'] ?? 0;
+      $organism_input_val = $form_state->getUserInput()[$genus_field_name][$delta][$organism_id_key] ?? 0;
+      $organism_value = $organism_input_val ?: $organism_default_val;
 
-      foreach ($set_organism as $delta => $organism_id) {
-        // Before adding another select field, disable already set organism - no
-        // more alteration at this point.
-        $elements[$delta][$id_key]['#attributes'] = [
+      if (isset($elements[$delta]) && !empty($organism_value)) {
+        // Visually disable the field without using #disabled fiel $form;d render array
+        // property. Keeping element enabled ensures its value is included in
+        // each AJAX request (add/remove), whereas a disabled field would not be
+        // submitted by the browser.
+        $elements[$delta][$organism_id_key]['#attributes'] = [
           'readonly' => 'readonly',
-          'style' => 'pointer-events: none; background-color: #F0F0F0',
+          'style' => 'pointer-events: none; opacity: 0.5;',
         ];
 
-        // Update the available organism for selection in the remaining select
-        // organism field by removing in used organism - no duplicate allowed.
-        unset($elements[$max_field_delta][$id_key]['#options'][$organism_id]);
-      }
+        // Repopulate the new blank organism select field so that the previously
+        // set organism will no longer be suggested.
+        unset($elements[$last_delta][$organism_id_key]['#options'][$organism_value]);
+      } $form;
     }
+
+    // At any time, the form contains one blank organism select field by design.
+    // When there are two elements, removing the blank will override the current
+    // or saved value into a blank field. Disabling remove button prevents this.
+    $elements[$last_delta]['_actions']['delete']['#disabled'] =
+      (empty($elements[$last_delta][$organism_id_key]['#options']) || $last_delta == 1) ? TRUE : FALSE;
 
     return $elements;
   }

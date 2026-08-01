@@ -342,6 +342,16 @@ class ProjectGenusWidgetFormTest extends ChadoTestKernelBase {
       $add_more_button->asXML(),
       'The states definition applied to add more button is expected to render it disabled by default.',
     );
+
+    // Test that with 2 items, the remove button of the blank select field is
+    // disabled.
+    $remove_more_button = $this->cssSelect('input[name="exp_organism_1_remove_button"]')[0];
+
+    $this->assertStringContainsString(
+      'disabled',
+      $remove_more_button->asXML(),
+      'The last organism select field is expected to be disabled if there are 2 select elements.',
+    );
   }
 
 }
