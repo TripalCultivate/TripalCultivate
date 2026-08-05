@@ -322,7 +322,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // submitted during AJAX add/remove operations.
     $readonly_attributes = [
       'readonly' => 'readonly',
-      'style' => 'pointer-events: none; opacity: 0.6;',
+      'style' => 'pointer-events: none; opacity: 0.4;',
     ];
 
     // Listen for values set to the blank organism select field.
