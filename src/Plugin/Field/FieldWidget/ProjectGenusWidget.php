@@ -311,53 +311,64 @@ class ProjectGenusWidget extends ChadoWidgetBase {
 
     $elements = parent::formMultipleElements($items, $form, $form_state);
 
-    $genus_field_name = $items->getName();
-    $last_delta = $elements['#max_delta'];
-    $organism_id_key = 'organism_id';
+    $organism_field_name = $items->getName();
+    $organism_field_key = 'organism_id';
+    // The pattern used to compose each organism select field name attribute.
+    $organism_field = "{$organism_field_name}[%d][{$organism_field_key}]";
 
-    // Ensure only one organism at a time by appying field #states property to
-    // add more button to disable itself if an organism select field has not
-    // been set a value.
-    $item_el = $genus_field_name . '[' . $last_delta . '][organism_id]';
-    $elements['add_more']['#states'] = [
-      'disabled' => [
-        ':input[name="' . $item_el . '"]' => ['value' => '']
-      ],
-      'enabled' => [
-        ':input[name="' . $item_el . '"]' => ['filled' => TRUE]
-      ]
+    $last_delta = $elements['#max_delta'];
+
+    // Visually disable a field while keeping it enabled so its value is still
+    // submitted during AJAX add/remove operations.
+    $readonly_attributes = [
+      'readonly' => 'readonly',
+      'style' => 'pointer-events: none; opacity: 0.6;',
     ];
 
+    // Listen for values set to the blank organism select field.
+    $last_field_selector = ':input[name="' . sprintf($organism_field, $last_delta) . '"]';
+    $toggle_states = [
+      'disabled' => [$last_field_selector => ['value' => '']],
+      'enabled' => [$last_field_selector => ['filled' => TRUE]],
+    ];
+
+    // One field at a time. Prevent adding another row until organism is set.
+    $elements['add_more']['#states'] = $toggle_states;
+
+    // Other sources of field value other than the #default_value attribute.
+    $user_input = $form_state->getUserInput();
+    $storgage = $form_state->getStorage();
+
+    // Disable set organism fields.
     foreach ($items as $delta => $_) {
+      $default_value = $elements[$delta][$organism_field_key]['#default_value'] ?? NULL;
+      $input_value = $user_input[$organism_field_name][$delta][$organism_field_key] ?? NULL;
+      $organism_id = $input_value ?: $default_value;
+
       if ($delta == $last_delta) {
+        $storage_value = $storgage['initial_values'][$organism_field_name][$delta][$organism_field_key] ?? NULL;
+        if ($organism_id ??= $storage_value) {
+          // Lock organism that has become the blank field.
+          $elements[$delta][$organism_field_key]['#attributes'] = $readonly_attributes;
+        }
+
         break;
       }
 
-      $organism_default_val = $elements[$delta][$organism_id_key]['#default_value'] ?? 0;
-      $organism_input_val = $form_state->getUserInput()[$genus_field_name][$delta][$organism_id_key] ?? 0;
-      $organism_value = $organism_input_val ?: $organism_default_val;
+      if (!isset($elements[$delta]) && empty($organism_id)) {
+        continue;
+      }
 
-      if (isset($elements[$delta]) && !empty($organism_value)) {
-        // Visually disable the field without using #disabled fiel $form;d render array
-        // property. Keeping element enabled ensures its value is included in
-        // each AJAX request (add/remove), whereas a disabled field would not be
-        // submitted by the browser.
-        $elements[$delta][$organism_id_key]['#attributes'] = [
-          'readonly' => 'readonly',
-          'style' => 'pointer-events: none; opacity: 0.5;',
-        ];
+      // Lock previously selected organism.
+      $elements[$delta][$organism_field_key]['#attributes'] = $readonly_attributes;
 
-        // Repopulate the new blank organism select field so that the previously
-        // set organism will no longer be suggested.
-        unset($elements[$last_delta][$organism_id_key]['#options'][$organism_value]);
-      } $form;
+      // Repopulate the new blank organism select field so that the previously
+      // set organism will no longer be suggested.
+      unset($elements[$last_delta][$organism_field_key]['#options'][$organism_id]);
     }
 
-    // At any time, the form contains one blank organism select field by design.
-    // When there are two elements, removing the blank will override the current
-    // or saved value into a blank field. Disabling remove button prevents this.
-    $elements[$last_delta]['_actions']['delete']['#disabled'] =
-      (empty($elements[$last_delta][$organism_id_key]['#options']) || $last_delta == 1) ? TRUE : FALSE;
+    // Prevent deletion of blank select field.
+    $elements[$last_delta]['_actions']['delete']['#states'] = $toggle_states;
 
     return $elements;
   }
