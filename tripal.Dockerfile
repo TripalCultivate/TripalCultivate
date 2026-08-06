@@ -45,3 +45,9 @@ RUN service postgresql start \
   && drush tripal:trp-import-types --collection_id=genetic_chado \
   && drush cr \
   && service postgresql stop
+
+RUN service postgresql start \
+  && cd /var/www/drupal \
+  && composer require tripal/tripal:4.x-dev tripal/tripal_devtools --dev --with-all-dependencies \
+  && drush en tripal_devtools --yes \
+  && service postgresql stop
