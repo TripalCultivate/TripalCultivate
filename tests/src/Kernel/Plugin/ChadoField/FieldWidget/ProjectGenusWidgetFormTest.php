@@ -262,7 +262,7 @@ class ProjectGenusWidgetFormTest extends ChadoTestKernelBase {
 
     // Create test research experiment entity and set Lens as an entry to the
     // organism field.
-    $exp_entity =TripalEntity::create([
+    $exp_entity = TripalEntity::create([
       'type' => 'research_experiment',
       'exp_name' => [
         'record_id' => $project_id,
