@@ -295,7 +295,7 @@ class ProjectGenusWidgetFormTest extends ChadoTestKernelBase {
     $this->assertEquals(
       count($test_organism),
       count($organism_row),
-      'The edit page does not contain expected number of seleect organism fields.',
+      'The edit page does not contain expected number of select organism fields.',
     );
 
     $organism_select = $this->cssSelect('select', $organism_row);
