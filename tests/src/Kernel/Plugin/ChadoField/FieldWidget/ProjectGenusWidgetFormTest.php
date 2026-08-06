@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 class ProjectGenusWidgetFormTest extends ChadoTestKernelBase {
 
   use ChadoFieldTestTrait;
-  use UserCreationTrait;
 
   /**
    * The theme to use when rendering content in the test environment.
