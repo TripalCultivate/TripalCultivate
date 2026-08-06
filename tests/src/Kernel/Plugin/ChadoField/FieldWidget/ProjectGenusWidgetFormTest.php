@@ -312,7 +312,7 @@ class ProjectGenusWidgetFormTest extends ChadoTestKernelBase {
         $this->assertStringContainsString(
           $organism,
           $select_field->asXML(),
-          'The organism select field does not contain the expected orgnism option in select delta ' . $delta,
+          'The organism select field does not contain the expected organism option in select delta ' . $delta,
         );
       }
 
