@@ -15,13 +15,15 @@
 <div id="tcp-header-notes">
   <p>This should be a [{{data.file_extensions}}] file with the following columns:</p>
 
-  <ol id="tcp-header-notes">
-    {% for header in data.headers %}
-    <li>
-      <strong>{{header['name']}}</strong>: {{header['description']}} ({{header['type']}})
-    </li>
-    {% endfor %}
-  </ol>
+  <div>
+    <ol id="tcp-header-notes">
+      {% for header in data.headers %}
+      <li>
+        <strong>{{header['name']}}</strong>: {{header['description']}} ({{header['type']}})
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
 
   <p><em>{{data.notes}}</em></p>
 </div>
