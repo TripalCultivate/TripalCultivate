@@ -19,17 +19,19 @@
     <ol id="tcp-header-notes">
       {% for header in data.headers %}
       <li>
-        <strong>{{header['name']}}</strong>: {{header['description']}} ({{header['type']}})
+        <strong>{{header['name']}}</strong>
+        <span class="views-field"><small class="marker">{{header['type']|capitalize}}</small></span>
+        <p>{{header['description']}}</p>
       </li>
       {% endfor %}
     </ol>
+    <div class="tcp-details-partial-reveal"></div>
   </div>
 
-  <p><em>{{data.notes}}</em></p>
-</div>
+  <i class="fa-regular fa-circle-check"></i>
+  <span>Check Before Uploading</span> | &nbsp; <a id="tcp-template-file" class="button button--small button--secondary" href="{{data.template_file}}" target="_blank">Download a template file</a>
 
-<div id="tcp-template-file">
-  <a href="{{data.template_file}}" target="_blank">Download a template file</a>
+  <p><em>{{data.notes}}</em></p>
 </div>
 
 <br />
