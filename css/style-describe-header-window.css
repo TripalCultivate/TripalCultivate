@@ -9,17 +9,6 @@
   margin: 0 0 10px 0;
 }
 
-/* Traits window */
-#tcp-header-notes > div {
-  position: relative;
-  border: 1px solid #DADADA;
-  border-radius: 8px;
-  max-height: 350px;
-  margin-bottom: 10px;
-  overflow-y: auto;
-  padding: 20px 20px 0 20px;
-}
-
 #tcp-header-notes li {
   border-bottom: 1px solid #DADADA;
   margin: 0;
@@ -40,22 +29,58 @@
   margin: 0;
 }
 
-.tcp-details-partial-reveal {
+/* Expandable traits window */
+:root {
+  --window-height: 525px;
+}
+
+#tcp-expandable-window {
+  border: 1px solid #DADADA;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 20px 20px 0 20px;
+  position: relative;
+}
+
+.tcp-window-min {
+  max-height: var(--window-height);
+  overflow-y: auto;
+}
+
+.tcp-window-max {
+  max-height: none;
+  overflow-y: visible;
+}
+
+#tcp-expandable-window > div {
   background: linear-gradient(to bottom, transparent, var(--gin-bg-layer));
   bottom: 0;
-  height: 40px;
+  height: 60px;
+  padding: 0;
   position: sticky;
-  padding: 0;
   margin: 0;
 }
 
-.fa-circle-check, #tcp-header-notes > span {
-  margin: 20px 0 0 0;
+/* Check before uploading */
+#tripal-importer-describe-file-upload > i,
+#tripal-importer-describe-file-upload > span {
   font-size: 1.5em;
+  letter-spacing: -1px;
+  margin: 20px 0 0 0;
 }
 
-#tcp-header-notes p:last-child {
+#tripal-importer-describe-file-upload p:last-child {
+  line-height: 1.2;
   margin: 0;
   padding: 0;
-  line-height: 1.2;
+}
+
+/* Window title */
+#tripal-importer-describe-file-upload > p {
+  position: relative;
+}
+
+#tripal-importer-describe-file-upload > p > span {
+  position: absolute;
+  right: 0;
 }

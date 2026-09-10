@@ -3,19 +3,31 @@
  * @file
  * Template implementation of importer describe header window.
  *
- * Available variables:
- * - header_notes: array of headers keyed by the header name.
-     Value is description and expected value.
- * - template_file: a file name of a template file.
+ * Available variables as defined by the method describeUploadFileFormat() in
+ * the Tripal importer class.
+ * - data.headers: the list of headers defined by the importer header property.
+ *   Each header metadata can be accessed with the following keys:
+ *   - 'name': the header name
+ *   - 'type': either required or optional.
+ *   - 'description': the header description text.
+ * - data.file_extensions: list of file extensions supported by the importer.
+ * - data.notes: additional notes or reminders related to the upload.
+ * - data.template_file: the file path of the template file provided by the
+ *     template file generator service.
  */
 #}
 
 {{ attach_library('trpcultivate/describe-header-window') }}
 
-<div id="tcp-header-notes">
-  <p>This should be a [{{data.file_extensions}}] file with the following columns:</p>
+<div id="tripal-importer-describe-file-upload">
+  <p>
+    This should be a [{{data.file_extensions}}] file with the following columns:
+    <span class="views-field">
+      <small class="marker">{{data.headers|length}} Columns | <a id="tcp-resize-window" title="Click to expand or collapse the column list below" href="#">Expand</a></small>
+    </span>
+  </p>
 
-  <div>
+  <div id="tcp-expandable-window" class="tcp-window-min">
     <ol id="tcp-header-notes">
       {% for header in data.headers %}
       <li>
@@ -25,13 +37,25 @@
       </li>
       {% endfor %}
     </ol>
-    <div class="tcp-details-partial-reveal"></div>
+    <!-- Partial reveal (bottom blur) element -->
+    <div></div>
   </div>
 
   <i class="fa-regular fa-circle-check"></i>
-  <span>Check Before Uploading</span> | &nbsp; <a id="tcp-template-file" class="button button--small button--secondary" href="{{data.template_file}}" target="_blank">Download a template file</a>
-
-  <p><em>{{data.notes}}</em></p>
+  <span>Check Before Uploading</span> | &nbsp; <a title="Download a template file with the columns above already included" class="button button--small" href="{{data.template_file}}" target="_blank">Download a template file</a>
+  <p><em>{{data.notes|raw}}</em></p>
 </div>
 
 <br />
+
+<script>
+  document.getElementById('tcp-resize-window')
+    .addEventListener('click', function (event) {
+      event.preventDefault();
+
+      // Expand or collapse traits expandable window.
+      const traitWindow = document.getElementById('tcp-expandable-window');
+      this.textContent = traitWindow.classList
+        .toggle('tcp-window-max') ? 'Collapse' : 'Expand';
+    });
+</script>
