@@ -34,7 +34,6 @@ RUN service postgresql start \
   && service postgresql stop
 
 RUN service postgresql start \
-  && drush trp-prep-chado --schema-name=${chadoschema} \
   && drush tripal:trp-import-types --collection_id=general_chado \
   && drush tripal:trp-import-types --collection_id=germplasm_chado \
   && drush tripal:trp-import-types --collection_id=genomic_chado \
