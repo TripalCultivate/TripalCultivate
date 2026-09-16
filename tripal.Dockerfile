@@ -29,8 +29,8 @@ RUN service postgresql restart \
 ## Migrate Chado v1.3 to v1.3.3.013.
 RUN service postgresql start \
   && drush trp-install-chado --schema-name=${chadoschema} \
-  && drush trp-prep-chado --schema-name=${chadoschema} \
   && drush trp-migrate-chado --schema-name=${chadoschema} \
+  && drush trp-prep-chado --schema-name=${chadoschema} \
   && service postgresql stop
 
 RUN service postgresql start \
