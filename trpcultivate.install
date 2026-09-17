@@ -23,7 +23,7 @@ function trpcultivate_requirements($phase) {
         'title' => t('Chado version'),
         'value' => $chado_version,
         'description' => t('TripalCultivate requires Chado >= 1.3.3.013. Detected version: @version.', ['@version' => $chado_version]),
-        'severity' => REQUIREMENT_ERROR,
+        'severity' => class_exists(\Drupal\Core\Extension\Requirement\RequirementSeverity::class) ? \Drupal\Core\Extension\Requirement\RequirementSeverity::Error : REQUIREMENT_ERROR,
       ];
     }
   }
