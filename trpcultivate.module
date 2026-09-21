@@ -42,3 +42,15 @@ function trpcultivate_preprocess_page(&$variables) {
 function trpcultivate_theme($existing, $type, $theme, $path) {
   return \Drupal::service('trpcultivate.theme_hooks')->theme($existing, $type, $theme, $path);
 }
+
+/**
+ * Implements hook_views_data().
+ *
+ * This legacy hook is only run for Drupal < 11, and is replaced by class
+ * Drupal\trpcultivate\Hook\TripalCultivateHooks in
+ * trpcultivate/src/Hook/TripalCultivateHooks.
+ */
+#[LegacyHook]
+function trpcultivate_views_data() {
+  return \Drupal::service('trpcultivate.hooks')->viewsData();
+}
