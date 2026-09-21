@@ -11,7 +11,7 @@
 function trpcultivate_requirements($phase) {
   $requirements = [];
 
-  // Check Chado version and throw and error if the version is not compatible.
+  // Check Chado version and report an error if the version is not compatible.
   if ($phase == 'install') {
     $chado_connection = new Drupal\tripal_chado\Database\ChadoConnection();
     $chado_schema_name = Drupal::config('tripal_chado.settings')
