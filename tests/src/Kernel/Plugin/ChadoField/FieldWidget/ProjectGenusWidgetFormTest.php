@@ -4,9 +4,12 @@ namespace Drupal\Tests\trpcultivate\Kernel\Plugin\ChadoField\Widget;
 
 use Drupal\Tests\tripal_chado\Kernel\ChadoTestKernelBase;
 use Drupal\Tests\tripal_chado\Traits\ChadoFieldTestTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\tripal\Entity\TripalEntity;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Tests the ChadoPropertyTypeDefault Field Type.
@@ -40,6 +43,7 @@ class ProjectGenusWidgetFormTest extends ChadoTestKernelBase {
    * @var array
    */
   protected static $modules = [
+    'node',
     'system',
     'user',
     'path',
@@ -231,6 +235,122 @@ class ProjectGenusWidgetFormTest extends ChadoTestKernelBase {
       $entity = $form_object->getEntity();
       $this->assertFieldValuesMatch($current_scenario['edit']['expected_field_values'], $entity, "Field values didn't match our expectations after saving the edit form");
     }
+  }
+
+  /**
+   * Test formMultipleElements() method.
+   */
+  public function testFormMultipleElements() {
+
+    $test_organism = ['Lens culinaris', 'Triticum durum'];
+
+    $organism_ids = [];
+    foreach ($test_organism as $organism) {
+      [$genus, $species] = explode(' ', $organism);
+
+      $organism_ids[$organism] = $this->chado_connection
+        ->insert('1:organism')
+        ->fields(['genus' => $genus, 'species' => $species, 'type_id' => 1])
+        ->execute();
+    }
+
+    $exp_name = 'Test Project';
+    $project_id = $this->chado_connection->insert('1:project')
+      ->fields(['name' => $exp_name])
+      ->execute();
+
+    // Create test research experiment entity and set Lens as an entry to the
+    // organism field.
+    $exp_entity = TripalEntity::create([
+      'type' => 'research_experiment',
+      'exp_name' => [
+        'record_id' => $project_id,
+        'value' => $exp_name,
+      ],
+      'exp_organism' => [
+        'record_id' => $project_id,
+        'organism_id' => reset($organism_ids),
+        'genus_value' => 'Lens',
+        'sciname_value' => reset($test_organism),
+      ],
+    ]);
+
+    $exp_entity->save();
+
+    $exp_entity_edit = '/bio_data/' . $exp_entity->id() . '/edit';
+    $edit_page_content = $this->container->get('http_kernel')
+      ->handle(Request::create($exp_entity_edit))
+      ->getContent();
+
+    $this->setRawContent($edit_page_content);
+
+    // Table used to organize each select organism field and control buttons.
+    $table = $this->cssSelect('table');
+
+    $organism_row = $this->cssSelect('tbody tr', $table);
+
+    // Test that for each organism entry, the set organism (Lens) is no longer
+    // suggested in subsequent select organism field.
+    $this->assertEquals(
+      count($test_organism),
+      count($organism_row),
+      'The edit page does not contain expected number of select organism fields.',
+    );
+
+    $organism_select = $this->cssSelect('select', $organism_row);
+    foreach ($organism_select as $delta => $select_field) {
+      // + 1 to account for the - Select - option.
+      $this->assertCount(
+        count($test_organism) + 1,
+        $select_field,
+        'The organism select field does not contain the expected number of options in select delta ' . $delta,
+      );
+
+      // The current select field contains the correct organism as options.
+      foreach ($test_organism as $organism) {
+        $this->assertStringContainsString(
+          $organism,
+          $select_field->asXML(),
+          'The organism select field does not contain the expected organism option in select delta ' . $delta,
+        );
+      }
+
+      // In the next select item, options should no longer contain Lens.
+      array_shift($test_organism);
+    }
+
+    // Test that the set genus in first select field (item 0) is disabled.
+    $this->assertStringContainsString(
+      'readonly',
+      $organism_select[0]->asXML(),
+      'The select field with set genus is expected to appear disabled.',
+    );
+
+    // Test that field #states definition applied to 'add more select field'
+    // button renders it disabled.
+    $add_more_button = $this->cssSelect('input[name="exp_organism_add_more"]')[0];
+
+    $this->assertStringContainsString(
+      'states',
+      $add_more_button->asXML(),
+      'The add more button is expected to contain Drupal states property.',
+    );
+
+    $this->assertStringContainsString(
+      'disabled',
+      $add_more_button->asXML(),
+      'The states definition applied to add more button is expected to render it disabled by default.',
+    );
+
+    // Test that with 2 items, the remove button of the blank select field is
+    // disabled.
+    $remove_more_button = $this->cssSelect('input[name="exp_organism_1_remove_button"]')[0];
+
+    $this->assertStringContainsString(
+      'disabled',
+      $remove_more_button->asXML(),
+      'The last organism select field is expected to be disabled if there are 2 select elements.',
+    );
   }
 
 }
