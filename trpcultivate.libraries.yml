@@ -9,6 +9,11 @@ describe-header-window:
   css:
     theme:
       css/style-describe-header-window.css: {}
+  js:
+    js/script-describe-header-window.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
 
 # Importer validation result window.
 validation-result-window:
