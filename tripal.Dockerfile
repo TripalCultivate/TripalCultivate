@@ -26,19 +26,14 @@ RUN service postgresql restart \
   && drush config:set system.site slogan "Drupal $DRUPALVERSION PHP$PHPVERSION" \
   && service postgresql stop
 
-COPY config/sql/V1.3__to__V1.3.3.013__updates.sql /V1.3__to__V1.3.3.013__updates.sql
-COPY config/sql/chado_schema-1.3.3.013.yml /var/www/drupal/web/modules/contrib/tripal/tripal_chado/chado_schema/chado_schema-1.3.yml
-
-## Migrate Chado v1.3 to v1.3.3.013 and trick Tripal into supporting it.
+## Migrate Chado v1.3 to v1.3.3.013.
 RUN service postgresql start \
   && drush trp-install-chado --schema-name=${chadoschema} \
-  && echo "SET search_path TO testchado"  > /var/www/drupal/migration.sql \
-  && cat /V1.3__to__V1.3.3.013__updates.sql >> /var/www/drupal/migration.sql \
-  && drush sql:query --file=/var/www/drupal/migration.sql \
+  && drush trp-prep-chado --schema-name=${chadoschema} \
+  && drush trp-migrate-chado --schema-name=${chadoschema} \
   && service postgresql stop
 
 RUN service postgresql start \
-  && drush trp-prep-chado --schema-name=${chadoschema} \
   && drush tripal:trp-import-types --collection_id=general_chado \
   && drush tripal:trp-import-types --collection_id=germplasm_chado \
   && drush tripal:trp-import-types --collection_id=genomic_chado \
