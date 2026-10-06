@@ -1,0 +1,104 @@
+/* Remove the border and spacing in the feildset wrapper */
+.crop-radios .fieldset__wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  border-color: transparent !important;
+}
+
+/* Make the fieldset legend with no background and no border */
+.crop-radios .fieldset__legend {
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+/* Format the Crop label as desired */
+.crop-radios .fieldset__label {
+  padding: 0;
+  margin: 0;
+  color: #000;
+  font-size: 14px;
+}
+
+/* Override Views inline form behavior */
+.crop-radios .form-item {
+  display: inline-block ;
+  margin: 0 5px 5px 0;
+  padding-top: 0;
+  flex: 0 0 auto;
+  border: 1px solid var(--color--gray-60);
+  border-radius: var(--border-radius);
+}
+
+.crop-radios .form-item__label {
+  margin: 0;
+  padding: 0;
+}
+
+/* Hide radio button */
+.crop-radios input[type="radio"] {
+  position: absolute;
+  display: none;
+}
+
+/* Make label clickable and large*/
+.crop-radios label {
+  cursor: pointer;
+  font-size: large;
+  align-content: center;
+}
+
+/* Card UI */
+.crop-option {
+  padding: 10px;
+  background: #fff;
+  transition: 0.2s;
+  position: relative;
+}
+
+.crop-option .crop-title {
+  font-size: 14px;
+}
+
+/* Image */
+.crop-option img {
+  object-fit: cover;
+  opacity: 0.4;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+}
+
+.crop-option .crop-image {
+  padding-bottom: 10px;
+}
+
+/* Hover */
+.crop-option:hover {
+  border-color: #ccc;
+}
+
+.crop-option:hover img {
+  opacity: 0.8;
+}
+
+.crop-option span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #717070;
+}
+
+/* Selected */
+.crop-radios input[type="radio"]:checked+label .crop-option {
+  border-color: green;
+}
+
+.crop-radios input[type="radio"]:checked+label img {
+  opacity: 1;
+}
