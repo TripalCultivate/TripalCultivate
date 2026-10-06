@@ -135,6 +135,8 @@ class ProjectGenusWidget extends ChadoWidgetBase {
 
     // Get the organism select element or auto-complete element.
     $select_element = ChadoOrganismFormElementController::getFormElement($elements, $organism_id, $options);
+    $storage = $form_state->getStorage();
+
     $elements['organism_id'] = $element + $select_element;
 
     // Save some initial values to allow later handling of the "Remove" button.
@@ -142,7 +144,6 @@ class ProjectGenusWidget extends ChadoWidgetBase {
     // we have two properties in a single item.
     // We want the initial values, so never update them once saved.
     $messenger = \Drupal::messenger();
-    $storage = $form_state->getStorage();
     if (!($storage['initial_values'][$field_name][$delta] ?? FALSE)) {
       if (($organism_id == 0) and ($sciname_prop_id != 0 or ($genus_prop_id != 0))) {
         // Add an error message.
@@ -154,6 +155,7 @@ class ProjectGenusWidget extends ChadoWidgetBase {
           'sciname_linker_id' => $sciname_prop_id,
           'organism_id' => $organism_id,
         ];
+
         $form_state->setStorage($storage);
       }
     }
@@ -300,6 +302,75 @@ class ProjectGenusWidget extends ChadoWidgetBase {
    */
   public function settingsSummary() {
     return $this->selectSettingsSummary() + parent::settingsSummary();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
+
+    $elements = parent::formMultipleElements($items, $form, $form_state);
+
+    $organism_field_name = $items->getName();
+    $organism_field_key = 'organism_id';
+    // The pattern used to compose each organism select field name attribute.
+    $organism_field = "{$organism_field_name}[%d][{$organism_field_key}]";
+
+    $last_delta = $elements['#max_delta'];
+
+    // Visually disable a field while keeping it enabled so its value is still
+    // submitted during AJAX add/remove operations.
+    $readonly_attributes = [
+      'readonly' => 'readonly',
+      'style' => 'pointer-events: none; opacity: 0.4;',
+    ];
+
+    // Listen for values set to the blank organism select field.
+    $last_field_selector = ':input[name="' . sprintf($organism_field, $last_delta) . '"]';
+    $toggle_states = [
+      'disabled' => [$last_field_selector => ['value' => '']],
+      'enabled' => [$last_field_selector => ['filled' => TRUE]],
+    ];
+
+    // One field at a time. Prevent adding another row until organism is set.
+    $elements['add_more']['#states'] = $toggle_states;
+
+    // Other sources of field value other than the #default_value attribute.
+    $user_input = $form_state->getUserInput();
+    $storgage = $form_state->getStorage();
+
+    // Disable set organism fields.
+    foreach ($items as $delta => $_) {
+      $default_value = $elements[$delta][$organism_field_key]['#default_value'] ?? NULL;
+      $input_value = $user_input[$organism_field_name][$delta][$organism_field_key] ?? NULL;
+      $organism_id = $input_value ?: $default_value;
+
+      if ($delta == $last_delta) {
+        $storage_value = $storgage['initial_values'][$organism_field_name][$delta][$organism_field_key] ?? NULL;
+        if ($organism_id ??= $storage_value) {
+          // Lock organism that has become the blank field.
+          $elements[$delta][$organism_field_key]['#attributes'] = $readonly_attributes;
+        }
+
+        break;
+      }
+
+      if (!isset($elements[$delta]) && empty($organism_id)) {
+        continue;
+      }
+
+      // Lock previously selected organism.
+      $elements[$delta][$organism_field_key]['#attributes'] = $readonly_attributes;
+
+      // Repopulate the new blank organism select field so that the previously
+      // set organism will no longer be suggested.
+      unset($elements[$last_delta][$organism_field_key]['#options'][$organism_id]);
+    }
+
+    // Prevent deletion of blank select field.
+    $elements[$last_delta]['_actions']['delete']['#states'] = $toggle_states;
+
+    return $elements;
   }
 
 }
