@@ -457,4 +457,37 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
     $this->assertEquals($expected, $labels, 'The array result does not match the expected array in scenario' . " $scenario.");
   }
 
+   /**
+   * Tests validation of the selected genus and species combination.
+   */
+  public function testValidateGenusSpeciesCombination() {
+    $view = Views::getView('test_species_search');
+    $view->initHandlers();
+    $filter = $view->filter['species_filter'];
+
+    $form = [];
+    $form_state = new FormState();
+    $filter->validateGenusSpeciesCombination($form, $form_state);
+    $this->assertSame([], $form_state->getErrors(), 'We expected there to be no errors when an empty genus or species given.');
+
+    $form_state->setValues([
+      'genus' => 'Lens',
+      'species' => 'culinaris',
+    ]);
+    $filter->validateGenusSpeciesCombination($form, $form_state);
+    $this->assertSame([], $form_state->getErrors(), 'We expected there to be no errors when existing genus and species combination is given.');
+
+    $form_state->setValues([
+      'genus' => 'Tripalus',
+      'species' => 'culinaris',
+    ]);
+    $filter->validateGenusSpeciesCombination($form, $form_state);
+    $this->assertArrayHasKey(
+      'organism',
+      $form_state->getErrors(),
+      'We expected an error when the genus and species that exist separately is not an existing organism when combined.'
+    );
+  }
+
+
 }

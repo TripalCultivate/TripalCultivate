@@ -163,6 +163,7 @@ class SpeciesFilter extends FilterPluginBase {
   public function buildExposedForm(&$form, FormStateInterface $form_state) {
 
     $form['#attached']['library'][] = 'trpcultivate/species_filter';
+
     $bundle_key = $this->entityTypeManager
       ->getDefinition('tripal_entity')
       ->getKey('bundle');
@@ -269,7 +270,41 @@ class SpeciesFilter extends FilterPluginBase {
       '#empty_option' => $this->t('- Select species -'),
       '#options' => $species_options,
       '#default_value' => $selected_species,
+      '#element_validate' => [[$this, 'validateGenusSpeciesCombination']],
     ];
+  }
+
+  /**
+   * Validates that the selected genus and species belong to one organism.
+   *
+   * @param array $form
+   *   The exposed form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public function validateGenusSpeciesCombination($form, FormStateInterface $form_state) {
+    $genus = $form_state->getValue('genus');
+    $species = $form_state->getValue('species');
+    if (empty($genus) || empty($species)) {
+      return;
+    }
+
+    $bundle_key = $this->entityTypeManager
+      ->getDefinition('tripal_entity')
+      ->getKey('bundle');
+    $organism_ids = $this->entityTypeManager
+      ->getStorage('tripal_entity')
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->condition($bundle_key, 'organism')
+      ->condition('organism_genus.value', $genus)
+      ->condition('organism_species.value', $species)
+      ->range(0, 1)
+      ->execute();
+
+    if (empty($organism_ids)) {
+      $form_state->setErrorByName('organism', $this->t('The selected genus and species do not match any existing organism.'));
+    }
   }
 
   /**
