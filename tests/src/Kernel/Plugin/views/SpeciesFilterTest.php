@@ -311,7 +311,7 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
         ],
         'expected' => [
           'genus' => 'Lens',
-          'species' => 'culinaris',
+          'species' => '',
         ],
       ],
       'input with crop, genus, and species' => [

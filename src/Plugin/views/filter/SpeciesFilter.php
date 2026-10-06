@@ -228,23 +228,28 @@ class SpeciesFilter extends FilterPluginBase {
 
       if (isset($crop_options[$selected_crop])) {
         $selected_genus = $crop_options[$selected_crop]['genus'];
-        $selected_species = $crop_options[$selected_crop]['crop-species'];
-
         $input['genus'] = $selected_genus;
-        $input['species'] = $selected_species;
         if (!in_array($selected_genus, $genus_options)) {
           $input['genus'] = '';
         }
-        if (!in_array($selected_species, $species_options)) {
-          $input['species'] = '';
-        }
+        $input['species'] = '';
       }
     }
 
     // Unset the existing crop image selection when dropdown is used to select
     // the species.
-    elseif ($crop_used == '0') {
+    elseif (($crop_used == '0')) {
       unset($input['crop']);
+      $selected_crop = NULL;
+
+      foreach ($crop_options as $crop_name => $crop) {
+        if ($crop['genus'] === $selected_genus && !empty($crop['image']) &&
+          file_exists($crop['image'])) {
+          $selected_crop = $crop_name;
+          break;
+        }
+      }
+      $form['crop']['#default_value'] = $selected_crop;
     }
 
     $form_state->setUserInput($input);
@@ -290,6 +295,7 @@ class SpeciesFilter extends FilterPluginBase {
       ->loadMultiple($ids);
 
     foreach ($entities as $entity) {
+      $uri = '';
       $crop_options[$entity->get('organism_common_name')->value] = [
         'title' => $entity->get('organism_common_name')->value,
         'genus' => $entity->get('organism_genus')->value,
@@ -357,13 +363,12 @@ class SpeciesFilter extends FilterPluginBase {
 
       if (isset($crop_options[$input['crop']])) {
         $this->value[$genus_key] = $crop_options[$input['crop']]['genus'];
-        $this->value[$species_key] = $crop_options[$input['crop']]['crop-species'];
       }
     }
     else {
       $this->value[$genus_key] = $input[$genus_key] ?? '';
-      $this->value[$species_key] = $input[$species_key] ?? '';
     }
+    $this->value[$species_key] = $input[$species_key] ?? '';
 
     return !empty($this->value[$genus_key]) || !empty($this->value[$species_key]);
   }
