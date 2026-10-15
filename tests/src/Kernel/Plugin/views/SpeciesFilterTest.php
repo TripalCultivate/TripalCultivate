@@ -482,12 +482,17 @@ class SpeciesFilterTest extends ChadoTestKernelBase {
       'species' => 'culinaris',
     ]);
     $filter->validateGenusSpeciesCombination($form, $form_state);
+    $errors = $form_state->getErrors();
     $this->assertArrayHasKey(
-      'organism',
-      $form_state->getErrors(),
-      'We expected an error when the genus and species that exist separately is not an existing organism when combined.'
+      'genus',
+      $errors,
+      'We expected an error on genus when the genus and species do not belong to the same organism.'
+    );
+    $this->assertArrayHasKey(
+      'species',
+      $errors,
+      'We expected an error on species when the genus and species do not belong to the same organism.'
     );
   }
-
 
 }

@@ -303,7 +303,9 @@ class SpeciesFilter extends FilterPluginBase {
       ->execute();
 
     if (empty($organism_ids)) {
-      $form_state->setErrorByName('organism', $this->t('The selected genus and species do not match any existing organism.'));
+      $message = $this->t('The selected genus and species do not match any existing organism.');
+      $form_state->setErrorByName('genus', $message);
+      $form_state->setErrorByName('species', $message);
     }
   }
 
