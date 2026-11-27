@@ -50,3 +50,15 @@ content_types:
             chado_base_table: project
             bundle_type_table: project
             bundle_type_column: type_id
+
+    -   label: Trial
+        term: 'AGRO:00000370'
+        help_text: Use to describe a trial designed to evaluate performance of germplasm.
+        category: Research Management
+        id: trial
+        title_format: "[exp_name]"
+        url_format: "trial/[exp_name]"
+        settings:
+            chado_base_table: project
+            bundle_type_table: project
+            bundle_type_column: type_id

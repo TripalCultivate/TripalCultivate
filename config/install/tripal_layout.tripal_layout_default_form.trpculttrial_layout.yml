@@ -1,0 +1,53 @@
+id: 'trpculttrial_layout'
+label: 'Trial Field Group'
+description: 'Fields setup for Tripal Content type - trial'
+layouts:
+  - tripal_entity_type: "trial"
+    field_groups:
+    - id: trial-section-meta
+      label: "Core Metadata"
+      type: details
+      open: true
+      children:
+        - trial_name
+        - trial_objectives
+        - trial_datacollector
+    - id: trial-section-germplasm
+      label: "Germplasm"
+      type: details
+      open: true
+      children:
+        - trial_organism
+        - trial_germcollection
+    - id: trial-section-design
+      label: "Trial Design"
+      type: details
+      open: true
+      children:
+        - trial_site_locations
+        - trial_timepoints
+        - trial_design
+    - id: trial-section-notes
+      label: "Data Quality + Notes"
+      type: details
+      open: true
+      children:
+        - trial_description
+## -- Advanced Sidebar
+    - id: author
+      type: details_sidebar
+      label: "Authoring Information"
+      children:
+        - uid
+        - created
+    - id: url_paths
+      type: details_sidebar
+      label: "URL Paths"
+      children:
+        - path
+    - id: meta
+      type: details_sidebar
+      label: "Status"
+      weight: -10
+      children:
+        - experiment_type

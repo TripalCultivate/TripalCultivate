@@ -107,6 +107,10 @@ vocabularies:
             -   id: 'AGRO:00000379'
                 name: 'data collector'
                 description: 'A person that has a role of collecting data related to the experiment.'
+            # In tripal_chado so must match exactly.
+            -   id: 'AGRO:00000370'
+                name: 'agricultural experiment'
+                description: 'An experiment in which a scientific method is implemented for testing certain agricultural phenomena (Synonym: trial).'
     -   name: 'efo'
         label: 'Experimental Factor Ontology'
         url: 'https://www.ebi.ac.uk/ols4/ontologies/efo'

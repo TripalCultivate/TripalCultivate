@@ -1847,3 +1847,276 @@ fields:
             default:
               region: content
               weight: 50
+
+################################################################################
+## Breeding Trial ##
+## Chado Table: project
+## Required Columns: name (varchar 255)
+## Optional columns: description (text)
+## Related: projectprop, project_pub, project_relationship
+##          array_project, nd_experiment_project, project_analysis, project_contact, project_dbxref, project_feature, project_stock
+
+### -------------------------------------------------------------------------
+## CORE
+###
+
+    -   name: 'trial_name'
+        content_type: 'trial'
+        label: 'Name'
+        type: 'chado_string_type_default'
+        description: 'The full name of the trial. Please see the recommendations above and be as conscise as possible while maintaining uniqueness.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                base_column: 'name'
+            max_length: 255
+        settings:
+            termIdSpace: 'schema'
+            termAccession: 'name'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+
+    -   name: 'experiment_type'
+        content_type: 'trial'
+        label: 'Type'
+        type: 'chado_additional_type_type_default'
+        description: 'The type of project. This is fixed for a single content type but is needed in the underlying data storage.'
+        cardinality: 1
+        required: true
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                type_table: 'project'
+                type_column: 'type_id'
+        settings:
+            termIdSpace: 'rdfs'
+            termAccession: 'type'
+            fixed_value: 'SIO:000994'
+        display:
+          view:
+            default:
+              region: 'hidden'
+          form:
+            default:
+              region: 'content'
+              weight: 3
+
+### -------------------------------------------------------------------------
+## OVERVIEW
+###
+
+    -   name: 'trial_objectives'
+        content_type: 'trial'
+        label: 'Objectives'
+        type: 'chado_property_type_default'
+        description: 'The objectives of this trial. This can be as simple as "Evaluate the performance of 2026 candidate lines".'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                prop_table: 'projectprop'
+        settings:
+            termIdSpace: 'SIO'
+            termAccession: '000337'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'above'
+          form:
+            default:
+              region: 'content'
+
+    -   name: 'trial_description'
+        content_type: 'trial'
+        label: 'Trial Notes'
+        type: 'chado_text_type_default'
+        description: 'Include any additional details or notes about this Trial that you want to keep track of.'
+        cardinality: 1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                base_column: 'description'
+        settings:
+            termIdSpace: 'schema'
+            termAccession: 'description'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'hidden'
+          form:
+            default:
+              region: 'content'
+
+### -------------------------------------------------------------------------
+## GERMPLASM
+###
+
+    -   name: 'trial_organism'
+        content_type: 'trial'
+        label: 'Germplasm Species'
+        type: 'project_genus'
+        description: 'The species of the germplasm being evaluated in this trial.'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                prop_table: 'projectprop'
+        settings:
+            termIdSpace: 'TAXRANK'
+            termAccession: '0000005'
+            genus_term: 'genus (TAXRANK:0000005)'
+            sciname_term: 'scientific name (NCBITaxon:scientific_name)'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'hidden'
+          form:
+            default:
+              region: 'content'
+
+    -   name: 'trial_germcollection'
+        content_type: 'trial'
+        label: 'Germplasm Collection'
+        type: 'chado_property_type_default'
+        description: 'The official name of the collection of germplasm used in this experiment (e.g. 2024 Variety Candidates).'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                prop_table: 'projectprop'
+        settings:
+            termIdSpace: 'local'
+            termAccession: 'project_germcollection'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'inline'
+          form:
+            default:
+              region: 'content'
+
+### -------------------------------------------------------------------------
+## PEOPLE
+###
+
+    -   name: 'trial_datacollector'
+        content_type: 'trial'
+        label: 'Data Collector'
+        type: 'chado_contact_by_role_type_default'
+        description: 'The researcher(s) and/or staff who are collecting the data. This includes anyone recording measurements/data (e.g. field staff taking flowering time notes, lab technican measuring gene expression).'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                linker_table: 'project_contact'
+                linker_fkey_column: 'contact_id'
+        settings:
+            termIdSpace: 'AGRO'
+            termAccession: '00000379'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'inline'
+          form:
+            default:
+              region: 'content'
+
+### -------------------------------------------------------------------------
+## FIELD EXPERIMENT DESIGN
+###
+
+    -   name: 'trial_site_locations'
+        content_type: 'trial'
+        label: 'Site Locations'
+        type: 'chado_property_type_default'
+        description: 'Each location where the trial was carried out.'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                prop_table: 'projectprop'
+        settings:
+            termIdSpace: 'AGRO'
+            termAccession: '00000360'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'inline'
+          form:
+            default:
+              region: 'content'
+
+    -   name: 'trial_timepoints'
+        content_type: 'trial'
+        label: 'Timepoints'
+        type: 'chado_property_type_default'
+        description: 'The year and season that the trial was planted.'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                prop_table: 'projectprop'
+        settings:
+            termIdSpace: 'EFO'
+            termAccession: '0000724'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'inline'
+          form:
+            default:
+              region: 'content'
+
+    -   name: 'trial_design'
+        content_type: 'trial'
+        label: 'Trial Design'
+        type: 'chado_property_type_default'
+        description: 'Describe the design of your trial.'
+        cardinality: -1
+        required: false
+        storage_settings:
+            storage_plugin_id: 'chado_storage'
+            storage_plugin_settings:
+                base_table: 'project'
+                prop_table: 'projectprop'
+        settings:
+            termIdSpace: 'PROCO'
+            termAccession: '0000276'
+        display:
+          view:
+            default:
+              region: 'content'
+              label: 'above'
+          form:
+            default:
+              region: 'content'
